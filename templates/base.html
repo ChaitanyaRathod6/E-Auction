@@ -2,9 +2,10 @@
 <html>
   <head>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/Auctora_Logo.png' %}">
   </head>
   <body>
-    {% include 'homenavabar.html' %}
+    {% include 'adminnavabar.html' %}
     
     <div class="content">{% block content %} {% endblock content %}</div>
 

@@ -2,28 +2,777 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Auction | Sign Up</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+<title>Auctora - Create Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
 
+:root {
+  --red: #e53935;
+  --blue: #1565c0;
+  --yellow: #f9a825;
+  --green: #2e7d32;
+  --bg: #f4f4f4;
+  --white: #ffffff;
+  --dark: #111111;
+  --mid: #444444;
+  --light: #888888;
+  --border: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: flex;
+}
+.logo span:nth-child(1) { color: var(--red); }
+.logo span:nth-child(2) { color: var(--blue); }
+.logo span:nth-child(3) { color: var(--yellow); }
+.logo span:nth-child(4) { color: var(--green); }
+
+.topbar-right {
+  font-size: 13px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar-right a:hover { text-decoration: underline; }
+
+/* ── MAIN LAYOUT ── */
+.page-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 480px 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+/* ── LEFT PANEL ── */
+.left-panel {
+  background: linear-gradient(160deg, #0d1b4b 0%, #1565c0 60%, #0288d1 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-panel::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  top: -150px; left: -150px;
+}
+
+.left-panel::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  bottom: -80px; right: -80px;
+}
+
+.panel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  width: fit-content;
+  position: relative;
+  z-index: 1;
+}
+
+.left-panel h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 38px;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.left-panel h2 span {
+  color: var(--yellow);
+}
+
+.left-panel > p {
+  color: rgba(255,255,255,0.65);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+  max-width: 320px;
+}
+
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: slideIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+.perk:nth-child(1) { animation-delay: 0.1s; }
+.perk:nth-child(2) { animation-delay: 0.2s; }
+.perk:nth-child(3) { animation-delay: 0.3s; }
+.perk:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.perk-icon {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.perk-text strong {
+  display: block;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.perk-text span {
+  color: rgba(255,255,255,0.5);
+  font-size: 12px;
+}
+
+/* ── FORM PANEL ── */
+.form-panel {
+  background: white;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-header {
+  margin-bottom: 32px;
+}
+
+.form-header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 26px;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.form-header p {
+  font-size: 13px;
+  color: var(--light);
+}
+
+/* ── ROLE SELECTOR ── */
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.role-btn {
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.role-btn .role-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+.role-btn .role-label { font-size: 13px; font-weight: 600; color: var(--mid); display: block; }
+.role-btn .role-desc { font-size: 11px; color: var(--light); display: block; margin-top: 2px; }
+
+.role-btn:hover {
+  border-color: var(--blue);
+  background: #f0f5ff;
+}
+
+.role-btn.active {
+  border-color: var(--blue);
+  background: #e8f0fe;
+}
+.role-btn.active .role-label { color: var(--blue); }
+
+/* ── DIVIDER ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  color: var(--light);
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── FORM FIELDS ── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.field input, .field select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  background: white;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.field input:focus, .field select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+}
+
+.field input::placeholder { color: #bbb; }
+
+.field.has-icon {
+  position: relative;
+}
+.field.has-icon input {
+  padding-right: 40px;
+}
+.field-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--light);
+  user-select: none;
+}
+
+/* Password strength */
+.strength-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.strength-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.strength-seg.weak { background: var(--red); }
+.strength-seg.medium { background: var(--yellow); }
+.strength-seg.strong { background: var(--green); }
+
+.strength-label {
+  font-size: 11px;
+  color: var(--light);
+  margin-top: 4px;
+}
+
+/* ── TERMS ── */
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: var(--light);
+  line-height: 1.5;
+}
+
+.terms input[type="checkbox"] {
+  margin-top: 2px;
+  accent-color: var(--blue);
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.terms a { color: var(--blue); text-decoration: none; }
+.terms a:hover { text-decoration: underline; }
+
+/* ── SUBMIT BTN ── */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+
+.submit-btn:hover {
+  background: #0d47a1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+}
+
+.submit-btn:active { transform: translateY(0); }
+
+/* ── SIGNIN LINK ── */
+.signin-link {
+  text-align: center;
+  font-size: 13px;
+  color: var(--light);
+}
+.signin-link a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.signin-link a:hover { text-decoration: underline; }
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.trust-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.trust-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s;
+  animation: fadeRight 0.6s ease forwards;
+  opacity: 0;
+}
+
+.trust-card:nth-child(1) { animation-delay: 0.15s; }
+.trust-card:nth-child(2) { animation-delay: 0.25s; }
+.trust-card:nth-child(3) { animation-delay: 0.35s; }
+.trust-card:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.trust-card:hover {
+  border-color: #bbb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+}
+
+.trust-emoji { font-size: 26px; flex-shrink: 0; }
+.trust-info strong { display: block; font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+.trust-info span { font-size: 12px; color: var(--light); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  animation: fadeRight 0.6s ease forwards;
+  opacity: 0;
+}
+.stat-card:nth-child(1) { animation-delay: 0.55s; }
+.stat-card:nth-child(2) { animation-delay: 0.65s; }
+
+.stat-num {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 22px;
+  color: var(--blue);
+  display: block;
+}
+.stat-lbl { font-size: 11px; color: var(--light); margin-top: 2px; display: block; }
+
+/* ── FOOTER ── */
+.page-footer {
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: var(--light); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--blue); }
+
+/* ── DJANGO FORM STYLING ── */
+form p {
+  margin-bottom: 16px;
+}
+
+form p label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
+}
+
+form p input,
+form p select,
+form p textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  background: white;
+  transition: all 0.2s;
+  outline: none;
+}
+
+form p input:focus,
+form p select:focus,
+form p textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+}
+
+form p input::placeholder { color: #bbb; }
+
+/* Error messages */
+form ul.errorlist {
+  list-style: none;
+  margin: 0 0 6px 0;
+  padding: 0;
+}
+
+form ul.errorlist li {
+  color: var(--red);
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #fff5f5;
+  border-left: 3px solid var(--red);
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+/* Non-field errors */
+.errorlist.nonfield li {
+  background: #fff5f5;
+  color: var(--red);
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ffcdd2;
+  margin-bottom: 16px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 1fr 460px; }
+  .right-panel { display: none; }
+}
+
+@media (max-width: 720px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .left-panel { display: none; }
+  .form-panel { padding: 32px 24px; border: none; }
+  .topbar { padding: 0 20px; }
+}
+
+</style>
+</head>
 <body>
 
-<div class="signup-container">
-    <div class="signup-card">
-        <h2>Create Account</h2>
-        <div class="subtitle">Create an account to start participating in auctions</div>
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    <span>A</span><span>u</span><span>c</span><span>t</span><span>o</span><span>r</span><span>a</span>
+  </a>
+  <div class="topbar-right">
+    Already have an account? <a href="#">Sign in</a>
+  </div>
+</header>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="signup-btn">Sign Up</button>
-        </form>
+<!-- MAIN -->
+<div class="page-wrapper">
 
-        
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <span class="panel-badge">🔒 Secure & Trusted</span>
+    <h2>Join <span>Millions</span> of Buyers & Sellers</h2>
+    <p>Create your free account and start bidding on thousands of live auctions today.</p>
+
+    <div class="perks">
+      <div class="perk">
+        <div class="perk-icon">🎯</div>
+        <div class="perk-text">
+          <strong>Real-Time Bidding</strong>
+          <span>Compete live with buyers worldwide</span>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">🛡️</div>
+        <div class="perk-text">
+          <strong>Buyer Protection</strong>
+          <span>Every purchase is fully guaranteed</span>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">💸</div>
+        <div class="perk-text">
+          <strong>Sell & Earn</strong>
+          <span>List items and reach millions instantly</span>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">📦</div>
+        <div class="perk-text">
+          <strong>Fast Delivery</strong>
+          <span>Tracked shipping on every order</span>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+    <div class="form-header">
+      <h1>Create your account</h1>
+      <p>Fill in your details to get started — it's free!</p>
+    </div>
+
+    <!-- ROLE SELECTOR -->
+    <div class="role-selector">
+      <button class="role-btn active" onclick="selectRole(this)">
+        <span class="role-icon">🛒</span>
+        <span class="role-label">Buyer</span>
+        <span class="role-desc">Browse & bid on items</span>
+      </button>
+      <button class="role-btn" onclick="selectRole(this)">
+        <span class="role-icon">🏪</span>
+        <span class="role-label">Seller</span>
+        <span class="role-desc">List & auction items</span>
+      </button>
+    </div>
+
+    <div class="divider">Personal Details</div>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="submit-btn">CREATE MY ACCOUNT →</button>
+    </form>
+
+    <p class="signin-link">Already have an account? <a href="#">Sign in here</a></p>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="trust-stack">
+      <div class="trust-card">
+        <span class="trust-emoji">🔐</span>
+        <div class="trust-info">
+          <strong>256-bit SSL Encryption</strong>
+          <span>Your data is always protected</span>
+        </div>
+      </div>
+      <div class="trust-card">
+        <span class="trust-emoji">✅</span>
+        <div class="trust-info">
+          <strong>Verified Sellers Only</strong>
+          <span>Every seller is ID-checked</span>
+        </div>
+      </div>
+      <div class="trust-card">
+        <span class="trust-emoji">💳</span>
+        <div class="trust-info">
+          <strong>Secure Payments</strong>
+          <span>Visa, Mastercard, UPI, PayPal</span>
+        </div>
+      </div>
+      <div class="trust-card">
+        <span class="trust-emoji">🏆</span>
+        <div class="trust-info">
+          <strong>#1 Auction Platform</strong>
+          <span>Trusted since 2020</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-num">12M+</span>
+        <span class="stat-lbl">Registered Users</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">4.9★</span>
+        <span class="stat-lbl">Average Rating</span>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Help Center</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  function selectRole(btn) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function togglePass(id, icon) {
+    const input = document.getElementById(id);
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      icon.textContent = '👁';
+    }
+  }
+
+  function checkStrength(val) {
+    const segs = [document.getElementById('s1'), document.getElementById('s2'),
+                  document.getElementById('s3'), document.getElementById('s4')];
+    const label = document.getElementById('strengthLabel');
+
+    segs.forEach(s => s.className = 'strength-seg');
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const cls = score <= 1 ? 'weak' : score <= 2 ? 'medium' : 'strong';
+    const labels = ['', 'Weak', 'Weak', 'Medium', 'Strong'];
+
+    for (let i = 0; i < score; i++) segs[i].classList.add(cls);
+    label.textContent = val.length === 0 ? 'Enter a password' : labels[score] + ' password';
+    label.style.color = cls === 'weak' ? '#e53935' : cls === 'medium' ? '#f9a825' : '#2e7d32';
+  }
+</script>
 
 </body>
 </html>

@@ -12,6 +12,9 @@ body {
     min-height: 100vh;
     position: relative;
     color: white;
+
+    display: flex;
+    flex-direction: column;
 }
 
 /* Animated subtle background */
@@ -42,7 +45,7 @@ body::before {
 
 /* This matches your base.html */
 .content {
-    min-height: 80vh;
+    flex: 1; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -250,4 +253,26 @@ body::before {
         gap: 10px;
         text-align: center;
     }
+}
+
+
+/* ================== PAGE LAYOUT UPGRADE ================== */
+
+/* Default content behaves normally (for homepage, listings, etc.) */
+.content-normal {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding: 40px 20px;
+}
+
+/* Centered layout ONLY for auth pages (login/signup) */
+.content-centered {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    padding: 40px 20px;
 }
