@@ -22,7 +22,7 @@ def  UserLoginViews(request):
         if form.is_valid():
             email = form.cleaned_data.get('Email')
             password = form.cleaned_data.get('password')
-            user = authenticate(request, Email=email, password=password)
+            user = authenticate(request, username=email, password=password)
             if user :
                 login(request, user)
                 if user.Role == 'Admin':

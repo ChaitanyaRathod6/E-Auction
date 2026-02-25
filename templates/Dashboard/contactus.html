@@ -1,0 +1,539 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auctora - Contact Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #e53935;
+  --blue: #1565c0;
+  --yellow: #f9a825;
+  --green: #2e7d32;
+  --bg: #f4f4f4;
+  --white: #ffffff;
+  --dark: #111111;
+  --mid: #444444;
+  --light: #888888;
+  --border: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: flex;
+}
+.logo span:nth-child(1) { color: var(--red); }
+.logo span:nth-child(2) { color: var(--blue); }
+.logo span:nth-child(3) { color: var(--yellow); }
+.logo span:nth-child(4) { color: var(--green); }
+
+.topbar-right {
+  font-size: 13px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar-right a:hover { text-decoration: underline; }
+
+/* ── MAIN CONTENT ── */
+.page-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 1000px) 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+.content-panel {
+  background: white;
+  padding: 60px 60px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.content-header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 38px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.content-header h1 span {
+  color: var(--blue);
+}
+
+.content-header p {
+  font-size: 16px;
+  color: var(--light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── CONTACT GRID ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Contact Info Cards */
+.info-cards {
+  display: grid;
+  gap: 20px;
+}
+
+.info-card {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.info-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+  background: #f0f5ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.info-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.info-content p {
+  font-size: 14px;
+  color: var(--mid);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.info-content a {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-content a:hover {
+  text-decoration: underline;
+}
+
+/* Contact Form */
+.contact-form {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.contact-form h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  background: white;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-btn:hover {
+  background: #0d47a1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+}
+
+/* Office Hours */
+.hours-card {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 30px;
+  background: #f8f9fa;
+}
+
+.hours-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.hours-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.hours-item .day {
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 14px;
+}
+
+.hours-item .time {
+  color: var(--light);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* Map Section */
+.map-section {
+  margin: 40px 0 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.map-placeholder {
+  background: #e9ecef;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.map-overlay {
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.map-overlay span {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.map-overlay p {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.map-overlay small {
+  font-size: 13px;
+  color: var(--light);
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--blue);
+}
+.footer-links a.active {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 1fr 900px 1fr; }
+}
+
+@media (max-width: 900px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .content-panel { padding: 40px 24px; border: none; }
+  .topbar { padding: 0 20px; }
+  .content-header h1 { font-size: 30px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .hours-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="/" style="text-decoration: none;">
+    <div class="logo">
+      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+    </div>
+  </a>
+  <div class="topbar-right">
+    <a href="{% url 'login' %}">Sign in</a>
+    <a href ="{% url 'home' %}">Home</a>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+  <div></div> <!-- Left spacer -->
+  
+  <div class="content-panel">
+    <div class="content-header">
+      <h1>Contact <span>Us</span></h1>
+      <p>We're here to help! Reach out to our support team</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Left Column - Info Cards -->
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">📧</div>
+          <div class="info-content">
+            <h3>Email Support</h3>
+            <p>Get a response within 24 hours</p>
+            <a href="mailto:support@auctora.com">support@auctora.com →</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">💬</div>
+          <div class="info-content">
+            <h3>Live Chat</h3>
+            <p>Instant answers from our team</p>
+            <a href="#">Start live chat →</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📞</div>
+          <div class="info-content">
+            <h3>Phone Support</h3>
+            <p>Speak with a representative</p>
+            <a href="tel:+1800555AUCT">+1 (800) 555-AUCT →</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div class="info-content">
+            <h3>Headquarters</h3>
+            <p>123 Auction Street<br>San Francisco, CA 94105</p>
+            <a href="#">Get directions →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Contact Form -->
+      <div class="contact-form">
+        <h3>Send us a message</h3>
+        <form onsubmit="event.preventDefault(); alert('Message sent! Our team will respond within 24 hours.');">
+          <div class="form-group">
+            <label>Your name</label>
+            <input type="text" placeholder="John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email address</label>
+            <input type="email" placeholder="john@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Subject</label>
+            <select>
+              <option>General inquiry</option>
+              <option>Account support</option>
+              <option>Bidding issue</option>
+              <option>Selling question</option>
+              <option>Payment problem</option>
+              <option>Report a problem</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="How can we help you?"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">SEND MESSAGE →</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Office Hours -->
+    <div class="hours-card">
+      <h3>⏰ Support Hours</h3>
+      <div class="hours-grid">
+        <div class="hours-item">
+          <span class="day">Monday - Friday</span>
+          <span class="time">8:00 AM - 8:00 PM EST</span>
+        </div>
+        <div class="hours-item">
+          <span class="day">Saturday</span>
+          <span class="time">9:00 AM - 5:00 PM EST</span>
+        </div>
+        <div class="hours-item">
+          <span class="day">Sunday</span>
+          <span class="time">10:00 AM - 4:00 PM EST</span>
+        </div>
+        <div class="hours-item">
+          <span class="day">24/7</span>
+          <span class="time">Email & Chat support</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-section">
+      <div class="map-placeholder">
+        <div class="map-overlay">
+          <span>📍</span>
+          <p>Auctora Headquarters</p>
+          <small>123 Auction Street, San Francisco, CA 94105</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div></div> <!-- Right spacer -->
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
+  <div class="footer-links">
+    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
+    <a href="{% url 'termsofservice' %}">Terms of Use</a>
+    <a href="{% url 'HelpCenter' %}">Help Center</a>
+    <a href="{% url 'ContactUs' %}" class="active">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

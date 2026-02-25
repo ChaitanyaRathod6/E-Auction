@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auctora - Privacy Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #e53935;
+  --blue: #1565c0;
+  --yellow: #f9a825;
+  --green: #2e7d32;
+  --bg: #f4f4f4;
+  --white: #ffffff;
+  --dark: #111111;
+  --mid: #444444;
+  --light: #888888;
+  --border: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: flex;
+}
+.logo span:nth-child(1) { color: var(--red); }
+.logo span:nth-child(2) { color: var(--blue); }
+.logo span:nth-child(3) { color: var(--yellow); }
+.logo span:nth-child(4) { color: var(--green); }
+
+.topbar-right {
+  font-size: 13px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar-right a:hover { text-decoration: underline; }
+
+/* ── MAIN CONTENT ── */
+.page-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 900px) 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+.content-panel {
+  background: white;
+  padding: 60px 60px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.content-header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 38px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.content-header h1 span {
+  color: var(--blue);
+}
+
+.content-header p {
+  font-size: 15px;
+  color: var(--light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.last-updated {
+  display: inline-block;
+  background: #f0f5ff;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-top: 16px;
+}
+
+/* ── POLICY CONTENT ── */
+.policy-section {
+  margin-bottom: 40px;
+}
+
+.policy-section h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 22px;
+  color: var(--dark);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.policy-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mid);
+  margin: 24px 0 12px;
+}
+
+.policy-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mid);
+  margin-bottom: 16px;
+}
+
+.policy-section ul, .policy-section ol {
+  margin: 16px 0 16px 24px;
+}
+
+.policy-section li {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+
+.policy-section li strong {
+  color: var(--dark);
+}
+
+.highlight-box {
+  background: #f8f9fa;
+  border-left: 4px solid var(--blue);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.highlight-box p {
+  margin-bottom: 0;
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--blue);
+}
+.footer-links a.active {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 1fr 800px 1fr; }
+}
+
+@media (max-width: 900px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .content-panel { padding: 40px 24px; border: none; }
+  .topbar { padding: 0 20px; }
+  .content-header h1 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="/" style="text-decoration: none;">
+    <div class="logo">
+      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+    </div>
+  </a>
+  <div class="topbar-right">
+    <a href="{% url 'login' %}">Sign in</a>
+    <a href ="{% url 'home' %}">Home</a>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+  <div></div> <!-- Left spacer -->
+  
+  <div class="content-panel">
+    <div class="content-header">
+      <h1>Privacy <span>Policy</span></h1>
+      <p>How we collect, use, and protect your personal information</p>
+      <div class="last-updated">Last Updated: February 25, 2026</div>
+    </div>
+
+    <div class="policy-section">
+      <h2>1. Introduction</h2>
+      <p>At Auctora, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our auction platform, website, and mobile application (collectively, the "Service").</p>
+      <p>Please read this privacy policy carefully. By using the Service, you consent to the practices described in this policy.</p>
+      
+      <div class="highlight-box">
+        <p><strong>Quick Summary:</strong> We collect information to provide better auction services, never sell your personal data, and use industry-standard security to protect your information.</p>
+      </div>
+    </div>
+
+    <div class="policy-section">
+      <h2>2. Information We Collect</h2>
+      
+      <h3>2.1 Personal Information</h3>
+      <p>When you register for an account, we collect:</p>
+      <ul>
+        <li><strong>Contact Information:</strong> Name, email address, phone number, shipping address</li>
+        <li><strong>Account Information:</strong> Username, password, profile picture</li>
+        <li><strong>Payment Information:</strong> Credit card details, bank account information (processed securely through third-party payment processors)</li>
+        <li><strong>Identity Verification:</strong> Government ID for seller verification (where required)</li>
+      </ul>
+
+      <h3>2.2 Automatically Collected Information</h3>
+      <p>When you use our Service, we automatically collect:</p>
+      <ul>
+        <li><strong>Usage Data:</strong> Bidding history, items viewed, search queries, time spent on pages</li>
+        <li><strong>Device Information:</strong> IP address, browser type, operating system, device identifiers</li>
+        <li><strong>Location Data:</strong> General geographic location based on IP address</li>
+        <li><strong>Cookies:</strong> We use cookies to enhance your experience and analyze usage patterns</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>3. How We Use Your Information</h2>
+      <p>We use the collected information for various purposes:</p>
+      <ul>
+        <li><strong>Provide and maintain the Service:</strong> Process bids, manage auctions, facilitate payments</li>
+        <li><strong>Improve our Service:</strong> Analyze usage patterns to enhance user experience</li>
+        <li><strong>Communicate with you:</strong> Send updates, security alerts, and support messages</li>
+        <li><strong>Prevent fraud:</strong> Detect and prevent fraudulent activities and unauthorized transactions</li>
+        <li><strong>Legal compliance:</strong> Comply with applicable laws and regulations</li>
+        <li><strong>Marketing:</strong> Send promotional communications (you can opt out at any time)</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>4. Information Sharing and Disclosure</h2>
+      <p>We may share your information in the following situations:</p>
+      
+      <h3>4.1 With Sellers/Buyers</h3>
+      <p>When you participate in auctions, limited information (username, shipping address for purchases) is shared with the other party to complete transactions.</p>
+
+      <h3>4.2 Service Providers</h3>
+      <p>We share information with third-party vendors who help us operate our business (payment processors, shipping companies, analytics providers). These providers are contractually obligated to protect your information.</p>
+
+      <h3>4.3 Legal Requirements</h3>
+      <p>We may disclose information if required by law or in response to valid requests by public authorities.</p>
+
+      <h3>4.4 Business Transfers</h3>
+      <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of the transaction.</p>
+
+      <p><strong>We do not sell your personal information to third parties.</strong></p>
+    </div>
+
+    <div class="policy-section">
+      <h2>5. Data Security</h2>
+      <p>We implement appropriate technical and organizational measures to protect your personal information:</p>
+      <ul>
+        <li>256-bit SSL encryption for all data transmission</li>
+        <li>Regular security audits and penetration testing</li>
+        <li>Strict access controls for employee data access</li>
+        <li>Secure data centers with 24/7 monitoring</li>
+      </ul>
+      <p>However, no method of transmission over the Internet is 100% secure. While we strive to protect your information, we cannot guarantee absolute security.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>6. Your Privacy Rights</h2>
+      <p>Depending on your location, you may have the following rights:</p>
+      <ul>
+        <li><strong>Access:</strong> Request a copy of your personal information</li>
+        <li><strong>Correction:</strong> Update or correct inaccurate information</li>
+        <li><strong>Deletion:</strong> Request deletion of your information (subject to legal obligations)</li>
+        <li><strong>Opt-out:</strong> Opt out of marketing communications</li>
+        <li><strong>Data portability:</strong> Receive your information in a structured format</li>
+      </ul>
+      <p>To exercise these rights, contact us at privacy@auctora.com.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>7. Cookies and Tracking</h2>
+      <p>We use cookies and similar tracking technologies to:</p>
+      <ul>
+        <li>Keep you logged in</li>
+        <li>Remember your preferences</li>
+        <li>Understand how you use our platform</li>
+        <li>Show relevant advertisements</li>
+      </ul>
+      <p>You can control cookies through your browser settings. Disabling cookies may affect certain features of the Service.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>8. Children's Privacy</h2>
+      <p>Our Service is not intended for individuals under the age of 18. We do not knowingly collect personal information from minors. If we become aware that a minor has provided us with personal information, we will take steps to delete it.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>9. International Data Transfers</h2>
+      <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information in accordance with this Privacy Policy.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>10. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date. For significant changes, we may provide additional notice (such as an email notification).</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>11. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy, please contact us:</p>
+      <ul>
+        <li><strong>Email:</strong> privacy@auctora.com</li>
+        <li><strong>Address:</strong> 123 Auction Street, San Francisco, CA 94105</li>
+        <li><strong>Phone:</strong> +1 (800) 555-AUCT</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div></div> <!-- Right spacer -->
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
+  <div class="footer-links">
+    <a href="{% url 'privacypolicy' %}" class="active">Privacy Policy</a>
+    <a href="{% url 'termsofservice' %}">Terms of Use</a>
+    <a href="{% url 'HelpCenter' %}">Help Center</a>
+    <a href="{% url 'ContactUs' %}">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

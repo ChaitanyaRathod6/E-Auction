@@ -1,0 +1,550 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auctora - Help Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #e53935;
+  --blue: #1565c0;
+  --yellow: #f9a825;
+  --green: #2e7d32;
+  --bg: #f4f4f4;
+  --white: #ffffff;
+  --dark: #111111;
+  --mid: #444444;
+  --light: #888888;
+  --border: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: flex;
+}
+.logo span:nth-child(1) { color: var(--red); }
+.logo span:nth-child(2) { color: var(--blue); }
+.logo span:nth-child(3) { color: var(--yellow); }
+.logo span:nth-child(4) { color: var(--green); }
+
+.topbar-right {
+  font-size: 13px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar-right a:hover { text-decoration: underline; }
+
+/* ── MAIN CONTENT ── */
+.page-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 1100px) 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+.content-panel {
+  background: white;
+  padding: 60px 60px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.content-header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 38px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.content-header h1 span {
+  color: var(--blue);
+}
+
+.content-header p {
+  font-size: 16px;
+  color: var(--light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── SEARCH BAR ── */
+.help-search {
+  max-width: 600px;
+  margin: 30px auto 40px;
+  position: relative;
+}
+
+.help-search input {
+  width: 100%;
+  padding: 16px 20px;
+  padding-left: 50px;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.help-search input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+}
+
+.help-search::before {
+  content: '🔍';
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--light);
+}
+
+/* ── CATEGORY GRID ── */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 40px 0;
+}
+
+.category-card {
+  background: #f8f9fa;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.category-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.category-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.category-card p {
+  font-size: 13px;
+  color: var(--light);
+  line-height: 1.5;
+}
+
+/* ── FAQ SECTION ── */
+.section-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 24px;
+  color: var(--dark);
+  margin: 40px 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.faq-item {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.faq-item:hover {
+  border-color: var(--blue);
+  background: #f8f9fa;
+}
+
+.faq-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.faq-item h4::before {
+  content: '❓';
+  font-size: 14px;
+}
+
+.faq-item p {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.6;
+  margin-left: 26px;
+}
+
+/* ── GUIDE CARDS ── */
+.guide-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 30px 0;
+}
+
+.guide-card {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.guide-card:hover {
+  border-color: var(--blue);
+  background: #f8f9fa;
+}
+
+.guide-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.guide-card h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.guide-card span {
+  font-size: 12px;
+  color: var(--light);
+}
+
+/* ── CONTACT OPTIONS ── */
+.contact-section {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 40px;
+  margin: 40px 0 20px;
+  text-align: center;
+}
+
+.contact-section h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.contact-section p {
+  font-size: 15px;
+  color: var(--light);
+  max-width: 500px;
+  margin: 0 auto 30px;
+}
+
+.contact-options {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  padding: 14px 28px;
+  border: 2px solid var(--blue);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-btn.primary {
+  background: var(--blue);
+  color: white;
+}
+
+.contact-btn.primary:hover {
+  background: #0d47a1;
+  border-color: #0d47a1;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+}
+
+.contact-btn.secondary {
+  background: white;
+  color: var(--blue);
+}
+
+.contact-btn.secondary:hover {
+  background: #f0f5ff;
+  transform: translateY(-1px);
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--blue);
+}
+.footer-links a.active {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 1fr 900px 1fr; }
+}
+
+@media (max-width: 1000px) {
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
+  .guide-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 800px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .content-panel { padding: 40px 24px; border: none; }
+  .topbar { padding: 0 20px; }
+  .content-header h1 { font-size: 30px; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .contact-options { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="/" style="text-decoration: none;">
+    <div class="logo">
+      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+    </div>
+  </a>
+  <div class="topbar-right">
+    <a href="{% url 'login' %}">Sign in</a> 
+    <a href ="{% url 'home' %}">Home</a>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+  <div></div> <!-- Left spacer -->
+  
+  <div class="content-panel">
+    <div class="content-header">
+      <h1>Help <span>Center</span></h1>
+      <p>Find answers to common questions and learn how to use Auctora</p>
+      
+      <div class="help-search">
+        <input type="text" placeholder="Search for help articles...">
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="category-grid">
+      <div class="category-card">
+        <div class="category-icon">🛒</div>
+        <h3>Buying</h3>
+        <p>How to bid, payment, shipping, and returns</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">🏪</div>
+        <h3>Selling</h3>
+        <p>Listing items, fees, and managing sales</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">🔐</div>
+        <h3>Account</h3>
+        <p>Registration, security, and settings</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">💰</div>
+        <h3>Payments</h3>
+        <p>Billing, payouts, and invoices</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">📦</div>
+        <h3>Shipping</h3>
+        <p>Delivery options and tracking</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">⚖️</div>
+        <h3>Disputes</h3>
+        <p>Resolution center and claims</p>
+      </div>
+    </div>
+
+    <!-- Featured Guides -->
+    <h2 class="section-title">Quick Start Guides</h2>
+    <div class="guide-row">
+      <div class="guide-card">
+        <div class="guide-icon">📝</div>
+        <h5>Create Account</h5>
+        <span>5 min read</span>
+      </div>
+      <div class="guide-card">
+        <div class="guide-icon">🔍</div>
+        <h5>Find Items</h5>
+        <span>3 min read</span>
+      </div>
+      <div class="guide-card">
+        <div class="guide-icon">💵</div>
+        <h5>Place a Bid</h5>
+        <span>4 min read</span>
+      </div>
+      <div class="guide-card">
+        <div class="guide-icon">📦</div>
+        <h5>Track Order</h5>
+        <span>2 min read</span>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h4>How do I create an account?</h4>
+        <p>Click "Create account" in the top right corner, fill in your details, and verify your email address. It's free and takes less than 2 minutes.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How does bidding work?</h4>
+        <p>Enter your maximum bid, and our system will automatically bid incrementally on your behalf up to that amount. You'll be notified if you're outbid.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What payment methods are accepted?</h4>
+        <p>We accept Visa, Mastercard, American Express, PayPal, and bank transfers for verified accounts.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How do I sell an item?</h4>
+        <p>Create a seller account, verify your identity, then click "List Item" to start your auction. Add photos, description, and set your starting price.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What are the seller fees?</h4>
+        <p>Listing fees start at $0.50, and final value fees range from 5-10% depending on the category. View our full fee schedule in your seller dashboard.</p>
+      </div>
+      <div class="faq-item">
+        <h4>How do I track my shipment?</h4>
+        <p>Once shipped, tracking information will appear in your order history. You'll also receive email updates with tracking links.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I cancel a bid?</h4>
+        <p>Bids are binding, but you can retract within the first hour if you made a mistake. After that, contact the seller directly.</p>
+      </div>
+      <div class="faq-item">
+        <h4>What is buyer protection?</h4>
+        <p>If your item doesn't arrive or isn't as described, we'll help resolve the issue and can refund your purchase up to $2,500.</p>
+      </div>
+    </div>
+
+    <!-- Still Need Help -->
+    <div class="contact-section">
+      <h3>Still need help?</h3>
+      <p>Our support team is available 24/7 to answer your questions</p>
+      <div class="contact-options">
+        <a href="/contact.html" class="contact-btn primary">📧 Contact Support</a>
+        <a href="#" class="contact-btn secondary">💬 Live Chat</a>
+        <a href="#" class="contact-btn secondary">📞 Call Us</a>
+      </div>
+    </div>
+  </div>
+  
+  <div></div> <!-- Right spacer -->
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
+  <div class="footer-links">
+    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
+    <a href="{% url 'termsofservice' %}" class="active">Terms of Use</a>
+    <a href="{% url 'HelpCenter' %}">Help Center</a>
+    <a href="{% url 'ContactUs' %}">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

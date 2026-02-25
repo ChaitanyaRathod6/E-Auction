@@ -602,7 +602,7 @@ form ul.errorlist li {
      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
   </div>
   <div class="topbar-right">
-    Already have an account? <a href="#">Sign in</a>
+    Already have an account? <a href="{% url 'login' %}">Log in</a>
   </div>
 </header>
 
@@ -735,10 +735,10 @@ form ul.errorlist li {
 <footer class="page-footer">
   <span>© 2026 Auctora Inc. All Rights Reserved.</span>
   <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">Help Center</a>
-    <a href="#">Contact</a>
+    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
+    <a href="{% url 'termsofservice' %}">Terms of Use</a>
+    <a href="{% url 'HelpCenter' %}">Help Center</a>
+    <a href="{% url 'ContactUs' %}">Contact</a>
   </div>
 </footer>
 

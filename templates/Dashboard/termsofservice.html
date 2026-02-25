@@ -1,0 +1,510 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auctora - Terms and Conditions</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #e53935;
+  --blue: #1565c0;
+  --yellow: #f9a825;
+  --green: #2e7d32;
+  --bg: #f4f4f4;
+  --white: #ffffff;
+  --dark: #111111;
+  --mid: #444444;
+  --light: #888888;
+  --border: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.logo {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 28px;
+  letter-spacing: -1px;
+  text-decoration: none;
+  display: flex;
+}
+.logo span:nth-child(1) { color: var(--red); }
+.logo span:nth-child(2) { color: var(--blue); }
+.logo span:nth-child(3) { color: var(--yellow); }
+.logo span:nth-child(4) { color: var(--green); }
+
+.topbar-right {
+  font-size: 13px;
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.topbar-right a:hover { text-decoration: underline; }
+
+/* ── MAIN CONTENT ── */
+.page-wrapper {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 900px) 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+.content-panel {
+  background: white;
+  padding: 60px 60px;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  animation: fadeUp 0.7s ease forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.content-header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 38px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.content-header h1 span {
+  color: var(--blue);
+}
+
+.content-header p {
+  font-size: 15px;
+  color: var(--light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.last-updated {
+  display: inline-block;
+  background: #f0f5ff;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-top: 16px;
+}
+
+/* ── POLICY CONTENT ── */
+.policy-section {
+  margin-bottom: 40px;
+}
+
+.policy-section h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 22px;
+  color: var(--dark);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.policy-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--mid);
+  margin: 24px 0 12px;
+}
+
+.policy-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mid);
+  margin-bottom: 16px;
+}
+
+.policy-section ul, .policy-section ol {
+  margin: 16px 0 16px 24px;
+}
+
+.policy-section li {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+
+.policy-section li strong {
+  color: var(--dark);
+}
+
+.highlight-box {
+  background: #f8f9fa;
+  border-left: 4px solid var(--blue);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+.highlight-box p {
+  margin-bottom: 0;
+}
+
+.terms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+}
+
+.terms-table th {
+  background: #f0f5ff;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--dark);
+  border: 1px solid var(--border);
+}
+
+.terms-table td {
+  padding: 12px;
+  border: 1px solid var(--border);
+  color: var(--mid);
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: var(--light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--blue);
+}
+.footer-links a.active {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 1fr 800px 1fr; }
+}
+
+@media (max-width: 900px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  .content-panel { padding: 40px 24px; border: none; }
+  .topbar { padding: 0 20px; }
+  .content-header h1 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="/" style="text-decoration: none;">
+    <div class="logo">
+      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+    </div>
+  </a>
+  <div class="topbar-right">
+    <a href="{% url 'login' %}">Sign in</a> 
+    <a href ="{% url 'home' %}">Home</a>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+  <div></div> <!-- Left spacer -->
+  
+  <div class="content-panel">
+    <div class="content-header">
+      <h1>Terms and <span>Conditions</span></h1>
+      <p>Please read these terms carefully before using our platform</p>
+      <div class="last-updated">Last Updated: February 25, 2026</div>
+    </div>
+
+    <div class="policy-section">
+      <h2>1. Agreement to Terms</h2>
+      <p>By accessing or using the Auctora platform, you agree to be bound by these Terms and Conditions, our Privacy Policy, and any additional terms applicable to specific features. If you disagree with any part of these terms, you may not access the Service.</p>
+      
+      <div class="highlight-box">
+        <p><strong>Summary:</strong> These terms create a legally binding agreement between you and Auctora. By using our platform, you agree to follow these rules.</p>
+      </div>
+    </div>
+
+    <div class="policy-section">
+      <h2>2. Definitions</h2>
+      <table class="terms-table">
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+        <tr>
+          <td><strong>"Platform"</strong></td>
+          <td>The Auctora website, mobile application, and related services</td>
+        </tr>
+        <tr>
+          <td><strong>"User" / "You"</strong></td>
+          <td>Any individual who accesses or uses the Platform</td>
+        </tr>
+        <tr>
+          <td><strong>"Buyer"</strong></td>
+          <td>A User who places bids on items listed on the Platform</td>
+        </tr>
+        <tr>
+          <td><strong>"Seller"</strong></td>
+          <td>A User who lists items for auction on the Platform</td>
+        </tr>
+        <tr>
+          <td><strong>"Auction"</strong></td>
+          <td>A timed listing where Users can place bids on an item</td>
+        </tr>
+        <tr>
+          <td><strong>"Winning Bid"</strong></td>
+          <td>The highest bid at the close of an Auction</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="policy-section">
+      <h2>3. Eligibility</h2>
+      <p>By using the Platform, you represent and warrant that:</p>
+      <ul>
+        <li>You are at least 18 years of age</li>
+        <li>You have the legal capacity to enter into binding contracts</li>
+        <li>You are not located in a country that is subject to trade sanctions</li>
+        <li>You have not been previously suspended or removed from the Platform</li>
+        <li>You will provide accurate and complete information when creating an account</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>4. Account Registration</h2>
+      
+      <h3>4.1 Account Creation</h3>
+      <p>To use certain features of the Platform, you must register for an account. You agree to provide accurate, current, and complete information and to update it as necessary.</p>
+
+      <h3>4.2 Account Security</h3>
+      <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized use of your account. Auctora is not liable for any losses resulting from unauthorized account access.</p>
+
+      <h3>4.3 Account Types</h3>
+      <ul>
+        <li><strong>Buyer Account:</strong> Free to create, allows bidding on items</li>
+        <li><strong>Seller Account:</strong> Requires verification, may have listing fees</li>
+        <li><strong>Admin Account:</strong> For Auctora staff only</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>5. Auction Rules</h2>
+      
+      <h3>5.1 Bidding</h3>
+      <ul>
+        <li>All bids are binding and cannot be retracted except in cases of clear error</li>
+        <li>Bids must be made in good faith with the intention to complete the purchase</li>
+        <li>The highest bid at auction close wins the item</li>
+        <li>Auctora reserves the right to cancel or extend auctions in case of technical issues</li>
+      </ul>
+
+      <h3>5.2 Reserve Prices</h3>
+      <p>Sellers may set a reserve price (minimum price they're willing to accept). If the winning bid does not meet the reserve, the seller is not obligated to sell.</p>
+
+      <h3>5.3 Sniping</h3>
+      <p>Last-minute bidding is permitted. However, auctions may be automatically extended by 2 minutes if a bid is placed in the final minute to prevent sniping.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>6. Seller Obligations</h2>
+      
+      <h3>6.1 Listing Items</h3>
+      <ul>
+        <li>Items must be accurately described with clear photos</li>
+        <li>Prohibited items include counterfeit goods, illegal items, and items that infringe on intellectual property rights</li>
+        <li>Sellers must disclose any defects or damage</li>
+      </ul>
+
+      <h3>6.2 Completing Sales</h3>
+      <p>Winning sellers must complete the transaction with the buyer, including shipping the item within the stated timeframe. Failure to do so may result in account suspension.</p>
+
+      <h3>6.3 Fees</h3>
+      <p>Sellers agree to pay applicable listing and final value fees as disclosed on our Fees page. Fees are non-refundable.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>7. Buyer Obligations</h2>
+      
+      <h3>7.1 Payment</h3>
+      <p>Winning buyers must complete payment within 48 hours of auction close. Payment must be made through approved methods on the Platform.</p>
+
+      <h3>7.2 Inspection and Returns</h3>
+      <p>Buyers have 3 days after delivery to inspect items and request returns for items significantly not as described. Return shipping costs may be borne by the buyer unless the item was misrepresented.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>8. Prohibited Conduct</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the Platform for any illegal purpose</li>
+        <li>Manipulate bids or engage in shill bidding (bidding on your own items)</li>
+        <li>Harass, intimidate, or threaten other users</li>
+        <li>Post false, misleading, or defamatory content</li>
+        <li>Attempt to bypass our fee structures</li>
+        <li>Use automated systems (bots) to place bids</li>
+        <li>Violate any applicable laws or regulations</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>9. Fees and Payments</h2>
+      
+      <h3>9.1 Buyer Fees</h3>
+      <p>Buyers may be subject to a buyer's premium (percentage added to winning bid) as disclosed on individual auctions.</p>
+
+      <h3>9.2 Seller Fees</h3>
+      <p>Sellers are charged:</p>
+      <ul>
+        <li>Listing fee: Varies by category (see Fee Schedule)</li>
+        <li>Final value fee: 5-10% of the winning bid depending on category</li>
+        <li>Optional feature fees: Highlighted listings, featured auctions, etc.</li>
+      </ul>
+
+      <h3>9.3 Payment Processing</h3>
+      <p>All payments are processed through our secure payment partners. Auctora does not store full payment card details.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>10. Dispute Resolution</h2>
+      
+      <h3>10.1 Resolution Center</h3>
+      <p>Most disputes between users can be resolved through our Resolution Center. We encourage users to communicate and resolve issues directly.</p>
+
+      <h3>10.2 Mediation</h3>
+      <p>If a dispute cannot be resolved through the Resolution Center, either party may request mediation through a neutral third-party mediator agreed upon by both parties.</p>
+
+      <h3>10.3 Arbitration</h3>
+      <p>Any dispute not resolved through mediation shall be resolved by binding arbitration in accordance with the rules of the American Arbitration Association. The arbitration shall take place in San Francisco, California.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>11. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by law, Auctora shall not be liable for:</p>
+      <ul>
+        <li>Indirect, incidental, or consequential damages</li>
+        <li>Loss of profits, data, or business opportunities</li>
+        <li>Damages resulting from transactions between users</li>
+        <li>Issues caused by third-party services or events beyond our reasonable control</li>
+      </ul>
+      <p>Our total liability to you shall not exceed the greater of $100 or the fees you paid to us in the past 12 months.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>12. Indemnification</h2>
+      <p>You agree to indemnify and hold Auctora harmless from any claims, damages, losses, and expenses (including legal fees) arising from your use of the Platform, your violation of these Terms, or your violation of any rights of another user.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>13. Termination</h2>
+      
+      <h3>13.1 By You</h3>
+      <p>You may terminate your account at any time by contacting support. Outstanding obligations (pending auctions, unpaid fees) must be resolved before termination.</p>
+
+      <h3>13.2 By Auctora</h3>
+      <p>We may suspend or terminate your account for violations of these Terms, fraudulent activity, or actions that harm the Platform or other users. We will provide notice when possible.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>14. Intellectual Property</h2>
+      
+      <h3>14.1 Auctora IP</h3>
+      <p>The Auctora name, logo, and platform design are protected by trademark and copyright laws. You may not use our intellectual property without written permission.</p>
+
+      <h3>14.2 User Content</h3>
+      <p>By posting content on the Platform (listings, photos, reviews), you grant Auctora a non-exclusive, worldwide license to use, display, and distribute that content to provide the Service.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>15. Modifications to Terms</h2>
+      <p>We reserve the right to modify these Terms at any time. We will provide notice of significant changes by email or through the Platform. Continued use after changes constitutes acceptance of the modified Terms.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>16. Governing Law</h2>
+      <p>These Terms shall be governed by the laws of the State of California, without regard to its conflict of law provisions.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>17. Contact Information</h2>
+      <p>For questions about these Terms, please contact:</p>
+      <ul>
+        <li><strong>Email:</strong> legal@auctora.com</li>
+        <li><strong>Address:</strong> 123 Auction Street, San Francisco, CA 94105</li>
+        <li><strong>Phone:</strong> +1 (800) 555-AUCT</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div></div> <!-- Right spacer -->
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
+  <div class="footer-links">
+    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
+    <a href="{% url 'termsofservice' %}" class="active">Terms of Use</a>
+    <a href="{% url 'HelpCenter' %}">Help Center</a>
+    <a href="{% url 'ContactUs' %}">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
