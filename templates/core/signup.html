@@ -1,6 +1,8 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auctora - Create Account</title>
@@ -232,7 +234,7 @@ body {
 /* ── ROLE SELECTOR ── */
 .role-selector {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
   margin-bottom: 24px;
 }
@@ -596,9 +598,9 @@ form ul.errorlist li {
 
 <!-- TOPBAR -->
 <header class="topbar">
-  <a href="#" class="logo">
-    <span>A</span><span>u</span><span>c</span><span>t</span><span>o</span><span>r</span><span>a</span>
-  </a>
+    <div class="logo">
+     <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+  </div>
   <div class="topbar-right">
     Already have an account? <a href="#">Sign in</a>
   </div>
@@ -658,6 +660,11 @@ form ul.errorlist li {
         <span class="role-icon">🛒</span>
         <span class="role-label">Buyer</span>
         <span class="role-desc">Browse & bid on items</span>
+      </button>
+      <button class="role-btn active" onclick="selectRole(this)">
+        <span class="role-icon">⚙️</span>
+        <span class="role-label">Admin</span>
+        <span class="role-desc">Manage auctions and users</span>
       </button>
       <button class="role-btn" onclick="selectRole(this)">
         <span class="role-icon">🏪</span>
