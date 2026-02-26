@@ -1,5 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import RegexValidator
+
+phone_validator = RegexValidator(
+    regex=r'^\+?\d{10,15}$',
+    message="Enter a valid mobile number (10–15 digits, optional + country code)."
+)
 
 class UserManager(BaseUserManager):
     def create_user(self, Email=None, password=None, **extra_fields):
@@ -52,12 +58,22 @@ class User(AbstractBaseUser):
         ('Seller', 'Seller'),
         ('Buyer', 'Buyer'),
     )
+    choice = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'), 
+    )
+    First_name = models.CharField(max_length=30,null=True, blank=True)
+    Last_name = models.CharField(max_length=30,null=True, blank=True)
+    Gender = models.CharField(max_length=10, choices=choice,null=True, blank=True)
+    Mobile_number = models.CharField(max_length=15,null=True, blank=True, validators=[phone_validator])
     Role = models.CharField(max_length=10, choices=Rolechoice)
     Is_active = models.BooleanField(default=True)
     Is_staff = models.BooleanField(default=False)
     Is_Admin = models.BooleanField(default=False)
     Created_at = models.DateTimeField(auto_now_add=True)
     Updated_at = models.DateTimeField(auto_now=True)
+
 
     objects = UserManager()
 
