@@ -26,3 +26,12 @@ def ContactUs(request):
 
 def HelpCenter(request):
     return render(request,"Dashboard/helpcenter.html")
+
+def Security(request):
+    return render(request,"Dashboard/security.html")  
+  
+def Community(request):
+    return render(request,"Dashboard/community.html") 
+   
+def Support(request):
+    return render(request,"Dashboard/support.html")    

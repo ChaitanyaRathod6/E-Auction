@@ -10,4 +10,7 @@ urlpatterns = [
     path("termsofservice/",views.termsofservice,name = "termsofservice"),   
     path("contactus/",views.ContactUs,name = "ContactUs"),
     path("helpcenter/",views.HelpCenter,name = "HelpCenter"),
+    path("security/",views.Security,name = "Security"),
+    path("community/",views.Community,name = "Community"),
+    path("support/",views.Support,name = "Support"),
 ]

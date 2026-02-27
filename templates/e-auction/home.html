@@ -1,1040 +1,358 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auctora - Bid Bold. Win Smart.</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --red: #e53935;
-  --blue: #1565c0;
-  --yellow: #f9a825;
-  --green: #2e7d32;
-  --bg: #f4f4f4;
-  --white: #ffffff;
-  --dark: #111111;
-  --mid: #444444;
-  --light: #888888;
-  --border: #e0e0e0;
-  --card: #ffffff;
-}
 
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-  overflow-x: hidden;
-}
-
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-
-.logo {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 28px;
-  letter-spacing: -1px;
-  display: flex;
-  gap: 0;
-  flex-shrink: 0;
-}
-.logo span:nth-child(1) { color: var(--red); }
-.logo span:nth-child(2) { color: var(--blue); }
-.logo span:nth-child(3) { color: var(--yellow); }
-.logo span:nth-child(4) { color: var(--green); }
-.logo span:nth-child(5) { color: var(--orange); }
-.logo span:nth-child(6) { color: var(--blue); }
-.logo span:nth-child(7) { color: var(--red); }
-
-.search-bar {
-  flex: 1;
-  display: flex;
-  border: 2px solid var(--dark);
-  border-radius: 8px;
-  overflow: hidden;
-  max-width: 680px;
-}
-
-.search-bar select {
-  padding: 0 12px;
-  border: none;
-  border-right: 2px solid var(--dark);
-  background: #f0f0f0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
-  outline: none;
-}
-
-.search-bar input {
-  flex: 1;
-  padding: 10px 14px;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-bar button {
-  padding: 0 20px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.search-bar button:hover { background: #0d47a1; }
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-shrink: 0;
-  font-size: 13px;
-  color: var(--mid);
-}
-
-.nav-actions a {
-  text-decoration: none;
-  color: var(--mid);
-  transition: color 0.2s;
-}
-.nav-actions a:hover { color: var(--blue); }
-
-.nav-actions .sell-btn {
-  background: var(--dark);
-  color: white;
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 13px;
-}
-.nav-actions .sell-btn:hover { background: #333; color: white; }
-
-.cart-icon {
-  position: relative;
-  font-size: 20px;
-  cursor: pointer;
-}
-.cart-badge {
-  position: absolute;
-  top: -6px; right: -8px;
-  background: var(--red);
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-
-/* ── CATEGORY NAV ── */
-.cat-nav {
-  background: white;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-  padding: 0 24px;
-  scrollbar-width: none;
-}
-.cat-nav::-webkit-scrollbar { display: none; }
-.cat-nav a {
-  text-decoration: none;
-  color: var(--mid);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 12px 16px;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
-.cat-nav a:hover, .cat-nav a.active {
-  color: var(--blue);
-  border-bottom-color: var(--blue);
-}
-
-/* ── HERO ── */
-.hero {
-  margin: 20px 24px;
-  border-radius: 16px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 12px;
-  height: 320px;
-}
-
-.hero-main {
-  background: linear-gradient(135deg, #1a237e 0%, #1565c0 50%, #0288d1 100%);
-  border-radius: 14px;
-  padding: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  animation: heroFade 0.8s ease forwards;
-}
-
-@keyframes heroFade {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-main::before {
-  content: '';
-  position: absolute;
-  width: 400px; height: 400px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 50%;
-  top: -100px; right: -100px;
-}
-
-.hero-main::after {
-  content: '';
-  position: absolute;
-  width: 200px; height: 200px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-  bottom: -50px; left: 200px;
-}
-
-.hero-tag {
-  background: var(--yellow);
-  color: var(--dark);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 20px;
-  display: inline-block;
-  margin-bottom: 16px;
-  width: fit-content;
-}
-
-.hero-main h1 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 42px;
-  color: white;
-  line-height: 1.1;
-  margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
-}
-
-.hero-main p {
-  color: rgba(255,255,255,0.75);
-  font-size: 15px;
-  margin-bottom: 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 12px;
-  position: relative;
-  z-index: 1;
-}
-
-.btn-primary {
-  background: white;
-  color: var(--blue);
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 14px;
-  text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-
-.btn-outline {
-  background: transparent;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  text-decoration: none;
-  border: 2px solid rgba(255,255,255,0.5);
-  transition: all 0.2s;
-}
-.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
-
-.hero-side {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.hero-card {
-  flex: 1;
-  border-radius: 14px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.hero-card:hover { transform: scale(1.02); }
-
-.hero-card.red { background: linear-gradient(135deg, #b71c1c, #e53935); }
-.hero-card.green { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
-
-.hero-card h3 {
-  font-family: 'Archivo Black', sans-serif;
-  color: white;
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-.hero-card p { color: rgba(255,255,255,0.7); font-size: 12px; }
-.hero-card .emoji { font-size: 36px; position: absolute; top: 16px; right: 16px; }
-
-/* ── SECTION ── */
-.section {
-  padding: 0 24px 24px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-top: 24px;
-}
-
-.section-header h2 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 22px;
-  color: var(--dark);
-}
-
-.see-all {
-  color: var(--blue);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-}
-.see-all:hover { text-decoration: underline; }
-
-/* ── CATEGORY PILLS ── */
-.cat-pills {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-  padding: 0 24px;
-}
-
-.cat-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 50px;
-  text-decoration: none;
-  color: var(--dark);
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-.cat-pill:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  background: #e8f0fe;
-  transform: translateY(-2px);
-}
-.cat-pill .pill-icon { font-size: 18px; }
-
-/* ── PRODUCT GRID ── */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 14px;
-}
-
-.product-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  transition: all 0.25s;
-  animation: cardIn 0.5s ease forwards;
-  opacity: 0;
-}
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.product-card:nth-child(1) { animation-delay: 0.05s; }
-.product-card:nth-child(2) { animation-delay: 0.1s; }
-.product-card:nth-child(3) { animation-delay: 0.15s; }
-.product-card:nth-child(4) { animation-delay: 0.2s; }
-.product-card:nth-child(5) { animation-delay: 0.25s; }
-.product-card:nth-child(6) { animation-delay: 0.3s; }
-.product-card:nth-child(7) { animation-delay: 0.35s; }
-.product-card:nth-child(8) { animation-delay: 0.4s; }
-
-.product-card:hover {
-  border-color: #aaa;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-  transform: translateY(-4px);
-}
-
-.product-img {
-  width: 100%;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  background: #f9f9f9;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-
-.product-badge {
-  position: absolute;
-  top: 10px; left: 10px;
-  background: var(--red);
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-}
-
-.product-badge.ending { background: #e65100; }
-.product-badge.new { background: var(--green); }
-.product-badge.hot { background: #880e4f; }
-
-.wishlist-btn {
-  position: absolute;
-  top: 10px; right: 10px;
-  background: white;
-  border: none;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.2s;
-}
-.wishlist-btn:hover { transform: scale(1.2); }
-
-.product-info {
-  padding: 14px;
-}
-
-.product-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--dark);
-  margin-bottom: 6px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.4;
-}
-
-.product-price {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 18px;
-  color: var(--dark);
-  margin-bottom: 4px;
-}
-
-.product-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: var(--light);
-  margin-bottom: 10px;
-}
-
-.bids-count { color: var(--blue); font-weight: 600; }
-
-.time-left {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--red);
-  font-weight: 600;
-  font-size: 11px;
-}
-
-.bid-btn {
-  width: 100%;
-  padding: 9px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.bid-btn:hover { background: #0d47a1; }
-
-/* ── BANNER STRIP ── */
-.banner-strip {
-  margin: 8px 24px 24px;
-  background: linear-gradient(90deg, #1a237e 0%, #311b92 100%);
-  border-radius: 14px;
-  padding: 28px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.banner-strip h2 {
-  font-family: 'Archivo Black', sans-serif;
-  color: white;
-  font-size: 24px;
-}
-.banner-strip p { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 4px; }
-
-.banner-stats {
-  display: flex;
-  gap: 40px;
-}
-
-.stat {
-  text-align: center;
-  color: white;
-}
-.stat .num {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 28px;
-  line-height: 1;
-}
-.stat .label { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-
-/* ── DEALS SCROLL ── */
-.deals-scroll {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scrollbar-width: none;
-}
-.deals-scroll::-webkit-scrollbar { display: none; }
-
-.deal-card {
-  flex-shrink: 0;
-  width: 160px;
-  background: white;
-  border-radius: 12px;
-  border: 1.5px solid var(--border);
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.deal-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.1); }
-
-.deal-img {
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  background: #f5f5f5;
-}
-
-.deal-info { padding: 10px; }
-.deal-name { font-size: 12px; font-weight: 500; margin-bottom: 4px; }
-.deal-off { color: var(--red); font-weight: 700; font-size: 13px; }
-.deal-price { font-size: 12px; color: var(--light); text-decoration: line-through; }
-
-/* ── TRUST BAR ── */
-.trust-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  padding: 0 24px 32px;
-}
-
-.trust-item {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border: 1.5px solid var(--border);
-}
-
-.trust-icon { font-size: 28px; flex-shrink: 0; }
-.trust-title { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
-.trust-desc { font-size: 11px; color: var(--light); }
-
-/* ── FOOTER ── */
-footer {
-  background: var(--dark);
-  color: white;
-  padding: 48px 24px 24px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.footer-brand .logo { font-size: 32px; margin-bottom: 14px; display: block; }
-.footer-brand p { color: #999; font-size: 13px; line-height: 1.6; max-width: 260px; }
-
-.footer-social {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
-}
-.social-btn {
-  width: 34px; height: 34px;
-  background: #222;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.social-btn:hover { background: var(--blue); }
-
-.footer-col h4 {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #666;
-  margin-bottom: 16px;
-}
-
-.footer-col a {
-  display: block;
-  color: #aaa;
-  text-decoration: none;
-  font-size: 13px;
-  margin-bottom: 10px;
-  transition: color 0.2s;
-}
-.footer-col a:hover { color: white; }
-
-.footer-bottom {
-  border-top: 1px solid #222;
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.footer-bottom p { color: #555; font-size: 12px; }
-
-.payment-methods { display: flex; gap: 8px; }
-.pay-badge {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 11px;
-  color: #888;
-  font-weight: 600;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; height: auto; }
-  .hero-side { flex-direction: row; }
-  .hero-main h1 { font-size: 28px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-  .trust-bar { grid-template-columns: 1fr 1fr; }
-  .banner-stats { gap: 20px; }
-}
-
-@media (max-width: 600px) {
-  .topbar { padding: 0 12px; gap: 10px; }
-  .nav-actions a:not(.sell-btn) { display: none; }
-  .hero-main { padding: 28px; }
-  .footer-grid { grid-template-columns: 1fr; }
-  .trust-bar { grid-template-columns: 1fr; }
-  .banner-strip { flex-direction: column; gap: 20px; text-align: center; }
-  .banner-stats { justify-content: center; }
-}
-</style>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2f3293",
+                        "accent": "#2f3293",
+                        "background-light": "#ffffff",
+                        "background-dark": "#0a0a0f",
+                        "card-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.75rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }</script>
+<style>        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(183, 6, 237, 0);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }</style>
 </head>
-<body>
-
-<!-- TOPBAR -->
-<header class="topbar">
-  <div class="logo">
-     <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
-  </div>
-
-  <div class="search-bar">
-    <select>
-      <option>All Categories</option>
-      <option>Electronics</option>
-      <option>Fashion</option>
-      <option>Home & Garden</option>
-      <option>Sports</option>
-      <option>Collectibles</option>
-      <option>Vehicles</option>
-    </select>
-    <input type="text" placeholder="Search for anything..." />
-    <button>Search</button>
-  </div>
-
-  <nav class="nav-actions">
-    
-    <a href="{% url 'signup' %}">Sign Up</a> 
-    <a href="#">Register</a>
-    <a href="#">Watchlist ♡</a>
-    <div class="cart-icon">🛒 <span class="cart-badge">3</span></div>
-    <a href="#" class="sell-btn">Sell</a>
-  </nav>
-</header>
-
-<!-- CATEGORY NAV -->
-<nav class="cat-nav">
-  <a href="#" class="active">Today's Deals</a>
-  <a href="#">Electronics</a>
-  <a href="#">Fashion</a>
-  <a href="#">Home & Garden</a>
-  <a href="#">Sports</a>
-  <a href="#">Toys</a>
-  <a href="#">Collectibles</a>
-  <a href="#">Art</a>
-  <a href="#">Vehicles</a>
-  <a href="#">Industrial</a>
-  <a href="#">Jewelry</a>
-  <a href="#">Books</a>
+<body class="bg-white text-slate-900 font-display transition-colors duration-300">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 glass border-b border-black/5 px-4 lg:px-20">
+<div class="max-w-7xl mx-auto flex items-center justify-between h-16">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2 text-primary dark:text-accent">
+<span class="material-symbols-outlined text-3xl">gavel</span>
+<h1 class="text-xl font-bold tracking-tight">BidSphere</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-accent transition-colors" href="#">Live Auctions</a>
+<a class="text-sm font-medium hover:text-accent transition-colors" href="#">Categories</a>
+<a class="text-sm font-medium hover:text-accent transition-colors" href="#">Sell</a>
+<a class="text-sm font-medium hover:text-accent transition-colors" href="#">How it Works</a>
 </nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-main">
-    <span class="hero-tag">🔥 Live Auctions</span>
-    <h1>Bid Smart.<br>Win Big.</h1>
-    <p>Millions of items. Real-time bidding. Unbeatable prices.</p>
-    <div class="hero-cta">
-      <a href="#" class="btn-primary">Browse Auctions</a>
-      <a href="#" class="btn-outline">How It Works</a>
-    </div>
-  </div>
-  <div class="hero-side">
-    <div class="hero-card red">
-      <span class="emoji">⚡</span>
-      <h3>Flash Deals</h3>
-      <p>Ending in under 1 hour</p>
-    </div>
-    <div class="hero-card green">
-      <span class="emoji">🆕</span>
-      <h3>Just Listed</h3>
-      <p>Brand new today</p>
-    </div>
-  </div>
-</section>
-
-<!-- CATEGORY PILLS -->
-<div class="cat-pills">
-  <a class="cat-pill"><span class="pill-icon">📱</span> Electronics</a>
-  <a class="cat-pill"><span class="pill-icon">👗</span> Fashion</a>
-  <a class="cat-pill"><span class="pill-icon">🏠</span> Home</a>
-  <a class="cat-pill"><span class="pill-icon">⚽</span> Sports</a>
-  <a class="cat-pill"><span class="pill-icon">🎮</span> Gaming</a>
-  <a class="cat-pill"><span class="pill-icon">🚗</span> Vehicles</a>
-  <a class="cat-pill"><span class="pill-icon">💎</span> Jewelry</a>
-  <a class="cat-pill"><span class="pill-icon">📚</span> Books</a>
-  <a class="cat-pill"><span class="pill-icon">🎨</span> Art</a>
 </div>
-
-<!-- LIVE AUCTIONS -->
-<section class="section">
-  <div class="section-header">
-    <h2>🔴 Live Auctions</h2>
-    <a href="#" class="see-all">See all →</a>
-  </div>
-  <div class="products-grid">
-
-    <div class="product-card">
-      <div class="product-img">
-        📱
-        <span class="product-badge ending">ENDING SOON</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Apple iPhone 15 Pro 256GB Natural Titanium Unlocked</p>
-        <div class="product-price">$847.00</div>
-        <div class="product-meta">
-          <span class="bids-count">34 bids</span>
-          <span class="time-left">⏱ 2h 14m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        💻
-        <span class="product-badge hot">HOT</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">MacBook Pro M3 14" 16GB RAM 512GB SSD Space Gray</p>
-        <div class="product-price">$1,420.00</div>
-        <div class="product-meta">
-          <span class="bids-count">62 bids</span>
-          <span class="time-left">⏱ 4h 30m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        ⌚
-        <span class="product-badge new">NEW</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Rolex Submariner Date Black Dial Steel Men's Watch</p>
-        <div class="product-price">$8,200.00</div>
-        <div class="product-meta">
-          <span class="bids-count">18 bids</span>
-          <span class="time-left">⏱ 1d 6h</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        🎮
-        <span class="product-badge ending">ENDING SOON</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Sony PlayStation 5 Console Disc Edition Bundle</p>
-        <div class="product-price">$389.00</div>
-        <div class="product-meta">
-          <span class="bids-count">91 bids</span>
-          <span class="time-left">⏱ 0h 45m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        📷
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Canon EOS R5 Mirrorless Camera Body Only 45MP</p>
-        <div class="product-price">$2,650.00</div>
-        <div class="product-meta">
-          <span class="bids-count">27 bids</span>
-          <span class="time-left">⏱ 3h 20m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        🎸
-        <span class="product-badge hot">HOT</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Fender American Professional II Stratocaster Electric Guitar</p>
-        <div class="product-price">$1,180.00</div>
-        <div class="product-meta">
-          <span class="bids-count">45 bids</span>
-          <span class="time-left">⏱ 6h 55m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        🏋️
-        <span class="product-badge new">NEW</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">Peloton Bike+ Smart Exercise Bike with 24" Rotating Screen</p>
-        <div class="product-price">$1,050.00</div>
-        <div class="product-meta">
-          <span class="bids-count">11 bids</span>
-          <span class="time-left">⏱ 2d 3h</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-img">
-        💎
-        <span class="product-badge ending">ENDING SOON</span>
-        <button class="wishlist-btn">♡</button>
-      </div>
-      <div class="product-info">
-        <p class="product-title">1.5ct Diamond Solitaire Engagement Ring 18K White Gold</p>
-        <div class="product-price">$3,400.00</div>
-        <div class="product-meta">
-          <span class="bids-count">7 bids</span>
-          <span class="time-left">⏱ 1h 10m</span>
-        </div>
-        <button class="bid-btn">Place Bid</button>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- STATS BANNER -->
-<div class="banner-strip">
-  <div>
-    <h2>The World's Largest Auction Platform</h2>
-    <p>Trusted by millions of buyers and sellers worldwide</p>
-  </div>
-  <div class="banner-stats">
-    <div class="stat"><div class="num">180M+</div><div class="label">Active Buyers</div></div>
-    <div class="stat"><div class="num">1.4B</div><div class="label">Live Listings</div></div>
-    <div class="stat"><div class="num">190</div><div class="label">Countries</div></div>
-    <div class="stat"><div class="num">99.8%</div><div class="label">Satisfaction</div></div>
-  </div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-slate-100 rounded-lg px-3 py-1.5 border border-black/5">
+<span class="material-symbols-outlined text-slate-500 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-slate-500" placeholder="Search luxury assets..." type="text"/>
 </div>
-
-<!-- DEALS -->
-<section class="section">
-  <div class="section-header">
-    <h2>⚡ Flash Deals</h2>
-    <a href="#" class="see-all">See all →</a>
-  </div>
-  <div class="deals-scroll">
-    <div class="deal-card"><div class="deal-img">🖥️</div><div class="deal-info"><div class="deal-name">4K Monitor 27"</div><div class="deal-off">-42% OFF</div><div class="deal-price">$599</div></div></div>
-    <div class="deal-card"><div class="deal-img">🎧</div><div class="deal-info"><div class="deal-name">Sony WH-1000XM5</div><div class="deal-off">-38% OFF</div><div class="deal-price">$399</div></div></div>
-    <div class="deal-card"><div class="deal-img">👟</div><div class="deal-info"><div class="deal-name">Air Jordan 1 Retro</div><div class="deal-off">-55% OFF</div><div class="deal-price">$180</div></div></div>
-    <div class="deal-card"><div class="deal-img">🛋️</div><div class="deal-info"><div class="deal-name">Designer Sofa</div><div class="deal-off">-61% OFF</div><div class="deal-price">$2,400</div></div></div>
-    <div class="deal-card"><div class="deal-img">🚲</div><div class="deal-info"><div class="deal-name">Electric Bike</div><div class="deal-off">-30% OFF</div><div class="deal-price">$1,800</div></div></div>
-    <div class="deal-card"><div class="deal-img">🍳</div><div class="deal-info"><div class="deal-name">Le Creuset Set</div><div class="deal-off">-45% OFF</div><div class="deal-price">$550</div></div></div>
-    <div class="deal-card"><div class="deal-img">📚</div><div class="deal-info"><div class="deal-name">Rare 1st Editions</div><div class="deal-off">-70% OFF</div><div class="deal-price">$320</div></div></div>
-    <div class="deal-card"><div class="deal-img">🧳</div><div class="deal-info"><div class="deal-name">Away Luggage Set</div><div class="deal-off">-25% OFF</div><div class="deal-price">$495</div></div></div>
-  </div>
-</section>
-
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-item">
-    <span class="trust-icon">🔒</span>
-    <div><div class="trust-title">Buyer Protection</div><div class="trust-desc">100% secure payments guaranteed</div></div>
-  </div>
-  <div class="trust-item">
-    <span class="trust-icon">🚚</span>
-    <div><div class="trust-title">Fast Shipping</div><div class="trust-desc">Tracked delivery on all orders</div></div>
-  </div>
-  <div class="trust-item">
-    <span class="trust-icon">↩️</span>
-    <div><div class="trust-title">Easy Returns</div><div class="trust-desc">Hassle-free 30-day returns</div></div>
-  </div>
-  <div class="trust-item">
-    <span class="trust-icon">💬</span>
-    <div><div class="trust-title">24/7 Support</div><div class="trust-desc">Expert help whenever you need it</div></div>
-  </div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full"></span>
+</button>
+<button class="hidden sm:flex btn-hover-border bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/20">Start Bidding</button>
+<div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-primary/30" data-alt="User profile avatar placeholder" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDU_d7inHTDzx2U2V-cC_NQCY7LNq5PZLmTqrshLZ8U83tahILWCFjVSfW1aMRuK_SfPoX08dzn34vq7Y0viZJVj1SWMnMU4O0EtR6D6CUMsvCJI6-HZdyZUxCWnP4yjQ2vKSCzq5lKG_6TvswRluWLB6tkyT5cuDx5bcdDoFn1XZyj3e93y67aNjMYyzVJGDIhrEdNQOxtJzHJTG2DanMh57bU3RkGTXILSWTgVnZY_Ind5d-ZpZqg9V2UJhJwClrf_xcoANwjFUUP')"></div>
 </div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <span class="logo">
-          <img src="{% static 'images/auctora.png' %}" alt="Auctora" height="80" />
-      <p>The world's most trusted online auction marketplace. Buy, sell, and bid with confidence.</p>
-      <div class="footer-social">
-        <div class="social-btn">𝕏</div>
-        <div class="social-btn">f</div>
-        <div class="social-btn">in</div>
-        <div class="social-btn">▶</div>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>Buy</h4>
-      <a href="#">Browse Auctions</a>
-      <a href="#">How to Bid</a>
-      <a href="#">Buyer Protection</a>
-      <a href="#">Watchlist</a>
-      <a href="#">Purchase History</a>
-    </div>
-    <div class="footer-col">
-      <h4>Sell</h4>
-      <a href="#">Start Selling</a>
-      <a href="#">Seller Hub</a>
-      <a href="#">Seller Fees</a>
-      <a href="#">Auction Rules</a>
-      <a href="#">Seller Protection</a>
-    </div>
-    <div class="footer-col">
-      <h4>Help</h4>
-      <a href="{% url 'HelpCenter' %}">Help Center</a>
-      <a href="{% url 'ContactUs' %}">Contact Us</a>
-      <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
-      <a href="{% url 'termsofservice' %}">Terms of Use</a>
-      <a href="#">Cookie Settings</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Auctora Inc. All Rights Reserved.</p>
-    <div class="payment-methods">
-      <span class="pay-badge">VISA</span>
-      <span class="pay-badge">MC</span>
-      <span class="pay-badge">PayPal</span>
-      <span class="pay-badge">UPI</span>
-      <span class="pay-badge">Amex</span>
-    </div>
-  </div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 lg:px-20 py-8">
+<!-- Hero Section -->
+<section class="relative rounded-3xl overflow-hidden mb-16 shadow-xl shadow-primary/5">
+<div class="absolute inset-0 z-0 bg-gradient-to-r from-slate-900 via-slate-900/60 to-transparent"></div>
+<div class="relative z-10 min-h-[500px] flex flex-col justify-center items-start p-8 md:p-16 max-w-2xl">
+<span class="bg-accent/10 text-accent px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">Elite Marketplace</span>
+<h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
+                    Bid on <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">Excellence</span>
+</h1>
+<p class="text-slate-200 text-lg md:text-xl mb-8 leading-relaxed">
+                    Experience the thrill of elite e-auctions. Secure rare collectibles, luxury timepieces, and digital assets from around the world.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center gap-2">Browse Auctions <span class="material-symbols-outlined">explore</span></button>
+<button class="glass hover:bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all">
+                        View Gallery
+                    </button>
+</div>
+</div>
+<div class="absolute inset-0 -z-10 bg-cover bg-center opacity-60" data-alt="Abstract dark luxury background with geometric patterns" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtk7dCkZekwd2BhzggUD6c_wHnVX4eRD79pz0Raj_ytbezhojc4TuNfPi-ksYRlFjCUULfaa6ma92I0JkXCViAEf4u0Nc-uEz7bmDOjeq3fM1aAMbrk7j3AdHaYE98qHrxR_9x1X06x9PQbzwnh5Mwtc-a87t9kIkaNQmQiiTiHJ6g51_6p1q0ZPEof1SCWzUJBat14wi5uLjTvT2fu_cqOrp5hKIHHvIqpFI_wNbBsmrXPsr1wQPV-pdY8Q2wbnLUI1RFrXF0Vu2T')"></div>
+</section>
+<!-- Featured Categories -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold">Explore Categories</h2>
+<a class="text-accent text-sm font-semibold flex items-center gap-1 hover:underline" href="#">View All <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass glass-hover category-card p-6 rounded-2xl text-center group transition-all cursor-pointer">
+<div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-3xl">palette</span>
+</div>
+<h3 class="font-bold">Fine Art</h3>
+<p class="text-xs text-slate-600 mt-1">1,240 Items</p>
+</div>
+<div class="glass glass-hover category-card p-6 rounded-2xl text-center group transition-all cursor-pointer">
+<div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-3xl">watch</span>
+</div>
+<h3 class="font-bold">Luxury Watches</h3>
+<p class="text-xs text-slate-600 mt-1">856 Items</p>
+</div>
+<div class="glass glass-hover category-card p-6 rounded-2xl text-center group transition-all cursor-pointer">
+<div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-3xl">laptop_mac</span>
+</div>
+<h3 class="font-bold">Premium Tech</h3>
+<p class="text-xs text-slate-600 mt-1">432 Items</p>
+</div>
+<div class="glass glass-hover category-card p-6 rounded-2xl text-center group transition-all cursor-pointer">
+<div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-3xl">diamond</span>
+</div>
+<h3 class="font-bold">Collectibles</h3>
+<p class="text-xs text-slate-600 mt-1">2,105 Items</p>
+</div>
+</div>
+</section>
+<!-- Live Auctions -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+<h2 class="text-2xl font-bold">Live Auctions</h2>
+</div>
+<div class="flex gap-2">
+<button class="p-2 glass rounded-full hover:bg-primary/20 transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-2 glass rounded-full hover:bg-primary/20 transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Auction Card 1 -->
+<div class="glass rounded-2xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-accent">schedule</span> 02:14:55
+                        </div>
+<button class="absolute top-4 right-4 z-10 glass p-2 rounded-full text-white hover:text-accent transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Sapphire Nebula luxury watch close up" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBVTM0KJPO_itrnyWJsGUgD23BWJcvjlQ2MkdkxWRJFUkhgQMMsOJDGsa08nm4ErNPjwgwugb1Zeh8ZGQDm7Zbm5QS2eePLHWSkMzodML5spoRdLZWwOYASJPwDaBgA9ycSIdsavqART1L3YsQxFDGkY3g4_WS1H2VnafPYEFZI3rwjuHpUpEV284zo6Jm-xSnpI_SCZHQ3QPyQS5ZfdAVuY5ftie6ZN8YGYF09QRWoSHhpuT0dKgzSfBDMOLzlibkB9W931ON4CLGh')"></div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2 group-hover:text-accent transition-colors">2022 Sapphire Nebula Watch</h3>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-slate-500 text-sm">Current Bid</p>
+<p class="text-2xl font-black text-slate-900">$12,400</p>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-sm">24 Bids</p>
+<button class="mt-2 bg-primary/20 hover:bg-primary text-accent hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Place Bid</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Auction Card 2 -->
+<div class="glass rounded-2xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-accent">schedule</span> 05:30:10
+                        </div>
+<button class="absolute top-4 right-4 z-10 glass p-2 rounded-full text-white hover:text-accent transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Abstract expressionist oil painting with vibrant colors" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAY6sSVOvZ4flIDJDW2RlbTvy_kzWe9QXIF1ZBG7qYQ9TsYkMYBpodDbSihWr0BJUc8QigyK1wcCv0i_oZ1B1vWKtK0AKFmERgYvyWeyWDlmRuWiiXUEqX6yCahgqDu5V3qb4i0ZYWnLoX2OozPYT2f2EioEC3MlFJ9aBnh7WQ_1Ot9Iq9X5Ez8oQDfpxbj89BV4xvs89t4_t3VzcM9LUETtt6LwYTBQjUs-mKCK2cHbJKz2kZAVpKJ_uznCiNCBMoV7D4F2O4saOXn')"></div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2 group-hover:text-accent transition-colors">Eternal Horizon Canvas</h3>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-slate-500 text-sm">Current Bid</p>
+<p class="text-2xl font-black text-slate-900">$45,000</p>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-sm">12 Bids</p>
+<button class="mt-2 bg-primary/20 hover:bg-primary text-accent hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Place Bid</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Auction Card 3 -->
+<div class="glass rounded-2xl overflow-hidden group">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-accent">schedule</span> 00:45:12
+                        </div>
+<button class="absolute top-4 right-4 z-10 glass p-2 rounded-full text-white hover:text-accent transition-colors">
+<span class="material-symbols-outlined text-xl">favorite</span>
+</button>
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="High-end workstation computer with glowing hardware" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQP6c7ROSTor92ui-AQizzOy8j06ccxFU9ZLRbGgAJMqQh-8yGs2oJmTreMfgcNq8gvT4ljzwlWU_F6Dts--nfL7JZCoo9EvNNDp3v7i9AjPQxw4ODhMMXn4FM8f_Gx5PiMuhZTO07pA4egUQVQHvZhh2XxkGABcvBpWW-raKRQjqblMkQxP6_x4rXfl1m4aVXZUit-9TgKNA5tor7-y128LMenoCKlrJilaq5fC3xOmDNY2-E_-bVfSTXBTErz8GJ40xkXxtxpwod')"></div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2 group-hover:text-accent transition-colors">Quantum X Workstation</h3>
+<div class="flex justify-between items-end">
+<div>
+<p class="text-slate-500 text-sm">Current Bid</p>
+<p class="text-2xl font-black text-slate-900">$3,200</p>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-sm">45 Bids</p>
+<button class="mt-2 bg-primary/20 hover:bg-primary text-accent hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Place Bid</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="mb-16 py-16 border-y border-slate-100">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-black mb-4">Start Bidding in 3 Easy Steps</h2>
+<p class="text-slate-600 text-sm">Join thousands of collectors and investors in the most secure e-auction ecosystem.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="text-center p-6">
+<div class="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-accent/20">
+<span class="material-symbols-outlined text-accent text-4xl">person_add</span>
+</div>
+<h3 class="text-xl font-bold mb-3">1. Create Profile</h3>
+<p class="text-slate-600 text-sm">Register your account and verify your identity to join our elite circle of bidders.</p>
+</div>
+<div class="text-center p-6">
+<div class="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
+<span class="material-symbols-outlined text-primary dark:text-accent text-4xl">search_check</span>
+</div>
+<h3 class="text-xl font-bold mb-3">2. Discover Assets</h3>
+<p class="text-slate-600 text-sm">Browse curated collections and find rare pieces that match your taste and investment goals.</p>
+</div>
+<div class="text-center p-6">
+<div class="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-accent/20">
+<span class="material-symbols-outlined text-accent text-4xl">payments</span>
+</div>
+<h3 class="text-xl font-bold mb-3">3. Bid &amp; Secure</h3>
+<p class="text-slate-600 text-sm">Place your bids in real-time and win exclusive items with secure global shipping.</p>
+</div>
+</div>
+</section>
+<!-- Top Rated Sellers -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold">Top Rated Sellers</h2>
+<button class="text-sm font-bold text-slate-500 hover:text-white transition-colors">View Ranking</button>
+</div>
+<div class="flex flex-wrap gap-6 justify-center">
+<div class="glass p-4 rounded-2xl flex items-center gap-4 min-w-[240px]">
+<div class="w-12 h-12 rounded-full bg-cover" data-alt="Portrait of top seller 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJPH5B0JHkTadvle5dpD1yS70_YUjsCza6RfxapdBVgGPUwemvb56wSET9OoQPQLkHR0Koj_B1kMsC2D6BT4Jp1hvUwC8Qo8si4TRKMZcW2Csd4rdGD5Y9F_fFt4oky6jzMgZlEbhkbFW-doTS7RWurA4IQeF4nLniCN-k-FzvCYLYHPzLBPhCsongCwv63_Mz55T9wb9zp9VqVdIXi7vJfProMjsI96hHIyG9LH4cqCvhyUP8d_pioR_DnUIBiuhKZgGSCNUnMcrB')"></div>
+<div>
+<h4 class="font-bold">Aether Gallery</h4>
+<div class="flex items-center gap-1 text-accent text-xs">
+<span class="material-symbols-outlined text-xs">verified</span> Trusted Seller
+                        </div>
+</div>
+</div>
+<div class="glass p-4 rounded-2xl flex items-center gap-4 min-w-[240px]">
+<div class="w-12 h-12 rounded-full bg-cover" data-alt="Portrait of top seller 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKYlkUgT8829sUTMUfEZVdtdD2YGdXyqjmkicM5M9bl4kV9GKJHzrKsXfTB3TR2D3x6Rs95zVYo5PK8Cb5aTrtHaoEyXoHs6dfVcWHIonpFh-fL6ZB6bNvaMRWzLgFabtAJWRLggfHPMg02TP1J3o4dQjgaYhbM5q1S4eBVwevSBS2lNXBUA6i0rzHYSjIvxnT-O_TiCyKBJo-xjcv2bbVdpQT_l888kNwSECDQ9fktX2f5utL6C1ICUe9RoJvs4PqRI4Vb-FPi-PG')"></div>
+<div>
+<h4 class="font-bold">Zenith Horology</h4>
+<div class="flex items-center gap-1 text-accent text-xs">
+<span class="material-symbols-outlined text-xs">star</span> 4.9 Rating
+                        </div>
+</div>
+</div>
+<div class="glass p-4 rounded-2xl flex items-center gap-4 min-w-[240px]">
+<div class="w-12 h-12 rounded-full bg-cover" data-alt="Portrait of top seller 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDpxBPP4KVgfSJxE4oAn4EDy1rEufboZ49iB-Yj_wBteRNc7p7NHLvzSertGYyf2KSj8Nm6shs34pD7utjmhg830as5ZsfQ4CX-BszY3UAlld6Oc7X-SlqwzJX7stWNhuXWwxhOHj4NkKlEEUf1dWKbNP8N5mUnofIpodwPUbx1DjYxXGzlbtzMqg6kiJ2Dbeii8N71DSYaAbunyJsmZG0MzVkegKPQ__GS--1-6UHgASkGAtQK9RqHaiqVeXpH_2QBudiCxTnqUQhg')"></div>
+<div>
+<h4 class="font-bold">CryptoArt Ltd.</h4>
+<div class="flex items-center gap-1 text-accent text-xs">
+<span class="material-symbols-outlined text-xs">verified</span> Verified Artist
+                        </div>
+</div>
+</div>
+<div class="glass p-4 rounded-2xl flex items-center gap-4 min-w-[240px]">
+<div class="w-12 h-12 rounded-full bg-cover" data-alt="Portrait of top seller 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDqFMGU8PKi6Ufb21JoRvtb0NAvqgmW43cE4WVhDzD2CoSwHuo1vrLGV7TsfVVn8o7V1-j5G8NqJiGrom2eFNfnHpU55wCMMePR4N8-raU1MXU7RFIKyEg40za_pywaOz2hcFESmalsQalyu7Lq847hd76I_rLK-cnktsQXrahZf5Yzn7dj7hl-fZJmFrZmetdOwtFaNmHbSzo9Hqz7Xqi-s2TDC-th2pxMjiCC_oViCNylssomPe3LuXDfmcVtSVYMI89kRUdJZO2n')"></div>
+<div>
+<h4 class="font-bold">Vintage Archive</h4>
+<div class="flex items-center gap-1 text-accent text-xs">
+<span class="material-symbols-outlined text-xs">verified</span> Authenticated
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t border-slate-200 pt-16 pb-8 px-4 lg:px-20 mt-12">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 text-accent mb-6">
+<span class="material-symbols-outlined text-3xl">gavel</span>
+<h2 class="text-xl font-bold text-primary tracking-tight">BidSphere</h2>
+</div>
+<p class="space-y-4 text-slate-600 text-sm">
+                    The world's leading premium e-auction platform for rare assets and luxury collectibles. Secure, transparent, and exclusive.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all" href="#">
+<span class="material-symbols-outlined text-lg">share</span>
+</a>
+<a class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all" href="#">
+<span class="material-symbols-outlined text-lg">mail</span>
+</a>
+<a class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-accent hover:text-black transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-slate-900 font-bold mb-6">Marketplace</h3>
+<ul class="space-y-4 text-slate-600 text-sm">
+<li><a class="hover:text-accent transition-colors" href="#">Live Auctions</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">Categories</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">Featured Artists</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">Recent Sales</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-slate-900 font-bold mb-6">Company</h3>
+<ul class="space-y-4 text-slate-600 text-sm">
+<li><a class="hover:text-accent transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">How it Works</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">Security</a></li>
+<li><a class="hover:text-accent transition-colors" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-slate-900 font-bold mb-6">Newsletter</h3>
+<p class="space-y-4 text-slate-600 text-sm">Stay updated with our latest drops and auctions.</p>
+<div class="flex bg-white rounded-xl p-1 border border-slate-200">
+<input class="bg-transparent border-none focus:ring-0 text-sm flex-1 px-3" placeholder="Email address" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-600 text-xs">
+<p>© 2024 BidSphere. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="hover:text-slate-300" href="#">Privacy Policy</a>
+<a class="hover:text-slate-300" href="#">Terms of Service</a>
+<a class="hover:text-slate-300" href="#">Cookie Settings</a>
+</div>
+</div>
 </footer>
-
-</body>
-</html>
+</body></html>

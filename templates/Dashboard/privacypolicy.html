@@ -385,10 +385,15 @@ body {
 <footer class="page-footer">
   <span>© 2026 Auctora Inc. All Rights Reserved.</span>
   <div class="footer-links">
-    <a href="{% url 'privacypolicy' %}" class="active">Privacy Policy</a>
-    <a href="{% url 'termsofservice' %}">Terms of Use</a>
-    <a href="{% url 'HelpCenter' %}">Help Center</a>
-    <a href="{% url 'ContactUs' %}">Contact</a>
+    <a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
+        <a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
+        <a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
+        
+        <a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
+       
+        <a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
+
+        <a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
   </div>
 </footer>
 

@@ -1,550 +1,324 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auctora - Help Center</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auctora Help Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#2d1655",
+          "background-light": "#f8f7fb",
+        },
+        fontFamily: { "display": ["Inter", "sans-serif"] },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
 <style>
-:root {
-  --red: #e53935;
-  --blue: #1565c0;
-  --yellow: #f9a825;
-  --green: #2e7d32;
-  --bg: #f4f4f4;
-  --white: #ffffff;
-  --dark: #111111;
-  --mid: #444444;
-  --light: #888888;
-  --border: #e0e0e0;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-.logo {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 28px;
-  letter-spacing: -1px;
-  text-decoration: none;
-  display: flex;
-}
-.logo span:nth-child(1) { color: var(--red); }
-.logo span:nth-child(2) { color: var(--blue); }
-.logo span:nth-child(3) { color: var(--yellow); }
-.logo span:nth-child(4) { color: var(--green); }
-
-.topbar-right {
-  font-size: 13px;
-  color: var(--light);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.topbar-right a {
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.topbar-right a:hover { text-decoration: underline; }
-
-/* ── MAIN CONTENT ── */
-.page-wrapper {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 1100px) 1fr;
-  min-height: calc(100vh - 64px);
-}
-
-.content-panel {
-  background: white;
-  padding: 60px 60px;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  animation: fadeUp 0.7s ease forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.content-header {
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.content-header h1 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 38px;
-  color: var(--dark);
-  margin-bottom: 12px;
-}
-
-.content-header h1 span {
-  color: var(--blue);
-}
-
-.content-header p {
-  font-size: 16px;
-  color: var(--light);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* ── SEARCH BAR ── */
-.help-search {
-  max-width: 600px;
-  margin: 30px auto 40px;
-  position: relative;
-}
-
-.help-search input {
-  width: 100%;
-  padding: 16px 20px;
-  padding-left: 50px;
-  border: 2px solid var(--border);
-  border-radius: 50px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  transition: all 0.2s;
-  outline: none;
-}
-
-.help-search input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
-}
-
-.help-search::before {
-  content: '🔍';
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: var(--light);
-}
-
-/* ── CATEGORY GRID ── */
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin: 40px 0;
-}
-
-.category-card {
-  background: #f8f9fa;
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  text-align: center;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.category-card:hover {
-  border-color: var(--blue);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-
-.category-icon {
-  font-size: 40px;
-  margin-bottom: 16px;
-}
-
-.category-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 8px;
-}
-
-.category-card p {
-  font-size: 13px;
-  color: var(--light);
-  line-height: 1.5;
-}
-
-/* ── FAQ SECTION ── */
-.section-title {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 24px;
-  color: var(--dark);
-  margin: 40px 0 20px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border);
-}
-
-.faq-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.faq-item {
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  transition: all 0.2s;
-}
-
-.faq-item:hover {
-  border-color: var(--blue);
-  background: #f8f9fa;
-}
-
-.faq-item h4 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.faq-item h4::before {
-  content: '❓';
-  font-size: 14px;
-}
-
-.faq-item p {
-  font-size: 14px;
-  color: var(--mid);
-  line-height: 1.6;
-  margin-left: 26px;
-}
-
-/* ── GUIDE CARDS ── */
-.guide-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin: 30px 0;
-}
-
-.guide-card {
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  transition: all 0.2s;
-}
-
-.guide-card:hover {
-  border-color: var(--blue);
-  background: #f8f9fa;
-}
-
-.guide-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.guide-card h5 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 4px;
-}
-
-.guide-card span {
-  font-size: 12px;
-  color: var(--light);
-}
-
-/* ── CONTACT OPTIONS ── */
-.contact-section {
-  background: #f8f9fa;
-  border-radius: 16px;
-  padding: 40px;
-  margin: 40px 0 20px;
-  text-align: center;
-}
-
-.contact-section h3 {
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 12px;
-}
-
-.contact-section p {
-  font-size: 15px;
-  color: var(--light);
-  max-width: 500px;
-  margin: 0 auto 30px;
-}
-
-.contact-options {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.contact-btn {
-  padding: 14px 28px;
-  border: 2px solid var(--blue);
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.contact-btn.primary {
-  background: var(--blue);
-  color: white;
-}
-
-.contact-btn.primary:hover {
-  background: #0d47a1;
-  border-color: #0d47a1;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(21,101,192,0.35);
-}
-
-.contact-btn.secondary {
-  background: white;
-  color: var(--blue);
-}
-
-.contact-btn.secondary:hover {
-  background: #f0f5ff;
-  transform: translateY(-1px);
-}
-
-/* ── FOOTER ── */
-.page-footer {
-  background: white;
-  border-top: 1px solid var(--border);
-  padding: 16px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--light);
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: var(--light);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.footer-links a:hover {
-  color: var(--blue);
-}
-.footer-links a.active {
-  color: var(--blue);
-  font-weight: 600;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 1100px) {
-  .page-wrapper { grid-template-columns: 1fr 900px 1fr; }
-}
-
-@media (max-width: 1000px) {
-  .category-grid { grid-template-columns: repeat(2, 1fr); }
-  .guide-row { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 800px) {
-  .page-wrapper { grid-template-columns: 1fr; }
-  .content-panel { padding: 40px 24px; border: none; }
-  .topbar { padding: 0 20px; }
-  .content-header h1 { font-size: 30px; }
-  .faq-grid { grid-template-columns: 1fr; }
-  .contact-options { flex-direction: column; }
-}
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -8px rgba(45,22,85,0.15); }
 </style>
 </head>
-<body>
+<body class="bg-background-light font-display text-slate-900">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
 
-<!-- TOPBAR -->
-<header class="topbar">
-  <a href="/" style="text-decoration: none;">
-    <div class="logo">
-      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
+  <!-- ══ HEADER — white ══ -->
+  <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-6 md:px-20 py-4 sticky top-0 z-50 shadow-sm">
+    <div class="flex items-center gap-8">
+      <div class="flex items-center gap-3">
+        <div class="size-9 bg-primary rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-2xl">storm</span>
+        </div>
+        <h2 class="text-primary text-xl font-bold leading-tight tracking-tight">Auctora <span class="text-primary/50 font-medium">Help</span></h2>
+      </div>
+      <nav class="hidden lg:flex items-center gap-8">
+        <a class="text-slate-600 hover:text-primary transition-colors text-sm font-medium" href="#">Bidding</a>
+        <a class="text-slate-600 hover:text-primary transition-colors text-sm font-medium" href="#">Selling</a>
+        <a class="text-slate-600 hover:text-primary transition-colors text-sm font-medium" href="#">Account</a>
+        <a class="text-slate-600 hover:text-primary transition-colors text-sm font-medium" href="#">Payments</a>
+      </nav>
     </div>
-  </a>
-  <div class="topbar-right">
-    <a href="{% url 'login' %}">Sign in</a> 
-    <a href ="{% url 'home' %}">Home</a>
-  </div>
-</header>
+    <div class="flex items-center gap-4">
+      <div class="hidden sm:flex items-center bg-slate-100 rounded-xl px-3 py-2 border border-slate-200 gap-2">
+        <span class="material-symbols-outlined text-primary/60 text-lg">search</span>
+        <input class="bg-transparent border-none focus:ring-0 text-sm text-slate-800 placeholder:text-slate-400 w-40" placeholder="Quick Search"/>
+      </div>
+    <div class="flex items-center gap-3">
+      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
+        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
+      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-accent-gold/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary">person</span>
+      </div> 
 
-<!-- MAIN CONTENT -->
-<div class="page-wrapper">
-  <div></div> <!-- Left spacer -->
-  
-  <div class="content-panel">
-    <div class="content-header">
-      <h1>Help <span>Center</span></h1>
-      <p>Find answers to common questions and learn how to use Auctora</p>
-      
-      <div class="help-search">
-        <input type="text" placeholder="Search for help articles...">
-      </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="category-grid">
-      <div class="category-card">
-        <div class="category-icon">🛒</div>
-        <h3>Buying</h3>
-        <p>How to bid, payment, shipping, and returns</p>
-      </div>
-      <div class="category-card">
-        <div class="category-icon">🏪</div>
-        <h3>Selling</h3>
-        <p>Listing items, fees, and managing sales</p>
-      </div>
-      <div class="category-card">
-        <div class="category-icon">🔐</div>
-        <h3>Account</h3>
-        <p>Registration, security, and settings</p>
-      </div>
-      <div class="category-card">
-        <div class="category-icon">💰</div>
-        <h3>Payments</h3>
-        <p>Billing, payouts, and invoices</p>
-      </div>
-      <div class="category-card">
-        <div class="category-icon">📦</div>
-        <h3>Shipping</h3>
-        <p>Delivery options and tracking</p>
-      </div>
-      <div class="category-card">
-        <div class="category-icon">⚖️</div>
-        <h3>Disputes</h3>
-        <p>Resolution center and claims</p>
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden bg-cover bg-center"
+           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB8OTQPprsfW3VBaMMvFNhC6UZYLm1GMLckh9F_wsahBLE67DaEs6FywNd7z7kKNB3YBfNONLu8KRQ_RrBhThtFTELfNYzPiB5gRQWcn2i_RHkJ7G3OAfAdAJgm5f4xniSRDXHvUvuEXrOyydN0WfO-cz-hSDPc584H3LQBT1MY4KEDoZP9kBF1wLuf-urXHmQ1On4A3yL4fDbwaYlB29SM23daMR1SQRR5ueftoReuotYwwwE6Uhl04tPHIFGd0FqklWdnzdxYnbv");'>
       </div>
     </div>
+  </header>
 
-    <!-- Featured Guides -->
-    <h2 class="section-title">Quick Start Guides</h2>
-    <div class="guide-row">
-      <div class="guide-card">
-        <div class="guide-icon">📝</div>
-        <h5>Create Account</h5>
-        <span>5 min read</span>
+  <main class="flex-1">
+
+    <!-- ══ HERO — purple ══ -->
+    <section class="bg-primary py-16 px-6 md:px-20 border-b border-white/10">
+      <div class="max-w-4xl mx-auto text-center space-y-6">
+        <!-- subtle dot grid overlay -->
+        <div class="absolute inset-0 pointer-events-none opacity-10"
+             style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 36px 36px;"></div>
+        <h1 class="text-white text-4xl md:text-5xl font-bold tracking-tight relative z-10">How can we assist your journey?</h1>
+        <p class="text-white/70 text-lg relative z-10">Explore our comprehensive guides for luxury bidding and high-end curation.</p>
+        <div class="mt-6 relative z-10">
+          <div class="flex w-full h-14 rounded-xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur shadow-2xl shadow-black/30 max-w-2xl mx-auto">
+            <div class="flex items-center justify-center pl-5 text-white/60">
+              <span class="material-symbols-outlined text-2xl">search</span>
+            </div>
+            <input class="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-white/40 px-4 text-base font-light" placeholder="Search for articles, guides, and FAQs..."/>
+            <button class="bg-white text-primary px-8 font-bold text-sm uppercase tracking-widest hover:bg-slate-100 transition-colors">Search</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 text-sm text-white/50 relative z-10">
+          <span>Popular:</span>
+          <a class="underline hover:text-white transition-colors" href="#">Withdrawal limits</a>
+          <a class="underline hover:text-white transition-colors" href="#">Identity verification</a>
+          <a class="underline hover:text-white transition-colors" href="#">Buyer protection</a>
+        </div>
       </div>
-      <div class="guide-card">
-        <div class="guide-icon">🔍</div>
-        <h5>Find Items</h5>
-        <span>3 min read</span>
+    </section>
+
+    <!-- ══ CATEGORY GRID ══ -->
+    <section class="px-6 md:px-20 py-16 max-w-[1200px] mx-auto">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Knowledge Base</h2>
+          <div class="h-1 w-16 bg-primary mt-2 rounded-full"></div>
+        </div>
+        <a class="text-primary font-semibold text-sm hover:underline" href="#">View all categories</a>
       </div>
-      <div class="guide-card">
-        <div class="guide-icon">💵</div>
-        <h5>Place a Bid</h5>
-        <span>4 min read</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Bidding -->
+        <div class="hover-lift group flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 cursor-pointer transition-all hover:border-primary/40">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <span class="material-symbols-outlined text-3xl">gavel</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-1 text-slate-900">Bidding &amp; Auctions</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Master the art of high-stakes bidding and auction timing.</p>
+          </div>
+          <ul class="mt-2 space-y-2 text-sm text-primary font-medium">
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Proxy bidding explained</li>
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Reserve prices</li>
+          </ul>
+        </div>
+
+        <!-- Selling -->
+        <div class="hover-lift group flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 cursor-pointer transition-all hover:border-primary/40">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <span class="material-symbols-outlined text-3xl">storefront</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-1 text-slate-900">Selling Items</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Premium guidelines for listing your authenticated luxury assets.</p>
+          </div>
+          <ul class="mt-2 space-y-2 text-sm text-primary font-medium">
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Listing fees &amp; tiers</li>
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Shipping requirements</li>
+          </ul>
+        </div>
+
+        <!-- Account -->
+        <div class="hover-lift group flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 cursor-pointer transition-all hover:border-primary/40">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <span class="material-symbols-outlined text-3xl">account_circle</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-1 text-slate-900">My Account</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Secure your profile and manage your verification status.</p>
+          </div>
+          <ul class="mt-2 space-y-2 text-sm text-primary font-medium">
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> 2FA Security</li>
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> KYC Verification</li>
+          </ul>
+        </div>
+
+        <!-- Payments -->
+        <div class="hover-lift group flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-6 cursor-pointer transition-all hover:border-primary/40">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <span class="material-symbols-outlined text-3xl">payments</span>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-1 text-slate-900">Payments &amp; Fees</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Invoices, global payouts, and multi-currency methods.</p>
+          </div>
+          <ul class="mt-2 space-y-2 text-sm text-primary font-medium">
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Escrow protection</li>
+            <li class="flex items-center gap-2 hover:translate-x-1 transition-transform"><span class="material-symbols-outlined text-xs">arrow_forward</span> Tax documentation</li>
+          </ul>
+        </div>
+
       </div>
-      <div class="guide-card">
-        <div class="guide-icon">📦</div>
-        <h5>Track Order</h5>
-        <span>2 min read</span>
+    </section>
+
+    <!-- ══ FEATURED ARTICLES + SIDEBAR ══ -->
+    <section class="bg-white py-16 px-6 md:px-20 border-t border-slate-100">
+      <div class="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+        <!-- Articles -->
+        <div class="lg:col-span-2 space-y-8">
+          <h2 class="text-2xl font-bold flex items-center gap-2 text-slate-900">
+            <span class="material-symbols-outlined text-primary">article</span>
+            Featured Articles
+          </h2>
+          <div class="space-y-4">
+            <a class="block group p-6 rounded-xl bg-background-light border border-slate-100 hover:border-primary/30 transition-all" href="#">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-xs uppercase tracking-widest text-primary font-bold mb-1 block">Security</span>
+                  <h4 class="text-lg font-semibold group-hover:text-primary transition-colors text-slate-900">How we authenticate $1M+ luxury assets</h4>
+                  <p class="text-slate-500 mt-2 text-sm line-clamp-2">Learn about our proprietary 12-step verification process involving world-leading experts in horology and fine arts.</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors flex-shrink-0 ml-4">open_in_new</span>
+              </div>
+            </a>
+            <a class="block group p-6 rounded-xl bg-background-light border border-slate-100 hover:border-primary/30 transition-all" href="#">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-xs uppercase tracking-widest text-primary font-bold mb-1 block">Auction Guide</span>
+                  <h4 class="text-lg font-semibold group-hover:text-primary transition-colors text-slate-900">Winning at the last second: Snipe Bidding vs. Auto Bidding</h4>
+                  <p class="text-slate-500 mt-2 text-sm line-clamp-2">A technical deep dive into how Auctora handles high-concurrency bidding events.</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors flex-shrink-0 ml-4">open_in_new</span>
+              </div>
+            </a>
+            <a class="block group p-6 rounded-xl bg-background-light border border-slate-100 hover:border-primary/30 transition-all" href="#">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-xs uppercase tracking-widest text-primary font-bold mb-1 block">Logistics</span>
+                  <h4 class="text-lg font-semibold group-hover:text-primary transition-colors text-slate-900">Insured White-Glove delivery for international buyers</h4>
+                  <p class="text-slate-500 mt-2 text-sm line-clamp-2">What to expect when your auction win arrives. Tracking, insurance, and customs handling.</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors flex-shrink-0 ml-4">open_in_new</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Contact card — purple -->
+          <div class="p-8 rounded-2xl bg-primary text-white relative overflow-hidden">
+            <div class="absolute -right-8 -top-8 opacity-10">
+              <span class="material-symbols-outlined text-[130px]">support_agent</span>
+            </div>
+            <div class="relative z-10">
+              <h3 class="text-xl font-bold mb-3">Still need help?</h3>
+              <p class="text-white/70 text-sm mb-6 leading-relaxed">Our Concierge Support team is available 24/7 for Black Card members and during business hours for all users.</p>
+              <button class="w-full bg-white text-primary py-3 rounded-lg font-bold text-sm transition-all hover:bg-slate-100 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-lg">chat</span> Contact Support
+              </button>
+            </div>
+          </div>
+
+          <!-- Community forum card — white with purple border -->
+          <div class="p-6 rounded-2xl border-2 border-primary/20 bg-white">
+            <h4 class="font-bold text-lg mb-3 text-slate-900">Community Forum</h4>
+            <p class="text-sm text-slate-500 mb-5">Join 50,000+ collectors discussing trends and authenticity.</p>
+            <a class="text-primary text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all" href="#">
+              Visit the forum <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ FAQ ══ -->
+    <section class="py-20 px-6 md:px-20 max-w-[1200px] mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-2 text-slate-900">Frequently Asked Questions</h2>
+      <div class="h-1 w-12 bg-primary rounded-full mx-auto mb-12"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="p-6 rounded-xl border border-slate-200 bg-white hover-lift">
+          <h5 class="font-bold text-base mb-2 flex items-center gap-2 text-slate-900">
+            <span class="text-primary font-bold text-lg">Q.</span> How are items authenticated?
+          </h5>
+          <p class="text-slate-500 text-sm leading-relaxed">All items are physically inspected at our secure regional hubs by a panel of verified experts before the auction goes live.</p>
+        </div>
+
+        <div class="p-6 rounded-xl border border-slate-200 bg-white hover-lift">
+          <h5 class="font-bold text-base mb-2 flex items-center gap-2 text-slate-900">
+            <span class="text-primary font-bold text-lg">Q.</span> What are the buyer's fees?
+          </h5>
+          <p class="text-slate-500 text-sm leading-relaxed">Our standard buyer's premium is 12% for items under $100k, and 8% for items above $100k.</p>
+        </div>
+
+        <div class="p-6 rounded-xl border border-slate-200 bg-white hover-lift">
+          <h5 class="font-bold text-base mb-2 flex items-center gap-2 text-slate-900">
+            <span class="text-primary font-bold text-lg">Q.</span> Can I cancel a bid?
+          </h5>
+          <p class="text-slate-500 text-sm leading-relaxed">Bids are legally binding commitments. Cancellations are only permitted in extreme cases within 15 minutes of the bid.</p>
+        </div>
+
+        <div class="p-6 rounded-xl border border-slate-200 bg-white hover-lift">
+          <h5 class="font-bold text-base mb-2 flex items-center gap-2 text-slate-900">
+            <span class="text-primary font-bold text-lg">Q.</span> How long does shipping take?
+          </h5>
+          <p class="text-slate-500 text-sm leading-relaxed">Domestic shipping takes 3-5 business days. International shipping typically ranges from 7-14 days depending on customs.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER — purple ══ -->
+  <footer class="bg-primary text-white py-12 px-6 md:px-20 border-t border-white/10">
+    <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+
+      <!-- Brand -->
+      <div class="flex items-center gap-3">
+        <div class="size-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+          <span class="material-symbols-outlined text-white text-xl">storm</span>
+        </div>
+        <span class="font-bold tracking-widest text-lg text-white">AUCTORA</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/60">
+        <!-- <a href="{% url 'privacypolicy' %}">Privacy Policy</a> -->
+        <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+        <!-- <a href="{% url 'termsofservice' %}">Terms of Service</a> -->
+        <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+        <!-- <a href="{% url 'Support' %}">Support</a> -->
+        <a class="hover:text-white transition-colors" href="#">Support</a>
+        <!-- <a href="{% url 'Security' %}">Security</a> -->
+        <a class="hover:text-white transition-colors" href="#">Security</a>
+        <!-- <a href="{% url 'Community' %}">Community</a> -->
+        <a class="hover:text-white transition-colors" href="#">Community</a>
+        <!-- <a href="{% url 'ContactUs' %}">Contact Us</a> -->
+        <a class="hover:text-white transition-colors" href="#">Contact Us</a>
+      </div>
+
+      <!-- Social icons -->
+      <div class="flex gap-4">
+        <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">language</span>
+        <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">share</span>
       </div>
     </div>
 
-    <!-- FAQ Section -->
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <h4>How do I create an account?</h4>
-        <p>Click "Create account" in the top right corner, fill in your details, and verify your email address. It's free and takes less than 2 minutes.</p>
-      </div>
-      <div class="faq-item">
-        <h4>How does bidding work?</h4>
-        <p>Enter your maximum bid, and our system will automatically bid incrementally on your behalf up to that amount. You'll be notified if you're outbid.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What payment methods are accepted?</h4>
-        <p>We accept Visa, Mastercard, American Express, PayPal, and bank transfers for verified accounts.</p>
-      </div>
-      <div class="faq-item">
-        <h4>How do I sell an item?</h4>
-        <p>Create a seller account, verify your identity, then click "List Item" to start your auction. Add photos, description, and set your starting price.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What are the seller fees?</h4>
-        <p>Listing fees start at $0.50, and final value fees range from 5-10% depending on the category. View our full fee schedule in your seller dashboard.</p>
-      </div>
-      <div class="faq-item">
-        <h4>How do I track my shipment?</h4>
-        <p>Once shipped, tracking information will appear in your order history. You'll also receive email updates with tracking links.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Can I cancel a bid?</h4>
-        <p>Bids are binding, but you can retract within the first hour if you made a mistake. After that, contact the seller directly.</p>
-      </div>
-      <div class="faq-item">
-        <h4>What is buyer protection?</h4>
-        <p>If your item doesn't arrive or isn't as described, we'll help resolve the issue and can refund your purchase up to $2,500.</p>
-      </div>
+    <div class="text-center mt-8 text-white/30 text-xs">
+      © 2026 Auctora Luxury Auctions. All rights reserved.
     </div>
+  </footer>
 
-    <!-- Still Need Help -->
-    <div class="contact-section">
-      <h3>Still need help?</h3>
-      <p>Our support team is available 24/7 to answer your questions</p>
-      <div class="contact-options">
-        <a href="/contact.html" class="contact-btn primary">📧 Contact Support</a>
-        <a href="#" class="contact-btn secondary">💬 Live Chat</a>
-        <a href="#" class="contact-btn secondary">📞 Call Us</a>
-      </div>
-    </div>
-  </div>
-  
-  <div></div> <!-- Right spacer -->
 </div>
-
-<!-- FOOTER -->
-<footer class="page-footer">
-  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
-  <div class="footer-links">
-    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
-    <a href="{% url 'termsofservice' %}" class="active">Terms of Use</a>
-    <a href="{% url 'HelpCenter' %}">Help Center</a>
-    <a href="{% url 'ContactUs' %}">Contact</a>
-  </div>
-</footer>
-
-</body>
-</html>
+</body></html>

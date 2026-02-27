@@ -1,748 +1,147 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
-<meta charset="UTF-8">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auctora – Log In</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2d1655",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#14141e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
 <style>
-
-:root {
-  --red: #e53935;
-  --blue: #1565c0;
-  --yellow: #f9a825;
-  --green: #2e7d32;
-  --bg: #f4f4f4;
-  --white: #ffffff;
-  --dark: #111111;
-  --mid: #444444;
-  --light: #888888;
-  --border: #e0e0e0;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-.logo {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 28px;
-  letter-spacing: -1px;
-  text-decoration: none;
-  display: flex;
-}
-.logo span:nth-child(1) { color: var(--red); }
-.logo span:nth-child(2) { color: var(--blue); }
-.logo span:nth-child(3) { color: var(--yellow); }
-.logo span:nth-child(4) { color: var(--green); }
-
-.topbar-right {
-  font-size: 13px;
-  color: var(--light);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.topbar-right a {
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.topbar-right a:hover { text-decoration: underline; }
-
-/* ── MAIN LAYOUT ── */
-.page-wrapper {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 480px 1fr;
-  min-height: calc(100vh - 64px);
-}
-
-/* ── LEFT PANEL ── */
-.left-panel {
-  background: linear-gradient(160deg, #0d1b4b 0%, #1565c0 60%, #0288d1 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px 48px;
-  position: relative;
-  overflow: hidden;
-}
-
-.left-panel::before {
-  content: '';
-  position: absolute;
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  top: -150px; left: -150px;
-}
-
-.left-panel::after {
-  content: '';
-  position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  bottom: -80px; right: -80px;
-}
-
-.panel-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: white;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 20px;
-  margin-bottom: 28px;
-  width: fit-content;
-  position: relative;
-  z-index: 1;
-}
-
-.left-panel h2 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 38px;
-  color: white;
-  line-height: 1.15;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.left-panel h2 span {
-  color: var(--yellow);
-}
-
-.left-panel > p {
-  color: rgba(255,255,255,0.65);
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 40px;
-  position: relative;
-  z-index: 1;
-  max-width: 320px;
-}
-
-.perks {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.perk {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  animation: slideIn 0.6s ease forwards;
-  opacity: 0;
-}
-
-.perk:nth-child(1) { animation-delay: 0.1s; }
-.perk:nth-child(2) { animation-delay: 0.2s; }
-.perk:nth-child(3) { animation-delay: 0.3s; }
-.perk:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.perk-icon {
-  width: 40px; height: 40px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.perk-text strong {
-  display: block;
-  color: white;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-.perk-text span {
-  color: rgba(255,255,255,0.5);
-  font-size: 12px;
-}
-
-/* ── FORM PANEL ── */
-.form-panel {
-  background: white;
-  padding: 48px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  animation: fadeUp 0.7s ease forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.form-header {
-  margin-bottom: 32px;
-}
-
-.form-header h1 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 26px;
-  color: var(--dark);
-  margin-bottom: 6px;
-}
-
-.form-header p {
-  font-size: 13px;
-  color: var(--light);
-}
-
-/* Role selector */
-.role-selector {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.role-btn {
-  padding: 12px;
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.role-btn .role-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-.role-btn .role-label { font-size: 13px; font-weight: 600; color: var(--mid); display: block; }
-.role-btn .role-desc { font-size: 11px; color: var(--light); display: block; margin-top: 2px; }
-
-.role-btn:hover {
-  border-color: var(--blue);
-  background: #f0f5ff;
-}
-
-.role-btn.active {
-  border-color: var(--blue);
-  background: #e8f0fe;
-}
-.role-btn.active .role-label { color: var(--blue); }
-
-/* Form fields */
-.field {
-  margin-bottom: 20px;
-}
-
-.field label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--mid);
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
-}
-
-.field input {
-  width: 100%;
-  padding: 11px 14px;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: var(--dark);
-  background: white;
-  transition: all 0.2s;
-  outline: none;
-}
-
-.field input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
-}
-
-.field input::placeholder { 
-  color: #bbb;
-  opacity: 1;
-}
-
-/* Password field specific */
-.field input[type="password"] {
-  letter-spacing: 2px;
-}
-
-.field input[type="password"]::placeholder {
-  letter-spacing: normal;
-}
-
-/* Remember me row */
-.remember-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  margin: 12px 0 22px 0;
-}
-.remember-check {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--mid);
-}
-.remember-check input {
-  accent-color: var(--blue);
-  width: 16px; height: 16px;
-  cursor: pointer;
-}
-.forgot-link {
-  color: var(--blue);
-  font-weight: 500;
-  text-decoration: none;
-}
-.forgot-link:hover { text-decoration: underline; }
-
-/* Submit button */
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 18px;
-}
-
-.submit-btn:hover {
-  background: #0d47a1;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(21,101,192,0.35);
-}
-.submit-btn:active { transform: translateY(0); }
-
-/* Divider */
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 0 16px;
-  font-size: 12px;
-  color: var(--light);
-}
-.divider::before, .divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* Social login */
-.social-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-.social-btn {
-  flex: 1;
-  background: white;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: 10px;
-  font-weight: 500;
-  font-size: 13px;
-  color: var(--mid);
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.social-btn:hover {
-  border-color: var(--blue);
-  background: #f5f9ff;
-}
-
-/* Signup link */
-.signup-link {
-  text-align: center;
-  font-size: 13px;
-  color: var(--light);
-  margin-top: 16px;
-}
-.signup-link a {
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.signup-link a:hover { text-decoration: underline; }
-
-/* ── RIGHT PANEL ── */
-.right-panel {
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px 40px;
-}
-
-.trust-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.trust-card {
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  transition: all 0.2s;
-  animation: fadeRight 0.6s ease forwards;
-  opacity: 0;
-}
-
-.trust-card:nth-child(1) { animation-delay: 0.15s; }
-.trust-card:nth-child(2) { animation-delay: 0.25s; }
-.trust-card:nth-child(3) { animation-delay: 0.35s; }
-.trust-card:nth-child(4) { animation-delay: 0.45s; }
-
-@keyframes fadeRight {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.trust-card:hover {
-  border-color: #bbb;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-}
-
-.trust-emoji { font-size: 26px; flex-shrink: 0; }
-.trust-info strong { display: block; font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
-.trust-info span { font-size: 12px; color: var(--light); }
-
-.stats-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.stat-card {
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  animation: fadeRight 0.6s ease forwards;
-  opacity: 0;
-}
-.stat-card:nth-child(1) { animation-delay: 0.55s; }
-.stat-card:nth-child(2) { animation-delay: 0.65s; }
-
-.stat-num {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 22px;
-  color: var(--blue);
-  display: block;
-}
-.stat-lbl { font-size: 11px; color: var(--light); margin-top: 2px; display: block; }
-
-/* ── FOOTER ── */
-.page-footer {
-  background: white;
-  border-top: 1px solid var(--border);
-  padding: 16px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--light);
-}
-
-.footer-links { display: flex; gap: 20px; }
-.footer-links a { color: var(--light); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--blue); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 1100px) {
-  .page-wrapper { grid-template-columns: 1fr 460px; }
-  .right-panel { display: none; }
-}
-
-@media (max-width: 720px) {
-  .page-wrapper { grid-template-columns: 1fr; }
-  .left-panel { display: none; }
-  .form-panel { padding: 32px 24px; border: none; }
-  .topbar { padding: 0 20px; }
-}
-
-/* DJANGO FORM STYLING */
-form p {
-  margin-bottom: 16px;
-}
-
-form p label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--mid);
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
-  text-transform: capitalize;
-}
-
-form p input {
-  width: 100%;
-  padding: 11px 14px;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: var(--dark);
-  background: white;
-  transition: all 0.2s;
-  outline: none;
-}
-
-form p input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
-}
-
-/* Error messages */
-form ul.errorlist {
-  list-style: none;
-  margin: 0 0 6px 0;
-  padding: 0;
-}
-
-form ul.errorlist li {
-  color: var(--red);
-  font-size: 12px;
-  padding: 4px 10px;
-  background: #fff5f5;
-  border-left: 3px solid var(--red);
-  border-radius: 4px;
-  margin-bottom: 4px;
-}
-
-.errorlist.nonfield li {
-  background: #fff5f5;
-  color: var(--red);
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #ffcdd2;
-  margin-bottom: 16px;
-}
-
-</style>
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    
+        .btn-luxury-animate {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-luxury-animate:hover {
+            transform: scale(1.05);
+            filter: brightness(1.15);
+        }
+        .btn-luxury-animate:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<div class="flex min-h-screen">
+<!-- Left Side: Visual/Hero -->
+<div class="relative hidden w-1/2 lg:flex items-center justify-center bg-primary overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover opacity-80" data-alt="Luxury mechanical watch macro photography detail" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7191TNL2c0dh8uSw6NtJjxn8gSt5FTLBbWny_tOmIaFJ8Z0WDYfpzT_BmvRGc4VZLWuAE1Yp3FCuCM5Afl30avZeUfMVODgSgLy9Q1qvW-kGe65fFdrYPCWtzy2LtKRVzfBf2r4pyR2rVXvPgjK1MnA9QYD_CTMN-ZuH2l-6X7Qra2OPCOqCysmNXgaAi--XCcwIjzmD_uQj8Lj1GIkJDYyP5Qn_Xc6bmRG0jnkm02fN-CrnLogayyJMcQHrAEOI81feTBeF8Lquu");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+</div>
+<div class="relative z-10 p-12 w-full max-w-xl">
+<div class="glass-morphism rounded-xl p-8 text-white">
+<div class="mb-6">
+<span class="material-symbols-outlined text-4xl">
+                            diamond
+                        </span>
+</div>
+<h1 class="text-4xl font-black leading-tight tracking-tight mb-4">
+                            Welcome to Auctora
+                    </h1>
+<p class="text-lg font-light italic leading-relaxed opacity-90">
+                        "Time is the ultimate luxury. Own every second."
+                    </p>
+<div class="mt-8 flex items-center gap-2">
+<div class="h-1 w-12 bg-white/40 rounded-full"></div>
+<div class="h-1 w-4 bg-white/20 rounded-full"></div>
+<div class="h-1 w-4 bg-white/20 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Login Form -->
+<div class="w-full lg:w-1/2 flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-24 bg-background-light dark:bg-background-dark">
+<div class="max-w-md w-full mx-auto">
 
-<!-- TOPBAR -->
-<header class="topbar">
-  <div class="logo">
-    <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
-  </div>
-  <div class="topbar-right">
-    New to Auctora? <a href="{% url 'signup' %}">Create account</a>
-  </div>
-</header>
-
-<!-- MAIN -->
-<div class="page-wrapper">
-
-  <!-- LEFT PANEL -->
-  <div class="left-panel">
-    <span class="panel-badge">🔒 SECURE LOGIN</span>
-    <h2>Welcome <span>Back</span> to Auctora</h2>
-    <p>Sign in to continue bidding, selling, and managing your auctions.</p>
-    <div class="perks">
-      <div class="perk">
-        <div class="perk-icon">🎯</div>
-        <div class="perk-text">
-          <strong>Real-Time Bidding</strong>
-          <span>Compete live with buyers worldwide</span>
-        </div>
-      </div>
-      <div class="perk">
-        <div class="perk-icon">🛡️</div>
-        <div class="perk-text">
-          <strong>Buyer Protection</strong>
-          <span>Every purchase is fully guaranteed</span>
-        </div>
-      </div>
-      <div class="perk">
-        <div class="perk-icon">💸</div>
-        <div class="perk-text">
-          <strong>Sell & Earn</strong>
-          <span>List items and reach millions instantly</span>
-        </div>
-      </div>
-      <div class="perk">
-        <div class="perk-icon">📦</div>
-        <div class="perk-text">
-          <strong>Fast Delivery</strong>
-          <span>Tracked shipping on every order</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FORM PANEL -->
-  <div class="form-panel">
-    <div class="form-header">
-      <h1>Log in to Auctora</h1>
-      <p>Enter your credentials to access your account</p>
-    </div>
-
-    <!-- Role Selector -->
-    <div class="role-selector">
-      <button class="role-btn active" type="button">
-        <span class="role-icon">🛒</span>
-        <span class="role-label">Buyer</span>
-      </button>
-      <button class="role-btn" type="button">
-        <span class="role-icon">🏪</span>
-        <span class="role-label">Seller</span>
-      </button>
-      <button class="role-btn" type="button">
-        <span class="role-icon">⚙️</span>
-        <span class="role-label">Admin</span>
-      </button>
-    </div>
-
-    <!-- LOGIN FORM - FIXED: Proper empty fields with placeholders only -->
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <div class="remember-row">
-            {{ form.remember_me }}
-            <label for="{{ form.remember_me.id_for_label }}">Remember me</label>
-            <a href="#" class="forgot-link">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="submit-btn">LOG IN →</button>
-    </form>
-    <p class="signup-link">Don't have an account? <a href="{% url 'signup' %}">Sign up free</a></p>
-  </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="right-panel">
-    <div class="trust-stack">
-      <div class="trust-card">
-        <span class="trust-emoji">🔐</span>
-        <div class="trust-info">
-          <strong>256-bit SSL Encryption</strong>
-          <span>Your data is always protected</span>
-        </div>
-      </div>
-      <div class="trust-card">
-        <span class="trust-emoji">✅</span>
-        <div class="trust-info">
-          <strong>Verified Sellers Only</strong>
-          <span>Every seller is ID-checked</span>
-        </div>
-      </div>
-      <div class="trust-card">
-        <span class="trust-emoji">💳</span>
-        <div class="trust-info">
-          <strong>Secure Payments</strong>
-          <span>Visa, Mastercard, UPI, PayPal</span>
-        </div>
-      </div>
-      <div class="trust-card">
-        <span class="trust-emoji">🏆</span>
-        <div class="trust-info">
-          <strong>#1 Auction Platform</strong>
-          <span>Trusted since 2020</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-card">
-        <span class="stat-num">12M+</span>
-        <span class="stat-lbl">Registered Users</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">4.9★</span>
-        <span class="stat-lbl">Average Rating</span>
-      </div>
-    </div>
-  </div>
-
+<!-- Mobile Logo -->
+<div class="lg:hidden mb-8 flex items-center gap-2">
+<div class="bg-primary p-2 rounded-lg" style="background-color: #2d1655;">
+<span class="material-symbols-outlined text-white">diamond</span>
+</div>
+<span class="text-2xl font-black text-slate-900 dark:text-slate-100">Auctora</span>
+</div>
+<div class="mb-10">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100">Welcome Back</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-2">Enter your credentials to access your collection.</p>
 </div>
 
-<!-- FOOTER -->
-<footer class="page-footer">
-  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
-  <div class="footer-links">
-    <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
-    <a href="{% url 'termsofservice' %}">Terms of Use</a>
-    <a href="{% url 'HelpCenter' %}">Help Center</a>
-    <a href="{% url 'ContactUs' %}">Contact</a>
-  </div>
-</footer>
+<form method="POST" class="space-y-6 max-w-md mx-auto mt-8">
+    {% csrf_token %}
 
-<!-- Simple role selector functionality -->
-<script>
-  document.querySelectorAll('.role-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-</script>
+    <div class="space-y-2">
+        <label class="block text-sm font-semibold text-slate-700">
+            Email
+        </label>
+        {{ form.Email }}
+    </div>
 
-</body>
-</html>
+    <div class="space-y-2">
+        <label class="block text-sm font-semibold text-slate-700">
+            Password
+        </label>
+        {{ form.password }}
+    </div>
+
+    <button type="submit"
+        class="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-full font-bold text-lg shadow-xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-[0.98]">
+        Login In
+    </button>
+
+    <p class="text-center text-sm text-slate-600 mt-4">
+        Don't have an account?
+        <a href="{% url 'signup' %}" class="text-primary font-semibold hover:underline">
+            Register for free
+        </a>
+    </p>
+</form>
+<div class="mt-10 text-center text-sm text-slate-500">
+    <p>
+        &copy; 2026 Auctora. All rights reserved.
+</p>
+</div>
+<!-- Footer Small Links -->
+<div class="mt-auto pt-10 flex justify-center gap-6 text-xs text-slate-400 uppercase tracking-widest">
+<a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
+<a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
+<a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
+<a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
+</div>
+</div>
+</div>
+</body></html>
+
+
+

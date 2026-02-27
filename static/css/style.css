@@ -276,3 +276,80 @@ body::before {
     z-index: 1;
     padding: 40px 20px;
 }
+
+/* Premium Hover Border Effect */
+.btn-hover-border {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-hover-border::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px; /* Border thickness */
+    background: linear-gradient(90deg, #2f3293, #9333ea, #2f3293);
+    -webkit-mask: 
+        linear-gradient(#000 0 0) content-box, 
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-hover-border:hover::after {
+    opacity: 1;
+}
+
+
+/* Category Hover Outline Animation */
+.category-card {
+    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.35s ease;
+}
+
+.category-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem; /* matches rounded-2xl */
+    padding: 2px; /* border thickness */
+    background: linear-gradient(90deg, #2f3293, #9333ea, #2f3293);
+    -webkit-mask: 
+        linear-gradient(#000 0 0) content-box, 
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.category-card:hover::before {
+    opacity: 1;
+}
+
+
+.input-style {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.input-style:focus {
+    outline: none;
+    border-color: #2f3293;
+    box-shadow: 0 0 0 3px rgba(47, 50, 147, 0.15);
+}
+
+.input-style:hover {
+    border-color: #9333ea;
+}

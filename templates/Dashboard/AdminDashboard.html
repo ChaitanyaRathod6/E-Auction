@@ -1,4 +1,263 @@
-<title>Auctora - Bid Bold. Win Smart.</title>
-<h1>admin dashboard</h1>
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auctora Buyer Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2d1655",
+                        "accent": "#d4af37",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#17131f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    transitionProperty: {
+                      'height': 'height',
+                      'spacing': 'margin, padding',
+                    }
+                },
+            },
+        }</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 bg-primary text-white flex flex-col fixed h-full z-10 transition-all duration-300">
+<div class="p-6 flex items-center gap-3">
+<img alt="Auctora Logo" class="size-10 rounded-lg" data-alt="Auctora brand logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHHOAsglth03E0lBfQeGsaWks2y3e6xOYGuIGoz2A8RMpeReQoqhatoOJIxosrSSs0Ld7us4rLo6Xtdps--3q-2AbuKwORtaNFEfcYx80dbwKKXz8k8_oDYEQlejlzpEvcZFvIKG7kVY5UPzqDT82sI-NiKBCIAnllF9w6H6BsteucV_PVUw0pAfVd8ukuXAkyp-y-L9_5bSZaA8p_5DiO6DubPlgzl9m0oVyDNVy1sO78_3-g61QcqOaEFxVE16wJ4UizcCYbspl8"/>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Auctora</h1>
+<p class="text-xs text-slate-300 font-medium uppercase tracking-wider">Buyer Portal</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/10 text-white transition-all duration-200 hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="text-sm font-medium">My Bids</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span class="text-sm font-medium">Watchlist</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">trophy</span>
+<span class="text-sm font-medium">Won Items</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-sm font-medium">Wallet</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-white/5 rounded-xl p-4 mb-4">
+<p class="text-xs text-slate-400 mb-2">Current Tier</p>
+<p class="text-sm font-semibold mb-3 text-accent">Pro Member</p>
+<button class="w-full py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all uppercase tracking-wide transition-all duration-200 hover:scale-105">
+                        Upgrade Plan
+                    </button>
+</div>
+<div class="flex items-center gap-3 px-2">
+<div class="size-10 rounded-full bg-slate-500 overflow-hidden bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzY5Zg5GdhYVU09e46P-pHYYKwo88kpxrd95xbvOpTPzPclAqZfj2_0L3LI_TqahhHHaEeigv3NlVUj8OVPXSvhxgvYdQRN4FQvX3WgpQ7BzfepGbNKc8QgnLJnoENheJ1QuDUkmxjhXqWl84tVtDhE4AJwhjRJ4AyVqsjNEgn9IJMBjXiSeFV4vvW75BMVChHelnU5z32dFH5hlInWKZ7OXE8dCucPJtaxLlMXoW-4jCRTgvqdjlBGlw4LwGTQDfVW3F6UGjJMWcy')"></div>
+<div class="overflow-hidden">
+<p class="text-sm font-medium truncate">Alex Thompson</p>
+<p class="text-xs text-slate-400 truncate">alex@auctora.io</p>
+<a href="{% url 'logout' %}">Logout</a>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-8">
+<!-- Header -->
+<header class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Welcome back, Alex</h2>
+<p class="text-slate-500 dark:text-slate-400">Here's what's happening with your bids today.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 rounded-xl border-none bg-white dark:bg-slate-800 shadow-sm focus:ring-2 focus:ring-primary w-64 text-sm transition-shadow duration-200" placeholder="Search auctions..." type="text"/>
+</div>
+<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary relative transition-all duration-200 hover:scale-105">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800"></span>
+</button>
+<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary transition-all duration-200 hover:scale-105">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined leading-none">gavel</span>
+</div>
+<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Bids</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">24</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 rounded-lg bg-accent/10 text-accent">
+<span class="material-symbols-outlined leading-none">trophy</span>
+</div>
+<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+2%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Items Won</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
+<div class="flex items-center justify-between mb-4">
+<div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-600">
+<span class="material-symbols-outlined leading-none">account_balance_wallet</span>
+</div>
+<span class="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">Stable</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Wallet Balance</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">$12,450.00</p>
+</div>
+</div>
+<!-- Active Bids Table -->
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+<h3 class="text-lg font-bold">Active Bids</h3>
+<button class="text-sm font-medium text-primary hover:underline">View all</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-xs font-semibold uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-slate-900/50">
+<th class="px-6 py-4">Item Details</th>
+<th class="px-6 py-4">Current Bid</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Time Left</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Vintage luxury watch image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCW3Z-WIgL2gkOnfXUWGc9baaRcarRLuwxGQiAbzmfYOqOQNlaorF08QgqrcqKeR6NzRHMVjXxAY7G4TjiY7KMQBmFHjEQx33J4zqoQ28SPcG0efJ_zgaT1uFA1hQRCA4OnYYThS_fIuKU7Xyw3bCLsRCyQGRkFu4YAtbEv2nYA-RlA6ncfhxIiSv4Am6EQ6ej4Ni7YGWIPyQyOB7jK2169Hb5PmBySgqr_-wEn-1gqaiKQUiHgMhCmytq1QPD-P8byU83F0szTyFlT')"></div>
+<div>
+<p class="font-semibold text-sm">1960s Vintage Rolex Submariner</p>
+<p class="text-xs text-slate-500">Watches • Lot #442</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-slate-900 dark:text-white">$14,200</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
+<span class="material-symbols-outlined text-[14px]">star</span>
+                                        Winning
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                                        2h 15m
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
+                                        Raise Bid
+                                    </button>
+</td>
+</tr>
+<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Electric guitar image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7fSgpf15C4WUYa9PCSwUMWUoLtRjkUH0Q9fC3qDBNP2H45up3Tfwu6G0Dl7T-sOnpaUDcSXBHGKpgWjBLw51LxClbgAa-QnPKqCKkyvJV8MSSntmKd7haIimK32BLSjNmjmB9Zp8-DbV7kYrzGCFllrrGEGQJnPX0WlkBpcZ9mVwcZa5h6_JvCwnBDsPoVQi260NeopP3AFGNO0D7gEy8B0-G3xzaYKxzU46O19INTlA86UR-LRVXl0FiuAZGTfgCnbGaS4Yl0lvS')"></div>
+<div>
+<p class="font-semibold text-sm">Gibson Les Paul Custom '59</p>
+<p class="text-xs text-slate-500">Instruments • Lot #109</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-slate-900 dark:text-white">$8,450</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 uppercase">
+                                        Outbid
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-red-500 text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                                        45m
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
+                                        Re-bid
+                                    </button>
+</td>
+</tr>
+<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Abstract art canvas" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6B4p-vAhhNLh36pUoUcK6EAQRiwH-ZPEpTjTXkHZGfqeRk0azZk1nE9WQnRG_1E5TLZEzAQJf7EckygFewBwmDYQ3AC6G9ScFmkpmQj5wvHcd0q6h9DkKjCuPJStrq1EN9F1y0XfegmRwn1nFlF3NCY6KQgY3OeWDoUvXsfURMU4aNcakQoW7Q4IFEdFpuM0Jqa8SAaYXgc-Oa403cMbIpDdQBF8WjzfPXx_o7Bdvt0kV6DIYizQmkheNC-QEJLL1tDNW37vWX2im')"></div>
+<div>
+<p class="font-semibold text-sm">"Nebula Dreams" Abstract Canvas</p>
+<p class="text-xs text-slate-500">Fine Art • Lot #221</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="font-bold text-slate-900 dark:text-white">$3,400</p>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
+<span class="material-symbols-outlined text-[14px]">star</span>
+                                        Winning
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                                        5h 10m
+                                    </div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
+                                        Raise Bid
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>
+
 
 

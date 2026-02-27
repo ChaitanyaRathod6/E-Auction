@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Same font import as Support page: weights 400;500;600;700 only -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary":           "#2d1655",
+          "accent-gold":       "#d4af37",
+          "background-light":  "#f7f6f8",
+          "background-dark":   "#17131f",
+        },
+        fontFamily: {
+          /* Inter with same weight range as support.html */
+          "display": ["Inter", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  /* ── keep gold gradient text ── */
+  .gold-gradient-text {
+    background: linear-gradient(to right, #d4af37, #f1d592, #d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .royal-shadow {
+    box-shadow: 0 10px 30px -5px rgba(45,22,85,0.1), 0 4px 12px -4px rgba(45,22,85,0.05);
+  }
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -10px rgba(45,22,85,0.15);
+  }
+</style>
+</head>
+<body class="bg-background-light font-display text-slate-900">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+
+  <!-- ── HEADER — font-bold (700) matching support nav ── -->
+  <header class="flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md px-6 md:px-20 py-3 sticky top-0 z-50">
+    <div class="flex items-center gap-8">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center justify-center size-10 rounded-lg bg-primary text-accent-gold">
+          <span class="material-symbols-outlined text-2xl">shield_with_heart</span>
+        </div>
+        <!-- font-bold tracking-tight matching support "Auctora" header -->
+        <h2 class="text-primary text-2xl font-bold leading-tight tracking-tight">Auctora</h2>
+      </div>
+      <nav class="hidden md:flex items-center gap-9">
+        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Marketplace</a>
+        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Auctions</a>
+        <!-- active link matching support nav active style -->
+        <a class="text-primary text-sm font-semibold border-b-2 border-primary pb-1" href="#">Security</a>
+        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Support</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
+        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
+      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-accent-gold/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary">person</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ── HERO ── -->
+    <section class="relative py-20 px-6 md:px-20 bg-primary overflow-hidden">
+      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, #d4af37 1px, transparent 0); background-size: 40px 40px;"></div>
+      <div class="relative max-w-5xl mx-auto text-center">
+        <!-- label: same xs font-bold tracking-widest as support hero label -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-gold/10 border border-accent-gold/20 mb-8">
+          <span class="material-symbols-outlined text-accent-gold text-sm">verified_user</span>
+          <span class="text-accent-gold text-xs font-bold tracking-widest uppercase">Royal Standard Security</span>
+        </div>
+        <!-- h1: text-4xl md:text-5xl font-bold — matching support hero h1 size -->
+        <h1 class="text-slate-100 text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-6">
+          Security &amp; Trust <br/><span class="gold-gradient-text">at Auctora</span>
+        </h1>
+        <!-- body: text-lg font-normal leading-relaxed — matching support hero p -->
+        <p class="text-slate-300 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+          Experience the pinnacle of safe luxury auctions. Your protection is our royal mandate, secured with vault-grade technology and expert oversight.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button class="w-full sm:w-auto px-8 py-4 bg-accent-gold text-primary font-semibold rounded-xl hover:scale-105 transition-transform shadow-lg shadow-accent-gold/20">
+            View Security Protocols
+          </button>
+          <button class="w-full sm:w-auto px-8 py-4 border-2 border-slate-100/20 text-slate-100 font-semibold rounded-xl hover:bg-slate-100/10 transition-colors">
+            Contact Safety Team
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CORE PILLARS ── -->
+    <section class="py-24 px-6 md:px-20 max-w-7xl mx-auto">
+      <div class="mb-16 text-center">
+        <!-- h2: text-2xl font-bold matching support section headings -->
+        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Our Core Safety Pillars</h2>
+        <div class="w-20 h-1 bg-accent-gold mx-auto rounded-full"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="flex flex-col p-8 rounded-2xl bg-white border border-primary/5 royal-shadow hover-lift">
+          <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl">verified</span>
+          </div>
+          <!-- card h3: text-lg font-bold matching support category h3 -->
+          <h3 class="text-lg font-bold text-primary mb-3">Expert Verification</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            Every item is authenticated by master appraisers. We guarantee the provenance and condition of every listing.
+          </p>
+        </div>
+
+        <div class="flex flex-col p-8 rounded-2xl bg-white border border-primary/5 royal-shadow hover-lift">
+          <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl">payments</span>
+          </div>
+          <h3 class="text-lg font-bold text-primary mb-3">Secure Payments</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            Encrypted transactions using gold-standard tech. Funds are held in secure escrow until delivery is confirmed.
+          </p>
+        </div>
+
+        <div class="flex flex-col p-8 rounded-2xl bg-white border border-primary/5 royal-shadow hover-lift">
+          <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl">gavel</span>
+          </div>
+          <h3 class="text-lg font-bold text-primary mb-3">Buyer Protection</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            Comprehensive coverage for every winning bid. Shop with confidence knowing Auctora has your back.
+          </p>
+        </div>
+
+        <div class="flex flex-col p-8 rounded-2xl bg-white border border-primary/5 royal-shadow hover-lift">
+          <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl">enhanced_encryption</span>
+          </div>
+          <h3 class="text-lg font-bold text-primary mb-3">Data Privacy</h3>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            Your personal and financial data is guarded with utmost discretion using military-grade AES-256 encryption.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── PROTECT YOUR ACCOUNT ── -->
+    <section class="py-24 px-6 md:px-20 bg-background-light">
+      <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+        <div class="lg:w-1/2">
+          <div class="relative rounded-3xl overflow-hidden royal-shadow">
+            <div class="w-full aspect-video bg-primary/10 flex items-center justify-center bg-cover bg-center"
+                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBreoOYhOMGdvh9IX3qZdrztu_ro2oVEBHyX7QWEmVVF7_3cBosdnkNrsS7nomFRQbcHPeXFFaxvRvcTTlupOStLAmXFZu2x9FTS_zLiJQHMQt3VOFqVkh_D32w0J9Fs8hud8GiHMSMSUtjLJBegJ1jwb-hiXqsQdcHBsExP-mKTcQLZZdYSzhcnSgiClFa9LDOylve80q4uBqfPzNueGy9qLM75InuECpc7cGHRCak9ERTbaKhghgqXS5XxE-FvisDPEnzn9c4UMdi')">
+              <div class="absolute inset-0 bg-primary/40 flex items-center justify-center">
+                <div class="size-20 rounded-full bg-accent-gold text-primary flex items-center justify-center animate-pulse">
+                  <span class="material-symbols-outlined text-4xl">lock</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:w-1/2">
+          <!-- h2 matching support "Popular Articles" h2: text-2xl font-bold -->
+          <h2 class="text-2xl font-bold text-primary mb-4">Protect Your Account</h2>
+          <p class="text-slate-500 text-sm leading-relaxed mb-8">
+            Your account security is a partnership. Follow these essential tips to ensure your assets remain protected under your exclusive control.
+          </p>
+          <div class="space-y-6">
+            <div class="flex gap-4 items-start">
+              <div class="size-10 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center mt-1">
+                <span class="material-symbols-outlined text-primary">phonelink_lock</span>
+              </div>
+              <div>
+                <!-- tip h4: font-bold text-base matching support article font-medium -->
+                <h4 class="text-base font-bold text-primary">Enable 2-Factor Authentication</h4>
+                <p class="text-sm text-slate-500 mt-1">Add an extra layer of security with mobile authentication apps or hardware keys.</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start">
+              <div class="size-10 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center mt-1">
+                <span class="material-symbols-outlined text-primary">password</span>
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-primary">Use Strong Passwords</h4>
+                <p class="text-sm text-slate-500 mt-1">Create unique passwords with a mix of symbols, numbers, and cases. Avoid reuse.</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start">
+              <div class="size-10 rounded-full bg-primary/10 flex-shrink-0 flex items-center justify-center mt-1">
+                <span class="material-symbols-outlined text-primary">notifications_active</span>
+              </div>
+              <div>
+                <h4 class="text-base font-bold text-primary">Monitor Login Alerts</h4>
+                <p class="text-sm text-slate-500 mt-1">Check your email for notifications about new sign-ins from unrecognized devices.</p>
+              </div>
+            </div>
+          </div>
+          <button class="mt-10 px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all">
+            Go to Security Settings
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA BANNER ── -->
+    <section class="py-20 px-6 md:px-20">
+      <div class="max-w-4xl mx-auto rounded-3xl bg-primary p-12 text-center relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-8 opacity-10">
+          <span class="material-symbols-outlined text-[120px] text-slate-100">verified_user</span>
+        </div>
+        <!-- h2: text-2xl font-bold matching support sidebar h2 -->
+        <h2 class="text-2xl font-bold text-slate-100 mb-4 relative z-10">Still have questions?</h2>
+        <p class="text-slate-300 text-sm mb-8 relative z-10 leading-relaxed">Our dedicated white-glove support team is available 24/7 to assist with any security concerns.</p>
+        <div class="flex flex-wrap justify-center gap-4 relative z-10">
+          <button class="px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-slate-100 transition-colors">
+            Help Center
+          </button>
+          <button class="px-8 py-3 border border-slate-100/30 text-slate-100 font-semibold rounded-lg hover:bg-slate-100/10 transition-colors">
+            Contact Support
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER — same purple bg, same font scale as support footer ── -->
+  <footer class="bg-[#2d1655] pt-14 pb-8 px-6 md:px-20 border-t border-white/10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+
+      <!-- Brand -->
+      <div class="col-span-1">
+        <div class="flex items-center gap-2 mb-5">
+          <div class="size-8 rounded bg-accent-gold flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-xl">shield_with_heart</span>
+          </div>
+          <!-- font-bold tracking-tight matching support footer brand -->
+          <h2 class="text-white text-xl font-bold tracking-tight">Auctora</h2>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+          The world's premier destination for luxury assets, where safety meets sophistication.
+        </p>
+        <div class="flex gap-3">
+          <a class="size-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all" href="#">
+            <span class="material-symbols-outlined text-sm">public</span>
+          </a>
+          <a class="size-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all" href="#">
+            <span class="material-symbols-outlined text-sm">share</span>
+          </a>
+          <a class="size-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all" href="#">
+            <span class="material-symbols-outlined text-sm">thumb_up</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Marketplace -->
+      <div>
+        <!-- column headings: font-bold text-sm uppercase tracking-widest matching support footer -->
+        <h4 class="text-sm font-bold uppercase tracking-widest text-slate-300 mb-5">Marketplace</h4>
+        <ul class="space-y-3 text-sm text-slate-400">
+          <li><a class="hover:text-white transition-colors" href="#">Current Auctions</a></li>
+          <li><a class="hover:text-white transition-colors" href="#">Private Sales</a></li>
+          <li><a class="hover:text-white transition-colors" href="#">Consignments</a></li>
+          <li><a class="hover:text-white transition-colors" href="#">Verified Houses</a></li>
+        </ul>
+      </div>
+
+      <!-- Trust & Safety -->
+      <div>
+        <h4 class="text-sm font-bold uppercase tracking-widest text-slate-300 mb-5">Trust &amp; Safety</h4>
+        <ul class="space-y-3 text-sm text-slate-400">
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'Support' %}">Support</a></li>
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'Security' %}">Security</a></li>
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'Community' %}">Community</a></li>
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a></li>
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a></li>
+          
+          <li><a class="hover:text-white transition-colors" href="{% url 'HelpCenter' %}">Help Center</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h4 class="text-sm font-bold uppercase tracking-widest text-slate-300 mb-5">Newsletter</h4>
+        <p class="text-slate-400 text-sm mb-4">Stay updated with security news and luxury arrivals.</p>
+        <div class="flex bg-white/10 border border-white/20 rounded-xl p-1">
+          <input class="bg-transparent border-none focus:ring-0 text-sm flex-1 px-3 placeholder:text-slate-400 text-white" placeholder="Your email" type="email"/>
+          <button class="bg-white text-primary px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-100 transition">Join</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs uppercase tracking-widest">
+      <p>© 2026 Auctora Luxury Auctions. All rights reserved.</p>
+      <div class="flex gap-8">
+        <a class="hover:text-slate-300 transition" href="#">Cookie Settings</a>
+        <a class="hover:text-slate-300 transition" href="#">Sitemap</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body></html>
