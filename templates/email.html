@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <style>
+    body { margin: 0; padding: 0; background-color: #f8f7fb; font-family: Inter, sans-serif; }
+    .wrapper { max-width: 600px; margin: 40px auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(45,22,85,0.08); }
+    .header { background-color: #2d1655; padding: 40px; text-align: center; }
+    .header h1 { color: white; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    .header p { color: rgba(255,255,255,0.7); margin: 8px 0 0; font-size: 14px; }
+    .banner { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .body { padding: 40px; }
+    .body h2 { color: #2d1655; font-size: 22px; margin: 0 0 12px; }
+    .body p { color: #475569; font-size: 15px; line-height: 1.7; margin: 0 0 16px; }
+    .btn { display: inline-block; background-color: #2d1655; color: white; padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 8px 0 24px; }
+    .divider { border: none; border-top: 1px solid #e2e8f0; margin: 24px 0; }
+    .features { display: flex; gap: 16px; margin: 24px 0; }
+    .feature { flex: 1; background: #f8f7fb; border-radius: 12px; padding: 20px; text-align: center; }
+    .feature span { font-size: 28px; display: block; margin-bottom: 8px; }
+    .feature p { color: #2d1655; font-weight: 600; font-size: 13px; margin: 0; }
+    .footer { background-color: #2d1655; padding: 24px 40px; text-align: center; }
+    .footer p { color: rgba(255,255,255,0.5); font-size: 12px; margin: 0; }
+    .footer a { color: rgba(255,255,255,0.7); text-decoration: none; margin: 0 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>🔨 Auctora</h1>
+      <p>The World's Premier Luxury Auction Platform</p>
+    </div>
+
+    <!-- Banner Image (attached image shown inline) -->
+    <img src="cid:welcome_banner" class="banner" alt="Welcome to Auctora"/>
+
+    <!-- Body -->
+    <div class="body">
+      <h2>Welcome aboard, {{ first_name }}! 🎉</h2>
+      <p>
+        Thank you for joining <strong>Auctora</strong> — the most transparent, secure, and exclusive digital auction platform ever created. Your account is now active and ready to go.
+      </p>
+
+      <a href="http://127.0.0.1:8000/core/login/" class="btn">Start Bidding Now →</a>
+
+      <hr class="divider"/>
+
+      <p style="font-weight: 600; color: #2d1655; margin-bottom: 16px;">What you can do on Auctora:</p>
+
+      <div class="features">
+        <div class="feature">
+          <span>🏆</span>
+          <p>Bid on Exclusive Items</p>
+        </div>
+        <div class="feature">
+          <span>🔒</span>
+          <p>Secure Transactions</p>
+        </div>
+        <div class="feature">
+          <span>📦</span>
+          <p>Sell Your Assets</p>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <p style="font-size: 13px; color: #94a3b8;">
+        If you did not create this account, please ignore this email or contact us at 
+        <a href="mailto:chaitanyarathod09@gmail.com" style="color: #2d1655;">chaitanyarathod09@gmail.com</a>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Support</a>
+      </p>
+      <p style="margin-top: 12px;">© 2026 Auctora International. All rights reserved.</p>
+    </div>
+
+  </div>
+</body>
+</html>

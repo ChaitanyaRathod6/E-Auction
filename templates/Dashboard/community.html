@@ -51,13 +51,19 @@
 <span class="material-symbols-outlined text-primary/60 text-lg">search</span>
 <input class="bg-transparent border-none focus:ring-0 text-sm w-32 lg:w-48" placeholder="Search the Hub..."/>
 </div>
-<button class="p-2 text-primary/70 hover:bg-primary/10 rounded-xl transition-all">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<div class="h-10 w-10 rounded-full border-2 border-accent-gold p-0.5 overflow-hidden">
-<div class="h-full w-full rounded-full bg-cover bg-center" data-alt="User profile avatar with luxury aesthetic" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAx8WgNZpUh4MfGqZdYpBn1akZ6CG4ov2Z3lr9ns0RHlLsaIV8lJSZf2q4p5-G0pbcK3BVpw_KEXEVD0Ahe-SCXom_ktmzsBOBTi0hA2axup8qDDAsl-4GTfyoGQ-2q-jeGR8N7-sczQ6lcJ_AKMXjM2FVH5PUd4eOnZ1p3D9Hzm4rhH0KvrzJfYa9CH0KdD8o0qzOR-EoWQdBUJZECC0d7tj57DUNONm4MNX51uQDBb-XDQnTMbhEWh66BBuT0d83i1vkrSuiyFTLy");'></div>
-</div>
-</div>
+<div class="flex items-center gap-3">
+      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
+        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
+      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-accent-gold/30 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary">person</span>
+      </div> 
+
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden bg-cover bg-center"
+           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB8OTQPprsfW3VBaMMvFNhC6UZYLm1GMLckh9F_wsahBLE67DaEs6FywNd7z7kKNB3YBfNONLu8KRQ_RrBhThtFTELfNYzPiB5gRQWcn2i_RHkJ7G3OAfAdAJgm5f4xniSRDXHvUvuEXrOyydN0WfO-cz-hSDPc584H3LQBT1MY4KEDoZP9kBF1wLuf-urXHmQ1On4A3yL4fDbwaYlB29SM23daMR1SQRR5ueftoReuotYwwwE6Uhl04tPHIFGd0FqklWdnzdxYnbv");'>
+      </div>
+    </div>
+
 </header>
 <main class="flex-1 w-full max-w-[1280px] mx-auto px-4 md:px-10 py-8">
 <!-- Hero Section -->

@@ -1,401 +1,298 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<link rel="icon" type="image/png" href="{% static 'images/Auctora_logo.png' %}">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auctora - Privacy Policy</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy Policy - Auctora Premium Auctions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#2d1655",
+          "background-light": "#f8f7fb",
+        },
+        fontFamily: { "display": ["Inter", "sans-serif"] },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
 <style>
-:root {
-  --red: #e53935;
-  --blue: #1565c0;
-  --yellow: #f9a825;
-  --green: #2e7d32;
-  --bg: #f4f4f4;
-  --white: #ffffff;
-  --dark: #111111;
-  --mid: #444444;
-  --light: #888888;
-  --border: #e0e0e0;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--dark);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-.logo {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 28px;
-  letter-spacing: -1px;
-  text-decoration: none;
-  display: flex;
-}
-.logo span:nth-child(1) { color: var(--red); }
-.logo span:nth-child(2) { color: var(--blue); }
-.logo span:nth-child(3) { color: var(--yellow); }
-.logo span:nth-child(4) { color: var(--green); }
-
-.topbar-right {
-  font-size: 13px;
-  color: var(--light);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.topbar-right a {
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.topbar-right a:hover { text-decoration: underline; }
-
-/* ── MAIN CONTENT ── */
-.page-wrapper {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 900px) 1fr;
-  min-height: calc(100vh - 64px);
-}
-
-.content-panel {
-  background: white;
-  padding: 60px 60px;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  animation: fadeUp 0.7s ease forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.content-header {
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.content-header h1 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 38px;
-  color: var(--dark);
-  margin-bottom: 12px;
-}
-
-.content-header h1 span {
-  color: var(--blue);
-}
-
-.content-header p {
-  font-size: 15px;
-  color: var(--light);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.last-updated {
-  display: inline-block;
-  background: #f0f5ff;
-  color: var(--blue);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 16px;
-  border-radius: 30px;
-  margin-top: 16px;
-}
-
-/* ── POLICY CONTENT ── */
-.policy-section {
-  margin-bottom: 40px;
-}
-
-.policy-section h2 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 22px;
-  color: var(--dark);
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border);
-}
-
-.policy-section h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--mid);
-  margin: 24px 0 12px;
-}
-
-.policy-section p {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--mid);
-  margin-bottom: 16px;
-}
-
-.policy-section ul, .policy-section ol {
-  margin: 16px 0 16px 24px;
-}
-
-.policy-section li {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--mid);
-  margin-bottom: 8px;
-}
-
-.policy-section li strong {
-  color: var(--dark);
-}
-
-.highlight-box {
-  background: #f8f9fa;
-  border-left: 4px solid var(--blue);
-  padding: 20px;
-  border-radius: 8px;
-  margin: 24px 0;
-}
-
-.highlight-box p {
-  margin-bottom: 0;
-}
-
-/* ── FOOTER ── */
-.page-footer {
-  background: white;
-  border-top: 1px solid var(--border);
-  padding: 16px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--light);
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: var(--light);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.footer-links a:hover {
-  color: var(--blue);
-}
-.footer-links a.active {
-  color: var(--blue);
-  font-weight: 600;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 1100px) {
-  .page-wrapper { grid-template-columns: 1fr 800px 1fr; }
-}
-
-@media (max-width: 900px) {
-  .page-wrapper { grid-template-columns: 1fr; }
-  .content-panel { padding: 40px 24px; border: none; }
-  .topbar { padding: 0 20px; }
-  .content-header h1 { font-size: 30px; }
-}
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .sidebar-link:hover { background-color: rgba(45,22,85,0.08); color: #2d1655; }
+  .active-link { background-color: rgba(45,22,85,0.12); color: #2d1655; font-weight: 700; }
 </style>
 </head>
-<body>
+<body class="bg-background-light text-slate-900 font-display">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
 
-<!-- TOPBAR -->
-<header class="topbar">
-  <a href="/" style="text-decoration: none;">
-    <div class="logo">
-      <img src="{% static 'images/Auctora_logo.png' %}" alt="Auctora" height="60" />
-    </div>
-  </a>
-  <div class="topbar-right">
-    <a href="{% url 'login' %}">Sign in</a>
-    <a href ="{% url 'home' %}">Home</a>
-  </div>
-</header>
-
-<!-- MAIN CONTENT -->
-<div class="page-wrapper">
-  <div></div> <!-- Left spacer -->
-  
-  <div class="content-panel">
-    <div class="content-header">
-      <h1>Privacy <span>Policy</span></h1>
-      <p>How we collect, use, and protect your personal information</p>
-      <div class="last-updated">Last Updated: February 25, 2026</div>
-    </div>
-
-    <div class="policy-section">
-      <h2>1. Introduction</h2>
-      <p>At Auctora, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our auction platform, website, and mobile application (collectively, the "Service").</p>
-      <p>Please read this privacy policy carefully. By using the Service, you consent to the practices described in this policy.</p>
+  <!-- ══ HEADER — white ══ -->
+  <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white backdrop-blur-md px-6 lg:px-20 py-4 shadow-sm">
+    <div class="mx-auto flex max-w-7xl items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-primary rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-2xl">gavel</span>
+          </div>
+          <h2 class="text-xl font-bold tracking-tight text-primary">Auctora</h2>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Auctions</a>
+          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Live</a>
+          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">About</a>
+          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Contact</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
+        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
+      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
       
-      <div class="highlight-box">
-        <p><strong>Quick Summary:</strong> We collect information to provide better auction services, never sell your personal data, and use industry-standard security to protect your information.</p>
+
+      <div class="size-10 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden bg-cover bg-center"
+           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB8OTQPprsfW3VBaMMvFNhC6UZYLm1GMLckh9F_wsahBLE67DaEs6FywNd7z7kKNB3YBfNONLu8KRQ_RrBhThtFTELfNYzPiB5gRQWcn2i_RHkJ7G3OAfAdAJgm5f4xniSRDXHvUvuEXrOyydN0WfO-cz-hSDPc584H3LQBT1MY4KEDoZP9kBF1wLuf-urXHmQ1On4A3yL4fDbwaYlB29SM23daMR1SQRR5ueftoReuotYwwwE6Uhl04tPHIFGd0FqklWdnzdxYnbv");'>
       </div>
     </div>
-
-    <div class="policy-section">
-      <h2>2. Information We Collect</h2>
-      
-      <h3>2.1 Personal Information</h3>
-      <p>When you register for an account, we collect:</p>
-      <ul>
-        <li><strong>Contact Information:</strong> Name, email address, phone number, shipping address</li>
-        <li><strong>Account Information:</strong> Username, password, profile picture</li>
-        <li><strong>Payment Information:</strong> Credit card details, bank account information (processed securely through third-party payment processors)</li>
-        <li><strong>Identity Verification:</strong> Government ID for seller verification (where required)</li>
-      </ul>
-
-      <h3>2.2 Automatically Collected Information</h3>
-      <p>When you use our Service, we automatically collect:</p>
-      <ul>
-        <li><strong>Usage Data:</strong> Bidding history, items viewed, search queries, time spent on pages</li>
-        <li><strong>Device Information:</strong> IP address, browser type, operating system, device identifiers</li>
-        <li><strong>Location Data:</strong> General geographic location based on IP address</li>
-        <li><strong>Cookies:</strong> We use cookies to enhance your experience and analyze usage patterns</li>
-      </ul>
     </div>
+  </header>
 
-    <div class="policy-section">
-      <h2>3. How We Use Your Information</h2>
-      <p>We use the collected information for various purposes:</p>
-      <ul>
-        <li><strong>Provide and maintain the Service:</strong> Process bids, manage auctions, facilitate payments</li>
-        <li><strong>Improve our Service:</strong> Analyze usage patterns to enhance user experience</li>
-        <li><strong>Communicate with you:</strong> Send updates, security alerts, and support messages</li>
-        <li><strong>Prevent fraud:</strong> Detect and prevent fraudulent activities and unauthorized transactions</li>
-        <li><strong>Legal compliance:</strong> Comply with applicable laws and regulations</li>
-        <li><strong>Marketing:</strong> Send promotional communications (you can opt out at any time)</li>
-      </ul>
+  <main class="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 lg:px-20 py-10 lg:flex-row lg:gap-12">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="w-full lg:w-64 flex-shrink-0">
+      <div class="sticky top-28 space-y-8">
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-widest text-primary/50 mb-4">Policy Navigation</h3>
+          <nav class="flex flex-col gap-1">
+            <a class="active-link sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 transition-all" href="#intro">
+              <span class="material-symbols-outlined text-xl text-primary">info</span>
+              <span class="text-sm">Introduction</span>
+            </a>
+            <a class="sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 font-medium transition-all" href="#collection">
+              <span class="material-symbols-outlined text-xl">database</span>
+              <span class="text-sm">Data Collection</span>
+            </a>
+            <a class="sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 font-medium transition-all" href="#usage">
+              <span class="material-symbols-outlined text-xl">settings_account_box</span>
+              <span class="text-sm">How We Use Data</span>
+            </a>
+            <a class="sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 font-medium transition-all" href="#sharing">
+              <span class="material-symbols-outlined text-xl">share</span>
+              <span class="text-sm">Sharing &amp; Transfers</span>
+            </a>
+            <a class="sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 font-medium transition-all" href="#rights">
+              <span class="material-symbols-outlined text-xl">shield_person</span>
+              <span class="text-sm">Your Legal Rights</span>
+            </a>
+            <a class="sidebar-link group flex items-center gap-3 rounded-xl px-4 py-3 text-slate-600 font-medium transition-all" href="#contact">
+              <span class="material-symbols-outlined text-xl">mail</span>
+              <span class="text-sm">Contact Support</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Help card — purple -->
+        <div class="rounded-2xl bg-primary p-6 text-white hidden lg:block">
+          <p class="text-xs font-bold uppercase tracking-wider mb-2 text-white/70">Need help?</p>
+          <p class="text-sm text-white/70 mb-4 leading-relaxed">Our legal team is available to clarify any privacy concerns.</p>
+          <button class="w-full rounded-lg bg-white text-primary py-2 text-xs font-bold hover:bg-slate-100 transition-colors">
+            Request Consultation
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <article class="flex-1 mt-8 lg:mt-0">
+
+      <!-- Title block -->
+      <div class="mb-12">
+        <div class="flex items-center gap-2 text-xs font-bold text-primary/60 uppercase tracking-widest mb-4">
+          <span>Legal Center</span>
+          <span class="text-slate-300">/</span>
+          <span>Privacy &amp; Security</span>
+        </div>
+        <h1 class="text-4xl lg:text-5xl font-bold text-primary mb-6">Privacy Policy</h1>
+        <div class="flex items-center gap-4 text-sm text-slate-400">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">calendar_today</span>
+            Effective Date: Jan 15, 2024
+          </span>
+          <span class="h-1 w-1 rounded-full bg-slate-300"></span>
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">update</span>
+            Version 4.2
+          </span>
+        </div>
+      </div>
+
+      <!-- Hero banner — purple -->
+      <div class="relative mb-12 overflow-hidden rounded-3xl bg-primary h-[280px]">
+        <div class="absolute inset-0 bg-gradient-to-tr from-primary via-primary/80 to-transparent"></div>
+        <!-- subtle dot pattern -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 32px 32px;"></div>
+        <img alt="Privacy and Security concept" class="h-full w-full object-cover mix-blend-overlay opacity-30"
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdqB2-PEEgEolnV7Lgbdnbk7D_bdwaTCWbEDQTlu6pc21TAbPuedvtWpWOYgG34iSzdKTrWgMbgA12dIGtAufIFuVCImLcs1VojXHAN5pR9SoXIcXg6AoatJRs_nr838PoI54B1clRwA_LKAo45BD0UtLaNGRo8yWWumfus8G4m4wkGQGO85QbE2pEpl-pT9Mzh7x5CgJFzZXNHyO4VarbyRV4sIssl7v1MNApl5XkQchLq-Yg2BprAHBiosPsjz8q_WSiU3dqgysy"/>
+        <div class="absolute bottom-8 left-10 max-w-lg">
+          <h2 class="text-2xl font-bold text-white mb-2">Trust and Integrity in Every Bid</h2>
+          <p class="text-white/70 text-sm">At Auctora, we safeguard your data with the same level of care and exclusivity we give our premium auctions.</p>
+        </div>
+      </div>
+
+      <!-- Policy sections -->
+      <div class="space-y-12 text-slate-600 leading-relaxed">
+
+        <!-- 1. Introduction -->
+        <section id="intro">
+          <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+            <span class="h-8 w-1 bg-primary rounded-full"></span>
+            1. Introduction
+          </h2>
+          <p class="mb-4">Welcome to Auctora. Your privacy is paramount to our operation. This Privacy Policy describes how we collect, use, process, and disclose your information, including personal information, in conjunction with your access to and use of the Auctora Platform.</p>
+          <p>When this policy mentions "Auctora," "we," "us," or "our," it refers to the Auctora company that is responsible for your information under this Privacy Policy.</p>
+        </section>
+
+        <!-- 2. Data Collection -->
+        <section class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm" id="collection">
+          <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+            <span class="h-8 w-1 bg-primary rounded-full"></span>
+            2. Information We Collect
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+              <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <h3 class="font-bold text-primary">Account Information</h3>
+              <p class="text-sm text-slate-500">When you register, we require certain information such as your first name, last name, email address, and date of birth to verify eligibility for premium auctions.</p>
+            </div>
+            <div class="space-y-4">
+              <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">credit_card</span>
+              </div>
+              <h3 class="font-bold text-primary">Financial Data</h3>
+              <p class="text-sm text-slate-500">To participate in high-value bidding, we collect banking details and identity verification documents through our secure, encrypted partners.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. How We Use Data -->
+        <section id="usage">
+          <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+            <span class="h-8 w-1 bg-primary rounded-full"></span>
+            3. How We Use Data
+          </h2>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1 flex-shrink-0">check_circle</span>
+              <span>To facilitate bidding processes and ensure the authenticity of all participants.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1 flex-shrink-0">check_circle</span>
+              <span>To provide customer support and personalized auction alerts based on your interests.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1 flex-shrink-0">check_circle</span>
+              <span>To maintain the security and integrity of our platform through fraud detection and prevention.</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Cookie notice callout -->
+        <div class="bg-primary/5 border-l-4 border-primary p-6 rounded-r-xl">
+          <h4 class="font-bold text-primary mb-2 text-sm">Notice on Cookies</h4>
+          <p class="text-sm italic text-slate-600">Our platform uses advanced biometric session tracking and cookies to maintain the highest level of security during live e-auctions. By continuing to browse, you consent to these security measures.</p>
+        </div>
+
+      </div>
+
+      <!-- Bottom actions -->
+      <div class="mt-20 pt-10 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <p class="text-sm text-slate-400 italic">Do you have questions about a specific clause?</p>
+        <div class="flex gap-4">
+          <button class="px-6 py-2 border-2 border-primary rounded-full text-sm font-bold text-primary hover:bg-primary hover:text-white transition-all">Download PDF</button>
+          <button class="px-6 py-2 bg-primary text-white rounded-full text-sm font-bold shadow-lg shadow-primary/20 transition-all hover:bg-primary/90">Accept Policy</button>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- ══ FOOTER — purple ══ -->
+  <footer class="bg-primary pt-16 pb-10 text-white border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-6 lg:px-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+        <!-- Brand -->
+        <div class="space-y-5">
+          <div class="flex items-center gap-3">
+            <div class="size-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+              <span class="material-symbols-outlined text-white text-xl">gavel</span>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight text-white">Auctora</h2>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed">The global standard for premium luxury auctions. Providing transparency, security, and exclusivity since 2018.</p>
+          <div class="flex gap-3">
+            <a class="size-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/20 transition-all" href="#">
+              <span class="material-symbols-outlined text-lg">share</span>
+            </a>
+            <a class="size-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/20 transition-all" href="#">
+              <span class="material-symbols-outlined text-lg">public</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Platform -->
+        <div>
+          <h4 class="font-bold mb-5 text-slate-300 text-sm uppercase tracking-widest">Platform</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><a class="hover:text-white transition-colors" href="#">Current Auctions</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Past Results</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Seller Guide</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Buyer Verification</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources -->
+        <div>
+          <h4 class="font-bold mb-5 text-slate-300 text-sm uppercase tracking-widest">Resources</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><a class="hover:text-white transition-colors" href="#">Market Reports</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Luxury Indices</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Press Room</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Community</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="font-bold mb-5 text-slate-300 text-sm uppercase tracking-widest">Legal</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <!-- <a href="{% url 'privacypolicy' %}"> -->
+            <li><a class="text-white font-semibold" href="{% url 'privacypolicy' %}">Privacy Policy</a></li>
+            <!-- <a href="{% url 'termsofservice' %}"> -->
+            <li><a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Bidding Policy</a></li>
+            <li><a class="hover:text-white transition-colors" href="#">Cookie Settings</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 uppercase tracking-widest">
+        <p>© 2026 Auctora International Ltd. All Rights Reserved.</p>
+        <div class="flex gap-8">
+          <a class="hover:text-white transition-colors" href="#">Global Presence</a>
+          <a class="hover:text-white transition-colors" href="#">Responsible Sourcing</a>
+        </div>
+      </div>
     </div>
+  </footer>
 
-    <div class="policy-section">
-      <h2>4. Information Sharing and Disclosure</h2>
-      <p>We may share your information in the following situations:</p>
-      
-      <h3>4.1 With Sellers/Buyers</h3>
-      <p>When you participate in auctions, limited information (username, shipping address for purchases) is shared with the other party to complete transactions.</p>
-
-      <h3>4.2 Service Providers</h3>
-      <p>We share information with third-party vendors who help us operate our business (payment processors, shipping companies, analytics providers). These providers are contractually obligated to protect your information.</p>
-
-      <h3>4.3 Legal Requirements</h3>
-      <p>We may disclose information if required by law or in response to valid requests by public authorities.</p>
-
-      <h3>4.4 Business Transfers</h3>
-      <p>In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of the transaction.</p>
-
-      <p><strong>We do not sell your personal information to third parties.</strong></p>
-    </div>
-
-    <div class="policy-section">
-      <h2>5. Data Security</h2>
-      <p>We implement appropriate technical and organizational measures to protect your personal information:</p>
-      <ul>
-        <li>256-bit SSL encryption for all data transmission</li>
-        <li>Regular security audits and penetration testing</li>
-        <li>Strict access controls for employee data access</li>
-        <li>Secure data centers with 24/7 monitoring</li>
-      </ul>
-      <p>However, no method of transmission over the Internet is 100% secure. While we strive to protect your information, we cannot guarantee absolute security.</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>6. Your Privacy Rights</h2>
-      <p>Depending on your location, you may have the following rights:</p>
-      <ul>
-        <li><strong>Access:</strong> Request a copy of your personal information</li>
-        <li><strong>Correction:</strong> Update or correct inaccurate information</li>
-        <li><strong>Deletion:</strong> Request deletion of your information (subject to legal obligations)</li>
-        <li><strong>Opt-out:</strong> Opt out of marketing communications</li>
-        <li><strong>Data portability:</strong> Receive your information in a structured format</li>
-      </ul>
-      <p>To exercise these rights, contact us at privacy@auctora.com.</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>7. Cookies and Tracking</h2>
-      <p>We use cookies and similar tracking technologies to:</p>
-      <ul>
-        <li>Keep you logged in</li>
-        <li>Remember your preferences</li>
-        <li>Understand how you use our platform</li>
-        <li>Show relevant advertisements</li>
-      </ul>
-      <p>You can control cookies through your browser settings. Disabling cookies may affect certain features of the Service.</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>8. Children's Privacy</h2>
-      <p>Our Service is not intended for individuals under the age of 18. We do not knowingly collect personal information from minors. If we become aware that a minor has provided us with personal information, we will take steps to delete it.</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>9. International Data Transfers</h2>
-      <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your information in accordance with this Privacy Policy.</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>10. Changes to This Policy</h2>
-      <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date. For significant changes, we may provide additional notice (such as an email notification).</p>
-    </div>
-
-    <div class="policy-section">
-      <h2>11. Contact Us</h2>
-      <p>If you have questions about this Privacy Policy, please contact us:</p>
-      <ul>
-        <li><strong>Email:</strong> privacy@auctora.com</li>
-        <li><strong>Address:</strong> 123 Auction Street, San Francisco, CA 94105</li>
-        <li><strong>Phone:</strong> +1 (800) 555-AUCT</li>
-      </ul>
-    </div>
-  </div>
-  
-  <div></div> <!-- Right spacer -->
 </div>
-
-<!-- FOOTER -->
-<footer class="page-footer">
-  <span>© 2026 Auctora Inc. All Rights Reserved.</span>
-  <div class="footer-links">
-    <a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
-        <a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
-        <a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
-        
-        <a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
-       
-        <a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
-
-        <a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
-  </div>
-</footer>
-
-</body>
-</html>
+</body></html>

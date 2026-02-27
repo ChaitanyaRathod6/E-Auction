@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html class="" lang="en">
 <head>
@@ -38,6 +39,27 @@
   input:focus, select:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(45, 22, 85, 0.2);
+  }
+
+  /* ── input-style: applied to all {{ form.field }} rendered inputs ── */
+  .input-style {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    color: #0f172a;
+    transition: all 0.2s;
+  }
+  .input-style:focus {
+    outline: none;
+    border-color: #2d1655;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(45, 22, 85, 0.15);
+  }
+  .input-style::placeholder {
+    color: #94a3b8;
   }
 </style>
 </head>
@@ -105,70 +127,42 @@
 
       <!-- Form -->
       <form method="post" action="#" class="space-y-4">
-        <!-- {% csrf_token %} -->
+        {% csrf_token %}
 
         <!-- First & Last Name -->
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1">
             <label for="id_First_name" class="block text-sm font-semibold text-slate-700">First Name</label>
-            <!-- {{ form.First_name }} -->
-            <input type="text" id="id_First_name" name="First_name" placeholder="First name"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-            <!-- {{ form.First_name.errors }} -->
+            {{ form.First_name }}
           </div>
           <div class="space-y-1">
             <label for="id_Last_name" class="block text-sm font-semibold text-slate-700">Last Name</label>
-            <!-- {{ form.Last_name }} -->
-            <input type="text" id="id_Last_name" name="Last_name" placeholder="Last name"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-            <!-- {{ form.Last_name.errors }} -->
+            {{ form.Last_name }}
           </div>
         </div>
 
         <!-- Email -->
         <div class="space-y-1">
           <label for="id_Email" class="block text-sm font-semibold text-slate-700">Email Address</label>
-          <!-- {{ form.Email }} -->
-          <input type="email" id="id_Email" name="Email" placeholder="Enter your email"
-            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-          <!-- {{ form.Email.errors }} -->
+          {{ form.Email }}
         </div>
 
         <!-- Gender & Mobile -->
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1">
             <label for="id_Gender" class="block text-sm font-semibold text-slate-700">Gender</label>
-            <!-- {{ form.Gender }} -->
-            <select id="id_Gender" name="Gender"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 transition focus:border-primary focus:bg-white appearance-none">
-              <option value="" disabled selected>Select</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-              <option value="O">Other</option>
-            </select>
-            <!-- {{ form.Gender.errors }} -->
+            {{ form.Gender }}
           </div>
           <div class="space-y-1">
             <label for="id_Mobile_number" class="block text-sm font-semibold text-slate-700">Mobile Number</label>
-            <!-- {{ form.Mobile_number }} -->
-            <input type="text" id="id_Mobile_number" name="Mobile_number" placeholder="Mobile number"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-            <!-- {{ form.Mobile_number.errors }} -->
+            {{ form.Mobile_number }}
           </div>
         </div>
 
         <!-- Role -->
         <div class="space-y-1">
           <label for="id_Role" class="block text-sm font-semibold text-slate-700">Role</label>
-          <!-- {{ form.Role }} -->
-          <select id="id_Role" name="Role"
-            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 transition focus:border-primary focus:bg-white appearance-none">
-            <option value="" disabled selected>Select your role</option>
-            <option value="Admin">Admin</option>
-            <option value="Buyer">Buyer</option>
-            <option value="Seller">Seller</option>
-          </select>
-          <!-- {{ form.Role.errors }} -->
+          {{ form.Role }}
         </div>
 
         <!-- Divider -->
@@ -185,30 +179,16 @@
         <div class="space-y-1">
           <label for="id_password1" class="block text-sm font-semibold text-slate-700">Create Password</label>
           <div class="relative">
-            <!-- {{ form.password1 }} -->
-            <input type="password" id="id_password1" name="password1" placeholder="Create password"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 pr-12 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-            <button type="button" onclick="togglePw('id_password1', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-primary font-medium transition-colors">
-              Show
-            </button>
+            {{ form.password1 }}
           </div>
-          <!-- {{ form.password1.errors }} -->
         </div>
 
         <!-- Confirm Password -->
         <div class="space-y-1">
           <label for="id_password2" class="block text-sm font-semibold text-slate-700">Confirm Password</label>
           <div class="relative">
-            <!-- {{ form.password2 }} -->
-            <input type="password" id="id_password2" name="password2" placeholder="Confirm password"
-              class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 pr-12 text-sm text-slate-900 placeholder-slate-400 transition focus:border-primary focus:bg-white"/>
-            <button type="button" onclick="togglePw('id_password2', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-primary font-medium transition-colors">
-              Show
-            </button>
+            {{ form.password2 }}
           </div>
-          <!-- {{ form.password2.errors }} -->
         </div>
 
         <!-- Submit -->
@@ -228,7 +208,6 @@
         </div>
       </div>
       <div class="flex justify-center">
-        
         <a href="{% url 'login' %}" class="text-primary font-semibold hover:text-[#3d1e73] transition-colors">
           Log in
         </a>
@@ -236,19 +215,14 @@
 
     </div>
 
-    <!-- Footer -->
     <footer class="mt-8 text-center text-xs text-slate-400">
       © 2026 Auctora International. All rights reserved.
       <div class="mt-2 space-x-4">
-        
         <a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
         <a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
         <a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
-        
         <a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
-       
         <a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
-
         <a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
       </div>
     </footer>

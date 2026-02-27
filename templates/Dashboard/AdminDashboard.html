@@ -3,259 +3,334 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Auctora Buyer Dashboard</title>
+<title>Auctora Admin Dashboard | Royal Luxury</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">tailwind.config = {
+<script id="tailwind-config">
+        tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
                         "primary": "#2d1655",
-                        "accent": "#d4af37",
                         "background-light": "#f7f6f8",
                         "background-dark": "#17131f",
                     },
                     fontFamily: {
                         "display": ["Inter"]
                     },
-                    borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                    transitionProperty: {
-                      'height': 'height',
-                      'spacing': 'margin, padding',
-                    }
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
                 },
             },
-        }</script>
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-<div class="flex min-h-screen">
-<!-- Sidebar -->
-<aside class="w-64 bg-primary text-white flex flex-col fixed h-full z-10 transition-all duration-300">
-<div class="p-6 flex items-center gap-3">
-<img alt="Auctora Logo" class="size-10 rounded-lg" data-alt="Auctora brand logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHHOAsglth03E0lBfQeGsaWks2y3e6xOYGuIGoz2A8RMpeReQoqhatoOJIxosrSSs0Ld7us4rLo6Xtdps--3q-2AbuKwORtaNFEfcYx80dbwKKXz8k8_oDYEQlejlzpEvcZFvIKG7kVY5UPzqDT82sI-NiKBCIAnllF9w6H6BsteucV_PVUw0pAfVd8ukuXAkyp-y-L9_5bSZaA8p_5DiO6DubPlgzl9m0oVyDNVy1sO78_3-g61QcqOaEFxVE16wJ4UizcCYbspl8"/>
-<div>
-<h1 class="text-xl font-bold tracking-tight">Auctora</h1>
-<p class="text-xs text-slate-300 font-medium uppercase tracking-wider">Buyer Portal</p>
-</div>
-</div>
-<nav class="flex-1 px-4 py-4 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/10 text-white transition-all duration-200 hover:scale-[1.02]" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-sm font-medium">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
-<span class="material-symbols-outlined">gavel</span>
-<span class="text-sm font-medium">My Bids</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
-<span class="material-symbols-outlined">visibility</span>
-<span class="text-sm font-medium">Watchlist</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
-<span class="material-symbols-outlined">trophy</span>
-<span class="text-sm font-medium">Won Items</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors transition-all duration-200 hover:scale-[1.02]" href="#">
-<span class="material-symbols-outlined">account_balance_wallet</span>
-<span class="text-sm font-medium">Wallet</span>
-</a>
-</nav>
-<div class="p-4 mt-auto">
-<div class="bg-white/5 rounded-xl p-4 mb-4">
-<p class="text-xs text-slate-400 mb-2">Current Tier</p>
-<p class="text-sm font-semibold mb-3 text-accent">Pro Member</p>
-<button class="w-full py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all uppercase tracking-wide transition-all duration-200 hover:scale-105">
-                        Upgrade Plan
-                    </button>
-</div>
-<div class="flex items-center gap-3 px-2">
-<div class="size-10 rounded-full bg-slate-500 overflow-hidden bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzY5Zg5GdhYVU09e46P-pHYYKwo88kpxrd95xbvOpTPzPclAqZfj2_0L3LI_TqahhHHaEeigv3NlVUj8OVPXSvhxgvYdQRN4FQvX3WgpQ7BzfepGbNKc8QgnLJnoENheJ1QuDUkmxjhXqWl84tVtDhE4AJwhjRJ4AyVqsjNEgn9IJMBjXiSeFV4vvW75BMVChHelnU5z32dFH5hlInWKZ7OXE8dCucPJtaxLlMXoW-4jCRTgvqdjlBGlw4LwGTQDfVW3F6UGjJMWcy')"></div>
-<div class="overflow-hidden">
-<p class="text-sm font-medium truncate">Alex Thompson</p>
-<p class="text-xs text-slate-400 truncate">alex@auctora.io</p>
-<a href="{% url 'logout' %}">Logout</a>
-</div>
-</div>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 ml-64 p-8">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
 <!-- Header -->
-<header class="flex items-center justify-between mb-8">
-<div>
-<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Welcome back, Alex</h2>
-<p class="text-slate-500 dark:text-slate-400">Here's what's happening with your bids today.</p>
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 py-4 lg:px-10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">diamond</span>
 </div>
-<div class="flex items-center gap-4">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-<input class="pl-10 pr-4 py-2 rounded-xl border-none bg-white dark:bg-slate-800 shadow-sm focus:ring-2 focus:ring-primary w-64 text-sm transition-shadow duration-200" placeholder="Search auctions..." type="text"/>
+<h2 class="text-xl font-bold leading-tight tracking-tight">Auctora Admin</h2>
 </div>
-<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary relative transition-all duration-200 hover:scale-105">
+<label class="hidden md:flex flex-col min-w-64 !h-11">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full border border-primary/10 bg-background-light dark:bg-white/5">
+<div class="text-primary/60 dark:text-slate-400 flex items-center justify-center pl-4 rounded-l-xl border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-0 border-none bg-transparent placeholder:text-primary/40 px-4 pl-2 text-base font-normal leading-normal" placeholder="Search records, auctions, or users..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="flex gap-2">
+<button class="flex size-11 cursor-pointer items-center justify-center rounded-xl bg-primary/5 dark:bg-white/5 text-primary dark:text-slate-300 border border-primary/10 transition-all hover:bg-primary hover:text-white">
 <span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800"></span>
 </button>
-<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary transition-all duration-200 hover:scale-105">
+<button class="flex size-11 cursor-pointer items-center justify-center rounded-xl bg-primary/5 dark:bg-white/5 text-primary dark:text-slate-300 border border-primary/10 transition-all hover:bg-primary hover:text-white">
 <span class="material-symbols-outlined">settings</span>
 </button>
 </div>
+<div class="flex items-center gap-3 ml-2 pl-4 border-l border-primary/10">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold leading-none">A. Rothschild</p>
+<p class="text-xs text-primary/60 dark:text-slate-400">Master Curator</p>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-11 border-2 border-primary/20" data-alt="User profile avatar of a professional administrator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDm8c1nuya0Jy8BUM_8Nwo1Vbin_3ClWoMC05LsXjBvtWFg0edtIXizp39rMR-_2wC0N5LoV2CsJDz3GiFm2VoH3k1MhvWKYD8Q6XGMSfFifGic6RTCZomX71iJkSkihHh8hh2VFHsBtKBfWS_qGPXXJhhtnpZk3nC3q8GqjKNk5DBzyhmlBYLxZeNEaophbEJaY1KIh64gJ9t3Bg7tcLCKCWZ7uDdOqQ98mCvgSxGXtlKE0F34I7rCPQ3lTulQ9NJi0sntBKqlU9TO");'></div>
+</div>
+</div>
 </header>
+<div class="flex flex-1 flex-col lg:flex-row">
+<!-- Sidebar Navigation -->
+<aside class="w-full lg:w-72 border-r border-white/10 p-6 flex flex-col gap-6 bg-primary text-white">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-lg font-bold">Auctora Enterprise</h1>
+<p class="text-white/60 text-xs font-medium uppercase tracking-widest">Royal Luxury Edition</p>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white shadow-lg">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 transition-colors">
+<span class="material-symbols-outlined">gavel</span>
+<p class="text-sm font-medium">Auctions</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 transition-colors">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">VIP Clients</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 transition-colors">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-sm font-medium">Financials</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 transition-colors">
+<span class="material-symbols-outlined">monitoring</span>
+<p class="text-sm font-medium">System Health</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 text-white/80 transition-colors">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-medium">Reports</p>
+</div>
+</nav>
+<div class="mt-auto pt-6 border-t border-primary/10">
+<div class="bg-white/10 rounded-xl p-4">
+<p class="text-xs font-bold text-primary dark:text-primary/80 mb-1">STORAGE LIMIT</p>
+<div class="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%] rounded-full"></div>
+</div>
+<p class="text-[10px] mt-2 text-slate-600 dark:text-slate-400">85% of 10TB tier utilized</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col p-6 lg:p-10 gap-8 overflow-y-auto max-w-[1440px] mx-auto w-full bg-white">
+<!-- Welcome & Actions -->
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">Platform Overview</h2>
+<p class="text-slate-600 dark:text-slate-400 text-base">Real-time system health and auction performance metrics.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/20 bg-white dark:bg-slate-800 text-sm font-bold hover:shadow-md transition-all">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span>Last 30 Days</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+<span class="material-symbols-outlined text-xl">add_circle</span>
+<span>New Auction</span>
+</button>
+</div>
+</div>
 <!-- Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-primary/10 text-primary">
-<span class="material-symbols-outlined leading-none">gavel</span>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-background-dark border border-primary/10 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">account_balance_wallet</span>
 </div>
-<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Bids</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">24</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-accent/10 text-accent">
-<span class="material-symbols-outlined leading-none">trophy</span>
-</div>
-<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+2%</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Items Won</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-200 hover:scale-105">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-600">
-<span class="material-symbols-outlined leading-none">account_balance_wallet</span>
-</div>
-<span class="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">Stable</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Wallet Balance</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">$12,450.00</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">Total GMV</p>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold">$4.2M</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-green-500 text-lg">trending_up</span>
+<p class="text-green-600 dark:text-green-400 text-sm font-bold">+12.5%</p>
 </div>
 </div>
-<!-- Active Bids Table -->
-<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
-<h3 class="text-lg font-bold">Active Bids</h3>
-<button class="text-sm font-medium text-primary hover:underline">View all</button>
+<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-background-dark border border-primary/10 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">gavel</span>
 </div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="text-xs font-semibold uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-slate-900/50">
-<th class="px-6 py-4">Item Details</th>
-<th class="px-6 py-4">Current Bid</th>
-<th class="px-6 py-4">Status</th>
-<th class="px-6 py-4">Time Left</th>
-<th class="px-6 py-4 text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Vintage luxury watch image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCW3Z-WIgL2gkOnfXUWGc9baaRcarRLuwxGQiAbzmfYOqOQNlaorF08QgqrcqKeR6NzRHMVjXxAY7G4TjiY7KMQBmFHjEQx33J4zqoQ28SPcG0efJ_zgaT1uFA1hQRCA4OnYYThS_fIuKU7Xyw3bCLsRCyQGRkFu4YAtbEv2nYA-RlA6ncfhxIiSv4Am6EQ6ej4Ni7YGWIPyQyOB7jK2169Hb5PmBySgqr_-wEn-1gqaiKQUiHgMhCmytq1QPD-P8byU83F0szTyFlT')"></div>
-<div>
-<p class="font-semibold text-sm">1960s Vintage Rolex Submariner</p>
-<p class="text-xs text-slate-500">Watches • Lot #442</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">Active Auctions</p>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold">1,284</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-green-500 text-lg">trending_up</span>
+<p class="text-green-600 dark:text-green-400 text-sm font-bold">+4.2%</p>
 </div>
 </div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$14,200</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
-<span class="material-symbols-outlined text-[14px]">star</span>
-                                        Winning
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        2h 15m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
-                                        Raise Bid
-                                    </button>
-</td>
-</tr>
-<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Electric guitar image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7fSgpf15C4WUYa9PCSwUMWUoLtRjkUH0Q9fC3qDBNP2H45up3Tfwu6G0Dl7T-sOnpaUDcSXBHGKpgWjBLw51LxClbgAa-QnPKqCKkyvJV8MSSntmKd7haIimK32BLSjNmjmB9Zp8-DbV7kYrzGCFllrrGEGQJnPX0WlkBpcZ9mVwcZa5h6_JvCwnBDsPoVQi260NeopP3AFGNO0D7gEy8B0-G3xzaYKxzU46O19INTlA86UR-LRVXl0FiuAZGTfgCnbGaS4Yl0lvS')"></div>
-<div>
-<p class="font-semibold text-sm">Gibson Les Paul Custom '59</p>
-<p class="text-xs text-slate-500">Instruments • Lot #109</p>
+<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-background-dark border border-primary/10 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">person_add</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">New Bidders</p>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold">856</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-green-500 text-lg">trending_up</span>
+<p class="text-green-600 dark:text-green-400 text-sm font-bold">+8.1%</p>
 </div>
 </div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$8,450</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 uppercase">
-                                        Outbid
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-red-500 text-sm font-medium">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        45m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
-                                        Re-bid
-                                    </button>
-</td>
-</tr>
-<tr class="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Abstract art canvas" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6B4p-vAhhNLh36pUoUcK6EAQRiwH-ZPEpTjTXkHZGfqeRk0azZk1nE9WQnRG_1E5TLZEzAQJf7EckygFewBwmDYQ3AC6G9ScFmkpmQj5wvHcd0q6h9DkKjCuPJStrq1EN9F1y0XfegmRwn1nFlF3NCY6KQgY3OeWDoUvXsfURMU4aNcakQoW7Q4IFEdFpuM0Jqa8SAaYXgc-Oa403cMbIpDdQBF8WjzfPXx_o7Bdvt0kV6DIYizQmkheNC-QEJLL1tDNW37vWX2im')"></div>
-<div>
-<p class="font-semibold text-sm">"Nebula Dreams" Abstract Canvas</p>
-<p class="text-xs text-slate-500">Fine Art • Lot #221</p>
+<div class="flex flex-col gap-2 rounded-2xl p-6 bg-white dark:bg-background-dark border border-primary/10 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">bolt</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">System Uptime</p>
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold">99.9%</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<p class="text-green-600 dark:text-green-400 text-sm font-bold">Optimal</p>
 </div>
 </div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$3,400</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
-<span class="material-symbols-outlined text-[14px]">star</span>
-                                        Winning
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        5h 10m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all transition-all duration-200 hover:scale-105 active:scale-95">
-                                        Raise Bid
-                                    </button>
-</td>
-</tr>
-</tbody>
-</table>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<!-- GMV Growth Chart -->
+<div class="flex flex-col gap-6 rounded-2xl bg-white dark:bg-background-dark border border-primary/10 p-8 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">GMV Growth (Weekly)</p>
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">$4,200,500</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-xs px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 font-bold">+15.2% vs LW</span>
+</div>
+</div>
+<button class="size-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">more_horiz</span>
+</button>
+</div>
+<div class="flex min-h-[220px] flex-col gap-8">
+<svg fill="none" height="180" preserveaspectratio="none" viewbox="-3 0 478 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H326.769H0V109Z" fill="url(#paint0_linear_chart)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#2d1655" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="paint0_linear_chart" x1="236" x2="236" y1="1" y2="149">
+<stop stop-color="#2d1655" stop-opacity="0.2"></stop>
+<stop offset="1" stop-color="#2d1655" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="flex justify-between px-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+<!-- Auction Categories Bar Chart -->
+<div class="flex flex-col gap-6 rounded-2xl bg-white dark:bg-background-dark border border-primary/10 p-8 shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Volume by Category</p>
+<p class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">1,284 Lots</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 font-bold">-2.1% Session</span>
+</div>
+</div>
+<button class="size-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500">more_horiz</span>
+</button>
+</div>
+<div class="grid h-[220px] grid-cols-5 gap-4 items-end px-2">
+<div class="flex flex-col items-center gap-3 h-full justify-end">
+<div class="w-full bg-primary/10 dark:bg-primary/20 rounded-t-lg relative" style="height: 85%;">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Luxury</span>
+</div>
+<div class="flex flex-col items-center gap-3 h-full justify-end">
+<div class="w-full bg-primary/10 dark:bg-primary/20 rounded-t-lg relative" style="height: 35%;">
+<div class="absolute bottom-0 w-full bg-primary/40 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Art</span>
+</div>
+<div class="flex flex-col items-center gap-3 h-full justify-end">
+<div class="w-full bg-primary/10 dark:bg-primary/20 rounded-t-lg relative" style="height: 70%;">
+<div class="absolute bottom-0 w-full bg-primary/80 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Tech</span>
+</div>
+<div class="flex flex-col items-center gap-3 h-full justify-end">
+<div class="w-full bg-primary/10 dark:bg-primary/20 rounded-t-lg relative" style="height: 55%;">
+<div class="absolute bottom-0 w-full bg-primary/60 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Estate</span>
+</div>
+<div class="flex flex-col items-center gap-3 h-full justify-end">
+<div class="w-full bg-primary/10 dark:bg-primary/20 rounded-t-lg relative" style="height: 25%;">
+<div class="absolute bottom-0 w-full bg-primary/20 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Rare</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Feed -->
+<div class="rounded-2xl bg-white dark:bg-background-dark border border-primary/10 overflow-hidden shadow-sm">
+<div class="px-8 py-6 border-b border-primary/10 flex items-center justify-between">
+<h3 class="text-xl font-bold">Recent High-Value Activity</h3>
+<button class="text-primary font-bold text-sm hover:underline">View All Activity</button>
+</div>
+<div class="divide-y divide-primary/5">
+<div class="px-8 py-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">New bid on "Emerald Sovereign Watch"</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Bidder ID: #VIP-992 • 2 minutes ago</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-black text-primary">$284,500</p>
+<span class="text-[10px] px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded font-bold uppercase">Leading</span>
+</div>
+</div>
+<div class="px-8 py-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">Auction Closed: "Vanguard Tech Suite"</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Winning Bidder ID: #VIP-110 • 15 minutes ago</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-black text-slate-900 dark:text-white">$1,120,000</p>
+<span class="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded font-bold uppercase">Sold</span>
+</div>
+</div>
+<div class="px-8 py-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person_check</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">New VIP Verification Request</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Applicant: Julianna V. • 1 hour ago</p>
+</div>
+<div class="text-right">
+<button class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded hover:bg-primary/90">REVIEW</button>
+</div>
+</div>
+<div class="px-8 py-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-white">API Latency Spike Detected</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Node Cluster: EU-WEST-1 • 3 hours ago</p>
+</div>
+<div class="text-right">
+<span class="text-[10px] px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded font-bold uppercase">Resolved</span>
+</div>
+</div>
 </div>
 </div>
 </main>
+</div><footer class="bg-primary text-white/60 py-6 px-10 border-t border-white/10 flex flex-wrap justify-between items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">copyright</span>
+<p class="text-xs font-medium">2024 Auctora Enterprise. All rights reserved.</p>
+</div>
+<div class="flex gap-6">
+<a class="text-xs hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="text-xs hover:text-white transition-colors" href="#">Support Center</a>
+</div>
+</footer>
+</div>
 </div>
 </body></html>
 

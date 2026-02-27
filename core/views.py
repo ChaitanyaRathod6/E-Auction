@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import UserSignupForm,UserLoginForm
 from django.contrib.auth import authenticate, login,logout
+from django.core.mail import send_mail
+from django.conf import settings      
 
 # Create your views here.
 
@@ -8,6 +10,11 @@ def UserSignUpViews(request):
     if request.method == 'POST':
         form = UserSignupForm(request.POST or None)
         if form.is_valid():
+            email = form.cleaned_data['Email']
+            send_mail(subject='Welcome to E-Auction',
+                      message='Thank you for signing up for E-Auction! We are excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.',
+                      from_email=settings.EMAIL_HOST_USER,
+                      recipient_list=[email])
             form.save()
             return redirect("login")
         else:

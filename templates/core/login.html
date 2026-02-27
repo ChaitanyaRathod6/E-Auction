@@ -125,20 +125,24 @@
         </a>
     </p>
 </form>
-<div class="mt-10 text-center text-sm text-slate-500">
-    <p>
-        &copy; 2026 Auctora. All rights reserved.
-</p>
-</div>
+
 <!-- Footer Small Links -->
-<div class="mt-auto pt-10 flex justify-center gap-6 text-xs text-slate-400 uppercase tracking-widest">
-<a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
-<a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
-<a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
-<a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
-<a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
-<a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
-</div>
+<footer class="mt-8 text-center text-xs text-slate-400">
+      © 2026 Auctora International. All rights reserved.
+    <div class="mt-2 space-x-4">
+        
+        <a class="hover:text-accent" href="{% url 'Support' %}">Support</a>
+        <a class="hover:text-accent" href="{% url 'Security' %}">Security</a>
+        <a class="hover:text-accent" href="{% url 'Community' %}">Community</a>
+        
+        <a class="hover:text-primary transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
+       
+        <a class="hover:text-primary transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
+
+        <a class="hover:text-primary transition-colors" href="{% url 'HelpCenter' %}">Help Center</a>
+    </div>
+</footer>
+  </div>
 </div>
 </div>
 </body></html>

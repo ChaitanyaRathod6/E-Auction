@@ -332,24 +332,22 @@ body::before {
     opacity: 1;
 }
 
-
 .input-style {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1px solid #e2e8f0;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(6px);
-    transition: all 0.3s ease;
-    font-size: 14px;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  transition: all 0.2s;
 }
-
 .input-style:focus {
-    outline: none;
-    border-color: #2f3293;
-    box-shadow: 0 0 0 3px rgba(47, 50, 147, 0.15);
+  outline: none;
+  border-color: #2d1655;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(45, 22, 85, 0.15);
 }
-
-.input-style:hover {
-    border-color: #9333ea;
+.input-style::placeholder {
+  color: #94a3b8;
 }
