@@ -1,4 +1,8 @@
+{% load static %}
+<!DOCTYPE html>
 <html lang="en"><head>
+  <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+  <title>Auctora | Help Center</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Auctora Help Center</title>
@@ -35,8 +39,8 @@
   <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-6 md:px-20 py-4 sticky top-0 z-50 shadow-sm">
     <div class="flex items-center gap-8">
       <div class="flex items-center gap-3">
-        <div class="size-9 bg-primary rounded-lg flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-2xl">storm</span>
+         <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
         </div>
         <h2 class="text-primary text-xl font-bold leading-tight tracking-tight">Auctora <span class="text-primary/50 font-medium">Help</span></h2>
       </div>
@@ -295,17 +299,17 @@
       <!-- Links -->
       <div class="flex flex-wrap justify-center gap-6 text-sm text-white/60">
         <!-- <a href="{% url 'privacypolicy' %}">Privacy Policy</a> -->
-        <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+        <a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
         <!-- <a href="{% url 'termsofservice' %}">Terms of Service</a> -->
-        <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+        <a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
         <!-- <a href="{% url 'Support' %}">Support</a> -->
-        <a class="hover:text-white transition-colors" href="#">Support</a>
+        <a class="hover:text-white transition-colors" href="{% url 'Support' %}">Support</a>
         <!-- <a href="{% url 'Security' %}">Security</a> -->
-        <a class="hover:text-white transition-colors" href="#">Security</a>
+        <a class="hover:text-white transition-colors" href="{% url 'Security' %}">Security</a>
         <!-- <a href="{% url 'Community' %}">Community</a> -->
-        <a class="hover:text-white transition-colors" href="#">Community</a>
+        <a class="hover:text-white transition-colors" href="{% url 'Community' %}">Community</a>
         <!-- <a href="{% url 'ContactUs' %}">Contact Us</a> -->
-        <a class="hover:text-white transition-colors" href="#">Contact Us</a>
+        <a class="hover:text-white transition-colors" href="{% url 'ContactUs' %}">Contact Us</a>
       </div>
 
       <!-- Social icons -->

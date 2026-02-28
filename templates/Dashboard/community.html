@@ -1,6 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="en"><head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Royal Luxury Community Hub</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Auctora | Royal Luxury Community Hub</title>
@@ -34,9 +37,9 @@
 <header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 backdrop-blur-md px-4 md:px-10 lg:px-40 py-3 flex items-center justify-between">
 <div class="flex items-center gap-8">
 <div class="flex items-center gap-3">
-<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-accent-gold">
-<span class="material-symbols-outlined">diamond</span>
-</div>
+ <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
+        </div>
 <h2 class="text-primary dark:text-slate-100 text-xl font-bold tracking-tight">Auctora</h2>
 </div>
 <nav class="hidden md:flex items-center gap-6">

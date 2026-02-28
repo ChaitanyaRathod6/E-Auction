@@ -1,6 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="en"><head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Privacy Policy</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Privacy Policy - Auctora Premium Auctions</title>
@@ -35,9 +38,9 @@
     <div class="mx-auto flex max-w-7xl items-center justify-between">
       <div class="flex items-center gap-8">
         <div class="flex items-center gap-3">
-          <div class="size-10 bg-primary rounded-lg flex items-center justify-center">
-            <span class="material-symbols-outlined text-white text-2xl">gavel</span>
-          </div>
+          <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
+        </div>
           <h2 class="text-xl font-bold tracking-tight text-primary">Auctora</h2>
         </div>
         <nav class="hidden md:flex items-center gap-6">

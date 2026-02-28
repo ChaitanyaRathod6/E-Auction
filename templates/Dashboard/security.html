@@ -1,6 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html lang="en"><head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Security & Trust</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -54,8 +57,8 @@
   <header class="flex items-center justify-between border-b border-primary/10 bg-white/80 backdrop-blur-md px-6 md:px-20 py-3 sticky top-0 z-50">
     <div class="flex items-center gap-8">
       <div class="flex items-center gap-3">
-        <div class="flex items-center justify-center size-10 rounded-lg bg-primary text-accent-gold">
-          <span class="material-symbols-outlined text-2xl">shield_with_heart</span>
+         <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
         </div>
         <!-- font-bold tracking-tight matching support "Auctora" header -->
         <h2 class="text-primary text-2xl font-bold leading-tight tracking-tight">Auctora</h2>

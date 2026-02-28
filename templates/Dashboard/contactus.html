@@ -1,6 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Contact Us</title>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Contact Us | Auctora</title>
@@ -36,9 +39,9 @@
   <div class="max-w-7xl mx-auto flex items-center justify-between">
     <!-- Brand -->
     <div class="flex items-center gap-2 text-primary">
-      <div class="size-9 bg-primary rounded-lg flex items-center justify-center">
-        <span class="material-symbols-outlined text-white text-xl">diamond</span>
-      </div>
+       <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
+        </div>
       <h2 class="text-xl font-bold tracking-tight text-primary">Auctora</h2>
     </div>
     <!-- Nav -->

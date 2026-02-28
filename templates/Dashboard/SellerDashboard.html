@@ -1,262 +1,759 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Seller Dashboard</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auctora — Luxury Seller Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sidebar-bg: #2d1655;
+      --sidebar-active: #3d2272;
+      --sidebar-hover: rgba(255,255,255,0.07);
+      --primary: #2d1655;
+      --primary-btn: #2d1655;
+      --accent-purple: #7c3aed;
+      --accent-violet: #6d28d9;
+      --main-bg: #f7f6f8;
+      --card-bg: #ffffff;
+      --text-dark: #1a1035;
+      --text-mid: #6b7280;
+      --text-light: #9ca3af;
+      --border: #e8e5f0;
+      --green: #10b981;
+      --orange: #f59e0b;
+      --gray-badge: #9ca3af;
+      --topbar-bg: #ffffff;
+    }
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#2d1655",
-                        "background-light": "#f7f6f8",
-                        "background-dark": "#17131f",
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
-<title>Auctora Luxury Seller Dashboard</title>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--main-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes rowIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-live {
+      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); }
+      50%      { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+    }
+    @keyframes pulse-soon {
+      0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.45); }
+      50%      { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+    }
+    @keyframes dot-pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.5); opacity: 0.7; }
+    }
+
+    /* ─── Layout ─── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── Topbar (global) ─── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 56px;
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 20px 0 0;
+      z-index: 200;
+      animation: fadeIn 0.5s both;
+      box-shadow: 0 1px 8px rgba(45,22,85,0.06);
+    }
+    .topbar-brand {
+      width: 260px; display: flex; align-items: center; gap: 10px;
+      padding: 0 20px;
+      border-right: 1px solid var(--border);
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .brand-icon {
+      width: 32px; height: 32px; background: var(--primary);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .brand-icon svg { width: 18px; height: 18px; }
+    .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
+
+    .topbar-right {
+      flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+      padding: 0 16px;
+    }
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--main-bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 7px 16px;
+      font-size: 13px; color: var(--text-mid);
+      width: 220px;
+    }
+    .search-bar svg { flex-shrink: 0; opacity: 0.5; }
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--main-bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      color: var(--text-mid);
+    }
+    .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
+    .avatar-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #111; cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .avatar-circle:hover { transform: scale(1.08); }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: 260px; min-height: 100vh;
+      background: var(--sidebar-bg);
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 100; padding-top: 56px;
+      display: flex; flex-direction: column;
+      animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
+      box-shadow: 2px 0 20px rgba(45,22,85,0.15);
+    }
+
+    .sidebar-nav { padding: 8px 10px; flex: 1; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px; border-radius: 10px;
+      cursor: pointer; color: rgba(255,255,255,0.7);
+      font-size: 14px; font-weight: 500;
+      position: relative; overflow: hidden;
+      transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
+      margin-bottom: 2px;
+      animation: slideInLeft 0.45s both;
+    }
+    .nav-item:nth-child(1) { animation-delay: 0.12s; }
+    .nav-item:nth-child(2) { animation-delay: 0.18s; }
+    .nav-item:nth-child(3) { animation-delay: 0.24s; }
+    .nav-item:nth-child(4) { animation-delay: 0.30s; }
+    .nav-item:nth-child(5) { animation-delay: 0.36s; }
+
+    .nav-item .nav-icon {
+      font-size: 16px; width: 20px; text-align: center; flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
+    .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
+
+    .nav-item.active {
+      background: #fff;
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(45,22,85,0.2);
+    }
+    .nav-item.active .nav-icon { transform: scale(1.1); }
+    .nav-item.active:hover { transform: none; }
+
+    .sidebar-divider {
+      height: 1px; background: rgba(255,255,255,0.1);
+      margin: 10px 14px;
+    }
+
+    /* ─── Sidebar bottom ─── */
+    .sidebar-bottom {
+      padding: 10px 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: auto;
+      animation: slideInLeft 0.5s 0.38s both;
+    }
+
+    .sidebar-settings-row {
+      padding: 0 0 8px 0;
+    }
+    .settings-icon-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 10px; width: 100%;
+      color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500;
+      cursor: pointer; border: none;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      font-family: 'Inter', sans-serif;
+    }
+    .settings-icon-btn:hover {
+      background: rgba(255,255,255,0.12); color: #fff;
+      transform: translateX(3px) scale(1.02);
+    }
+    .settings-icon-btn svg {
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      flex-shrink: 0;
+    }
+    .settings-icon-btn:hover svg { transform: rotate(65deg); }
+
+    .sidebar-profile-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
+
+    .profile-avatar-card {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+
+    .logout-btn {
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(255,255,255,0.4);
+      transition: background 0.2s, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      flex-shrink: 0;
+    }
+    .logout-btn:hover {
+      background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3);
+      transform: scale(1.1);
+    }
+
+    /* ─── Main ─── */
+    .main {
+      margin-left: 260px; padding-top: 56px;
+      flex: 1; background: var(--main-bg); min-height: 100vh;
+      animation: fadeIn 0.6s 0.2s both;
+    }
+
+    .page-content { padding: 28px 28px 28px 28px; }
+
+    /* ─── Page header ─── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.5s 0.25s both;
+    }
+    .page-header h1 {
+      font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px;
+    }
+    .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff;
+      padding: 11px 22px; border-radius: 50px;
+      font-size: 14px; font-weight: 600;
+      border: none; cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, background 0.2s;
+      box-shadow: 0 4px 16px rgba(45,22,85,0.3);
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      transform: scale(1.045);
+      background: #3d2070;
+      box-shadow: 0 6px 24px rgba(45,22,85,0.45);
+    }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; color: var(--text-mid);
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--border); color: var(--text-dark); transform: scale(1.03); }
+
+    .btn-upload {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 13px;
+      border: 2px dashed var(--border); border-radius: 12px;
+      background: var(--main-bg); color: var(--text-mid);
+      font-size: 13.5px; font-weight: 500; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .btn-upload:hover { border-color: var(--accent-purple); background: #f3f0ff; color: var(--accent-purple); transform: scale(1.01); }
+
+    .btn-launch {
+      width: 100%; padding: 14px;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 50px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s;
+      box-shadow: 0 4px 18px rgba(45,22,85,0.35);
+    }
+    .btn-launch:hover { transform: scale(1.03); box-shadow: 0 8px 28px rgba(45,22,85,0.5); background: #3d2070; }
+    .btn-launch:active { transform: scale(0.98); }
+
+    /* ─── Stats ─── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--card-bg); border-radius: 14px;
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s;
+      animation: fadeInUp 0.5s both;
+      cursor: default;
+    }
+    .stat-card:nth-child(1) { animation-delay: 0.2s; }
+    .stat-card:nth-child(2) { animation-delay: 0.28s; }
+    .stat-card:nth-child(3) { animation-delay: 0.36s; }
+    .stat-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 10px 36px rgba(45,22,85,0.1);
+    }
+
+    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .stat-icon-wrap {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .stat-card:hover .stat-icon-wrap { transform: scale(1.12) rotate(-6deg); }
+    .stat-trend { font-size: 12px; font-weight: 600; }
+    .trend-green { color: var(--green); }
+    .trend-purple { color: var(--accent-purple); }
+
+    .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 6px; }
+    .stat-value { font-size: 30px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
+
+    /* ─── Content grid ─── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 22px;
+      animation: fadeInUp 0.5s 0.38s both;
+    }
+
+    /* ─── Auctions panel ─── */
+    .panel-card {
+      background: var(--card-bg); border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 22px 14px;
+    }
+    .panel-title { font-size: 17px; font-weight: 700; color: var(--text-dark); }
+
+    /* table */
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 9px 16px; font-size: 10.5px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--text-light);
+      text-align: left; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: #faf9fb;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: rowIn 0.4s forwards;
+      transition: background 0.18s;
+      cursor: pointer;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(1) { animation-delay: 0.42s; }
+    tbody tr:nth-child(2) { animation-delay: 0.50s; }
+    tbody tr:nth-child(3) { animation-delay: 0.58s; }
+    tbody tr:hover { background: #f9f8fc; }
+    tbody td { padding: 14px 16px; font-size: 13.5px; color: var(--text-dark); vertical-align: middle; }
+
+    .item-cell { display: flex; align-items: center; gap: 12px; }
+    .item-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: #1a1035; flex-shrink: 0;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+    }
+    .item-avatar.green { background: #134e4a; }
+    .item-name { font-size: 13.5px; font-weight: 600; color: var(--text-dark); }
+
+    /* badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12.5px; font-weight: 600; padding: 3px 0;
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .badge-live { color: var(--green); }
+    .badge-live .badge-dot { background: var(--green); animation: dot-pulse 2s infinite, pulse-live 2s infinite; }
+    .badge-soon { color: var(--orange); }
+    .badge-soon .badge-dot { background: var(--orange); animation: dot-pulse 2s infinite, pulse-soon 2s infinite; }
+    .badge-sched { color: var(--gray-badge); }
+    .badge-sched .badge-dot { background: var(--gray-badge); }
+
+    .bids-cell { font-size: 13.5px; color: var(--text-dark); font-weight: 500; }
+    .bids-sub { font-size: 11.5px; color: var(--text-light); }
+    .price-cell { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+    .time-cell { font-size: 13.5px; color: var(--text-mid); }
+
+    /* ─── Quick Create ─── */
+    .quick-create {
+      background: var(--card-bg); border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 22px;
+      animation: fadeInUp 0.5s 0.44s both;
+    }
+    .quick-title { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 18px; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      font-size: 10.5px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; display: block;
+    }
+    .form-input, .form-select {
+      width: 100%; padding: 10px 12px;
+      background: var(--main-bg); border: 1px solid var(--border);
+      border-radius: 9px; font-size: 13.5px; color: var(--text-dark);
+      font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+    .form-input::placeholder { color: var(--text-light); }
+    .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--main-bg); }
+    ::-webkit-scrollbar-thumb { background: #d5cee8; border-radius: 3px; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1024px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-260px); }
+      .main { margin-left: 0; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .page-content { padding: 16px; }
+    }
+  </style>
 </head>
-<body class="dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 bg-white">
-<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
-<!-- Top Navigation Bar -->
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
-<div class="flex items-center gap-4 text-primary">
-<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
-<span class="material-symbols-outlined text-2xl">diamond</span>
-</div>
-<h2 class="text-primary dark:text-slate-100 text-xl font-black leading-tight tracking-tight">Auctora</h2>
-</div>
-<div class="flex flex-1 justify-end gap-6 items-center">
-<label class="hidden md:flex flex-col min-w-40 h-10 max-w-64">
-<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-primary/5 dark:bg-primary/20">
-<div class="text-primary/60 flex items-center justify-center pl-4 rounded-l-xl">
-<span class="material-symbols-outlined">search</span>
-</div>
-<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 text-sm font-normal" placeholder="Search auctions..." value=""/>
-</div>
-</label>
-<div class="flex gap-3">
-<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 dark:bg-primary/20 text-primary dark:text-slate-100">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 dark:bg-primary/20 text-primary dark:text-slate-100">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
-</div>
-<div class="bg-primary/10 rounded-full size-10 border-2 border-primary/20 overflow-hidden" data-alt="Luxury profile picture of an elite seller" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAyYEFWcUlYxoVfXFbVEg-tYP1f8wrcUG5S0wMvecAozGsxf6x8jpmyvn7XMS2Wsgm0EJqN_TakmE-aaP70XZv5fXoodkAH0oYwD50qxeRdOhxO9AK0D4JI2hhTpNE9E9BZkHkEYc2XyWgI6QSsrBHBRfuqk5qYqIcahCvKKEX2SO-dILARweqKAoP0KBeQx-wim6aLTLQ4gsy02ur3NAM_5ycBusxR281TKDtYnaSkkfmyFqkha9IglkCwDxt3wFS4D1GGk74MT4pe");'>
-</div>
-</div>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <!-- Auctora diamond logo -->
+    <div class="topbar-brand">
+    <div class="brand-icon" style="background: transparent;">
+        <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
+    </div>
+    <span class="brand-name">Auctora</span>
+  </div>
+  <div class="topbar-right">
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search auctions...
+    </div>
+     
+        
+    <div class="topbar-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="topbar-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    
+  </div>
 </header>
-<div class="flex flex-1">
-<!-- Sidebar -->
-<aside class="hidden lg:flex w-72 flex-col border-r border-primary/10 dark:bg-background-dark p-6 gap-8 bg-primary">
-<div class="flex items-center gap-3 p-2 bg-white/10 rounded-xl border border-white/10">
-<div class="bg-white size-10 rounded-lg flex items-center justify-center text-primary">
-<span class="material-symbols-outlined">workspace_premium</span>
-</div>
-<div class="flex flex-col overflow-hidden">
-<h1 class="dark:text-slate-100 text-sm font-bold truncate text-white">Elite Seller</h1>
-<p class="text-xs font-medium">Auctora Luxury Tier</p>
-</div>
-</div>
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white text-primary shadow-lg shadow-black/20" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<p class="text-sm font-semibold">Dashboard</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors" href="#">
-<span class="material-symbols-outlined">gavel</span>
-<p class="text-sm font-medium">My Auctions</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors" href="#">
-<span class="material-symbols-outlined">payments</span>
-<p class="text-sm font-medium">Earnings</p>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors" href="#">
-<span class="material-symbols-outlined">chat</span>
-<p class="text-sm font-medium">Messages</p>
-</a>
-<div class="my-4 border-t border-white/10"></div>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 transition-colors" href="#">
-<span class="material-symbols-outlined">settings</span>
-<p class="text-sm font-medium">Settings</p>
-</a>
-</nav>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </span>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </span>
+      My Auctions
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </span>
+      Earnings
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      Messages  
+    </div>
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+    <div class="nav-item">
+        <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        </span>
+        Home
+    </div>
+    </a>
+  </nav>
+
+  <!-- ─── Sidebar Bottom ─── -->
+  <div class="sidebar-bottom">
+    <!-- Settings pinned above profile -->
+    <div class="sidebar-settings-row">
+      <button class="settings-icon-btn" onclick="setActive(document.querySelector('.nav-item'))">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+
+    <!-- Profile card with logout -->
+    <div class="sidebar-profile-card">
+      <div class="profile-avatar-card">🏆</div>
+      <div class="profile-info">
+        <div class="name">Elite Seller</div>
+        <div class="tier">Auctora Luxury Tier</div>
+      </div>
+      <div class="logout-btn" title="Logout" onclick="window.location.href='{% url 'login' %}'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+    </div>
+  </div>
 </aside>
-<!-- Main Content -->
-<main class="flex-1 flex flex-col p-6 md:p-10 gap-8 overflow-y-auto max-w-[1400px] mx-auto w-full">
-<!-- Header Section -->
-<div class="flex flex-wrap items-center justify-between gap-4">
-<div class="flex flex-col gap-1">
-<h2 class="text-3xl font-black text-primary dark:text-slate-100 tracking-tight">Luxury Seller Hub</h2>
-<p class="text-primary/60 font-medium">Welcome back, your portfolio is performing 12% better this week.</p>
-</div>
-<button class="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined">add</span>
-<span>New Listing</span>
-</button>
-</div>
-<!-- Analytics Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-white dark:bg-primary/10 border border-primary/10 rounded-2xl p-6 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<div class="size-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center">
-<span class="material-symbols-outlined">account_balance_wallet</span>
-</div>
-<span class="text-green-600 text-xs font-bold px-2 py-1 bg-green-50 dark:bg-green-900/20 rounded-full">+12.5%</span>
-</div>
-<p class="text-primary/60 text-sm font-semibold uppercase tracking-wider">Total Earnings</p>
-<p class="text-3xl font-black text-primary dark:text-slate-100 mt-1">$128,450.00</p>
-</div>
-<div class="bg-white dark:bg-primary/10 border border-primary/10 rounded-2xl p-6 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<div class="size-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center">
-<span class="material-symbols-outlined">timer</span>
-</div>
-<span class="text-blue-600 text-xs font-bold px-2 py-1 bg-blue-50 dark:bg-blue-900/20 rounded-full">+4%</span>
-</div>
-<p class="text-primary/60 text-sm font-semibold uppercase tracking-wider">Active Auctions</p>
-<p class="text-3xl font-black text-primary dark:text-slate-100 mt-1">24</p>
-</div>
-<div class="bg-white dark:bg-primary/10 border border-primary/10 rounded-2xl p-6 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<div class="size-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 flex items-center justify-center">
-<span class="material-symbols-outlined">shopping_bag</span>
-</div>
-<span class="text-purple-600 text-xs font-bold px-2 py-1 bg-purple-50 dark:bg-purple-900/20 rounded-full">+8%</span>
-</div>
-<p class="text-primary/60 text-sm font-semibold uppercase tracking-wider">Items Sold</p>
-<p class="text-3xl font-black text-primary dark:text-slate-100 mt-1">142</p>
-</div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-<!-- Recent Auctions List -->
-<div class="xl:col-span-2 flex flex-col gap-6">
-<div class="flex items-center justify-between">
-<h3 class="text-xl font-bold text-primary dark:text-slate-100">Live Auctions</h3>
-<a class="text-primary font-semibold text-sm hover:underline" href="#">View All</a>
-</div>
-<div class="bg-white dark:bg-primary/5 rounded-2xl border border-primary/10 overflow-hidden">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-primary/5 text-primary/70 text-xs uppercase tracking-widest font-bold">
-<th class="px-6 py-4">Item</th>
-<th class="px-6 py-4">Status</th>
-<th class="px-6 py-4">Bids</th>
-<th class="px-6 py-4">Current Price</th>
-<th class="px-6 py-4">Time Left</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-primary/5">
-<tr class="hover:bg-primary/5 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-10 rounded-lg bg-slate-200" data-alt="Luxury timepiece auction item" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC6BMeXf8VnYVXi2oONe_68cZvtmvt3NWghHrKXmxih0DUz3CZuL6CNCJZGQ5iITApLKLKG8aSz39SEqdiagZMAf6Tt6zBF04d6aj7iM0Au8OWUeW5RUNJmSLHiZTXHuPbkWVxEGNUHdTDfnYrngbJeqNZ16nEepElSKy3wqEWqneNIS8I4ysYZUKYWzZi5uIEP3uYtlHVhDrgFH3rAhVlXvO8xH_G0Aw9vRUod9udS7Jm3y-3ey1pNi717jwRkw2K_mkb8dEDl9tnF');"></div>
-<span class="font-bold text-sm text-primary dark:text-slate-100">Patek Philippe Ref. 5270P</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="flex items-center gap-1.5 text-green-600 text-xs font-bold">
-<span class="size-2 rounded-full bg-green-600"></span> Live
-                                        </span>
-</td>
-<td class="px-6 py-4 text-sm font-medium">18 Bids</td>
-<td class="px-6 py-4 text-sm font-bold text-primary dark:text-slate-100">$185,200</td>
-<td class="px-6 py-4 text-sm text-primary/60">02h 45m</td>
-</tr>
-<tr class="hover:bg-primary/5 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-10 rounded-lg bg-slate-200" data-alt="Vintage sports car auction item" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdKx1bFaiBZgy4IrQ-dqjJS8gY_yX5L9zRxG27tSGJk4OGO36p8j42ShluUuph5VCaTU89J8zhY757OBMcKivgNGsJTVwDaU323W-ApfpzKUNa4h8PZJlw5sus_ojb4O1fnJQX90MNruCuVPphlcqiZQCU69Ktf9u6aXUXdmCr-1QKqub-j71-8IZjzF4BQTtlzr24EX8aZ-7ClgitOLqNVGH5GwOF9oBQ3MSwfESb4ESuyOi8SBBATuOTlsC0VaDlaqQmTulQ5N3G');"></div>
-<span class="font-bold text-sm text-primary dark:text-slate-100">1967 Jaguar E-Type Series 1</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="flex items-center gap-1.5 text-orange-500 text-xs font-bold">
-<span class="size-2 rounded-full bg-orange-500"></span> Ending Soon
-                                        </span>
-</td>
-<td class="px-6 py-4 text-sm font-medium">42 Bids</td>
-<td class="px-6 py-4 text-sm font-bold text-primary dark:text-slate-100">$210,000</td>
-<td class="px-6 py-4 text-sm text-primary/60">14m 20s</td>
-</tr>
-<tr class="hover:bg-primary/5 transition-colors">
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-10 rounded-lg bg-slate-200" data-alt="Modern art masterpiece auction item" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDu0NYXMHde5tmeZOIih-7LmEFEq5yeUdn00sOw5g3xIYwSHHwGLDQ8JHav2bJ6WcN5_a0qDY88BKwnW_kX-563BU204CW8V36ydKOG4VuNeiKHkyelQuBv7Ou03srZVRaa9Ud1rEF_64uxpzvAeDBIIFBiwvo6zzKu0Matfoi-2_WGOVBSzqhTleA0O3oJkwJQlC8KbixcV2OyQYP6GPS4zZRivxBJ0E0jJSKJdcxyOudwRGPznoRwPCwTKSbu6p6jGRn7WEqOy9qJ');"></div>
-<span class="font-bold text-sm text-primary dark:text-slate-100">Contemporary Canvas #42</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="flex items-center gap-1.5 text-primary/50 text-xs font-bold">
-<span class="size-2 rounded-full bg-primary/30"></span> Scheduled
-                                        </span>
-</td>
-<td class="px-6 py-4 text-sm font-medium">0 Bids</td>
-<td class="px-6 py-4 text-sm font-bold text-primary dark:text-slate-100">$45,000</td>
-<td class="px-6 py-4 text-sm text-primary/60">Tomorrow</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Quick Create Widget -->
-<div class="flex flex-col gap-6">
-<h3 class="text-xl font-bold text-primary dark:text-slate-100">Quick Create</h3>
-<div class="bg-white dark:bg-primary/10 border border-primary/10 rounded-2xl p-6 shadow-sm">
-<form class="flex flex-col gap-4">
-<div class="flex flex-col gap-2">
-<label class="text-xs font-bold text-primary/60 uppercase tracking-widest">Item Category</label>
-<select class="form-select bg-primary/5 border-none rounded-xl text-sm py-3 focus:ring-primary/20">
-<option>Timepieces</option>
-<option>Fine Art</option>
-<option>Automotive</option>
-<option>Jewelry</option>
-</select>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-xs font-bold text-primary/60 uppercase tracking-widest">Auction Title</label>
-<input class="form-input bg-primary/5 border-none rounded-xl text-sm py-3 focus:ring-primary/20" placeholder="e.g. Rolex Daytona Rose Gold" type="text"/>
-</div>
-<div class="grid grid-cols-2 gap-4">
-<div class="flex flex-col gap-2">
-<label class="text-xs font-bold text-primary/60 uppercase tracking-widest">Reserve Price</label>
-<input class="form-input bg-primary/5 border-none rounded-xl text-sm py-3 focus:ring-primary/20" placeholder="$0.00" type="number"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="text-xs font-bold text-primary/60 uppercase tracking-widest">Duration</label>
-<select class="form-select bg-primary/5 border-none rounded-xl text-sm py-3 focus:ring-primary/20">
-<option>3 Days</option>
-<option>7 Days</option>
-<option>14 Days</option>
-</select>
-</div>
-</div>
-<div class="mt-4 flex flex-col gap-3">
-<button class="bg-primary/10 text-primary font-bold py-3 rounded-xl border-2 border-dashed border-primary/20 flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors" type="button">
-<span class="material-symbols-outlined">image</span>
-<span>Upload Media</span>
-</button>
-<button class="bg-primary text-white font-bold py-3 rounded-xl shadow-lg shadow-primary/30 mt-2" type="submit">
-                                    Launch Auction
-                                </button>
-</div>
-</form>
-</div>
-</div>
-</div>
+
+<!-- ─── MAIN ─── -->
+<main class="main">
+  <div class="page-content">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <div>
+        <h1>Luxury Seller Hub</h1>
+        <p>Welcome back, your portfolio is performing 12% better this week.</p>
+      </div>
+      <button class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Listing
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#f0fdf4;">💰</div>
+          <span class="stat-trend trend-green">+12.5%</span>
+        </div>
+        <div class="stat-label">Total Earnings</div>
+        <div class="stat-value" data-count="128450" data-prefix="$" data-format="money">$128,450.00</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#eff6ff;">⏱️</div>
+          <span class="stat-trend trend-purple">+4%</span>
+        </div>
+        <div class="stat-label">Active Auctions</div>
+        <div class="stat-value" data-count="24">24</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#f5f3ff;">🛍️</div>
+          <span class="stat-trend trend-purple">+8%</span>
+        </div>
+        <div class="stat-label">Items Sold</div>
+        <div class="stat-value" data-count="142">142</div>
+      </div>
+    </div>
+
+    <!-- Content grid -->
+    <div class="content-grid">
+
+      <!-- Live Auctions -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <span class="panel-title">Live Auctions</span>
+          <button class="btn-ghost">View All</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Status</th>
+              <th>Bids</th>
+              <th>Current Price</th>
+              <th>Time Left</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="item-cell">
+                  <div class="item-avatar"></div>
+                  <div class="item-name">Patek Philippe Ref. 5270P</div>
+                </div>
+              </td>
+              <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
+              <td>
+                <div class="bids-cell">18</div>
+                <div class="bids-sub">Bids</div>
+              </td>
+              <td class="price-cell">$185,200</td>
+              <td class="time-cell">02h 45m</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-cell">
+                  <div class="item-avatar green"></div>
+                  <div class="item-name">1967 Jaguar E-Type Series 1</div>
+                </div>
+              </td>
+              <td><span class="badge badge-soon"><span class="badge-dot"></span>Ending Soon</span></td>
+              <td>
+                <div class="bids-cell">42</div>
+                <div class="bids-sub">Bids</div>
+              </td>
+              <td class="price-cell">$210,000</td>
+              <td class="time-cell">14m 20s</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-cell">
+                  <div class="item-avatar"></div>
+                  <div class="item-name">Contemporary Canvas #42</div>
+                </div>
+              </td>
+              <td><span class="badge badge-sched"><span class="badge-dot"></span>Scheduled</span></td>
+              <td>
+                <div class="bids-cell">0</div>
+                <div class="bids-sub">Bids</div>
+              </td>
+              <td class="price-cell">$45,000</td>
+              <td class="time-cell">Tomorrow</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Quick Create -->
+      <div class="quick-create">
+        <div class="quick-title">Quick Create</div>
+
+        <div class="form-group">
+          <label class="form-label">Item Category</label>
+          <select class="form-select">
+            <option>Timepieces</option>
+            <option>Fine Jewellery</option>
+            <option>Rare Vehicles</option>
+            <option>Fine Art</option>
+            <option>Designer Handbags</option>
+            <option>Rare Wines</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Auction Title</label>
+          <input class="form-input" type="text" placeholder="e.g. Rolex Daytona Rose Gold"/>
+        </div>
+
+        <div class="form-row form-group">
+          <div>
+            <label class="form-label">Reserve Price</label>
+            <input class="form-input" type="text" placeholder="$0.00"/>
+          </div>
+          <div>
+            <label class="form-label">Duration</label>
+            <select class="form-select">
+              <option>3 Days</option>
+              <option>5 Days</option>
+              <option>7 Days</option>
+              <option>14 Days</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button class="btn-upload">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Upload Media
+          </button>
+        </div>
+
+        <button class="btn-launch">Launch Auction</button>
+      </div>
+
+    </div>
+  </div>
 </main>
-</div>
-</div>
-</body></html>
+
+<script>
+  // Active nav
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Count-up animation
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const isMoney = el.dataset.format === 'money';
+    const duration = 1600;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const p = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = eased * target;
+      if (isMoney) {
+        el.textContent = prefix + val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      } else {
+        el.textContent = Math.floor(val).toLocaleString();
+      }
+      if (p < 1) requestAnimationFrame(update);
+      else el.textContent = isMoney
+        ? prefix + target.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        : Math.floor(target).toLocaleString();
+    }
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('[data-count]').forEach(animateCount);
+    }, 350);
+  });
+</script>
+</body>
+</html>

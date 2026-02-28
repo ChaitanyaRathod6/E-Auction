@@ -1,257 +1,1113 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora — Buyer Dashboard</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auctora — Buyer Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sidebar-bg: #2d1655;
+      --primary: #2d1655;
+      --primary-hover: #3d2070;
+      --accent-purple: #7c3aed;
+      --main-bg: #f7f6f8;
+      --card-bg: #ffffff;
+      --text-dark: #1a1035;
+      --text-mid: #6b7280;
+      --text-light: #9ca3af;
+      --border: #e8e5f0;
+      --green: #10b981;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --topbar-bg: #ffffff;
+    }
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Auctora Buyer Dashboard</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#2d1655",
-                        "accent": "#d4af37", // Gold accent for winning/primary actions
-                        "background-light": "#f7f6f8",
-                        "background-dark": "#17131f",
-                    },
-                    fontFamily: {
-                        "display": ["Inter"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--main-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes rowIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-live {
+      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); }
+      50%      { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+    }
+    @keyframes pulse-soon {
+      0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.45); }
+      50%      { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+    }
+    @keyframes pulse-winning {
+      0%,100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.45); }
+      50%      { box-shadow: 0 0 0 5px rgba(59,130,246,0); }
+    }
+    @keyframes dot-pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.5); opacity: 0.7; }
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.2); }
+    }
+
+    /* ─── Layout ─── */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ─── Topbar ─── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: 56px;
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 20px 0 0;
+      z-index: 200;
+      animation: fadeIn 0.5s both;
+      box-shadow: 0 1px 8px rgba(45,22,85,0.06);
+    }
+    .topbar-brand {
+      width: 260px; display: flex; align-items: center; gap: 10px;
+      padding: 0 20px; border-right: 1px solid var(--border);
+      height: 100%; flex-shrink: 0;
+    }
+    .brand-icon {
+      width: 32px; height: 32px; background: var(--primary);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .brand-icon svg { width: 18px; height: 18px; }
+    .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
+
+    .topbar-right {
+      flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+      padding: 0 16px;
+    }
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--main-bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 7px 16px;
+      font-size: 13px; color: var(--text-mid); width: 260px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+    .search-wrap input {
+      border: none; outline: none; background: transparent;
+      font-size: 13px; color: var(--text-dark); width: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+    .search-wrap input::placeholder { color: var(--text-light); }
+    .search-wrap svg { flex-shrink: 0; opacity: 0.4; }
+
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--main-bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      color: var(--text-mid); position: relative;
+    }
+    .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
+    .notif-dot {
+      position: absolute; top: 7px; right: 7px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red); border: 1.5px solid #fff;
+    }
+    .avatar-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .avatar-circle:hover { transform: scale(1.08); }
+
+    /* ─── Sidebar ─── */
+    .sidebar {
+      width: 260px; min-height: 100vh;
+      background: var(--sidebar-bg);
+      position: fixed; top: 0; left: 0; bottom: 0;
+      z-index: 100; padding-top: 56px;
+      display: flex; flex-direction: column;
+      animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
+      box-shadow: 2px 0 20px rgba(45,22,85,0.15);
+    }
+
+    .sidebar-nav { padding: 14px 10px; flex: 1; }
+
+    .nav-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.28);
+      padding: 10px 14px 5px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px; border-radius: 10px;
+      cursor: pointer; color: rgba(255,255,255,0.65);
+      font-size: 13.5px; font-weight: 500;
+      position: relative;
+      transition: background 0.25s ease, color 0.2s,
+                  transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      margin-bottom: 2px;
+      animation: slideInLeft 0.45s both;
+      text-decoration: none;
+    }
+    .nav-item:nth-child(1) { animation-delay: 0.10s; }
+    .nav-item:nth-child(2) { animation-delay: 0.16s; }
+    .nav-item:nth-child(3) { animation-delay: 0.22s; }
+    .nav-item:nth-child(4) { animation-delay: 0.28s; }
+    .nav-item:nth-child(5) { animation-delay: 0.34s; }
+    .nav-item:nth-child(6) { animation-delay: 0.40s; }
+
+    .nav-item .nav-icon {
+      font-size: 16px; width: 20px; text-align: center; flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; transform: translateX(3px) scale(1.02); }
+    .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
+    .nav-item.active {
+      background: #fff; color: var(--primary); font-weight: 600;
+      box-shadow: 0 4px 16px rgba(45,22,85,0.2);
+    }
+    .nav-item.active .nav-icon { transform: scale(1.1); }
+    .nav-item.active:hover { transform: none; }
+
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px;
+      min-width: 20px; text-align: center;
+    }
+    .nav-badge.purple { background: var(--accent-purple); }
+
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 8px 14px; }
+
+    /* ─── Sidebar Bottom ─── */
+    .sidebar-bottom {
+      padding: 10px 10px 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      animation: slideInLeft 0.5s 0.42s both;
+    }
+    .sidebar-settings-row { padding: 0 0 8px 0; }
+    .settings-icon-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: 10px; width: 100%;
+      color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500;
+      cursor: pointer; border: none;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.25s, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      font-family: 'Inter', sans-serif;
+    }
+    .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
+    .settings-icon-btn svg { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
+    .settings-icon-btn:hover svg { transform: rotate(65deg); }
+
+    .sidebar-profile-card {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
+    .profile-avatar-card {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+    .logout-btn {
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(255,255,255,0.4);
+      transition: background 0.2s, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
+
+    /* ─── Main ─── */
+    .main {
+      margin-left: 260px; padding-top: 56px;
+      flex: 1; background: var(--main-bg); min-height: 100vh;
+      animation: fadeIn 0.6s 0.2s both;
+    }
+    .page-content { padding: 28px; }
+
+    /* ─── Page Header ─── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px; animation: fadeInUp 0.5s 0.25s both;
+    }
+    .page-header h1 { font-size: 26px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
+    .page-header p { font-size: 13.5px; color: var(--text-mid); margin-top: 4px; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff;
+      padding: 11px 22px; border-radius: 50px;
+      font-size: 13.5px; font-weight: 600; border: none; cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s;
+      box-shadow: 0 4px 16px rgba(45,22,85,0.3); white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary:hover { transform: scale(1.045); background: var(--primary-hover); box-shadow: 0 6px 24px rgba(45,22,85,0.45); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent; color: var(--text-mid);
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, color 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-ghost:hover { background: var(--border); color: var(--text-dark); transform: scale(1.03); }
+
+    .btn-bid {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--primary); color: #fff;
+      padding: 7px 16px; border-radius: 50px;
+      font-size: 12.5px; font-weight: 600; border: none; cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s, background 0.2s;
+      box-shadow: 0 3px 10px rgba(45,22,85,0.25);
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-bid:hover { transform: scale(1.06); background: var(--primary-hover); box-shadow: 0 5px 18px rgba(45,22,85,0.4); }
+
+    .btn-watch {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);
+      cursor: pointer; color: #ef4444;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), background 0.2s;
+    }
+    .btn-watch:hover { background: rgba(239,68,68,0.15); transform: scale(1.1); }
+    .btn-watch svg { animation: heartbeat 2s infinite; }
+
+    /* ─── Stats ─── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      margin-bottom: 26px;
+    }
+    .stat-card {
+      background: var(--card-bg); border-radius: 14px;
+      padding: 20px 22px; border: 1px solid var(--border);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s;
+      animation: fadeInUp 0.5s both; cursor: default;
+    }
+    .stat-card:nth-child(1) { animation-delay: 0.18s; }
+    .stat-card:nth-child(2) { animation-delay: 0.26s; }
+    .stat-card:nth-child(3) { animation-delay: 0.34s; }
+    .stat-card:nth-child(4) { animation-delay: 0.42s; }
+    .stat-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 10px 36px rgba(45,22,85,0.1); }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .stat-icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 19px;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .stat-card:hover .stat-icon-wrap { transform: scale(1.12) rotate(-6deg); }
+    .stat-trend { font-size: 11.5px; font-weight: 600; }
+    .trend-green { color: var(--green); }
+    .trend-purple { color: var(--accent-purple); }
+    .trend-blue { color: var(--blue); }
+    .trend-orange { color: var(--orange); }
+    .stat-label { font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 5px; }
+    .stat-value { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
+
+    /* ─── Content Grid ─── */
+    .content-grid {
+      display: grid; grid-template-columns: 1fr 300px; gap: 22px;
+      animation: fadeInUp 0.5s 0.4s both;
+    }
+
+    /* ─── Panel Card ─── */
+    .panel-card {
+      background: var(--card-bg); border-radius: 14px;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px 14px;
+    }
+    .panel-title { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+
+    /* ─── Tabs ─── */
+    .tab-row {
+      display: flex; gap: 2px; padding: 0 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      padding: 10px 16px; font-size: 12.5px; font-weight: 600;
+      color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tab:hover { color: var(--text-dark); }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    /* ─── Table ─── */
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 18px; font-size: 10.5px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--text-light);
+      text-align: left; background: #faf9fb;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      opacity: 0; animation: rowIn 0.4s forwards;
+      transition: background 0.18s; cursor: pointer;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(1) { animation-delay: 0.44s; }
+    tbody tr:nth-child(2) { animation-delay: 0.52s; }
+    tbody tr:nth-child(3) { animation-delay: 0.60s; }
+    tbody tr:nth-child(4) { animation-delay: 0.68s; }
+    tbody tr:hover { background: #f9f8fc; }
+    tbody td { padding: 13px 18px; font-size: 13px; color: var(--text-dark); vertical-align: middle; }
+
+    .item-cell { display: flex; align-items: center; gap: 11px; }
+    .item-thumb {
+      width: 40px; height: 40px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, #2d1655, #7c3aed);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+      border: 1px solid var(--border);
+    }
+    .item-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+    .item-cat { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+
+    /* ─── Badges ─── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; padding: 3px 0;
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .badge-live { color: var(--green); }
+    .badge-live .badge-dot { background: var(--green); animation: dot-pulse 2s infinite, pulse-live 2s infinite; }
+    .badge-soon { color: var(--orange); }
+    .badge-soon .badge-dot { background: var(--orange); animation: dot-pulse 2s infinite, pulse-soon 2s infinite; }
+    .badge-winning { color: var(--blue); }
+    .badge-winning .badge-dot { background: var(--blue); animation: dot-pulse 2s infinite, pulse-winning 2s infinite; }
+    .badge-outbid { color: var(--red); }
+    .badge-outbid .badge-dot { background: var(--red); }
+    .badge-won { color: var(--green); }
+    .badge-won .badge-dot { background: var(--green); }
+    .badge-pill {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 11.5px; font-weight: 600;
+    }
+    .pill-won { background: rgba(16,185,129,0.1); color: var(--green); }
+    .pill-outbid { background: rgba(239,68,68,0.1); color: var(--red); }
+    .pill-pending { background: rgba(245,158,11,0.1); color: var(--orange); }
+
+    .price-cell { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+    .my-bid { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+    .time-cell { font-size: 13px; color: var(--text-mid); }
+
+    .actions-cell { display: flex; align-items: center; gap: 8px; }
+
+    /* ─── Sidebar Panel (right) ─── */
+    .side-panel { display: flex; flex-direction: column; gap: 18px; }
+
+    .mini-panel {
+      background: var(--card-bg); border-radius: 14px;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .mini-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mini-title { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+    .mini-link { font-size: 12px; color: var(--accent-purple); font-weight: 500; cursor: pointer; text-decoration: none; }
+    .mini-link:hover { text-decoration: underline; }
+
+    /* Watchlist items */
+    .watch-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      transition: background 0.18s; cursor: pointer;
+      opacity: 0; animation: rowIn 0.4s forwards;
+    }
+    .watch-item:nth-child(1) { animation-delay: 0.48s; }
+    .watch-item:nth-child(2) { animation-delay: 0.55s; }
+    .watch-item:nth-child(3) { animation-delay: 0.62s; }
+    .watch-item:last-child { border-bottom: none; }
+    .watch-item:hover { background: #f9f8fc; }
+    .watch-thumb {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, #2d1655, #7c3aed);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .watch-info { flex: 1; min-width: 0; }
+    .watch-name { font-size: 12.5px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .watch-price { font-size: 11.5px; color: var(--text-mid); margin-top: 1px; }
+    .watch-time { font-size: 11px; color: var(--orange); font-weight: 600; white-space: nowrap; }
+
+    /* Activity feed */
+    .activity-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      opacity: 0; animation: rowIn 0.4s forwards;
+    }
+    .activity-item:nth-child(1) { animation-delay: 0.5s; }
+    .activity-item:nth-child(2) { animation-delay: 0.57s; }
+    .activity-item:nth-child(3) { animation-delay: 0.64s; }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+    }
+    .dot-green { background: var(--green); }
+    .dot-red { background: var(--red); }
+    .dot-blue { background: var(--blue); }
+    .dot-orange { background: var(--orange); }
+    .activity-text .title { font-size: 12.5px; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+    .activity-text .subtitle { font-size: 11.5px; color: var(--text-light); margin-top: 2px; }
+    .activity-time { margin-left: auto; font-size: 11px; color: var(--text-light); white-space: nowrap; padding-top: 2px; }
+
+    /* ─── Browse section ─── */
+    .browse-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      padding: 18px;
+    }
+    .browse-card {
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+      cursor: pointer; transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s, border-color 0.2s;
+      opacity: 0; animation: fadeInUp 0.4s forwards;
+    }
+    .browse-card:nth-child(1) { animation-delay: 0.45s; }
+    .browse-card:nth-child(2) { animation-delay: 0.52s; }
+    .browse-card:nth-child(3) { animation-delay: 0.59s; }
+    .browse-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(45,22,85,0.12); border-color: rgba(124,58,237,0.25); }
+    .browse-img {
+      height: 90px; background: linear-gradient(135deg, #2d1655 0%, #7c3aed 100%);
+      display: flex; align-items: center; justify-content: center; font-size: 32px;
+    }
+    .browse-body { padding: 10px 12px; }
+    .browse-name { font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .browse-price { font-size: 13px; font-weight: 700; color: var(--primary); }
+    .browse-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .browse-bids { font-size: 11px; color: var(--text-light); }
+    .browse-time { font-size: 11px; color: var(--orange); font-weight: 600; }
+
+    /* ─── Hidden sections (tab switching) ─── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--main-bg); }
+    ::-webkit-scrollbar-thumb { background: #d5cee8; border-radius: 3px; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1100px) {
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .content-grid { grid-template-columns: 1fr; }
+      .browse-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-260px); }
+      .main { margin-left: 0; }
+      .page-content { padding: 16px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-<div class="flex min-h-screen">
-<!-- Sidebar -->
-<aside class="w-64 bg-primary text-white flex flex-col fixed h-full z-10">
-<div class="p-6 flex items-center gap-3">
-<img alt="Auctora Logo" class="size-10 rounded-lg" data-alt="Auctora brand logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHHOAsglth03E0lBfQeGsaWks2y3e6xOYGuIGoz2A8RMpeReQoqhatoOJIxosrSSs0Ld7us4rLo6Xtdps--3q-2AbuKwORtaNFEfcYx80dbwKKXz8k8_oDYEQlejlzpEvcZFvIKG7kVY5UPzqDT82sI-NiKBCIAnllF9w6H6BsteucV_PVUw0pAfVd8ukuXAkyp-y-L9_5bSZaA8p_5DiO6DubPlgzl9m0oVyDNVy1sO78_3-g61QcqOaEFxVE16wJ4UizcCYbspl8"/>
-<div>
-<h1 class="text-xl font-bold tracking-tight">Auctora</h1>
-<p class="text-xs text-slate-300 font-medium uppercase tracking-wider">Buyer Portal</p>
-</div>
-</div>
-<nav class="flex-1 px-4 py-4 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/10 text-white" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-sm font-medium">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">gavel</span>
-<span class="text-sm font-medium">My Bids</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">visibility</span>
-<span class="text-sm font-medium">Watchlist</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">trophy</span>
-<span class="text-sm font-medium">Won Items</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">account_balance_wallet</span>
-<span class="text-sm font-medium">Wallet</span>
-</a>
-</nav>
-<div class="p-4 mt-auto">
-<div class="bg-white/5 rounded-xl p-4 mb-4">
-<p class="text-xs text-slate-400 mb-2">Current Tier</p>
-<p class="text-sm font-semibold mb-3 text-accent">Pro Member</p>
-<button class="w-full py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all uppercase tracking-wide">
-                        Upgrade Plan
-                    </button>
-</div>
-<div class="flex items-center gap-3 px-2">
-<div class="size-10 rounded-full bg-slate-500 overflow-hidden bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzY5Zg5GdhYVU09e46P-pHYYKwo88kpxrd95xbvOpTPzPclAqZfj2_0L3LI_TqahhHHaEeigv3NlVUj8OVPXSvhxgvYdQRN4FQvX3WgpQ7BzfepGbNKc8QgnLJnoENheJ1QuDUkmxjhXqWl84tVtDhE4AJwhjRJ4AyVqsjNEgn9IJMBjXiSeFV4vvW75BMVChHelnU5z32dFH5hlInWKZ7OXE8dCucPJtaxLlMXoW-4jCRTgvqdjlBGlw4LwGTQDfVW3F6UGjJMWcy')"></div>
-<div class="overflow-hidden">
-<p class="text-sm font-medium truncate">Alex Thompson</p>
-<p class="text-xs text-slate-400 truncate">alex@auctora.io</p>
-</div>
-</div>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 ml-64 p-8">
-<!-- Header -->
-<header class="flex items-center justify-between mb-8">
-<div>
-<h2 class="text-2xl font-bold text-slate-900 dark:text-white">Welcome back, Alex</h2>
-<p class="text-slate-500 dark:text-slate-400">Here's what's happening with your bids today.</p>
-</div>
-<div class="flex items-center gap-4">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-<input class="pl-10 pr-4 py-2 rounded-xl border-none bg-white dark:bg-slate-800 shadow-sm focus:ring-2 focus:ring-primary w-64 text-sm" placeholder="Search auctions..." type="text"/>
-</div>
-<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800"></span>
-</button>
-<button class="p-2 rounded-xl bg-white dark:bg-slate-800 shadow-sm text-slate-600 dark:text-slate-300 hover:text-primary">
-<span class="material-symbols-outlined">settings</span>
-</button>
-</div>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon" style="background: transparent;">
+        <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
+    </div>
+    
+    <span class="brand-name">Auctora</span>
+  </div>
+  <div class="topbar-right">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search auctions..."/>
+    </div>
+    <div class="topbar-icon" style="position:relative;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="topbar-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    
+  </div>
 </header>
-<!-- Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-primary/10 text-primary">
-<span class="material-symbols-outlined leading-none">gavel</span>
-</div>
-<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Bids</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">24</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-accent/10 text-accent">
-<span class="material-symbols-outlined leading-none">trophy</span>
-</div>
-<span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+2%</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Items Won</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">8</p>
-</div>
-<div class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-<div class="flex items-center justify-between mb-4">
-<div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-600">
-<span class="material-symbols-outlined leading-none">account_balance_wallet</span>
-</div>
-<span class="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-full">Stable</span>
-</div>
-<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Wallet Balance</p>
-<p class="text-2xl font-bold text-slate-900 dark:text-white">$12,450.00</p>
-</div>
-</div>
-<!-- Active Bids Table -->
-<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
-<h3 class="text-lg font-bold">Active Bids</h3>
-<button class="text-sm font-medium text-primary hover:underline">View all</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="text-xs font-semibold uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-slate-900/50">
-<th class="px-6 py-4">Item Details</th>
-<th class="px-6 py-4">Current Bid</th>
-<th class="px-6 py-4">Status</th>
-<th class="px-6 py-4">Time Left</th>
-<th class="px-6 py-4 text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-<tr>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Vintage luxury watch image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCW3Z-WIgL2gkOnfXUWGc9baaRcarRLuwxGQiAbzmfYOqOQNlaorF08QgqrcqKeR6NzRHMVjXxAY7G4TjiY7KMQBmFHjEQx33J4zqoQ28SPcG0efJ_zgaT1uFA1hQRCA4OnYYThS_fIuKU7Xyw3bCLsRCyQGRkFu4YAtbEv2nYA-RlA6ncfhxIiSv4Am6EQ6ej4Ni7YGWIPyQyOB7jK2169Hb5PmBySgqr_-wEn-1gqaiKQUiHgMhCmytq1QPD-P8byU83F0szTyFlT')"></div>
-<div>
-<p class="font-semibold text-sm">1960s Vintage Rolex Submariner</p>
-<p class="text-xs text-slate-500">Watches • Lot #442</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$14,200</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
-<span class="material-symbols-outlined text-[14px]">star</span>
-                                        Winning
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        2h 15m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all">
-                                        Raise Bid
-                                    </button>
-</td>
-</tr>
-<tr>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Electric guitar image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7fSgpf15C4WUYa9PCSwUMWUoLtRjkUH0Q9fC3qDBNP2H45up3Tfwu6G0Dl7T-sOnpaUDcSXBHGKpgWjBLw51LxClbgAa-QnPKqCKkyvJV8MSSntmKd7haIimK32BLSjNmjmB9Zp8-DbV7kYrzGCFllrrGEGQJnPX0WlkBpcZ9mVwcZa5h6_JvCwnBDsPoVQi260NeopP3AFGNO0D7gEy8B0-G3xzaYKxzU46O19INTlA86UR-LRVXl0FiuAZGTfgCnbGaS4Yl0lvS')"></div>
-<div>
-<p class="font-semibold text-sm">Gibson Les Paul Custom '59</p>
-<p class="text-xs text-slate-500">Instruments • Lot #109</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$8,450</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 uppercase">
-                                        Outbid
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-red-500 text-sm font-medium">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        45m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-accent text-primary text-xs font-bold rounded-lg hover:brightness-110 transition-all">
-                                        Re-bid
-                                    </button>
-</td>
-</tr>
-<tr>
-<td class="px-6 py-4">
-<div class="flex items-center gap-3">
-<div class="size-12 rounded-lg bg-slate-100 bg-cover bg-center" data-alt="Abstract art canvas" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6B4p-vAhhNLh36pUoUcK6EAQRiwH-ZPEpTjTXkHZGfqeRk0azZk1nE9WQnRG_1E5TLZEzAQJf7EckygFewBwmDYQ3AC6G9ScFmkpmQj5wvHcd0q6h9DkKjCuPJStrq1EN9F1y0XfegmRwn1nFlF3NCY6KQgY3OeWDoUvXsfURMU4aNcakQoW7Q4IFEdFpuM0Jqa8SAaYXgc-Oa403cMbIpDdQBF8WjzfPXx_o7Bdvt0kV6DIYizQmkheNC-QEJLL1tDNW37vWX2im')"></div>
-<div>
-<p class="font-semibold text-sm">"Nebula Dreams" Abstract Canvas</p>
-<p class="text-xs text-slate-500">Fine Art • Lot #221</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<p class="font-bold text-slate-900 dark:text-white">$3,400</p>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-accent text-primary uppercase">
-<span class="material-symbols-outlined text-[14px]">star</span>
-                                        Winning
-                                    </span>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-1 text-slate-600 dark:text-slate-400 text-sm">
-<span class="material-symbols-outlined text-[18px]">schedule</span>
-                                        5h 10m
-                                    </div>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-125 transition-all">
-                                        Raise Bid
-                                    </button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+
+    <div class="nav-section-label">Main</div>
+
+    <div class="nav-item active" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </span>
+      Dashboard
+    </div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      Browse Auctions
+      <span class="nav-badge purple">New</span>
+    </div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </span>
+      My Bids
+      <span class="nav-badge">3</span>
+    </div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </span>
+      Watchlist
+      <span class="nav-badge">5</span>
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <div class="nav-section-label">Account</div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </span>
+      Purchase History
+    </div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      Messages
+      <span class="nav-badge">2</span>
+    </div>
+
+    <div class="nav-item" onclick="setActive(this)">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      My Profile
+    </div>
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+    <div class="nav-item">
+        <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        </span>
+        Home
+    </div>
+    </a>
+
+  </nav>
+
+  <!-- ─── Sidebar Bottom ─── -->
+  <div class="sidebar-bottom">
+    <div class="sidebar-settings-row">
+      <button class="settings-icon-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+    <div class="sidebar-profile-card">
+      <div class="profile-avatar-card">🏆</div>
+      <div class="profile-info">
+        <div class="name">Elite Seller</div>
+        <div class="tier">Auctora Luxury Tier</div>
+      </div>
+      <div class="logout-btn" title="Logout" onclick="window.location.href='{% url 'login' %}'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN ─── -->
+<main class="main">
+  <div class="page-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <h1>Buyer Dashboard</h1>
+        <p>Welcome back, James — you have 3 active bids and 2 auctions ending soon.</p>
+      </div>
+      <button class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Auctions
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#eff6ff;">🎯</div>
+          <span class="stat-trend trend-blue">+6 this week</span>
+        </div>
+        <div class="stat-label">Total Bids Placed</div>
+        <div class="stat-value" data-count="48">48</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#f0fdf4;">🏆</div>
+          <span class="stat-trend trend-green">All time</span>
+        </div>
+        <div class="stat-label">Auctions Won</div>
+        <div class="stat-value" data-count="12">12</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#fdf4ff;">💸</div>
+          <span class="stat-trend trend-purple">Lifetime</span>
+        </div>
+        <div class="stat-label">Total Amount Spent</div>
+        <div class="stat-value" data-count="94200" data-prefix="$" data-format="money">$94,200</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div class="stat-icon-wrap" style="background:#fff7ed;">❤️</div>
+          <span class="stat-trend trend-orange">Watching</span>
+        </div>
+        <div class="stat-label">Watchlist Items</div>
+        <div class="stat-value" data-count="5">5</div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+
+      <!-- Left: My Bids + Browse -->
+      <div style="display:flex; flex-direction:column; gap:22px;">
+
+        <!-- My Bids Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">My Bids</span>
+            <button class="btn-ghost" style="font-size:12px; padding:6px 12px;">View All</button>
+          </div>
+
+          <!-- Tabs -->
+          <div class="tab-row">
+            <div class="tab active" onclick="switchTab(this,'active-bids')">Active Bids</div>
+            <div class="tab" onclick="switchTab(this,'past-bids')">Past Bids</div>
+          </div>
+
+          <!-- Active Bids -->
+          <div id="active-bids" class="tab-content active">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Status</th>
+                  <th>Current Price</th>
+                  <th>My Bid</th>
+                  <th>Ends In</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">⌚</div>
+                      <div>
+                        <div class="item-name">Patek Philippe Ref. 5270P</div>
+                        <div class="item-cat">Luxury Watches</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-winning"><span class="badge-dot"></span>Winning</span></td>
+                  <td>
+                    <div class="price-cell">$185,200</div>
+                  </td>
+                  <td>
+                    <div class="price-cell" style="color:var(--blue)">$185,200</div>
+                    <div class="my-bid">Your bid</div>
+                  </td>
+                  <td class="time-cell">2h 45m</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-bid">Raise Bid</button>
+                      <button class="btn-watch" title="Watchlist">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">🚗</div>
+                      <div>
+                        <div class="item-name">1967 Jaguar E-Type Series 1</div>
+                        <div class="item-cat">Rare Vehicles</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-outbid"><span class="badge-dot"></span>Outbid</span></td>
+                  <td>
+                    <div class="price-cell">$210,000</div>
+                  </td>
+                  <td>
+                    <div class="price-cell" style="color:var(--red)">$198,500</div>
+                    <div class="my-bid">Your bid</div>
+                  </td>
+                  <td class="time-cell" style="color:var(--orange); font-weight:600;">14m 20s</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-bid">Rebid Now</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">💍</div>
+                      <div>
+                        <div class="item-name">Cartier Diamond Ring</div>
+                        <div class="item-cat">Fine Jewellery</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-winning"><span class="badge-dot"></span>Winning</span></td>
+                  <td>
+                    <div class="price-cell">$48,200</div>
+                  </td>
+                  <td>
+                    <div class="price-cell" style="color:var(--blue)">$48,200</div>
+                    <div class="my-bid">Your bid</div>
+                  </td>
+                  <td class="time-cell">6h 05m</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-bid">Raise Bid</button>
+                      <button class="btn-watch" title="Watchlist">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Past Bids -->
+          <div id="past-bids" class="tab-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Result</th>
+                  <th>Final Price</th>
+                  <th>My Bid</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">🎨</div>
+                      <div>
+                        <div class="item-name">Basquiat Lithograph</div>
+                        <div class="item-cat">Fine Art</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge-pill pill-won">Won</span></td>
+                  <td class="price-cell">$67,000</td>
+                  <td class="price-cell" style="color:var(--green)">$67,000</td>
+                  <td class="time-cell">Feb 14, 2026</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">👜</div>
+                      <div>
+                        <div class="item-name">Hermès Birkin 35</div>
+                        <div class="item-cat">Designer Handbags</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge-pill pill-outbid">Lost</span></td>
+                  <td class="price-cell">$29,800</td>
+                  <td class="price-cell" style="color:var(--red)">$27,500</td>
+                  <td class="time-cell">Feb 10, 2026</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="item-cell">
+                      <div class="item-thumb">🍷</div>
+                      <div>
+                        <div class="item-name">Château Pétrus 1982</div>
+                        <div class="item-cat">Rare Wines</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge-pill pill-won">Won</span></td>
+                  <td class="price-cell">$18,400</td>
+                  <td class="price-cell" style="color:var(--green)">$18,400</td>
+                  <td class="time-cell">Jan 28, 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Browse Auctions Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">Browse Live Auctions</span>
+            <button class="btn-ghost" style="font-size:12px; padding:6px 12px;">View All</button>
+          </div>
+          <div class="browse-grid">
+            <div class="browse-card">
+              <div class="browse-img">💎</div>
+              <div class="browse-body">
+                <div class="browse-name">Royal Blue Diamond</div>
+                <div class="browse-price">$320,000</div>
+                <div class="browse-meta">
+                  <span class="browse-bids">24 bids</span>
+                  <span class="browse-time">3h 12m</span>
+                </div>
+              </div>
+            </div>
+            <div class="browse-card">
+              <div class="browse-img">🏺</div>
+              <div class="browse-body">
+                <div class="browse-name">Ming Dynasty Vase</div>
+                <div class="browse-price">$145,000</div>
+                <div class="browse-meta">
+                  <span class="browse-bids">11 bids</span>
+                  <span class="browse-time">1d 4h</span>
+                </div>
+              </div>
+            </div>
+            <div class="browse-card">
+              <div class="browse-img">🎻</div>
+              <div class="browse-body">
+                <div class="browse-name">Stradivarius Violin</div>
+                <div class="browse-price">$890,000</div>
+                <div class="browse-meta">
+                  <span class="browse-bids">7 bids</span>
+                  <span class="browse-time">2d 8h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Side Panel -->
+      <div class="side-panel">
+
+        <!-- Watchlist -->
+        <div class="mini-panel">
+          <div class="mini-header">
+            <span class="mini-title">Watchlist</span>
+            <a class="mini-link">Manage →</a>
+          </div>
+          <div class="watch-item">
+            <div class="watch-thumb">🏎️</div>
+            <div class="watch-info">
+              <div class="watch-name">Ferrari 250 GTO</div>
+              <div class="watch-price">Current: $4.2M</div>
+            </div>
+            <div class="watch-time">2d left</div>
+          </div>
+          <div class="watch-item">
+            <div class="watch-thumb">🖼️</div>
+            <div class="watch-info">
+              <div class="watch-name">Monet Waterlilies</div>
+              <div class="watch-price">Current: $520,000</div>
+            </div>
+            <div class="watch-time">5h left</div>
+          </div>
+          <div class="watch-item">
+            <div class="watch-thumb">💠</div>
+            <div class="watch-info">
+              <div class="watch-name">Sapphire Pendant</div>
+              <div class="watch-price">Current: $38,000</div>
+            </div>
+            <div class="watch-time">1d left</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mini-panel">
+          <div class="mini-header">
+            <span class="mini-title">Recent Activity</span>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot dot-blue"></div>
+            <div class="activity-text">
+              <div class="title">You're winning Cartier Diamond Ring</div>
+              <div class="subtitle">Your bid of $48,200 is highest</div>
+            </div>
+            <div class="activity-time">5m ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot dot-red"></div>
+            <div class="activity-text">
+              <div class="title">Outbid on Jaguar E-Type</div>
+              <div class="subtitle">New high bid: $210,000</div>
+            </div>
+            <div class="activity-time">22m ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot dot-green"></div>
+            <div class="activity-text">
+              <div class="title">Auction won — Basquiat Lithograph</div>
+              <div class="subtitle">Payment confirmed · $67,000</div>
+            </div>
+            <div class="activity-time">2d ago</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot dot-orange"></div>
+            <div class="activity-text">
+              <div class="title">Ferrari 250 GTO ending soon</div>
+              <div class="subtitle">On your watchlist · 2 days left</div>
+            </div>
+            <div class="activity-time">3d ago</div>
+          </div>
+        </div>
+
+        <!-- Purchase History Summary -->
+        <div class="mini-panel">
+          <div class="mini-header">
+            <span class="mini-title">Purchase History</span>
+            <a class="mini-link">All →</a>
+          </div>
+          <div style="padding: 14px 18px;">
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12.5px; color:var(--text-mid);">Basquiat Lithograph</span>
+                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$67,000</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12.5px; color:var(--text-mid);">Château Pétrus 1982</span>
+                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$18,400</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12.5px; color:var(--text-mid);">Rolex Submariner</span>
+                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$8,800</span>
+              </div>
+              <div style="height:1px; background:var(--border);"></div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12px; font-weight:600; color:var(--text-mid);">Total Spent</span>
+                <span style="font-size:15px; font-weight:800; color:var(--primary);">$94,200</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </main>
-</div>
-</body></html>
+
+<script>
+  // Active nav
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Tab switching
+  function switchTab(tabEl, contentId) {
+    // Update tab styles
+    tabEl.closest('.tab-row').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    // Show correct content
+    const panel = tabEl.closest('.panel-card');
+    panel.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    panel.querySelector('#' + contentId).classList.add('active');
+    // Re-animate rows
+    panel.querySelectorAll('#' + contentId + ' tbody tr').forEach((tr, i) => {
+      tr.style.opacity = '0';
+      tr.style.animation = 'none';
+      setTimeout(() => {
+        tr.style.animation = '';
+        tr.style.animationDelay = (0.05 + i * 0.07) + 's';
+        tr.style.animationFillMode = 'forwards';
+      }, 10);
+    });
+  }
+
+  // Count-up animation
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const isMoney = el.dataset.format === 'money';
+    const duration = 1600;
+    const start = performance.now();
+    function update(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = eased * target;
+      el.textContent = isMoney
+        ? prefix + val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        : Math.floor(val).toLocaleString();
+      if (p < 1) requestAnimationFrame(update);
+      else el.textContent = isMoney
+        ? prefix + target.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        : Math.floor(target).toLocaleString();
+    }
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('[data-count]').forEach(animateCount);
+    }, 350);
+  });
+</script>
+</body>
+</html>
