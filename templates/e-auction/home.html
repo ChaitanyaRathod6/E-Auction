@@ -530,10 +530,9 @@
       </a>
       <!-- Nav -->
       <nav class="nav-links">
-        <a href="#auctions" class="nav-link active">Live Auctions</a>
+        <a href="#auctions" class="nav-link">Live Auctions</a>
         <a href="#categories" class="nav-link">Categories</a>
-        <a href="{% url 'SellerDashboard' %}" class="nav-link">Sell</a>
-        <a href="#how" class="nav-link">How it Works</a>
+        <a href="{% url 'HowItWorks' %}" class="nav-link">How it Works</a>
       </nav>
     </div>
     <div class="topbar-right">
@@ -545,9 +544,9 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <div class="notif-dot"></div>
       </div>
-      <a href="{% url 'login' %}" class="btn-ghost">Login</a>
-      <a href="{% url 'signup' %}" class="btn-primary">Start Bidding</a>
-      <div class="avatar-circle">JD</div>
+      <a href="{% url 'login' %}" class="btn-primary">Login</a>
+      <a href="{% url 'signup' %}" class="btn-primary">Register</a>
+      
     </div>
   </div>
 </header>
@@ -850,10 +849,10 @@
     <div>
       <div class="footer-col-title">Company</div>
       <div class="footer-links">
-        <a href="#">About Us</a>
-        <a href="#">How it Works</a>
-        <a href="#">Security</a>
-        <a href="#">Careers</a>
+        <a href="{% url 'AboutUs' %}">About Us</a>
+        <a href="{% url 'HowItWorks' %}">How it Works</a>
+        <a href="{% url 'Security' %}">Security</a>
+        <a href="{% url 'Careers' %}">Careers</a>
       </div>
     </div>
     <div>
@@ -861,13 +860,12 @@
       <div class="footer-links">
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'signup' %}">Sign Up</a>
-        <a href="{% url 'SellerDashboard' %}">Seller Hub</a>
-        <a href="#">Buyer Dashboard</a>
+        
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2024 Auctora Enterprise. All rights reserved.</p>
+    <p class="footer-copy">© 2026 Auctora Enterprise. All rights reserved.</p>
     <div class="footer-bottom-links">
       <a href="{% url 'privacypolicy' %}">Privacy Policy</a>
       <a href="{% url 'termsofservice' %}">Terms of Service</a>

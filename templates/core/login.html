@@ -83,7 +83,16 @@
 </div>
 </div>
 <!-- Right Side: Login Form -->
-<div class="w-full lg:w-1/2 flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-24 bg-background-light dark:bg-background-dark">
+<div class="relative w-full lg:w-1/2 flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-24 bg-background-light dark:bg-background-dark">
+    <!-- Home Button -->
+<div class="absolute top-6 right-6">
+  <a href="{% url 'home' %}"
+     class="flex items-center gap-2 bg-slate-100 hover:bg-primary hover:text-white text-slate-700 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+
+    <span class="material-symbols-outlined text-lg">home</span>
+    Home
+  </a>
+</div>
 <div class="max-w-md w-full mx-auto">
 
 <!-- Mobile Logo -->

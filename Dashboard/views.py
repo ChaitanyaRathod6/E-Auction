@@ -34,4 +34,13 @@ def Community(request):
     return render(request,"Dashboard/community.html") 
    
 def Support(request):
-    return render(request,"Dashboard/support.html")    
+    return render(request,"Dashboard/support.html")  
+
+def   AboutUs(request):
+    return render(request,"Dashboard/aboutus.html")
+
+def Careers(request):
+    return render(request,"Dashboard/careers.html")
+
+def HowItWorks(request):
+    return render(request,"Dashboard/howitworks.html")

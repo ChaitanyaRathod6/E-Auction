@@ -1,0 +1,412 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auctora — How it Works</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='4' fill='%232d1655'/><path d='M12 2L4 9l8 13 8-13-8-7z' fill='white' opacity='0.9'/><path d='M4 9h16' stroke='white' stroke-width='1.5' opacity='0.6'/><path d='M8 9L12 2l4 7' stroke='white' stroke-width='1' opacity='0.5'/></svg>"/>
+  <style>
+    :root {
+      --primary:#2d1655; --primary-hover:#3d2070; --accent:#7c3aed;
+      --main-bg:#f7f6f8; --card-bg:#ffffff; --text-dark:#1a1035;
+      --text-mid:#6b7280; --text-light:#9ca3af; --border:#e8e5f0;
+      --green:#10b981; --orange:#f59e0b; --red:#ef4444;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);overflow-x:hidden}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes slideInDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+    /* Topbar */
+    .topbar{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(45,22,85,0.06);animation:slideInDown 0.5s both}
+    .topbar-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:62px}
+    .topbar-left{display:flex;align-items:center;gap:36px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .brand-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+    .brand-icon:hover{transform:scale(1.08)}
+    .brand-icon svg{width:19px;height:19px}
+    .brand-name{font-size:19px;font-weight:800;color:var(--primary);letter-spacing:-0.4px}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-link{font-size:13.5px;font-weight:500;color:var(--text-mid);padding:6px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s,color 0.2s}
+    .nav-link:hover,.nav-link.active{background:rgba(45,22,85,0.06);color:var(--primary);font-weight:600}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s,background 0.2s;box-shadow:0 4px 16px rgba(45,22,85,0.28);text-decoration:none;font-family:'Inter',sans-serif}
+    .btn-primary:hover{transform:scale(1.045);background:var(--primary-hover);box-shadow:0 6px 24px rgba(45,22,85,0.42)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text-mid);padding:10px 20px;border-radius:50px;font-size:13.5px;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:transform 0.2s,background 0.2s,color 0.2s;text-decoration:none;font-family:'Inter',sans-serif}
+    .btn-ghost:hover{background:var(--border);color:var(--text-dark);transform:scale(1.03)}
+
+    .container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+    /* Page hero */
+    .page-hero{background:linear-gradient(135deg,#1a0e35 0%,#2d1655 50%,#4a1e8a 100%);padding:80px 0;text-align:center;position:relative;overflow:hidden}
+    .page-hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.25) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .page-hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.3);color:#c4b5fd;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;animation:fadeInUp 0.6s both}
+    .page-hero h1{font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:14px;animation:fadeInUp 0.6s 0.1s both}
+    .page-hero p{font-size:16px;color:rgba(255,255,255,0.6);max-width:520px;margin:0 auto;line-height:1.7;animation:fadeInUp 0.6s 0.2s both}
+
+    /* Tabs */
+    .tabs-wrap{background:var(--card-bg);border-bottom:1px solid var(--border);position:sticky;top:62px;z-index:100}
+    .tabs{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;gap:0}
+    .tab{padding:18px 24px;font-size:14px;font-weight:600;color:var(--text-light);cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s}
+    .tab:hover{color:var(--text-dark)}
+    .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+    /* Steps */
+    .section{padding:70px 0}
+    .section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block}
+    .section-title{font-size:32px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;margin-bottom:14px}
+    .section-sub{font-size:15px;color:var(--text-mid);line-height:1.7;max-width:540px}
+
+    .steps-timeline{margin-top:60px;display:flex;flex-direction:column;gap:0}
+    .step-row{display:grid;grid-template-columns:80px 1fr;gap:0;position:relative}
+    .step-row:not(:last-child)::after{content:'';position:absolute;left:39px;top:64px;width:2px;height:calc(100% - 30px);background:var(--border);z-index:0}
+    .step-num-col{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+    .step-circle{width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;z-index:1;position:relative;box-shadow:0 4px 16px rgba(45,22,85,0.3);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+    .step-row:hover .step-circle{transform:scale(1.12)}
+    .step-content{padding:0 0 52px 28px;animation:fadeInUp 0.5s both}
+    .step-content:nth-child(2){animation-delay:0.1s}
+    .step-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .step-title{font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:10px}
+    .step-desc{font-size:14px;color:var(--text-mid);line-height:1.8;max-width:580px;margin-bottom:16px}
+    .step-chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{background:rgba(45,22,85,0.07);border:1px solid rgba(45,22,85,0.1);color:var(--primary);font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px}
+
+    /* Buyer/Seller toggle section */
+    .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+    .role-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);padding:36px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s,border-color 0.2s;animation:fadeInUp 0.5s both}
+    .role-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(45,22,85,0.12);border-color:rgba(124,58,237,0.25)}
+    .role-icon{font-size:36px;margin-bottom:16px;display:block}
+    .role-title{font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:8px}
+    .role-desc{font-size:13.5px;color:var(--text-mid);line-height:1.7;margin-bottom:20px}
+    .role-steps{display:flex;flex-direction:column;gap:10px}
+    .role-step{display:flex;align-items:flex-start;gap:10px}
+    .role-step-dot{width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+    .role-step-text{font-size:13px;color:var(--text-mid);line-height:1.6}
+    .role-step-text strong{color:var(--text-dark);font-weight:600}
+
+    /* FAQ */
+    .faq-list{display:flex;flex-direction:column;gap:12px;margin-top:40px}
+    .faq-item{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s}
+    .faq-item:hover{box-shadow:0 4px 20px rgba(45,22,85,0.08)}
+    .faq-q{padding:20px 24px;font-size:14px;font-weight:700;color:var(--text-dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+    .faq-q:hover{color:var(--primary)}
+    .faq-arrow{font-size:18px;color:var(--text-light);transition:transform 0.3s;flex-shrink:0}
+    .faq-item.open .faq-arrow{transform:rotate(180deg)}
+    .faq-a{padding:0 24px 20px;font-size:13.5px;color:var(--text-mid);line-height:1.8;display:none}
+    .faq-item.open .faq-a{display:block}
+
+    /* CTA */
+    .cta-section{background:linear-gradient(135deg,var(--primary) 0%,#4a1e8a 100%);border-radius:20px;padding:60px;text-align:center;margin-bottom:70px;position:relative;overflow:hidden}
+    .cta-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.3) 0%,transparent 70%);right:-100px;top:-100px}
+    .cta-section h2{font-size:32px;font-weight:800;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+    .cta-section p{font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:28px;position:relative;z-index:1}
+    .cta-btns{display:flex;gap:12px;justify-content:center;position:relative;z-index:1}
+    .btn-white{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--primary);padding:13px 28px;border-radius:50px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s;font-family:'Inter',sans-serif;text-decoration:none}
+    .btn-white:hover{transform:scale(1.045);box-shadow:0 6px 24px rgba(255,255,255,0.25)}
+    .btn-outline-white{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.25);padding:13px 28px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:transform 0.2s,background 0.2s;font-family:'Inter',sans-serif;text-decoration:none}
+    .btn-outline-white:hover{background:rgba(255,255,255,0.18);transform:scale(1.03)}
+
+    /* Footer */
+    footer{background:var(--primary);color:rgba(255,255,255,0.6);padding:52px 0 24px}
+    .footer-grid{max-width:1280px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none}
+    .footer-brand-icon{width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .footer-brand-icon svg{width:18px;height:18px}
+    .footer-brand-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.3px}
+    .footer-desc{font-size:13px;line-height:1.7;margin-bottom:20px}
+    .footer-col-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:16px}
+    .footer-links{display:flex;flex-direction:column;gap:10px}
+    .footer-links a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s}
+    .footer-links a:hover{color:#fff}
+    .footer-bottom{max-width:1280px;margin:0 auto;padding:20px 32px 0;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-copy{font-size:12px}
+    .footer-bottom-links{display:flex;gap:20px}
+    .footer-bottom-links a{font-size:12px;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s}
+    .footer-bottom-links a:hover{color:#fff}
+
+    @media(max-width:768px){.nav-links{display:none}.role-grid{grid-template-columns:1fr}.container{padding:0 16px}.page-hero h1{font-size:32px}.step-row{grid-template-columns:56px 1fr}.cta-section{padding:40px 24px}}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--main-bg)}::-webkit-scrollbar-thumb{background:#d5cee8;border-radius:3px}
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <a class="brand" href="/">
+         <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
+        </div>
+        <span class="brand-name">Auctora</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="{% url 'AboutUs' %}" class="nav-link">About Us</a>
+        <a href="{% url 'HowItWorks' %}" class="nav-link active">How it Works</a>
+        <a href="{% url 'Security' %}" class="nav-link">Security</a>
+        <a href="{% url 'Careers' %}" class="nav-link">Careers</a>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <a href="{% url 'login' %}" class="btn-ghost">Login</a>
+      <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-glow"></div>
+  <div class="container">
+    <div class="page-hero-tag">Simple & Transparent</div>
+    <h1>How Auctora Works</h1>
+    <p>From registration to winning your first bid — everything you need to know about our platform in one place.</p>
+  </div>
+</section>
+
+<!-- Sticky Tabs -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab(this,'buyers')">For Buyers</div>
+    <div class="tab" onclick="showTab(this,'sellers')">For Sellers</div>
+    <div class="tab" onclick="showTab(this,'faq')">FAQ</div>
+  </div>
+</div>
+
+<!-- Buyers Section -->
+<div id="buyers" class="tab-content">
+  <section class="section">
+    <div class="container">
+      <span class="section-label">Buyer Journey</span>
+      <h2 class="section-title">Win Your Dream Item in 5 Steps</h2>
+      <p class="section-sub">Auctora makes bidding on rare, luxury items simple, secure, and thrilling.</p>
+
+      <div class="steps-timeline" style="margin-top:52px;">
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">1</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step One</div>
+            <div class="step-title">Create & Verify Your Account</div>
+            <div class="step-desc">Register with your email and complete our quick KYC verification. We verify every bidder to ensure a safe, fraud-free marketplace for all participants.</div>
+            <div class="step-chips"><span class="chip">📧 Email Signup</span><span class="chip">🪪 ID Verification</span><span class="chip">✅ Instant Approval</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">2</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step Two</div>
+            <div class="step-title">Browse & Discover Auctions</div>
+            <div class="step-desc">Explore thousands of curated listings across categories — fine art, luxury watches, jewellery, rare vehicles, and more. Use filters to find exactly what you're looking for.</div>
+            <div class="step-chips"><span class="chip">🎨 Fine Art</span><span class="chip">⌚ Watches</span><span class="chip">💎 Jewellery</span><span class="chip">🚗 Vehicles</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">3</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step Three</div>
+            <div class="step-title">Add to Watchlist & Set Alerts</div>
+            <div class="step-desc">Save items you love to your watchlist and set price alerts. We'll notify you when you're outbid or when an auction you're watching is about to close.</div>
+            <div class="step-chips"><span class="chip">❤️ Watchlist</span><span class="chip">🔔 Bid Alerts</span><span class="chip">📱 Real-time Notifications</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">4</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step Four</div>
+            <div class="step-title">Place Your Bid</div>
+            <div class="step-desc">Enter your maximum bid and our smart system automatically bids on your behalf up to your limit. You stay in control while competing in real-time with other bidders worldwide.</div>
+            <div class="step-chips"><span class="chip">⚡ Real-time Bidding</span><span class="chip">🤖 Auto-bid</span><span class="chip">🌍 Global Competitors</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">5</div></div>
+          <div class="step-content" style="padding-bottom:0;">
+            <div class="step-tag">Step Five</div>
+            <div class="step-title">Win & Receive Your Item</div>
+            <div class="step-desc">If you win, payment is processed securely and your item is shipped with full insurance coverage and end-to-end tracking. Every item is authenticated before dispatch.</div>
+            <div class="step-chips"><span class="chip">🔒 Secure Payment</span><span class="chip">📦 Insured Shipping</span><span class="chip">✅ Authentication</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Sellers Section -->
+<div id="sellers" class="tab-content" style="display:none;">
+  <section class="section">
+    <div class="container">
+      <span class="section-label">Seller Journey</span>
+      <h2 class="section-title">List Your Item & Reach 48K+ Buyers</h2>
+      <p class="section-sub">Auctora's seller platform is built for speed, simplicity, and maximum reach.</p>
+
+      <div class="steps-timeline" style="margin-top:52px;">
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">1</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step One</div>
+            <div class="step-title">Register as a Seller</div>
+            <div class="step-desc">Create your seller account, complete identity verification, and connect your bank account for payouts. Approval typically takes under 24 hours.</div>
+            <div class="step-chips"><span class="chip">🏦 Bank Verification</span><span class="chip">🪪 KYC Check</span><span class="chip">⚡ Fast Approval</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">2</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step Two</div>
+            <div class="step-title">Create Your Listing</div>
+            <div class="step-desc">Upload high-quality photos, write a detailed description, set your reserve price and auction duration. Our curation team reviews every listing within 12 hours.</div>
+            <div class="step-chips"><span class="chip">📸 Photo Upload</span><span class="chip">💰 Reserve Price</span><span class="chip">⏱️ Set Duration</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">3</div></div>
+          <div class="step-content">
+            <div class="step-tag">Step Three</div>
+            <div class="step-title">Go Live & Watch Bids Roll In</div>
+            <div class="step-desc">Once approved, your auction goes live to our global audience. Track real-time bids, view bidder interest, and monitor your auction from your seller dashboard.</div>
+            <div class="step-chips"><span class="chip">🔴 Live Auction</span><span class="chip">📊 Real-time Dashboard</span><span class="chip">🌍 Global Reach</span></div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num-col"><div class="step-circle">4</div></div>
+          <div class="step-content" style="padding-bottom:0;">
+            <div class="step-tag">Step Four</div>
+            <div class="step-title">Get Paid Securely</div>
+            <div class="step-desc">When your auction closes, funds are held in escrow until the buyer confirms receipt. Payouts are processed within 3–5 business days directly to your bank account.</div>
+            <div class="step-chips"><span class="chip">🔐 Escrow Protection</span><span class="chip">💸 Fast Payouts</span><span class="chip">📑 Full Receipts</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FAQ Section -->
+<div id="faq" class="tab-content" style="display:none;">
+  <section class="section">
+    <div class="container">
+      <span class="section-label">Got Questions?</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub">Everything you need to know about bidding, selling, and using Auctora.</p>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I register on Auctora? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">Click "Get Started" in the top navigation, enter your email, and follow the KYC verification steps. Approval is typically instant for buyers and under 24 hours for sellers.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Is my payment information secure? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">Yes. All payments are processed through Stripe with AES-256 encryption. We never store your card details on our servers. Every transaction is protected by our escrow system.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What happens if I win an auction? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">You'll receive an email notification immediately. You have 48 hours to complete payment. Once paid, the seller ships your item with full insurance and tracking. We authenticate every item before it leaves the seller.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I cancel a bid after placing it? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">Bids on Auctora are binding once placed. In exceptional circumstances (such as a listing error), you can contact our support team within 30 minutes of placing a bid for review.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How does auto-bidding work? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">When you enable auto-bid, you set a maximum amount you're willing to pay. Our system automatically increments your bid by the minimum increment whenever you're outbid — up to your maximum — so you never miss a win.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What fees does Auctora charge sellers? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">Sellers pay a 5% commission on the final sale price. There are no listing fees. Premium promoted listing slots are available for an additional fee. Full fee schedule is available in your seller dashboard.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What countries does Auctora support? <span class="faq-arrow">▾</span></div>
+          <div class="faq-a">Auctora is available in 60+ countries across North America, Europe, Asia-Pacific, and the Middle East. Shipping rates and availability vary by item and seller location.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Role comparison always visible -->
+<section class="section" style="padding-top:0; background:var(--card-bg); border-top:1px solid var(--border);">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:8px;"><span class="section-label" style="display:block;">Choose Your Role</span></div>
+    <h2 class="section-title" style="text-align:center; margin-bottom:40px;">Buyer vs Seller — At a Glance</h2>
+    <div class="role-grid">
+      <div class="role-card">
+        <span class="role-icon">🛒</span>
+        <div class="role-title">I Want to Buy</div>
+        <div class="role-desc">Join thousands of collectors bidding on the world's rarest and most luxurious items.</div>
+        <div class="role-steps">
+          <div class="role-step"><div class="role-step-dot">1</div><div class="role-step-text"><strong>Register</strong> — Free account, instant approval</div></div>
+          <div class="role-step"><div class="role-step-dot">2</div><div class="role-step-text"><strong>Browse</strong> — 1,200+ live auctions daily</div></div>
+          <div class="role-step"><div class="role-step-dot">3</div><div class="role-step-text"><strong>Bid</strong> — Real-time with auto-bid support</div></div>
+          <div class="role-step"><div class="role-step-dot">4</div><div class="role-step-text"><strong>Win</strong> — Insured delivery to your door</div></div>
+        </div>
+      </div>
+      <div class="role-card">
+        <span class="role-icon">🏷️</span>
+        <div class="role-title">I Want to Sell</div>
+        <div class="role-desc">Reach 48,000+ verified buyers and get the best price for your luxury items.</div>
+        <div class="role-steps">
+          <div class="role-step"><div class="role-step-dot">1</div><div class="role-step-text"><strong>Apply</strong> — Seller verification in 24h</div></div>
+          <div class="role-step"><div class="role-step-dot">2</div><div class="role-step-text"><strong>List</strong> — Upload photos, set reserve price</div></div>
+          <div class="role-step"><div class="role-step-dot">3</div><div class="role-step-text"><strong>Auction</strong> — Global bidders compete for your item</div></div>
+          <div class="role-step"><div class="role-step-dot">4</div><div class="role-step-text"><strong>Get Paid</strong> — Secure escrow payout in 3–5 days</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="padding-bottom:70px;">
+  <div class="container">
+    <div class="cta-section">
+      <div class="cta-glow"></div>
+      <h2>Ready to Start?</h2>
+      <p>Create your free account and join the world's most trusted luxury auction platform.</p>
+      <div class="cta-btns">
+        <a href="/signup" class="btn-white">Create Free Account</a>
+        <a href="/" class="btn-outline-white">Browse Auctions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="footer-brand" href="/">
+        <div class="footer-brand-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 9l8 13 8-13-8-7z" fill="white" opacity="0.9"/><path d="M4 9h16" stroke="white" stroke-width="1.5" opacity="0.6"/><path d="M8 9L12 2l4 7" stroke="white" stroke-width="1" opacity="0.5"/></svg></div>
+        <span class="footer-brand-name">Auctora</span>
+      </a>
+      <p class="footer-desc">The world's leading premium e-auction platform for rare assets and luxury collectibles.</p>
+    </div>
+    <div><div class="footer-col-title">Company</div><div class="footer-links"><a href="{% url 'AboutUs' %}">About Us</a><a href="{% url 'HowItWorks' %}">How it Works</a><a href="{% url 'Security' %}">Security</a><a href="{% url 'Careers' %}">Careers</a></div></div>
+    <div><div class="footer-col-title">Marketplace</div><div class="footer-links"><a href="#">Live Auctions</a><a href="#">Categories</a><a href="#">Top Sellers</a><a href="#">Recent Sales</a></div></div>
+    <div><div class="footer-col-title">Account</div><div class="footer-links"><a href="/login">Login</a><a href="/signup">Sign Up</a><a href="#">Seller Hub</a><a href="#">Buyer Dashboard</a></div></div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Auctora Enterprise. All rights reserved.</p>
+    <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Settings</a></div>
+  </div>
+</footer>
+
+<script>
+  function showTab(el, id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  }
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

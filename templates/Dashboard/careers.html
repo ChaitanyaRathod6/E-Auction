@@ -1,0 +1,361 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auctora — Careers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,<svg viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='24' height='24' rx='4' fill='%232d1655'/><path d='M12 2L4 9l8 13 8-13-8-7z' fill='white' opacity='0.9'/><path d='M4 9h16' stroke='white' stroke-width='1.5' opacity='0.6'/><path d='M8 9L12 2l4 7' stroke='white' stroke-width='1' opacity='0.5'/></svg>"/>
+  <style>
+    :root{--primary:#2d1655;--primary-hover:#3d2070;--accent:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--orange:#f59e0b;--red:#ef4444}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);overflow-x:hidden}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes slideInDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+
+    .topbar{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(45,22,85,0.06);animation:slideInDown 0.5s both}
+    .topbar-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:62px}
+    .topbar-left{display:flex;align-items:center;gap:36px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .brand-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+    .brand-icon:hover{transform:scale(1.08)}
+    .brand-icon svg{width:19px;height:19px}
+    .brand-name{font-size:19px;font-weight:800;color:var(--primary);letter-spacing:-0.4px}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-link{font-size:13.5px;font-weight:500;color:var(--text-mid);padding:6px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s,color 0.2s}
+    .nav-link:hover,.nav-link.active{background:rgba(45,22,85,0.06);color:var(--primary);font-weight:600}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s;box-shadow:0 4px 16px rgba(45,22,85,0.28);text-decoration:none;font-family:'Inter',sans-serif}
+    .btn-primary:hover{transform:scale(1.045);background:var(--primary-hover);box-shadow:0 6px 24px rgba(45,22,85,0.42)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text-mid);padding:10px 20px;border-radius:50px;font-size:13.5px;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:transform 0.2s,background 0.2s;text-decoration:none;font-family:'Inter',sans-serif}
+    .btn-ghost:hover{background:var(--border);color:var(--text-dark);transform:scale(1.03)}
+
+    .container{max-width:1280px;margin:0 auto;padding:0 32px}
+
+    .page-hero{background:linear-gradient(135deg,#1a0e35 0%,#2d1655 50%,#4a1e8a 100%);padding:80px 0;text-align:center;position:relative;overflow:hidden}
+    .page-hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.25) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .page-hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.3);color:#c4b5fd;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;animation:fadeInUp 0.6s both}
+    .open-dot{width:8px;height:8px;border-radius:50%;background:#10b981}
+    .page-hero h1{font-size:48px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:14px;animation:fadeInUp 0.6s 0.1s both}
+    .page-hero p{font-size:16px;color:rgba(255,255,255,0.6);max-width:520px;margin:0 auto;line-height:1.7;animation:fadeInUp 0.6s 0.2s both}
+
+    .section{padding:70px 0}
+    .section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block}
+    .section-title{font-size:32px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;margin-bottom:14px}
+
+    /* Perks */
+    .perks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+    .perk-card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);padding:28px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s,border-color 0.2s;animation:fadeInUp 0.5s both}
+    .perk-card:nth-child(1){animation-delay:0.08s}.perk-card:nth-child(2){animation-delay:0.15s}.perk-card:nth-child(3){animation-delay:0.22s}.perk-card:nth-child(4){animation-delay:0.29s}.perk-card:nth-child(5){animation-delay:0.36s}.perk-card:nth-child(6){animation-delay:0.43s}
+    .perk-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(45,22,85,0.1);border-color:rgba(124,58,237,0.2)}
+    .perk-icon{font-size:28px;margin-bottom:14px;display:block}
+    .perk-title{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:8px}
+    .perk-desc{font-size:13px;color:var(--text-mid);line-height:1.7}
+
+    /* Job filter */
+    .filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;margin-top:40px}
+    .filter-btn{padding:8px 18px;border-radius:50px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--card-bg);color:var(--text-mid);cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1);font-family:'Inter',sans-serif}
+    .filter-btn:hover{border-color:var(--accent);color:var(--accent);transform:scale(1.03)}
+    .filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+    /* Jobs */
+    .jobs-list{display:flex;flex-direction:column;gap:14px}
+    .job-card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s,border-color 0.2s;animation:fadeInUp 0.5s both;cursor:pointer}
+    .job-card:nth-child(1){animation-delay:0.08s}.job-card:nth-child(2){animation-delay:0.14s}.job-card:nth-child(3){animation-delay:0.20s}.job-card:nth-child(4){animation-delay:0.26s}.job-card:nth-child(5){animation-delay:0.32s}.job-card:nth-child(6){animation-delay:0.38s}.job-card:nth-child(7){animation-delay:0.44s}.job-card:nth-child(8){animation-delay:0.50s}
+    .job-card:hover{transform:translateX(6px);box-shadow:0 8px 28px rgba(45,22,85,0.1);border-color:rgba(124,58,237,0.25)}
+    .job-left{display:flex;align-items:center;gap:16px}
+    .job-icon{width:46px;height:46px;border-radius:12px;background:rgba(45,22,85,0.07);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+    .job-card:hover .job-icon{transform:scale(1.12) rotate(-6deg)}
+    .job-title{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:5px}
+    .job-meta{display:flex;gap:10px;flex-wrap:wrap}
+    .job-tag{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:20px}
+    .tag-dept{background:rgba(124,58,237,0.1);color:var(--accent)}
+    .tag-location{background:rgba(16,185,129,0.1);color:var(--green)}
+    .tag-type{background:rgba(245,158,11,0.1);color:var(--orange)}
+    .tag-remote{background:rgba(59,130,246,0.1);color:#3b82f6}
+    .job-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+    .job-salary{font-size:14px;font-weight:700;color:var(--text-dark)}
+    .btn-apply{display:inline-flex;align-items:center;gap:5px;background:var(--primary);color:#fff;padding:9px 18px;border-radius:50px;font-size:12.5px;font-weight:600;border:none;cursor:pointer;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.2s;box-shadow:0 3px 10px rgba(45,22,85,0.25);font-family:'Inter',sans-serif;text-decoration:none}
+    .btn-apply:hover{transform:scale(1.06);box-shadow:0 5px 18px rgba(45,22,85,0.4)}
+
+    /* Culture section */
+    .culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+    .culture-card{border-radius:20px;overflow:hidden;position:relative;height:220px;display:flex;align-items:flex-end;cursor:pointer;transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);animation:fadeInUp 0.5s both}
+    .culture-card:nth-child(1){animation-delay:0.1s}.culture-card:nth-child(2){animation-delay:0.18s}.culture-card:nth-child(3){animation-delay:0.26s}.culture-card:nth-child(4){animation-delay:0.34s}
+    .culture-card:hover{transform:translateY(-5px)}
+    .culture-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px}
+    .culture-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(45,22,85,0.85) 0%,transparent 60%)}
+    .culture-text{position:relative;z-index:1;padding:20px 22px}
+    .culture-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+    .culture-sub{font-size:12.5px;color:rgba(255,255,255,0.65)}
+
+    /* Open positions count */
+    .positions-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--green);font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+
+    .cta-section{background:linear-gradient(135deg,var(--primary) 0%,#4a1e8a 100%);border-radius:20px;padding:60px;text-align:center;margin-bottom:70px;position:relative;overflow:hidden}
+    .cta-glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.3) 0%,transparent 70%);right:-100px;top:-100px}
+    .cta-section h2{font-size:32px;font-weight:800;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+    .cta-section p{font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:28px;position:relative;z-index:1}
+    .cta-btns{display:flex;gap:12px;justify-content:center;position:relative;z-index:1}
+    .btn-white{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--primary);padding:13px 28px;border-radius:50px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s;font-family:'Inter',sans-serif;text-decoration:none}
+    .btn-white:hover{transform:scale(1.045);box-shadow:0 6px 24px rgba(255,255,255,0.25)}
+    .btn-outline-white{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.25);padding:13px 28px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:transform 0.2s,background 0.2s;font-family:'Inter',sans-serif;text-decoration:none}
+    .btn-outline-white:hover{background:rgba(255,255,255,0.18);transform:scale(1.03)}
+
+    footer{background:var(--primary);color:rgba(255,255,255,0.6);padding:52px 0 24px}
+    .footer-grid{max-width:1280px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none}
+    .footer-brand-icon{width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .footer-brand-icon svg{width:18px;height:18px}
+    .footer-brand-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.3px}
+    .footer-desc{font-size:13px;line-height:1.7;margin-bottom:20px}
+    .footer-col-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:16px}
+    .footer-links{display:flex;flex-direction:column;gap:10px}
+    .footer-links a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s}
+    .footer-links a:hover{color:#fff}
+    .footer-bottom{max-width:1280px;margin:0 auto;padding:20px 32px 0;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-copy{font-size:12px}
+    .footer-bottom-links{display:flex;gap:20px}
+    .footer-bottom-links a{font-size:12px;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s}
+    .footer-bottom-links a:hover{color:#fff}
+
+    @media(max-width:1024px){.perks-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.nav-links{display:none}.culture-grid{grid-template-columns:1fr}.perks-grid{grid-template-columns:1fr}.job-card{flex-direction:column;align-items:flex-start}.job-right{width:100%}.container{padding:0 16px}.page-hero h1{font-size:32px}.cta-section{padding:40px 24px}}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--main-bg)}::-webkit-scrollbar-thumb{background:#d5cee8;border-radius:3px}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-left">
+      <a class="brand" href="/">
+       <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
+          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
+        </div>  
+        <span class="brand-name">Auctora</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="{% url 'AboutUs' %}" class="nav-link">About Us</a>
+        <a href="{% url 'HowItWorks' %}" class="nav-link">How it Works</a>
+        <a href="{% url 'Security' %}" class="nav-link">Security</a>
+        <a href="{% url 'Careers' %}" class="nav-link active">Careers</a>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <a href="{% url 'login' %}" class="btn-ghost">Login</a>
+      <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="page-hero-glow"></div>
+  <div class="container">
+    <div class="page-hero-tag"><span class="open-dot"></span> 8 Open Positions</div>
+    <h1>Build the Future<br>of Luxury Auctions</h1>
+    <p>Join a world-class team on a mission to make the rarest assets accessible to everyone. We're hiring across engineering, design, curation, and operations.</p>
+  </div>
+</section>
+
+<!-- Perks -->
+<section class="section" style="background:var(--card-bg); border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div style="text-align:center;"><span class="section-label" style="display:block;">Why Auctora</span></div>
+    <h2 class="section-title" style="text-align:center; margin-bottom:0;">Life at Auctora</h2>
+    <div class="perks-grid">
+      <div class="perk-card"><span class="perk-icon">🌍</span><div class="perk-title">Remote-First Culture</div><div class="perk-desc">Work from anywhere in the world. We have team members in 18 countries and meet in person twice a year for our company retreats.</div></div>
+      <div class="perk-card"><span class="perk-icon">💰</span><div class="perk-title">Competitive Compensation</div><div class="perk-desc">Top-of-market salaries, equity packages for all full-time employees, and annual performance bonuses tied to company growth.</div></div>
+      <div class="perk-card"><span class="perk-icon">📚</span><div class="perk-title">Learning & Development</div><div class="perk-desc">$3,000 annual learning budget for courses, conferences, and certifications. We invest in your growth because your growth is our growth.</div></div>
+      <div class="perk-card"><span class="perk-icon">🏥</span><div class="perk-title">Health & Wellness</div><div class="perk-desc">Full medical, dental, and vision coverage for you and your dependants. Plus a monthly wellness stipend for gym, meditation, or whatever keeps you healthy.</div></div>
+      <div class="perk-card"><span class="perk-icon">🏖️</span><div class="perk-title">Unlimited PTO</div><div class="perk-desc">We trust our team to manage their time. Take the time off you need to rest and recharge — we mean it. Minimum 20 days encouraged.</div></div>
+      <div class="perk-card"><span class="perk-icon">🎁</span><div class="perk-title">Auction Credits</div><div class="perk-desc">Every Auctora employee receives $500 in annual auction credits to experience the platform firsthand and bid on items they love.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Open Roles -->
+<section class="section">
+  <div class="container">
+    <span class="section-label">Join Our Team</span>
+    <h2 class="section-title">Open Positions</h2>
+    <div class="positions-badge"><span class="open-dot"></span> 8 roles currently open</div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterJobs(this,'all')">All Roles</button>
+      <button class="filter-btn" onclick="filterJobs(this,'engineering')">Engineering</button>
+      <button class="filter-btn" onclick="filterJobs(this,'design')">Design</button>
+      <button class="filter-btn" onclick="filterJobs(this,'curation')">Curation</button>
+      <button class="filter-btn" onclick="filterJobs(this,'operations')">Operations</button>
+    </div>
+
+    <div class="jobs-list" id="jobs-list">
+      <div class="job-card" data-dept="engineering">
+        <div class="job-left">
+          <div class="job-icon">⚙️</div>
+          <div>
+            <div class="job-title">Senior Backend Engineer</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Engineering</span><span class="job-tag tag-remote">Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$120–$160K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="engineering">
+        <div class="job-left">
+          <div class="job-icon">📱</div>
+          <div>
+            <div class="job-title">React Native Developer</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Engineering</span><span class="job-tag tag-remote">Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$100–$130K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="engineering">
+        <div class="job-left">
+          <div class="job-icon">🔐</div>
+          <div>
+            <div class="job-title">Security Engineer</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Engineering</span><span class="job-tag tag-location">London / Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$130–$170K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="design">
+        <div class="job-left">
+          <div class="job-icon">🎨</div>
+          <div>
+            <div class="job-title">Senior Product Designer</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Design</span><span class="job-tag tag-remote">Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$95–$125K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="design">
+        <div class="job-left">
+          <div class="job-icon">✏️</div>
+          <div>
+            <div class="job-title">Brand & Motion Designer</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Design</span><span class="job-tag tag-location">Dubai / Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$75–$100K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="curation">
+        <div class="job-left">
+          <div class="job-icon">🏺</div>
+          <div>
+            <div class="job-title">Fine Art Specialist</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Curation</span><span class="job-tag tag-location">New York</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$80–$110K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="curation">
+        <div class="job-left">
+          <div class="job-icon">⌚</div>
+          <div>
+            <div class="job-title">Horology & Watches Curator</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Curation</span><span class="job-tag tag-location">Geneva / Remote</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$70–$95K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+      <div class="job-card" data-dept="operations">
+        <div class="job-left">
+          <div class="job-icon">📦</div>
+          <div>
+            <div class="job-title">Head of Logistics & Fulfilment</div>
+            <div class="job-meta"><span class="job-tag tag-dept">Operations</span><span class="job-tag tag-location">London</span><span class="job-tag tag-type">Full-time</span></div>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="job-salary">$90–$120K</div>
+          <a href="#" class="btn-apply">Apply Now →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Culture -->
+<section class="section" style="background:var(--card-bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:60px 0;">
+  <div class="container">
+    <div style="text-align:center;"><span class="section-label" style="display:block;">Our Culture</span></div>
+    <h2 class="section-title" style="text-align:center; margin-bottom:40px;">What Makes Us Different</h2>
+    <div class="culture-grid">
+      <div class="culture-card"><div class="culture-bg" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">🌍</div><div class="culture-overlay"></div><div class="culture-text"><div class="culture-title">Global Retreats</div><div class="culture-sub">We gather twice a year in cities like Tokyo, London & Dubai</div></div></div>
+      <div class="culture-card"><div class="culture-bg" style="background:linear-gradient(135deg,#1a3a2a,#10b981);">🚀</div><div class="culture-overlay"></div><div class="culture-text"><div class="culture-title">Fast-paced Growth</div><div class="culture-sub">3x YoY growth with room for rapid career advancement</div></div></div>
+      <div class="culture-card"><div class="culture-bg" style="background:linear-gradient(135deg,#1a1535,#4a1e8a);">🎓</div><div class="culture-overlay"></div><div class="culture-text"><div class="culture-title">Learning First</div><div class="culture-sub">Dedicated learning Fridays and $3K annual education budget</div></div></div>
+      <div class="culture-card"><div class="culture-bg" style="background:linear-gradient(135deg,#3a1a10,#f59e0b);">🏆</div><div class="culture-overlay"></div><div class="culture-text"><div class="culture-title">Ownership Culture</div><div class="culture-sub">Every team member has equity and a voice in decisions</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="padding-bottom:70px;">
+  <div class="container">
+    <div class="cta-section">
+      <div class="cta-glow"></div>
+      <h2>Don't See Your Role?</h2>
+      <p>We're always looking for exceptional talent. Send us your CV and we'll keep you in mind for future openings.</p>
+      <div class="cta-btns">
+        <a href="mailto:careers@auctora.com" class="btn-white">Send Your CV</a>
+        <a href="{% url 'AboutUs' %}" class="btn-outline-white">Learn About Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="footer-brand" href="/"><div class="footer-brand-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 9l8 13 8-13-8-7z" fill="white" opacity="0.9"/><path d="M4 9h16" stroke="white" stroke-width="1.5" opacity="0.6"/><path d="M8 9L12 2l4 7" stroke="white" stroke-width="1" opacity="0.5"/></svg></div><span class="footer-brand-name">Auctora</span></a>
+      <p class="footer-desc">The world's leading premium e-auction platform for rare assets and luxury collectibles.</p>
+    </div>
+    <div><div class="footer-col-title">Company</div><div class="footer-links"><a href="{% url 'AboutUs' %}">About Us</a><a href="{% url 'HowItWorks' %}">How it Works</a><a href="{% url 'Security' %}">Security</a><a href="{% url 'Careers' %}">Careers</a></div></div>
+    <div><div class="footer-col-title">Marketplace</div><div class="footer-links"><a href="#">Live Auctions</a><a href="#">Categories</a><a href="#">Top Sellers</a><a href="#">Recent Sales</a></div></div>
+    <div><div class="footer-col-title">Account</div><div class="footer-links"><a href="{% url 'login' %}">Login</a><a href="{% url 'signup' %}">Sign Up</a><a href="#">Seller Hub</a><a href="#">Buyer Dashboard</a></div></div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 Auctora Enterprise. All rights reserved.</p>
+    <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Settings</a></div>
+  </div>
+</footer>
+
+<script>
+  function filterJobs(btn, dept) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.job-card').forEach((card, i) => {
+      const match = dept === 'all' || card.dataset.dept === dept;
+      card.style.display = match ? 'flex' : 'none';
+      if (match) { card.style.animation = 'none'; card.offsetHeight; card.style.animation = `fadeInUp 0.4s ${i * 0.05}s both`; }
+    });
+  }
+</script>
+</body>
+</html>

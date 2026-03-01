@@ -13,4 +13,8 @@ urlpatterns = [
     path("security/",views.Security,name = "Security"),
     path("community/",views.Community,name = "Community"),
     path("support/",views.Support,name = "Support"),
+    path("aboutus/",views.AboutUs,name = "AboutUs"),
+    path("careers/",views.Careers,name = "Careers"),
+    path("howitworks/",views.HowItWorks,name = "HowItWorks"),
+    
 ]
