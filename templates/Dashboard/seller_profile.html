@@ -1,0 +1,486 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auctora - Seller Profile</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --primary: #2d1655;
+            --primary-hover: #3d2070;
+            --accent: #D4AF37;
+            --bg-light: #f8f6f6;
+            --text-dark: #1a1035;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        /* Custom form styles */
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            outline: none;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 22, 85, 0.12);
+            background: white;
+        }
+        
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232d1655'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            padding-right: 2.5rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        
+        <!-- Top Navigation Bar -->
+        <header class="bg-white border-b border-gray-200 fixed w-full z-30 top-0">
+            <div class="px-6 py-3 flex items-center justify-between">
+                <!-- Logo and Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary p-2 rounded-lg">
+                        <span class="material-symbols-outlined text-white">diamond</span>
+                    </div>
+                    <h1 class="text-2xl font-black tracking-tight text-primary">Auctora</h1>
+                    <span class="text-sm bg-accent/10 text-accent px-3 py-1 rounded-full font-medium ml-4">
+                        Seller Profile
+                    </span>
+                </div>
+                
+                <!-- Right Side Icons -->
+                <div class="flex items-center gap-6">
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <a href="#" class="material-symbols-outlined text-gray-500 cursor-pointer hover:text-primary transition-colors">
+                            notifications
+                        </a>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
+                            3
+                        </span>
+                    </div>
+                    
+                    <!-- Messages -->
+                    <div class="relative">
+                        <a href="#" class="material-symbols-outlined text-gray-500 cursor-pointer hover:text-primary transition-colors">
+                            chat
+                        </a>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-right hidden md:block">
+                            <div class="text-sm font-bold text-gray-900">
+                                {{ user.First_name }} {{ user.Last_name }}
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                Premium Seller
+                            </div>
+                        </div>
+                        <a href="#" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm cursor-pointer hover:bg-primary/90 transition-colors">
+                            {{ user.First_name|first }}{{ user.Last_name|first }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar and Main Content -->
+        <div class="flex pt-16">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 bg-white border-r border-gray-200 fixed h-[calc(100vh-4rem)] overflow-y-auto">
+                <nav class="p-4 space-y-2">
+                    <!-- Dashboard -->
+                    <a href="{% url 'SellerDashboard' %}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                    
+                    <!-- Profile (Active) -->
+                    <a href="{% url 'seller_profile' %}" class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl">
+                        <span class="material-symbols-outlined">person</span>
+                        <span class="font-medium">My Profile</span>
+                    </a>
+                    
+                    <!-- My Items -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">inventory</span>
+                        <span class="font-medium">My Items</span>
+                    </a>
+                    
+                    <!-- My Auctions -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">gavel</span>
+                        <span class="font-medium">My Auctions</span>
+                    </a>
+                    
+                    <!-- Create Auction -->
+                    <a href="{% url 'create_auction' %}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">add_circle</span>
+                        <span class="font-medium">Create Auction</span>
+                    </a>
+                    
+                    <!-- Earnings -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">payments</span>
+                        <span class="font-medium">Earnings</span>
+                    </a>
+                    
+                    <!-- Messages -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">chat</span>
+                        <span class="font-medium">Messages</span>
+                        <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">2</span>
+                    </a>
+                    
+                    <hr class="my-4 border-gray-200">
+                    
+                    <!-- Settings -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">settings</span>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                    
+                    <!-- Help Center -->
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
+                        <span class="material-symbols-outlined">help</span>
+                        <span class="font-medium">Help Center</span>
+                    </a>
+                    
+                    <!-- Logout -->
+                    <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors mt-8">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="font-medium">Logout</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="ml-64 flex-1 p-8">
+                <div class="max-w-6xl mx-auto">
+                    
+                    <!-- Page Title -->
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-black text-gray-900">Seller Profile</h1>
+                        <p class="text-gray-500 mt-1">Manage your seller information and track your performance</p>
+                    </div>
+
+                    <!-- Messages/Alerts -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="mb-6 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-200{% else %}bg-red-50 text-red-700 border border-red-200{% endif %} fade-in">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined">
+                                        {% if message.tags == 'success' %}check_circle{% else %}error{% endif %}
+                                    </span>
+                                    <p class="font-medium">{{ message }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- User Profile Header -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 fade-in" style="animation-delay: 0.1s;">
+                        <div class="flex items-start gap-8">
+                            <!-- Avatar -->
+                            <div class="relative">
+                                <div class="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+                                    {{ user.First_name|first }}{{ user.Last_name|first }}
+                                </div>
+                                <a href="#" class="absolute bottom-0 right-0 w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white hover:bg-accent/90 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">edit</span>
+                                </a>
+                            </div>
+                            
+                            <!-- User Info -->
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h2 class="text-3xl font-bold text-gray-900">
+                                            {{ user.First_name }} {{ user.Last_name }}
+                                        </h2>
+                                        <p class="text-gray-500 mt-1">{{ user.Email }}</p>
+                                        <div class="flex items-center gap-4 mt-3">
+                                            <span class="text-sm text-gray-400">
+                                                <span class="material-symbols-outlined text-base align-middle mr-1">calendar_month</span>
+                                                Member since: {{ user.date_joined|date:"F j, Y" }}
+                                            </span>
+                                            <span class="text-sm text-gray-400">
+                                                <span class="material-symbols-outlined text-base align-middle mr-1">phone</span>
+                                                {{ user.Phone|default:"Not provided" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Seller Badge -->
+                                    <div class="bg-green-50 px-6 py-3 rounded-xl border border-green-200">
+                                        <div class="text-center">
+                                            <span class="text-sm text-gray-500">Seller Rating</span>
+                                            <div class="flex items-center gap-1 mt-1">
+                                                <span class="text-2xl font-bold text-green-600">{{ seller.seller_rating }}</span>
+                                                <span class="text-gray-400">/5.0</span>
+                                            </div>
+                                            <div class="flex items-center gap-1 mt-1">
+                                                {% for i in "12345"|make_list %}
+                                                    {% if forloop.counter <= seller.seller_rating|floatformat:0 %}
+                                                        <span class="material-symbols-outlined text-accent text-sm">star</span>
+                                                    {% else %}
+                                                        <span class="material-symbols-outlined text-gray-300 text-sm">star</span>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Seller Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 fade-in" style="animation-delay: 0.2s;">
+                        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Items Sold</p>
+                                    <p class="text-3xl font-bold text-primary mt-2">{{ seller.total_items_sold }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-blue-600 text-2xl">sell</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-sm text-green-600">
+                                <span class="material-symbols-outlined text-sm align-middle">trending_up</span>
+                                +12% from last month
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Total Listings</p>
+                                    <p class="text-3xl font-bold text-primary mt-2">{{ total_listings|default:"0" }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-purple-600 text-2xl">inventory</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{{ active_auctions|default:"0" }} Active</span>
+                                <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">{{ ended_auctions|default:"0" }} Ended</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500 text-sm">Total Revenue</p>
+                                    <p class="text-3xl font-bold text-primary mt-2">${{ total_revenue|default:"0" }}</p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-green-600 text-2xl">payments</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-sm text-gray-500">
+                                From {{ completed_sales|default:"0" }} completed sales
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Edit Form -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8 fade-in" style="animation-delay: 0.3s;">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+                            <span class="material-symbols-outlined text-accent text-3xl">edit</span>
+                            <h2 class="text-2xl font-bold text-gray-900">Edit Seller Profile</h2>
+                        </div>
+                        
+                        <form method="POST" class="space-y-6">
+                            {% csrf_token %}
+                            
+                            <!-- Form Fields -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {% for field in form %}
+                                    <div class="{% if field.name == 'bio' or field.name == 'description' %}col-span-2{% endif %}">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            {{ field.label }}
+                                            {% if field.field.required %}
+                                                <span class="text-red-500">*</span>
+                                            {% endif %}
+                                        </label>
+                                        
+                                        {% if field.field.widget.input_type == 'textarea' or field.name == 'bio' or field.name == 'description' %}
+                                            <textarea name="{{ field.name }}" 
+                                                      class="form-textarea min-h-[100px]"
+                                                      {% if field.field.required %}required{% endif %}>{{ field.value|default:'' }}</textarea>
+                                        {% elif field.field.widget.input_type == 'select' %}
+                                            <select name="{{ field.name }}" class="form-select" {% if field.field.required %}required{% endif %}>
+                                                {% for choice in field.field.choices %}
+                                                    <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>
+                                                        {{ choice.1 }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        {% elif field.field.widget.input_type == 'checkbox' %}
+                                            <div class="flex items-center">
+                                                <input type="checkbox" 
+                                                       name="{{ field.name }}" 
+                                                       class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                                                       {% if field.value %}checked{% endif %}>
+                                                <span class="ml-2 text-sm text-gray-600">{{ field.help_text }}</span>
+                                            </div>
+                                        {% else %}
+                                            <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                                                   name="{{ field.name }}" 
+                                                   value="{{ field.value|default:'' }}"
+                                                   class="form-input"
+                                                   {% if field.field.required %}required{% endif %}
+                                                   placeholder="{{ field.label }}">
+                                        {% endif %}
+                                        
+                                        {% if field.help_text %}
+                                            <p class="mt-1 text-xs text-gray-400">{{ field.help_text }}</p>
+                                        {% endif %}
+                                        
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <p class="text-red-500 text-sm mt-1 flex items-center gap-1">
+                                                    <span class="material-symbols-outlined text-sm">error</span>
+                                                    {{ error }}
+                                                </p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <!-- Form Actions -->
+                            <div class="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+                                <a href="{% url 'SellerDashboard' %}" 
+                                   class="px-6 py-3 text-gray-600 font-medium hover:text-gray-900 transition-colors">
+                                    Cancel
+                                </a>
+                                <button type="submit" 
+                                        class="px-8 py-3 bg-primary text-white rounded-xl font-bold flex items-center gap-2 hover:bg-primary/90 transition-all transform hover:-translate-y-0.5">
+                                    <span class="material-symbols-outlined">save</span>
+                                    Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="mt-8 bg-white rounded-2xl shadow-lg p-8 fade-in" style="animation-delay: 0.4s;">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-accent text-3xl">history</span>
+                                <h2 class="text-2xl font-bold text-gray-900">Recent Activity</h2>
+                            </div>
+                            <a href="#" class="text-primary hover:underline text-sm font-medium">View All</a>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            {% for activity in recent_activities|default:"" %}
+                                <div class="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-gray-600">
+                                            {% if activity.action == 'created' %}add{% else %}edit{% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900">{{ activity.description }}</p>
+                                        <p class="text-xs text-gray-400">{{ activity.timestamp|timesince }} ago</p>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center py-8">
+                                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-2">history</span>
+                                    <p class="text-gray-400">No recent activity</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                </div>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 ml-64">
+            <div class="px-8 py-4">
+                <div class="flex items-center justify-between text-sm text-gray-400">
+                    <p>© 2026 Auctora. All rights reserved.</p>
+                    <div class="flex gap-6">
+                        
+                        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+                        <a href="#" class="hover:text-primary transition-colors">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+    </div>
+
+    
+    
+    
+</body>
+</html>

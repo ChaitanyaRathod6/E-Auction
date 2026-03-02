@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ auction.item.name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+
+<div class="max-w-5xl mx-auto py-10 px-6">
+
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+
+        <!-- Title -->
+        <h1 class="text-3xl font-bold mb-4">
+            {{ auction.item.name }}
+        </h1>
+
+        <!-- Description -->
+        <p class="text-slate-600 mb-6">
+            {{ auction.item.description }}
+        </p>
+
+        <!-- Price Section -->
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <div>
+                <p class="text-2xl font-bold text-green-600">
+                    ₹ {{ auction.current_price }}
+                </p>
+                <p class="text-sm text-slate-500 mt-2">
+                    Minimum Next Bid: ₹ {{ auction.current_price|add:auction.bid_increment }}
+                </p>
+                <p class="text-red-500 mt-3">
+                    Ends: {{ auction.end_time }}
+                </p>
+                <p class="mt-2 font-semibold">
+                    Status: {{ auction.status }}
+                </p>
+            </div>
+
+            <!-- Bid Form -->
+            <div>
+                {% if auction.status == "ACTIVE" %}
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <input type="number"
+                           step="0.01"
+                           name="bid_amount"
+                           placeholder="Enter your bid"
+                           class="w-full border rounded-lg p-3">
+
+                    <button type="submit"
+                        class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:opacity-90">
+                        Place Bid
+                    </button>
+                </form>
+                {% else %}
+                <p class="text-red-600 font-semibold">
+                    Auction has ended.
+                </p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- Bid History -->
+        <div class="mt-10">
+            <h2 class="text-xl font-bold mb-4">Bid History</h2>
+
+            {% for bid in bids %}
+                <div class="flex justify-between border-b py-2">
+                    <span>{{ bid.buyer.user.username }}</span>
+                    <span class="font-semibold text-green-600">
+                        ₹ {{ bid.amount }}
+                    </span>
+                </div>
+            {% empty %}
+                <p class="text-slate-500">No bids yet.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
