@@ -1,6 +1,7 @@
 from django import forms
 from .models import Auction,Item,Seller, Buyer, AdminProfile, Category, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 class SellerProfileForm(forms.ModelForm):
@@ -87,12 +88,11 @@ class ItemForm(forms.ModelForm):
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ('starting_price', 'reserve_price', 'current_price', 
+        fields = ('starting_price', 'reserve_price', 
                  'bid_increment', 'end_time', 'status')
         widgets = {
             'starting_price': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01', 'min': '0'}),
             'reserve_price': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01', 'min': '0'}),
-            'current_price': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01', 'min': '0'}),
             'bid_increment': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01', 'min': '0.01'}),
             'end_time': forms.DateTimeInput(attrs={'class': 'form-input', 'type': 'datetime-local'}),
             'status': forms.Select(attrs={'class': 'form-select'}),

@@ -1,0 +1,404 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Manage Categories</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --sidebar-bg: #2d1655;
+            --sidebar-hover: rgba(255,255,255,0.07);
+            --primary: #2d1655;
+            --accent-purple: #7c3aed;
+            --main-bg: #f7f6f8;
+            --card-bg: #ffffff;
+            --text-dark: #1a1035;
+            --text-mid: #6b7280;
+            --text-light: #9ca3af;
+            --border: #e8e5f0;
+            --green: #10b981;
+            --red: #ef4444;
+            --topbar-bg: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Topbar */
+        .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: var(--topbar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px 0 0; z-index: 200; animation: fadeIn 0.5s both; box-shadow: 0 1px 8px rgba(45,22,85,0.06); }
+        .topbar-brand { width: 260px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--border); height: 100%; flex-shrink: 0; }
+        .brand-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .brand-icon svg { width: 18px; height: 18px; }
+        .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
+        .topbar-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 0 16px; }
+        .search-bar { display: flex; align-items: center; gap: 8px; background: var(--main-bg); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; color: var(--text-mid); width: 220px; }
+        .topbar-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--main-bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, transform 0.2s; color: var(--text-mid); }
+        .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
+
+        /* Sidebar */
+        .sidebar { width: 260px; min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; padding-top: 56px; display: flex; flex-direction: column; animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both; box-shadow: 2px 0 20px rgba(45,22,85,0.15); }
+        .sidebar-nav { padding: 8px 10px; flex: 1; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 2px; text-decoration: none; }
+        .nav-item .nav-icon { width: 20px; text-align: center; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
+        .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
+        .nav-item.active { background: #fff; color: var(--primary); font-weight: 600; box-shadow: 0 4px 16px rgba(45,22,85,0.2); }
+        .sidebar-bottom { padding: 10px 10px 14px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; }
+        .settings-icon-btn { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; width: 100%; color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500; cursor: pointer; border: none; background: rgba(255,255,255,0.06); transition: background 0.25s ease, color 0.2s, transform 0.25s; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
+        .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
+        .settings-icon-btn svg { transition: transform 0.4s; flex-shrink: 0; }
+        .settings-icon-btn:hover svg { transform: rotate(65deg); }
+        .sidebar-profile-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+        .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
+        .profile-info { flex: 1; min-width: 0; }
+        .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+        .logout-btn { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.4); transition: background 0.2s, color 0.2s, transform 0.25s; }
+        .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
+
+        /* Main */
+        .main { margin-left: 260px; padding-top: 56px; min-height: 100vh; animation: fadeIn 0.6s 0.2s both; }
+        .page-content { padding: 28px; }
+        .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; animation: fadeInUp 0.5s 0.25s both; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
+        .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
+
+        /* Two column layout */
+        .category-grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; animation: fadeInUp 0.5s 0.3s both; }
+
+        /* Form card */
+        .form-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; position: sticky; top: 76px; }
+        .card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+        .card-body { padding: 24px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-label { font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; display: block; }
+        .form-input { width: 100%; padding: 11px 14px; background: var(--main-bg); border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text-dark); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+        .form-input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); background: #fff; }
+        .form-input::placeholder { color: var(--text-light); }
+        .form-textarea { width: 100%; padding: 11px 14px; background: var(--main-bg); border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text-dark); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; min-height: 100px; }
+        .form-textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); background: #fff; }
+        .form-textarea::placeholder { color: var(--text-light); }
+
+        .btn-primary { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: white; padding: 11px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 4px 16px rgba(45,22,85,0.3); width: 100%; justify-content: center; }
+        .btn-primary:hover { transform: scale(1.02); background: #3d2070; box-shadow: 0 6px 24px rgba(45,22,85,0.45); }
+        .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--text-mid); padding: 9px 16px; border-radius: 50px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border); cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+        .btn-ghost:hover { background: var(--border); color: var(--text-dark); }
+        .btn-danger { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--red); padding: 9px 16px; border-radius: 50px; font-size: 13px; font-weight: 500; border: 1.5px solid #fecaca; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+        .btn-danger:hover { background: #fef2f2; border-color: var(--red); }
+
+        /* Category list */
+        .list-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+        .list-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .category-count { font-size: 12px; font-weight: 600; background: #f3f0ff; color: var(--accent-purple); padding: 4px 12px; border-radius: 20px; }
+
+        /* Search bar in list */
+        .list-search { padding: 16px 24px; border-bottom: 1px solid var(--border); }
+        .search-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--main-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 9px 14px; }
+        .search-input-wrap svg { flex-shrink: 0; color: var(--text-light); }
+        .search-input-wrap input { border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-dark); font-family: 'Inter', sans-serif; width: 100%; }
+        .search-input-wrap input::placeholder { color: var(--text-light); }
+
+        /* Category rows */
+        .category-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); transition: background 0.2s; animation: fadeInUp 0.4s both; }
+        .category-row:last-child { border-bottom: none; }
+        .category-row:hover { background: #faf9ff; }
+        .category-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #f3f0ff, #ede9fe); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+        .category-info { flex: 1; min-width: 0; }
+        .category-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .category-desc { font-size: 12px; color: var(--text-mid); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+        .category-date { font-size: 11px; color: var(--text-light); margin-top: 3px; }
+        .category-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+        .action-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--main-bg); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--text-mid); }
+        .action-btn:hover.edit { background: #f3f0ff; border-color: var(--accent-purple); color: var(--accent-purple); }
+        .action-btn:hover.delete { background: #fef2f2; border-color: var(--red); color: var(--red); }
+
+        /* Empty state */
+        .empty-state { padding: 48px 24px; text-align: center; }
+        .empty-icon { width: 64px; height: 64px; border-radius: 16px; background: #f3f0ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+        .empty-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+        .empty-desc { font-size: 13px; color: var(--text-mid); }
+
+        /* Edit mode indicator */
+        .edit-mode-banner { background: #f3f0ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: none; align-items: center; gap: 10px; font-size: 13px; color: var(--accent-purple); font-weight: 500; }
+        .edit-mode-banner.show { display: flex; }
+        .edit-cancel { margin-left: auto; cursor: pointer; font-size: 12px; color: var(--text-mid); text-decoration: underline; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 28px; right: 28px; background: #1a1035; color: white; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .toast.error .toast-icon { background: var(--red); }
+
+        /* Messages */
+        .alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; font-weight: 500; }
+        .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+        @media (max-width: 1024px) { .category-grid { grid-template-columns: 1fr; } .form-card { position: static; } }
+        @media (max-width: 768px) { .sidebar { transform: translateX(-260px); } .main { margin-left: 0; } .page-content { padding: 16px; } }
+    </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+    <div class="topbar-brand">
+        <div class="brand-icon">
+            <div class="brand-icon" style="background: transparent;">
+                <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
+            </div>
+        </div>
+        <span class="brand-name">Auctora</span>
+    </div>
+    <div class="topbar-right">
+        <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search auctions...
+        </div>
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px; font-weight:600; color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px; color:var(--text-light);">{{ request.user.Role }}</div>
+            </div>
+            <div>
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|default:""|first|upper }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <nav class="sidebar-nav">
+        <a href="{% url 'AdminDashboard' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        
+        <a href="{% url 'manage_categories' %}" class="nav-item active">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></span>
+            Manage_Categories
+        </a>
+        
+        <a href="{% url 'home' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            Home
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <button class="settings-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </button>
+        <div class="sidebar-profile-card">
+            <div style="flex-shrink:0;">
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:""|first|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" title="Logout" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+    <div class="page-content">
+
+        <div class="page-header">
+            <div>
+                <h1>Manage Categories</h1>
+                <p>Add, edit and delete auction categories — changes save instantly to the database</p>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="category-grid">
+
+            <!-- LEFT: Add / Edit Form -->
+            <div class="form-card">
+                <div class="card-header">
+                    <span class="card-title" id="formTitle">Add New Category</span>
+                </div>
+                <div class="card-body">
+
+                    <!-- Edit mode banner -->
+                    <div class="edit-mode-banner" id="editBanner">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Editing: <strong id="editingName"></strong>
+                        <span class="edit-cancel" onclick="cancelEdit()">Cancel</span>
+                    </div>
+
+                    <form method="POST" id="categoryForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" id="formAction" value="add">
+                        <input type="hidden" name="category_id" id="categoryId" value="">
+
+                        <div class="form-group">
+                            <label class="form-label">Category Name *</label>
+                            <input type="text" name="name" id="nameInput" class="form-input" placeholder="e.g. Electronics, Jewellery, Art..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" id="descInput" class="form-textarea" placeholder="Brief description of what belongs in this category..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="submitBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span id="submitText">Add Category</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT: Category List -->
+            <div class="list-card">
+                <div class="list-header">
+                    <span class="card-title">All Categories</span>
+                    <span class="category-count">{{ categories|length }} total</span>
+                </div>
+                <div class="list-search">
+                    <div class="search-input-wrap">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="searchInput" placeholder="Search categories..." oninput="filterCategories()">
+                    </div>
+                </div>
+
+                <div id="categoryList">
+                    {% if categories %}
+                        {% for category in categories %}
+                        <div class="category-row" id="row-{{ category.id }}" data-name="{{ category.name|lower }}">
+                            <div class="category-icon">🏷️</div>
+                            <div class="category-info">
+                                <div class="category-name">{{ category.name }}</div>
+                                <div class="category-desc">{{ category.description|default:"No description" }}</div>
+                                <div class="category-date">Added {{ category.created_at|date:"d M Y" }}</div>
+                            </div>
+                            <div class="category-actions">
+                                <!-- Edit button -->
+                                <button class="action-btn edit" title="Edit"
+                                    onclick="editCategory({{ category.id }}, '{{ category.name|escapejs }}', '{{ category.description|escapejs }}')">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
+                                <!-- Delete button -->
+                                <form method="POST" style="display:inline;" onsubmit="return confirm('Delete \'{{ category.name }}\'? This cannot be undone.')">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="category_id" value="{{ category.id }}">
+                                    <button type="submit" class="action-btn delete" title="Delete">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                            </div>
+                            <div class="empty-title">No categories yet</div>
+                            <div class="empty-desc">Add your first category using the form on the left.</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <div class="toast-icon">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <span id="toastMsg">Category saved!</span>
+</div>
+
+<script>
+    // Edit category — fill the form with existing data
+    function editCategory(id, name, description) {
+        document.getElementById('formAction').value = 'edit';
+        document.getElementById('categoryId').value = id;
+        document.getElementById('nameInput').value = name;
+        document.getElementById('descInput').value = description;
+        document.getElementById('submitText').textContent = 'Save Changes';
+        document.getElementById('formTitle').textContent = 'Edit Category';
+        document.getElementById('editingName').textContent = name;
+        document.getElementById('editBanner').classList.add('show');
+        // Scroll to form
+        document.getElementById('categoryForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Cancel edit — reset form back to add mode
+    function cancelEdit() {
+        document.getElementById('formAction').value = 'add';
+        document.getElementById('categoryId').value = '';
+        document.getElementById('nameInput').value = '';
+        document.getElementById('descInput').value = '';
+        document.getElementById('submitText').textContent = 'Add Category';
+        document.getElementById('formTitle').textContent = 'Add New Category';
+        document.getElementById('editBanner').classList.remove('show');
+    }
+
+    // Live search filter
+    function filterCategories() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.category-row').forEach(row => {
+            const name = row.getAttribute('data-name');
+            row.style.display = name.includes(query) ? 'flex' : 'none';
+        });
+    }
+
+    // Show toast on Django message
+    {% if messages %}
+        {% for message in messages %}
+            window.addEventListener('load', () => showToast('{{ message }}', '{% if "error" in message.tags %}error{% endif %}'));
+        {% endfor %}
+    {% endif %}
+
+    function showToast(msg, type) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg || 'Done!';
+        if (type === 'error') toast.classList.add('error');
+        else toast.classList.remove('error');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+</script>
+</body>
+</html>

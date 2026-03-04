@@ -10,6 +10,7 @@ from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, P
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Avg, Q
+from datetime import timedelta
 # Create your views here.
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
@@ -57,7 +58,7 @@ def HowItWorks(request):
 @login_required
 def create_auction(request):
     if request.method == 'POST':
-        item_form = ItemForm(request.POST)
+        item_form = ItemForm(request.POST, request.FILES)
         auction_form = AuctionForm(request.POST)
 
         if item_form.is_valid() and auction_form.is_valid():
@@ -67,11 +68,16 @@ def create_auction(request):
             item.save()
 
             auction = auction_form.save(commit=False)
-            
+            auction.item = item
+            auction.seller = request.user.seller
             auction.current_price = auction.starting_price
             auction.save()
 
             return redirect('SellerDashboard')
+
+        else:
+            print(item_form.errors)
+            print(auction_form.errors)
 
     else:
         item_form = ItemForm()
@@ -80,8 +86,7 @@ def create_auction(request):
     return render(request, 'Dashboard/create_auction.html', {
         'item_form': item_form,
         'auction_form': auction_form
-          }
-    )
+    })
 
 
 def auction_list(request):
@@ -260,15 +265,206 @@ def admin_profile(request):
     }
     return render(request, "Dashboard/admin_profile.html", context)
 
-def category_management(request):
+@login_required
+def manage_categories(request):
     if request.method == "POST":
-        form = CategoryForm(request.POST)
+        action = request.POST.get('action')
 
-        if form.is_valid():
-            form.save()
-            return redirect("category_management")
-    else:
-        form = CategoryForm()    
-    return render(request,"Dashboard/category_management.html")
+        if action == 'add':
+            name = request.POST.get('name', '').strip()
+            description = request.POST.get('description', '').strip()
+            if name:
+                Category.objects.create(name=name, description=description)
+                messages.success(request, f'Category "{name}" added successfully!')
+            else:
+                messages.error(request, 'Category name is required.')
 
+        elif action == 'edit':
+            category_id = request.POST.get('category_id')
+            name = request.POST.get('name', '').strip()
+            description = request.POST.get('description', '').strip()
+            try:
+                category = Category.objects.get(id=category_id)
+                category.name = name
+                category.description = description
+                category.save()
+                messages.success(request, f'Category "{name}" updated successfully!')
+            except Category.DoesNotExist:
+                messages.error(request, 'Category not found.')
+
+        elif action == 'delete':
+            category_id = request.POST.get('category_id')
+            try:
+                category = Category.objects.get(id=category_id)
+                name = category.name
+                category.delete()
+                messages.success(request, f'Category "{name}" deleted.')
+            except Category.DoesNotExist:
+                messages.error(request, 'Category not found.')
+
+        return redirect('manage_categories')
+
+    categories = Category.objects.all().order_by('-created_at')
+    return render(request, 'Dashboard/category_management.html', {'categories': categories})
+
+
+
+@login_required
+def manage_auctions(request):
+    if request.method == "POST":
+        action = request.POST.get('action')
+        auction = Auction.objects.get(id=request.POST.get('auction_id'))
+        if action == 'end':
+            auction.status = 'ENDED'
+        elif action == 'cancel':
+            auction.status = 'CANCELLED'
+        auction.save()
+        messages.success(request, f'Auction "{auction.item.name}" updated.')
+        return redirect('manage_auctions')
+    qs = Auction.objects.select_related('item','item__seller__user','item__category').prefetch_related('bids')
+    if request.GET.get('status'):
+        qs = qs.filter(status=request.GET['status'])
+    context = {
+        'auctions': qs.order_by('-created_at'),
+        'total_auctions': Auction.objects.count(),
+        'active_auctions': Auction.objects.filter(status='ACTIVE').count(),
+        'ended_auctions': Auction.objects.filter(status='ENDED').count(),
+        'cancelled_auctions': Auction.objects.filter(status='CANCELLED').count(),
+    }
+    return render(request, 'Dashboard/manage_auctions.html', context)
+
+@login_required
+def manage_items(request):
+    if request.method == "POST":
+        if request.POST.get('action') == 'delete_item':
+            Item.objects.filter(id=request.POST.get('item_id')).delete()
+            messages.success(request, 'Item deleted.')
+        return redirect('manage_items')
+    qs = Item.objects.select_related('seller__user', 'category')
+    if request.GET.get('condition'):
+        qs = qs.filter(condition=request.GET['condition'])
+    context = {
+        'items': qs.order_by('-created_at'),
+        'total_items': Item.objects.count(),
+        'new_items': Item.objects.filter(condition='NEW').count(),
+        'used_items': Item.objects.filter(condition='USED').count(),
+        'refurb_items': Item.objects.filter(condition='REFURB').count(),
+    }
+    return render(request, 'Dashboard/manage_items.html', context)
+
+@login_required
+def manage_bids(request):
+    context = {
+        'bids': Bid.objects.select_related('buyer__user','auction__item').order_by('-bid_time'),
+        'total_bids': Bid.objects.count(),
+        'winning_bids': Bid.objects.filter(status='WINNING').count(),
+        'outbid_bids': Bid.objects.filter(status='OUTBID').count(),
+        'lost_bids': Bid.objects.filter(status='LOST').count(),
+    }
+    return render(request, 'Dashboard/manage_bids.html', context)
+
+@login_required
+def manage_payments(request):
+    if request.method == "POST":
+        p = Payment.objects.get(id=request.POST.get('payment_id'))
+        p.status = request.POST.get('new_status')
+        p.save()
+        messages.success(request, 'Payment status updated.')
+        return redirect('manage_payments')
+    qs = Payment.objects.select_related('buyer__user','auction__item')
+    if request.GET.get('status'):
+        qs = qs.filter(status=request.GET['status'])
+    context = {
+        'payments': qs.order_by('-payment_date'),
+        'total_payments': Payment.objects.count(),
+        'completed_payments': Payment.objects.filter(status='COMPLETED').count(),
+        'pending_payments': Payment.objects.filter(status='PENDING').count(),
+        'failed_payments': Payment.objects.filter(status='FAILED').count(),
+    }
+    return render(request, 'Dashboard/manage_payments.html', context)
+
+@login_required
+def manage_disputes(request):
+    if request.method == "POST":
+        d = Dispute.objects.get(id=request.POST.get('dispute_id'))
+        d.status = request.POST.get('new_status')
+        d.save()
+        messages.success(request, 'Dispute status updated.')
+        return redirect('manage_disputes')
+    qs = Dispute.objects.select_related('raised_by','auction__item')
+    if request.GET.get('status'):
+        qs = qs.filter(status=request.GET['status'])
+    context = {
+        'disputes': qs.order_by('-created_at'),
+        'total_disputes': Dispute.objects.count(),
+        'open_disputes': Dispute.objects.filter(status='OPEN').count(),
+        'resolved_disputes': Dispute.objects.filter(status='RESOLVED').count(),
+        'closed_disputes': Dispute.objects.filter(status='CLOSED').count(),
+    }
+    return render(request, 'Dashboard/manage_disputes.html', context)
+
+@login_required
+def manage_notifications(request):
+    if request.method == "POST" and request.POST.get('action') == 'send':
+        msg = request.POST.get('message')
+        ntype = request.POST.get('notification_type', 'GENERAL')
+        uid = request.POST.get('user_id')
+        if uid == 'all':
+            for u in User.objects.all():
+                Notification.objects.create(user=u, message=msg, notification_type=ntype)
+            messages.success(request, f'Notification sent to all users.')
+        else:
+            Notification.objects.create(user=User.objects.get(id=uid), message=msg, notification_type=ntype)
+            messages.success(request, 'Notification sent.')
+        return redirect('manage_notifications')
+    context = {
+        'notifications': Notification.objects.select_related('user').order_by('-created_at'),
+        'all_users': User.objects.all(),
+    }
+    return render(request, 'Dashboard/manage_notifications.html', context)
+
+@login_required
+def manage_reviews(request):
+    if request.method == "POST":
+        Review.objects.filter(id=request.POST.get('review_id')).delete()
+        messages.success(request, 'Review deleted.')
+        return redirect('manage_reviews')
+    qs = Review.objects.select_related('reviewer','reviewee','auction__item')
+    if request.GET.get('rating'):
+        qs = qs.filter(rating=request.GET['rating'])
+    avg = Review.objects.aggregate(a=Avg('rating'))['a']
+    context = {
+        'reviews': qs.order_by('-created_at'),
+        'total_reviews': Review.objects.count(),
+        'five_star': Review.objects.filter(rating=5).count(),
+        'one_star': Review.objects.filter(rating=1).count(),
+        'avg_rating': round(avg, 1) if avg else 0,
+    }
+    return render(request, 'Dashboard/manage_reviews.html', context)
+
+@login_required
+def manage_watchlist(request):
+    qs = Watchlist.objects.select_related('buyer__user','auction__item__category')
+    most = qs.values('auction__item__name').annotate(c=Count('id')).order_by('-c').first()
+    context = {
+        'watchlist': qs.order_by('-added_at'),
+        'total_watchlist': qs.count(),
+        'unique_buyers': qs.values('buyer').distinct().count(),
+        'unique_auctions': qs.values('auction').distinct().count(),
+        'most_watched': most['auction__item__name'][:15] + '…' if most else '-',
+    }
+    return render(request, 'Dashboard/manage_watchlist.html', context)
+
+@login_required
+def manage_activity_log(request):
+    today = timezone.now().date()
+    week_ago = timezone.now() - timedelta(days=7)
+    context = {
+        'logs': ActivityLog.objects.select_related('user').order_by('-timestamp'),
+        'total_logs': ActivityLog.objects.count(),
+        'today_logs': ActivityLog.objects.filter(timestamp__date=today).count(),
+        'this_week_logs': ActivityLog.objects.filter(timestamp__gte=week_ago).count(),
+        'unique_users_logged': ActivityLog.objects.values('user').distinct().count(),
+    }
+    return render(request, 'Dashboard/manage_activity_log.html', context)
  
