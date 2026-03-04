@@ -110,33 +110,21 @@
         .main { margin-left: 260px; padding-top: 56px; flex: 1; background: var(--main-bg); min-height: 100vh; animation: fadeIn 0.6s 0.2s both; }
         .page-content { padding: 28px; }
 
-        /* Page header */
         .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; animation: fadeInUp 0.5s 0.25s both; }
         .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
         .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
 
-        /* Profile layout */
         .profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 24px; animation: fadeInUp 0.5s 0.3s both; }
 
-        /* Profile card (left) */
-        .profile-card {
-            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
-            padding: 32px 24px; text-align: center; position: sticky; top: 76px;
-        }
-        .avatar-wrapper {
-            position: relative; display: inline-block; margin-bottom: 16px;
-        }
-        .profile-avatar-lg {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--border);
-            display: block;
-        }
+        /* Profile card left */
+        .profile-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); padding: 32px 24px; text-align: center; position: sticky; top: 76px; }
+        .avatar-wrapper { position: relative; display: inline-block; margin-bottom: 16px; }
+        .profile-avatar-lg { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border); display: block; }
         .avatar-initial-lg {
             width: 100px; height: 100px; border-radius: 50%;
             background: linear-gradient(135deg, #2d1655, #4c1d95);
             display: flex; align-items: center; justify-content: center;
-            font-size: 36px; font-weight: 800; color: white;
-            border: 3px solid var(--border);
+            font-size: 36px; font-weight: 800; color: white; border: 3px solid var(--border);
         }
         .avatar-upload-btn {
             position: absolute; bottom: 4px; right: 4px;
@@ -149,11 +137,7 @@
         .avatar-upload-btn svg { width: 12px; height: 12px; }
 
         .profile-name { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
-        .profile-role {
-            display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1px;
-            text-transform: uppercase; color: var(--accent-purple);
-            background: #f3f0ff; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
-        }
+        .profile-role { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-purple); background: #f3f0ff; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
 
         .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
         .pstat { background: var(--main-bg); border-radius: 10px; padding: 12px; border: 1px solid var(--border); }
@@ -161,21 +145,18 @@
         .pstat-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-light); margin-top: 2px; }
 
         .profile-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
-
         .profile-meta-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--text-mid); }
         .profile-meta-item svg { flex-shrink: 0; color: var(--text-light); }
         .profile-meta-item strong { color: var(--text-dark); font-weight: 600; }
 
         /* Right column */
         .profile-right { display: flex; flex-direction: column; gap: 20px; }
-
-        /* Section card */
         .section-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
         .section-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
         .section-title { font-size: 16px; font-weight: 700; color: var(--text-dark); }
         .section-body { padding: 24px; }
 
-        /* Form styles */
+        /* Forms */
         .form-group { margin-bottom: 18px; }
         .form-label { font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; display: block; }
         .form-input {
@@ -186,7 +167,6 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         .form-input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
-        .form-input:disabled { opacity: 0.6; cursor: not-allowed; }
         .form-input::placeholder { color: var(--text-light); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .form-select {
@@ -194,28 +174,16 @@
             background: var(--main-bg); border: 1.5px solid var(--border);
             border-radius: 10px; font-size: 14px; color: var(--text-dark);
             font-family: 'Inter', sans-serif; outline: none; cursor: pointer;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            appearance: none;
+            transition: border-color 0.2s, box-shadow 0.2s; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
         }
         .form-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
-        .form-textarea {
-            width: 100%; padding: 11px 14px;
-            background: var(--main-bg); border: 1.5px solid var(--border);
-            border-radius: 10px; font-size: 14px; color: var(--text-dark);
-            font-family: 'Inter', sans-serif; outline: none; resize: vertical; min-height: 90px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .form-textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
 
-        /* Photo upload area */
+        /* Photo upload */
         .photo-upload-area {
-            border: 2px dashed var(--border); border-radius: 12px;
-            padding: 28px; text-align: center;
-            cursor: pointer; transition: all 0.25s;
-            background: var(--main-bg);
-            position: relative;
+            border: 2px dashed var(--border); border-radius: 12px; padding: 28px; text-align: center;
+            cursor: pointer; transition: all 0.25s; background: var(--main-bg); position: relative;
         }
         .photo-upload-area:hover { border-color: var(--accent-purple); background: #f3f0ff; }
         .photo-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -225,7 +193,6 @@
         .upload-hint { font-size: 12px; color: var(--text-mid); }
         .upload-hint span { color: var(--accent-purple); font-weight: 600; }
 
-        /* Preview image */
         .photo-preview { display: none; align-items: center; gap: 16px; padding: 16px; background: var(--main-bg); border-radius: 12px; border: 1px solid var(--border); margin-top: 12px; }
         .photo-preview img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
         .photo-preview-info { flex: 1; }
@@ -262,14 +229,11 @@
         /* Toast */
         .toast {
             position: fixed; bottom: 28px; right: 28px;
-            background: #1a1035; color: white;
-            padding: 14px 20px; border-radius: 12px;
-            font-size: 14px; font-weight: 500;
-            display: flex; align-items: center; gap: 10px;
+            background: #1a1035; color: white; padding: 14px 20px; border-radius: 12px;
+            font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
             transform: translateY(80px); opacity: 0;
-            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-            z-index: 999;
+            transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999;
         }
         .toast.show { transform: translateY(0); opacity: 1; }
         .toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -304,24 +268,24 @@
                 <div style="font-size:11px; color:var(--text-light);">{{ request.user.Role }}</div>
             </div>
             <div>
-                {% with request.user.Gender|lower as gender %}
-                    {% if gender == "male" %}
-                        <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                    {% elif gender == "female" %}
-                        <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                    {% else %}
-                        <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|first|upper }}</div>
-                    {% endif %}
-                {% endwith %}
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
             </div>
         </div>
     </div>
 </header>
 
-<!-- Sidebar -->
+<!-- Sidebar — Buyer nav -->
 <aside class="sidebar">
     <nav class="sidebar-nav">
-        <a href="{% url 'SellerDashboard' %}" style="text-decoration:none;">
+        <a href="{% url 'BuyerDashboard' %}" style="text-decoration:none;">
             <div class="nav-item">
                 <span class="nav-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -329,13 +293,21 @@
                 Dashboard
             </div>
         </a>
+        <a href="{% url 'auction_list' %}" style="text-decoration:none;">
+            <div class="nav-item">
+                <span class="nav-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </span>
+                Live Auctions
+            </div>
+        </a>
         <div class="nav-item">
             <span class="nav-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             </span>
-            My Auctions
+            My Bids
         </div>
-        <a href="{% url 'seller_profile' %}" style="text-decoration:none;">
+        <a href="{% url 'buyer_profile' %}" style="text-decoration:none;">
             <div class="nav-item active">
                 <span class="nav-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -359,15 +331,15 @@
         </button>
         <div class="sidebar-profile-card">
             <div style="flex-shrink:0;">
-                {% with request.user.Gender|lower as gender %}
-                    {% if gender == "male" %}
-                        <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                    {% elif gender == "female" %}
-                        <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                    {% else %}
-                        <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|first|upper }}</div>
-                    {% endif %}
-                {% endwith %}
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
             </div>
             <div class="profile-info">
                 <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
@@ -399,12 +371,19 @@
                 <div class="profile-card">
                     <div class="avatar-wrapper">
                         {% if request.user.profile_photo %}
-                            <img class="profile-avatar-lg" id="avatarPreview" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
+                            <!-- ✅ Show saved profile photo — hides the initial -->
+                            <img class="profile-avatar-lg" id="avatarPreview"
+                                 src="{{ request.user.profile_photo.url }}"
+                                 alt="Profile Photo" style="display:block;">
+                            <div class="avatar-initial-lg" id="avatarInitial" style="display:none;">
+                                {{ request.user.First_name|first|upper }}
+                            </div>
                         {% else %}
+                            <!-- ✅ No photo yet — show initial -->
                             <div class="avatar-initial-lg" id="avatarInitial">
                                 {{ request.user.First_name|first|upper }}
                             </div>
-                            <img class="profile-avatar-lg" id="avatarPreview" src="" alt="Profile Photo" style="display:none;">
+                            <img class="profile-avatar-lg" id="avatarPreview" src="" alt="" style="display:none;">
                         {% endif %}
                         <label class="avatar-upload-btn" for="photoInput" title="Change photo">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -416,12 +395,14 @@
 
                     <div class="profile-stats">
                         <div class="pstat">
-                            <div class="pstat-val">{{ seller.auctions.count|default:"0" }}</div>
-                            <div class="pstat-lbl">Auctions</div>
+                            <!-- Total bids placed by this buyer -->
+                            <div class="pstat-val">{{ buyer.bids.count|default:"0" }}</div>
+                            <div class="pstat-lbl">Bids</div>
                         </div>
                         <div class="pstat">
-                            <div class="pstat-val">{{ seller.won_auctions.count|default:"0" }}</div>
-                            <div class="pstat-lbl">Sold</div>
+                            <!-- Auctions won -->
+                            <div class="pstat-val">{{ buyer.won_auctions.count|default:"0" }}</div>
+                            <div class="pstat-lbl">Won</div>
                         </div>
                     </div>
 
@@ -438,8 +419,8 @@
                     </div>
                     <div class="profile-meta-item">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <!-- ✅ Seller rating from seller model -->
-                        <span>Rating: <strong>{{ seller.seller_rating|default:"Not rated" }} / 5</strong></span>
+                        <!-- ✅ buyer_rating from Buyer model -->
+                        <span>Rating: <strong>{{ buyer.buyer_rating|default:"0.0" }} / 5</strong></span>
                     </div>
                 </div>
 
@@ -493,13 +474,13 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Email Address</label>
-                                <!-- ✅ Correct field: Email (read-only, set at registration) -->
-                                <input type="email" name="Email" class="form-input" value="{{ request.user.Email|default:'' }}" placeholder="your@email.com" readonly style="opacity:0.6; cursor:not-allowed;">
+                                <!-- ✅ Correct field: Email — read only -->
+                                <input type="email" class="form-input" value="{{ request.user.Email|default:'' }}" readonly style="opacity:0.6; cursor:not-allowed;">
                             </div>
                             <div class="form-row form-group">
                                 <div>
                                     <label class="form-label">Mobile Number</label>
-                                    <!-- ✅ Correct field: Mobile_number (not Phone) -->
+                                    <!-- ✅ Correct field: Mobile_number -->
                                     <input type="text" name="Mobile_number" class="form-input" value="{{ request.user.Mobile_number|default:'' }}" placeholder="+91 00000 00000">
                                 </div>
                                 <div>
@@ -512,24 +493,25 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- ℹ️ City, Country, Bio don't exist in your User model yet -->
-                            <!-- To add them, run: python manage.py makemigrations && migrate after adding to User model -->
                         </div>
                     </div>
 
-                    <!-- Seller Rating (read-only display) -->
+                    <!-- Buyer Rating (read-only display) -->
                     <div class="section-card">
                         <div class="section-header">
-                            <span class="section-title">Seller Rating</span>
-                            <span style="font-size:12px; color:var(--text-mid);">Based on completed auctions</span>
+                            <span class="section-title">Buyer Rating</span>
+                            <span style="font-size:12px; color:var(--text-mid);">Based on auction activity</span>
                         </div>
                         <div class="section-body">
                             <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
-                                <!-- Star display -->
+                                <!-- Stars -->
                                 <div style="display:flex; align-items:center; gap:6px;">
-                                    {% with seller.seller_rating|default:0 as rating %}
+                                    {% with buyer.buyer_rating|default:0 as rating %}
                                         {% for i in "12345" %}
-                                            <svg width="28" height="28" viewBox="0 0 24 24" fill="{% if forloop.counter <= rating %}#f59e0b{% else %}#e5e7eb{% endif %}" stroke="{% if forloop.counter <= rating %}#f59e0b{% else %}#d1d5db{% endif %}" stroke-width="1.5">
+                                            <svg width="28" height="28" viewBox="0 0 24 24"
+                                                fill="{% if forloop.counter <= rating %}#f59e0b{% else %}#e5e7eb{% endif %}"
+                                                stroke="{% if forloop.counter <= rating %}#f59e0b{% else %}#d1d5db{% endif %}"
+                                                stroke-width="1.5">
                                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                             </svg>
                                         {% endfor %}
@@ -538,14 +520,14 @@
                                 <!-- Numeric score -->
                                 <div>
                                     <div style="font-size:36px; font-weight:800; color:var(--primary); letter-spacing:-1px; line-height:1;">
-                                        {{ seller.seller_rating|default:"0.0" }}
+                                        {{ buyer.buyer_rating|default:"0.0" }}
                                         <span style="font-size:16px; font-weight:500; color:var(--text-mid);">/ 5</span>
                                     </div>
                                     <div style="font-size:12px; color:var(--text-mid); margin-top:4px;">
-                                        {{ seller.total_items_sold|default:"0" }} items sold
+                                        {{ buyer.bids.count|default:"0" }} total bids placed
                                     </div>
                                 </div>
-                                <!-- Rating breakdown bar -->
+                                <!-- Breakdown bars -->
                                 <div style="flex:1; min-width:200px;">
                                     {% for star_num in "54321" %}
                                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
@@ -571,13 +553,26 @@
                                 <label class="form-label">Current Password</label>
                                 <input type="password" name="current_password" class="form-input" placeholder="Enter current password">
                             </div>
-                            
+                            <div class="form-row form-group">
+                                <div>
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" name="new_password" class="form-input" id="newPassInput" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+                                    <div class="password-strength">
+                                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                                        <div class="strength-text" id="strengthText">Enter a password</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Confirm New Password</label>
+                                    <input type="password" name="confirm_password" class="form-input" placeholder="Repeat new password">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Save buttons -->
                     <div style="display:flex; gap:12px; justify-content:flex-end; animation: fadeInUp 0.5s 0.5s both;">
-                        <a href="{% url 'SellerDashboard' %}" style="text-decoration:none;">
+                        <a href="{% url 'BuyerDashboard' %}" style="text-decoration:none;">
                             <button type="button" class="btn-ghost">Cancel</button>
                         </a>
                         <button type="submit" class="btn-primary">
@@ -589,7 +584,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 </main>
 
@@ -614,16 +608,12 @@
     photoInput.addEventListener('change', function() {
         const file = this.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = function(e) {
-            // Show preview row
             previewImg.src = e.target.result;
             previewName.textContent = file.name;
             previewSize.textContent = (file.size / 1024).toFixed(1) + ' KB';
             photoPreview.style.display = 'flex';
-
-            // Update avatar in profile card
             if (avatarInitial) avatarInitial.style.display = 'none';
             avatarPreview.src = e.target.result;
             avatarPreview.style.display = 'block';
@@ -637,7 +627,7 @@
         if (avatarInitial) { avatarInitial.style.display = 'flex'; avatarPreview.style.display = 'none'; }
     });
 
-    // Password strength checker
+    // Password strength
     function checkStrength(val) {
         const fill = document.getElementById('strengthFill');
         const text = document.getElementById('strengthText');
@@ -646,7 +636,6 @@
         if (/[A-Z]/.test(val)) score++;
         if (/[0-9]/.test(val)) score++;
         if (/[^A-Za-z0-9]/.test(val)) score++;
-
         const levels = [
             { w: '0%',   bg: '#e5e7eb', label: 'Enter a password' },
             { w: '25%',  bg: '#ef4444', label: 'Weak' },
@@ -660,18 +649,17 @@
         text.style.color = levels[score].bg;
     }
 
-    // Show toast on successful form submit (Django messages or just on page load if redirected)
+    // Toast on success
     {% if messages %}
         {% for message in messages %}
             {% if 'success' in message.tags %}
-                window.addEventListener('load', () => showToast('{{ message }}'));
+                window.addEventListener('load', () => showToast());
             {% endif %}
         {% endfor %}
     {% endif %}
 
-    function showToast(msg) {
+    function showToast() {
         const toast = document.getElementById('toast');
-        if (msg) toast.querySelector('div + *') || (toast.lastChild.textContent = msg);
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3500);
     }

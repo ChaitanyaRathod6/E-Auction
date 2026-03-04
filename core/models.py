@@ -73,6 +73,7 @@ class User(AbstractBaseUser):
     Is_Admin = models.BooleanField(default=False)
     Created_at = models.DateTimeField(auto_now_add=True)
     Updated_at = models.DateTimeField(auto_now=True)
+    profile_picture = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
 
     objects = UserManager()

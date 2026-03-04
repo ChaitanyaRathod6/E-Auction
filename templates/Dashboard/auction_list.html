@@ -38,7 +38,6 @@
             overflow-x: hidden;
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
@@ -51,12 +50,7 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @keyframes cardHover {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-6px); }
-        }
 
-        /* Layout */
         .layout { display: flex; min-height: 100vh; }
 
         /* Topbar */
@@ -83,7 +77,6 @@
         }
         .brand-icon svg { width: 18px; height: 18px; }
         .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
-
         .topbar-right {
             flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
             padding: 0 16px;
@@ -104,12 +97,6 @@
             color: var(--text-mid);
         }
         .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
-        .avatar-circle {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: #111; cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-        }
-        .avatar-circle:hover { transform: scale(1.08); }
 
         /* Sidebar */
         .sidebar {
@@ -121,16 +108,13 @@
             animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
             box-shadow: 2px 0 20px rgba(45,22,85,0.15);
         }
-
         .sidebar-nav { padding: 8px 10px; flex: 1; }
-
         .nav-item {
             display: flex; align-items: center; gap: 12px;
             padding: 11px 14px; border-radius: 10px;
             cursor: pointer; color: rgba(255,255,255,0.7);
             font-size: 14px; font-weight: 500;
-            position: relative; overflow: hidden;
-            transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
+            transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
             margin-bottom: 2px;
             animation: slideInLeft 0.45s both;
         }
@@ -139,37 +123,22 @@
         .nav-item:nth-child(3) { animation-delay: 0.24s; }
         .nav-item:nth-child(4) { animation-delay: 0.30s; }
         .nav-item:nth-child(5) { animation-delay: 0.36s; }
-
         .nav-item .nav-icon {
             font-size: 16px; width: 20px; text-align: center; flex-shrink: 0;
             transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
         }
         .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
         .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
-
         .nav-item.active {
-            background: #fff;
-            color: var(--primary);
-            font-weight: 600;
+            background: #fff; color: var(--primary); font-weight: 600;
             box-shadow: 0 4px 16px rgba(45,22,85,0.2);
         }
-        .nav-item.active .nav-icon { transform: scale(1.1); }
-
-        .sidebar-divider {
-            height: 1px; background: rgba(255,255,255,0.1);
-            margin: 10px 14px;
-        }
-
-        /* Sidebar bottom */
         .sidebar-bottom {
             padding: 10px 10px 14px;
             border-top: 1px solid rgba(255,255,255,0.1);
             margin-top: auto;
-            animation: slideInLeft 0.5s 0.38s both;
         }
-
         .sidebar-settings-row { padding: 0 0 8px 0; }
-        
         .settings-icon-btn {
             display: flex; align-items: center; gap: 10px;
             padding: 11px 14px; border-radius: 10px; width: 100%;
@@ -179,16 +148,9 @@
             transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
             font-family: 'Inter', sans-serif;
         }
-        .settings-icon-btn:hover {
-            background: rgba(255,255,255,0.12); color: #fff;
-            transform: translateX(3px) scale(1.02);
-        }
-        .settings-icon-btn svg {
-            transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-            flex-shrink: 0;
-        }
+        .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
+        .settings-icon-btn svg { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
         .settings-icon-btn:hover svg { transform: rotate(65deg); }
-
         .sidebar-profile-card {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
@@ -198,17 +160,9 @@
             transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
         }
         .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
-
-        .profile-avatar-card {
-            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; font-size: 15px;
-        }
         .profile-info { flex: 1; min-width: 0; }
         .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
-
         .logout-btn {
             width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
             background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
@@ -216,10 +170,7 @@
             cursor: pointer; color: rgba(255,255,255,0.4);
             transition: background 0.2s, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
         }
-        .logout-btn:hover {
-            background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3);
-            transform: scale(1.1);
-        }
+        .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
 
         /* Main */
         .main {
@@ -227,25 +178,19 @@
             flex: 1; background: var(--main-bg); min-height: 100vh;
             animation: fadeIn 0.6s 0.2s both;
         }
-
         .page-content { padding: 28px; }
 
-        /* Page header */
         .page-header {
             display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 28px;
             animation: fadeInUp 0.5s 0.25s both;
         }
-        .page-header h1 {
-            font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px;
-        }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
         .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
 
-        /* Filter bar */
         .filter-bar {
             display: flex; align-items: center; gap: 12px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            margin-bottom: 24px; flex-wrap: wrap;
             animation: fadeInUp 0.5s 0.3s both;
         }
         .filter-select {
@@ -253,40 +198,27 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 10px;
-            font-size: 13px;
-            color: var(--text-dark);
+            font-size: 13px; color: var(--text-dark);
             font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            outline: none;
-            min-width: 140px;
+            cursor: pointer; outline: none; min-width: 140px;
         }
-        .filter-select:focus {
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
-        }
-        .view-toggle {
-            display: flex; gap: 6px;
-            margin-left: auto;
-        }
+        .filter-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+        .view-toggle { display: flex; gap: 6px; margin-left: auto; }
         .view-btn {
-            padding: 8px 12px;
+            padding: 8px 18px;
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text-mid);
             cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px; font-weight: 500;
             transition: all 0.2s;
         }
-        .view-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .view-btn:hover:not(.active) {
-            background: var(--border);
-        }
+        .view-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .view-btn:hover:not(.active) { background: var(--border); }
 
-        /* Auctions grid */
+        /* ===================== GRID VIEW ===================== */
         .auctions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -294,7 +226,6 @@
             animation: fadeInUp 0.5s 0.36s both;
         }
 
-        /* Auction card */
         .auction-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -304,218 +235,162 @@
             animation: fadeInUp 0.5s both;
             cursor: pointer;
         }
-        .auction-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 32px rgba(45,22,85,0.12);
-        }
-
+        .auction-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(45,22,85,0.12); }
         .card-image {
             height: 200px;
             background: linear-gradient(145deg, #f0edf5, #e5e0ed);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
         .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
         }
-        .auction-card:hover .card-image img {
-            transform: scale(1.08);
-        }
+        .auction-card:hover .card-image img { transform: scale(1.08); }
         .image-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
             font-size: 48px;
             background: linear-gradient(135deg, #2d1655, #4c1d95);
             color: rgba(255,255,255,0.2);
         }
-
         .card-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 6px 12px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            background: rgba(255,255,255,0.95);
-            color: var(--text-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            backdrop-filter: blur(4px);
+            position: absolute; top: 12px; right: 12px;
+            padding: 6px 12px; border-radius: 30px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            background: rgba(255,255,255,0.95); color: var(--text-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); backdrop-filter: blur(4px);
         }
         .card-badge.live { background: var(--green); color: white; }
         .card-badge.ending { background: var(--orange); color: white; }
-
-        .card-content {
-            padding: 18px 18px 20px;
-        }
-
-        .card-category {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--accent-purple);
-            margin-bottom: 6px;
-        }
-
-        .card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
+        .card-content { padding: 18px 18px 20px; }
+        .card-category { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-purple); margin-bottom: 6px; }
+        .card-title { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; line-height: 1.3; }
         .card-description {
-            font-size: 13px;
-            color: var(--text-mid);
-            line-height: 1.5;
-            margin-bottom: 16px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 13px; color: var(--text-mid); line-height: 1.5; margin-bottom: 16px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
-
         .card-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
         }
+        .price-info { display: flex; flex-direction: column; }
+        .price-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); }
+        .price-value { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+        .bid-info { text-align: right; }
+        .bid-count { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+        .bid-label { font-size: 10px; color: var(--text-light); font-weight: 500; }
 
-        .price-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .price-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-light);
-        }
-        .price-value {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
-
-        .bid-info {
-            text-align: right;
-        }
-        .bid-count {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .bid-label {
-            font-size: 10px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
+        /* ✅ FIX 2: Real end time */
         .time-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dark);
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; font-weight: 600; color: var(--text-dark);
+            margin-bottom: 14px;
         }
         .time-left.urgent { color: var(--orange); }
-        .time-icon {
-            opacity: 0.5;
-        }
+        .time-icon { opacity: 0.5; }
 
-        .card-footer {
-            display: flex;
-            gap: 10px;
-        }
+        .card-footer { display: flex; gap: 10px; }
         .btn-view {
-            flex: 1;
-            padding: 10px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
+            flex: 1; padding: 10px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
             transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
-            text-align: center;
-            text-decoration: none;
+            text-align: center; text-decoration: none;
+            font-family: 'Inter', sans-serif;
         }
-        .btn-view:hover {
-            transform: scale(1.03);
-            background: #3d2070;
-            box-shadow: 0 4px 12px rgba(45,22,85,0.3);
-        }
+        .btn-view:hover { transform: scale(1.03); background: #3d2070; box-shadow: 0 4px 12px rgba(45,22,85,0.3); }
         .btn-watch {
-            width: 40px;
-            background: var(--main-bg);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-mid);
+            width: 40px; background: var(--main-bg); border: 1px solid var(--border);
+            border-radius: 50px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s; color: var(--text-mid);
         }
-        .btn-watch:hover {
-            background: var(--border);
-            color: var(--orange);
-            transform: scale(1.05);
-        }
+        .btn-watch:hover { background: var(--border); color: var(--orange); transform: scale(1.05); }
 
-        /* Empty state */
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
+        /* ===================== LIST VIEW ===================== */
+        .auctions-list { display: none; flex-direction: column; gap: 14px; animation: fadeInUp 0.5s 0.36s both; }
+
+        .auction-list-item {
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
         }
-        .empty-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.3;
+        .auction-list-item:hover { transform: translateX(4px); box-shadow: 0 8px 24px rgba(45,22,85,0.1); }
+
+        .list-image {
+            width: 120px; height: 90px; flex-shrink: 0;
+            background: linear-gradient(135deg, #2d1655, #4c1d95);
+            position: relative; overflow: hidden;
         }
-        .empty-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-        .empty-text {
-            font-size: 14px;
-            color: var(--text-mid);
+        .list-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .auction-list-item:hover .list-image img { transform: scale(1.08); }
+        .list-image-placeholder {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; color: rgba(255,255,255,0.25);
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .auctions-grid { grid-template-columns: repeat(2, 1fr); }
+        .list-content {
+            flex: 1; padding: 14px 18px;
+            display: flex; align-items: center; gap: 20px;
         }
+        .list-info { flex: 1; min-width: 0; }
+        .list-category { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-purple); margin-bottom: 3px; }
+        .list-title { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-desc { font-size: 12px; color: var(--text-mid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .list-price-block { text-align: center; flex-shrink: 0; }
+        .list-price-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 3px; }
+        .list-price-value { font-size: 18px; font-weight: 800; color: var(--primary); }
+
+        .list-bids-block { text-align: center; flex-shrink: 0; min-width: 60px; }
+        .list-bids-num { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+        .list-bids-label { font-size: 10px; color: var(--text-light); font-weight: 500; }
+
+        .list-time-block { flex-shrink: 0; min-width: 130px; }
+        .list-time-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 3px; }
+        .list-time-value { font-size: 12px; font-weight: 600; color: var(--text-dark); }
+        .list-time-value.urgent { color: var(--orange); }
+
+        .list-action { padding: 0 18px 0 0; flex-shrink: 0; }
+        .btn-list-view {
+            padding: 9px 20px;
+            background: var(--primary); color: white;
+            border: none; border-radius: 50px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            font-family: 'Inter', sans-serif; white-space: nowrap;
+        }
+        .btn-list-view:hover { background: #3d2070; box-shadow: 0 4px 12px rgba(45,22,85,0.3); transform: scale(1.03); }
+
+        .list-status-badge {
+            padding: 4px 10px; border-radius: 20px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            margin-bottom: 6px; display: inline-block;
+        }
+        .list-status-badge.live { background: #d1fae5; color: #065f46; }
+        .list-status-badge.ending { background: #fef3c7; color: #92400e; }
+
+        /* Empty */
+        .empty-state {
+            grid-column: 1 / -1; text-align: center; padding: 60px 20px;
+            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
+        }
+        .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+        .empty-title { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .empty-text { font-size: 14px; color: var(--text-mid); }
+
+        @media (max-width: 1024px) { .auctions-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-260px); }
             .main { margin-left: 0; }
             .auctions-grid { grid-template-columns: 1fr; }
             .page-content { padding: 16px; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
-            .view-toggle { margin-left: 0; }
+            .list-bids-block, .list-time-block { display: none; }
         }
     </style>
 </head>
@@ -547,29 +422,20 @@
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
             </svg>
         </div>
-        <div class="topbar-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-            </svg>
-        </div>
+        
         <div style="display:flex; align-items:center; gap:10px; margin-left:8px;">
             <div style="text-align:right;">
                 <div style="font-size:13px; font-weight:600; color:var(--text-dark);">
                     {{ request.user.First_name }} {{ request.user.Last_name }}
                 </div>
-                <div style="font-size:11px; color:var(--text-light);">
-                    {{ request.user.Role }}
-                </div>
+                <div style="font-size:11px; color:var(--text-light);">{{ request.user.Role }}</div>
             </div>
-            <div class="avatar-circle" style="background:none; padding:0;">
+            <div style="background:none; padding:0;">
                 {% with request.user.Gender|lower as gender %}
                     {% if gender == "male" %}
-                        <img src="{% static 'images/male.png' %}" 
-                             style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                        <img src="{% static 'images/male.png' %}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                     {% elif gender == "female" %}
-                        <img src="{% static 'images/female.png' %}" 
-                             style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                        <img src="{% static 'images/female.png' %}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                     {% else %}
                         <div style="display:flex; align-items:center; justify-content:center; font-weight:600; color:white; background:#2d1655; width:36px; height:36px; border-radius:50%;">
                             {{ request.user.First_name|first|upper }}
@@ -588,10 +454,8 @@
             <div class="nav-item">
                 <span class="nav-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"/>
-                        <rect x="14" y="3" width="7" height="7"/>
-                        <rect x="14" y="14" width="7" height="7"/>
-                        <rect x="3" y="14" width="7" height="7"/>
+                        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
                     </svg>
                 </span>
                 Dashboard
@@ -608,8 +472,7 @@
         <div class="nav-item">
             <span class="nav-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="5" width="20" height="14" rx="2"/>
-                    <line x1="2" y1="10" x2="22" y2="10"/>
+                    <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
                 </svg>
             </span>
             My Bids
@@ -634,8 +497,6 @@
             </div>
         </a>
     </nav>
-
-    <!-- Sidebar Bottom -->
     <div class="sidebar-bottom">
         <div class="sidebar-settings-row">
             <button class="settings-icon-btn">
@@ -646,18 +507,17 @@
                 Settings
             </button>
         </div>
-
         <div class="sidebar-profile-card">
-            <div class="profile-avatar-card" style="background:none; border:none; padding:0;">
+            <div style="background:none; border:none; padding:0; flex-shrink:0;">
                 {% with request.user.Gender|lower as gender %}
                     {% if gender == "male" %}
-                        <img src="{% static 'images/male.png' %}" 
-                             style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                        <img src="{% static 'images/male.png' %}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                     {% elif gender == "female" %}
-                        <img src="{% static 'images/female.png' %}" 
-                             style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                        <img src="{% static 'images/female.png' %}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
                     {% else %}
-                        {{ request.user.First_name|first|upper }}
+                        <div style="display:flex; align-items:center; justify-content:center; font-weight:600; color:white; background:#2d1655; width:36px; height:36px; border-radius:50%;">
+                            {{ request.user.First_name|first|upper }}
+                        </div>
                     {% endif %}
                 {% endwith %}
             </div>
@@ -679,16 +539,13 @@
 <!-- Main Content -->
 <main class="main">
     <div class="page-content">
-        <!-- Page Header -->
         <div class="page-header">
             <div>
                 <h1>Live Auctions</h1>
                 <p>Discover exclusive luxury items up for bid</p>
             </div>
-            
         </div>
 
-        <!-- Filter Bar -->
         <div class="filter-bar">
             <select class="filter-select">
                 <option>All Categories</option>
@@ -707,13 +564,14 @@
                 <option>Newest First</option>
             </select>
             <div class="view-toggle">
-                <button class="view-btn active">Grid</button>
-                <button class="view-btn">List</button>
+                <!-- ✅ FIX 3: Working grid/list toggle -->
+                <button class="view-btn active" id="gridBtn" onclick="setView('grid')">Grid</button>
+                <button class="view-btn" id="listBtn" onclick="setView('list')">List</button>
             </div>
         </div>
 
-        <!-- Auctions Grid -->
-        <div class="auctions-grid">
+        <!-- GRID VIEW -->
+        <div class="auctions-grid" id="gridView">
             {% for auction in auctions %}
             <div class="auction-card" onclick="window.location.href='{% url 'auction_detail' pk=auction.pk %}'">
                 <div class="card-image">
@@ -721,59 +579,48 @@
                         <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}">
                     {% else %}
                         <div class="image-placeholder">
-                            {% if auction.item.category == 'Timepieces' %}
-                                ⌚
-                            {% elif auction.item.category == 'Fine Jewellery' %}
-                                💎
-                            {% elif auction.item.category == 'Rare Vehicles' %}
-                                🚗
-                            {% elif auction.item.category == 'Fine Art' %}
-                                🎨
-                            {% elif auction.item.category == 'Designer Handbags' %}
-                                👜
-                            {% elif auction.item.category == 'Rare Wines' %}
-                                🍷
-                            {% else %}
-                                📦
-                            {% endif %}
+                            {% if auction.item.category == 'Timepieces' %}⌚
+                            {% elif auction.item.category == 'Fine Jewellery' %}💎
+                            {% elif auction.item.category == 'Rare Vehicles' %}🚗
+                            {% elif auction.item.category == 'Fine Art' %}🎨
+                            {% elif auction.item.category == 'Designer Handbags' %}👜
+                            {% elif auction.item.category == 'Rare Wines' %}🍷
+                            {% else %}📦{% endif %}
                         </div>
                     {% endif %}
-                    {% if auction.is_live %}
+                    {% if auction.status == "ACTIVE" %}
                         <span class="card-badge live">LIVE</span>
-                    {% elif auction.ending_soon %}
-                        <span class="card-badge ending">ENDING SOON</span>
                     {% endif %}
                 </div>
                 <div class="card-content">
                     <div class="card-category">{{ auction.item.category|default:"Luxury Item" }}</div>
                     <h3 class="card-title">{{ auction.item.name }}</h3>
                     <p class="card-description">{{ auction.item.description|truncatewords:20 }}</p>
-                    
                     <div class="card-details">
                         <div class="price-info">
                             <span class="price-label">Current Bid</span>
-                            <span class="price-value">${{ auction.current_price|floatformat:2|default:"0.00" }}</span>
+                            <!-- ✅ FIX 1: Use ₹ and real price -->
+                            <span class="price-value">₹{{ auction.current_price|floatformat:2 }}</span>
                         </div>
                         <div class="bid-info">
-                            <span class="bid-count">{{ auction.bid_count|default:"0" }}</span>
-                            <span class="bid-label">bids</span>
+                            <!-- ✅ FIX 1: Real bid count from related manager -->
+                            <span class="bid-count">{{ auction.bids.count }}</span>
+                            <span class="bid-label"> bids</span>
                         </div>
                     </div>
-
-                    <div class="time-left {% if auction.ending_soon %}urgent{% endif %}">
+                    <!-- ✅ FIX 2: Real end date/time -->
+                    <div class="time-left">
                         <svg class="time-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <polyline points="12 6 12 12 16 14"/>
                         </svg>
-                        {{ auction.time_left|default:"Ends today" }}
+                        Ends: {{ auction.end_time|date:"d M Y, g:i A" }}
                     </div>
-
                     <div class="card-footer">
                         <button class="btn-view">View Auction</button>
                         <button class="btn-watch" onclick="event.stopPropagation()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                             </svg>
                         </button>
                     </div>
@@ -783,20 +630,104 @@
             <div class="empty-state">
                 <div class="empty-icon">🔍</div>
                 <h3 class="empty-title">No Active Auctions</h3>
-                <p class="empty-text">There are no live auctions at the moment. Check back later or create a new listing.</p>
-                <a href="{% url 'create_auction' %}" style="text-decoration: none;">
-                    <button class="btn-primary" style="margin-top: 20px;">Create Your First Auction</button>
-                </a>
+                <p class="empty-text">There are no live auctions at the moment. Check back later.</p>
             </div>
             {% endfor %}
         </div>
+
+        <!-- LIST VIEW -->
+        <div class="auctions-list" id="listView">
+            {% for auction in auctions %}
+            <div class="auction-list-item" onclick="window.location.href='{% url 'auction_detail' pk=auction.pk %}'">
+                <div class="list-image">
+                    {% if auction.item.image %}
+                        <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}">
+                    {% else %}
+                        <div class="list-image-placeholder">
+                            {% if auction.item.category == 'Timepieces' %}⌚
+                            {% elif auction.item.category == 'Fine Jewellery' %}💎
+                            {% elif auction.item.category == 'Rare Vehicles' %}🚗
+                            {% elif auction.item.category == 'Fine Art' %}🎨
+                            {% elif auction.item.category == 'Designer Handbags' %}👜
+                            {% elif auction.item.category == 'Rare Wines' %}🍷
+                            {% else %}📦{% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="list-content">
+                    <div class="list-info">
+                        {% if auction.status == "ACTIVE" %}
+                            <span class="list-status-badge live">LIVE</span>
+                        {% endif %}
+                        <div class="list-category">{{ auction.item.category|default:"Luxury Item" }}</div>
+                        <div class="list-title">{{ auction.item.name }}</div>
+                        <div class="list-desc">{{ auction.item.description|truncatewords:12 }}</div>
+                    </div>
+                    <div class="list-price-block">
+                        <div class="list-price-label">Current Bid</div>
+                        <div class="list-price-value">₹{{ auction.current_price|floatformat:2 }}</div>
+                    </div>
+                    <div class="list-bids-block">
+                        <!-- ✅ FIX 1: Real bid count -->
+                        <div class="list-bids-num">{{ auction.bids.count }}</div>
+                        <div class="list-bids-label">bids</div>
+                    </div>
+                    <div class="list-time-block">
+                        <div class="list-time-label">Ends</div>
+                        <!-- ✅ FIX 2: Real end time -->
+                        <div class="list-time-value">{{ auction.end_time|date:"d M Y" }}<br>{{ auction.end_time|date:"g:i A" }}</div>
+                    </div>
+                </div>
+                <div class="list-action">
+                    <button class="btn-list-view" onclick="event.stopPropagation(); window.location.href='{% url 'auction_detail' pk=auction.pk %}'">
+                        View →
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <h3 class="empty-title">No Active Auctions</h3>
+                <p class="empty-text">There are no live auctions at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+
     </div>
 </main>
 
 <script>
-    // Active nav handling
+    // ✅ FIX 3: Working grid/list toggle
+    function setView(view) {
+        const gridView = document.getElementById('gridView');
+        const listView = document.getElementById('listView');
+        const gridBtn = document.getElementById('gridBtn');
+        const listBtn = document.getElementById('listBtn');
+
+        if (view === 'grid') {
+            gridView.style.display = 'grid';
+            listView.style.display = 'none';
+            gridBtn.classList.add('active');
+            listBtn.classList.remove('active');
+            localStorage.setItem('auctora_view', 'grid');
+        } else {
+            gridView.style.display = 'none';
+            listView.style.display = 'flex';
+            gridBtn.classList.remove('active');
+            listBtn.classList.add('active');
+            localStorage.setItem('auctora_view', 'list');
+        }
+    }
+
+    // Remember last view preference
+    window.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('auctora_view');
+        if (saved === 'list') setView('list');
+    });
+
+    // Nav active state
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', function(e) {
+        item.addEventListener('click', function() {
             if (!this.closest('a')) {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
@@ -804,25 +735,19 @@
         });
     });
 
-    // View toggle
-    document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    // Watch button handling
+    // Watch/heart toggle
     document.querySelectorAll('.btn-watch').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const icon = this.querySelector('svg');
-            if (this.style.color === 'rgb(245, 158, 11)') {
-                this.style.color = '';
+            if (this.dataset.watched === 'true') {
+                this.dataset.watched = 'false';
                 icon.style.fill = 'none';
+                this.style.color = '';
             } else {
-                this.style.color = '#f59e0b';
+                this.dataset.watched = 'true';
                 icon.style.fill = '#f59e0b';
+                this.style.color = '#f59e0b';
             }
         });
     });

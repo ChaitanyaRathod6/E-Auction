@@ -611,10 +611,12 @@
     </div>
 
     <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </span>
-      Browse Auctions
+      <a href ="{% url 'auction_list' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </span>
+        Browse Auctions
+      </a>
       <span class="nav-badge purple">New</span>
     </div>
 
@@ -644,14 +646,8 @@
       Purchase History
     </div>
 
-    <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </span>
-      Messages
-      <span class="nav-badge">2</span>
-    </div>
-
+    
+    <a href="{% url 'buyer_profile' %}" style="text-decoration: none; color: inherit;">
     <div class="nav-item" onclick="setActive(this)">
       <span class="nav-icon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
