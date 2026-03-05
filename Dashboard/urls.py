@@ -33,4 +33,5 @@ urlpatterns = [
     path('manage_watchlist/',views.manage_watchlist,name='manage_watchlist'),
     path('manage_activity_log/',views.manage_activity_log,name='manage_activity_log'),
     path('seller_manage_bids/',views.seller_manage_bids,name='seller_manage_bids'),
+    path('dashboard_redirect/',views.dashboard_redirect,name='dashboard_redirect'),
 ]

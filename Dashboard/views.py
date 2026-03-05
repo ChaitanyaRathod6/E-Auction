@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Avg, Q
 from datetime import timedelta
+from Dashboard.decorators import role_required
 # Create your views here.
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
@@ -165,14 +166,12 @@ def seller_profile(request):
         return redirect('become_seller')
 
     if request.method == "POST":
-        # ✅ Save User model fields directly
         request.user.First_name = request.POST.get('First_name')
         request.user.Last_name = request.POST.get('Last_name')
         request.user.Mobile_number = request.POST.get('Mobile_number')
         request.user.Gender = request.POST.get('Gender')
         request.user.save()
 
-        # ✅ Save Seller model fields via form
         form = SellerProfileForm(request.POST, instance=seller)
         if form.is_valid():
             form.save()
@@ -185,6 +184,8 @@ def seller_profile(request):
     context = {
         "form": form,
         "seller": seller,
+        "total_auctions": Auction.objects.filter(item__seller=seller).count(),  # ← ADD
+        "total_sold":     Auction.objects.filter(item__seller=seller, status='ENDED').count(),  # ← ADD
     }
     return render(request, "Dashboard/seller_profile.html", context)
 
@@ -266,6 +267,7 @@ def admin_profile(request):
     return render(request, "Dashboard/admin_profile.html", context)
 
 @login_required
+@role_required(allowed_roles=['Admin'])
 def manage_categories(request):
     if request.method == "POST":
         action = request.POST.get('action')
@@ -310,7 +312,9 @@ def manage_categories(request):
 
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller'])
 def manage_auctions(request):
+    # ✅ Keep POST handling from your original
     if request.method == "POST":
         action = request.POST.get('action')
         auction = Auction.objects.get(id=request.POST.get('auction_id'))
@@ -321,134 +325,232 @@ def manage_auctions(request):
         auction.save()
         messages.success(request, f'Auction "{auction.item.name}" updated.')
         return redirect('manage_auctions')
-    qs = Auction.objects.select_related('item','item__seller__user','item__category').prefetch_related('bids')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Auction.objects.select_related('item', 'item__seller__user', 'item__category').prefetch_related('bids')
+    else:  # Seller sees only their own
+        qs = Auction.objects.select_related('item', 'item__seller__user', 'item__category').prefetch_related('bids').filter(item__seller=request.user.seller)
+
     if request.GET.get('status'):
         qs = qs.filter(status=request.GET['status'])
+
     context = {
         'auctions': qs.order_by('-created_at'),
-        'total_auctions': Auction.objects.count(),
-        'active_auctions': Auction.objects.filter(status='ACTIVE').count(),
-        'ended_auctions': Auction.objects.filter(status='ENDED').count(),
-        'cancelled_auctions': Auction.objects.filter(status='CANCELLED').count(),
+        'total_auctions': qs.count(),           # ✅ counts based on filtered qs
+        'active_auctions': qs.filter(status='ACTIVE').count(),
+        'ended_auctions': qs.filter(status='ENDED').count(),
+        'cancelled_auctions': qs.filter(status='CANCELLED').count(),
     }
     return render(request, 'Dashboard/manage_auctions.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller'])
 def manage_items(request):
+    # ✅ Keep POST handling
     if request.method == "POST":
         if request.POST.get('action') == 'delete_item':
             Item.objects.filter(id=request.POST.get('item_id')).delete()
             messages.success(request, 'Item deleted.')
         return redirect('manage_items')
-    qs = Item.objects.select_related('seller__user', 'category')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Item.objects.select_related('seller__user', 'category')
+    else:  # Seller sees only their own items
+        qs = Item.objects.select_related('seller__user', 'category').filter(
+            seller=request.user.seller
+        )
+
     if request.GET.get('condition'):
         qs = qs.filter(condition=request.GET['condition'])
+
     context = {
         'items': qs.order_by('-created_at'),
-        'total_items': Item.objects.count(),
-        'new_items': Item.objects.filter(condition='NEW').count(),
-        'used_items': Item.objects.filter(condition='USED').count(),
-        'refurb_items': Item.objects.filter(condition='REFURB').count(),
+        'total_items': qs.count(),                              # ✅ filtered counts
+        'new_items': qs.filter(condition='NEW').count(),
+        'used_items': qs.filter(condition='USED').count(),
+        'refurb_items': qs.filter(condition='REFURB').count(),
     }
     return render(request, 'Dashboard/manage_items.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Buyer'])
 def manage_bids(request):
+    if request.user.Role == 'Admin':
+        # Admin sees ALL bids
+        bids = Bid.objects.select_related('buyer__user', 'auction__item').order_by('-bid_time')
+    elif request.user.Role == 'Buyer':
+        # Buyer sees ONLY their own bids
+        bids = Bid.objects.select_related('buyer__user', 'auction__item').filter(
+            buyer=request.user.buyer  # use your actual related name
+        ).order_by('-bid_time')
+
     context = {
-        'bids': Bid.objects.select_related('buyer__user','auction__item').order_by('-bid_time'),
-        'total_bids': Bid.objects.count(),
-        'winning_bids': Bid.objects.filter(status='WINNING').count(),
-        'outbid_bids': Bid.objects.filter(status='OUTBID').count(),
-        'lost_bids': Bid.objects.filter(status='LOST').count(),
+        'bids': bids,
+        'total_bids': bids.count(),
+        'winning_bids': bids.filter(status='WINNING').count(),
+        'outbid_bids': bids.filter(status='OUTBID').count(),
+        'lost_bids': bids.filter(status='LOST').count(),
     }
     return render(request, 'Dashboard/manage_bids.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_payments(request):
+    # ✅ Keep POST handling
     if request.method == "POST":
         p = Payment.objects.get(id=request.POST.get('payment_id'))
         p.status = request.POST.get('new_status')
         p.save()
         messages.success(request, 'Payment status updated.')
         return redirect('manage_payments')
-    qs = Payment.objects.select_related('buyer__user','auction__item')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Payment.objects.select_related('buyer__user', 'auction__item')
+    elif request.user.Role == 'Buyer':
+        qs = Payment.objects.select_related('buyer__user', 'auction__item').filter(
+            buyer=request.user.buyer
+        )
+    else:  # Seller sees payments for their auctions
+        qs = Payment.objects.select_related('buyer__user', 'auction__item').filter(
+            auction__item__seller=request.user.seller
+        )
+
     if request.GET.get('status'):
         qs = qs.filter(status=request.GET['status'])
+
     context = {
         'payments': qs.order_by('-payment_date'),
-        'total_payments': Payment.objects.count(),
-        'completed_payments': Payment.objects.filter(status='COMPLETED').count(),
-        'pending_payments': Payment.objects.filter(status='PENDING').count(),
-        'failed_payments': Payment.objects.filter(status='FAILED').count(),
+        'total_payments': qs.count(),                               # ✅ filtered counts
+        'completed_payments': qs.filter(status='COMPLETED').count(),
+        'pending_payments': qs.filter(status='PENDING').count(),
+        'failed_payments': qs.filter(status='FAILED').count(),
     }
     return render(request, 'Dashboard/manage_payments.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_disputes(request):
+    # ✅ Keep POST handling
     if request.method == "POST":
         d = Dispute.objects.get(id=request.POST.get('dispute_id'))
         d.status = request.POST.get('new_status')
         d.save()
         messages.success(request, 'Dispute status updated.')
         return redirect('manage_disputes')
-    qs = Dispute.objects.select_related('raised_by','auction__item')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Dispute.objects.select_related('raised_by', 'auction__item')
+    elif request.user.Role == 'Buyer':
+        qs = Dispute.objects.select_related('raised_by', 'auction__item').filter(
+            raised_by=request.user
+        )
+    else:  # Seller sees disputes on their auctions
+        qs = Dispute.objects.select_related('raised_by', 'auction__item').filter(
+            auction__item__seller=request.user.seller
+        )
+
     if request.GET.get('status'):
         qs = qs.filter(status=request.GET['status'])
+
     context = {
         'disputes': qs.order_by('-created_at'),
-        'total_disputes': Dispute.objects.count(),
-        'open_disputes': Dispute.objects.filter(status='OPEN').count(),
-        'resolved_disputes': Dispute.objects.filter(status='RESOLVED').count(),
-        'closed_disputes': Dispute.objects.filter(status='CLOSED').count(),
+        'total_disputes': qs.count(),                               # ✅ filtered counts
+        'open_disputes': qs.filter(status='OPEN').count(),
+        'resolved_disputes': qs.filter(status='RESOLVED').count(),
+        'closed_disputes': qs.filter(status='CLOSED').count(),
     }
     return render(request, 'Dashboard/manage_disputes.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_notifications(request):
-    if request.method == "POST" and request.POST.get('action') == 'send':
-        msg = request.POST.get('message')
-        ntype = request.POST.get('notification_type', 'GENERAL')
-        uid = request.POST.get('user_id')
-        if uid == 'all':
-            for u in User.objects.all():
-                Notification.objects.create(user=u, message=msg, notification_type=ntype)
-            messages.success(request, f'Notification sent to all users.')
-        else:
-            Notification.objects.create(user=User.objects.get(id=uid), message=msg, notification_type=ntype)
-            messages.success(request, 'Notification sent.')
-        return redirect('manage_notifications')
+    # ✅ Only Admin can send notifications
+    if request.method == "POST" and request.user.Role == 'Admin':
+        if request.POST.get('action') == 'send':
+            msg = request.POST.get('message')
+            ntype = request.POST.get('notification_type', 'GENERAL')
+            uid = request.POST.get('user_id')
+            if uid == 'all':
+                for u in User.objects.all():
+                    Notification.objects.create(user=u, message=msg, notification_type=ntype)
+                messages.success(request, 'Notification sent to all users.')
+            else:
+                Notification.objects.create(user=User.objects.get(id=uid), message=msg, notification_type=ntype)
+                messages.success(request, 'Notification sent.')
+            return redirect('manage_notifications')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        notifications = Notification.objects.select_related('user').order_by('-created_at')
+        all_users = User.objects.all()  # Admin can send to anyone
+    else:  # Buyer or Seller sees only their own
+        notifications = Notification.objects.select_related('user').filter(
+            user=request.user
+        ).order_by('-created_at')
+        all_users = None  # Buyer/Seller cannot send notifications
+
     context = {
-        'notifications': Notification.objects.select_related('user').order_by('-created_at'),
-        'all_users': User.objects.all(),
+        'notifications': notifications,
+        'all_users': all_users,
     }
     return render(request, 'Dashboard/manage_notifications.html', context)
 
+
 @login_required
+@role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_reviews(request):
+    # ✅ Only Admin can delete reviews
     if request.method == "POST":
-        Review.objects.filter(id=request.POST.get('review_id')).delete()
-        messages.success(request, 'Review deleted.')
+        if request.user.Role == 'Admin':
+            Review.objects.filter(id=request.POST.get('review_id')).delete()
+            messages.success(request, 'Review deleted.')
         return redirect('manage_reviews')
-    qs = Review.objects.select_related('reviewer','reviewee','auction__item')
+
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item')
+    elif request.user.Role == 'Buyer':
+        qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item').filter(
+            reviewer=request.user
+        )
+    else:  # Seller sees reviews about them
+        qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item').filter(
+            reviewee=request.user
+        )
+
     if request.GET.get('rating'):
         qs = qs.filter(rating=request.GET['rating'])
-    avg = Review.objects.aggregate(a=Avg('rating'))['a']
+
+    avg = qs.aggregate(a=Avg('rating'))['a']   # ✅ avg from filtered qs
     context = {
         'reviews': qs.order_by('-created_at'),
-        'total_reviews': Review.objects.count(),
-        'five_star': Review.objects.filter(rating=5).count(),
-        'one_star': Review.objects.filter(rating=1).count(),
+        'total_reviews': qs.count(),            # ✅ filtered counts
+        'five_star': qs.filter(rating=5).count(),
+        'one_star': qs.filter(rating=1).count(),
         'avg_rating': round(avg, 1) if avg else 0,
     }
     return render(request, 'Dashboard/manage_reviews.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin', 'Buyer'])
 def manage_watchlist(request):
-    qs = Watchlist.objects.select_related('buyer__user','auction__item__category')
+    # ✅ Filter by role
+    if request.user.Role == 'Admin':
+        qs = Watchlist.objects.select_related('buyer__user', 'auction__item__category')
+    else:  # Buyer sees only their own watchlist
+        qs = Watchlist.objects.select_related('buyer__user', 'auction__item__category').filter(
+            buyer=request.user.buyer
+        )
+
     most = qs.values('auction__item__name').annotate(c=Count('id')).order_by('-c').first()
+
     context = {
         'watchlist': qs.order_by('-added_at'),
-        'total_watchlist': qs.count(),
+        'total_watchlist': qs.count(),                          # ✅ filtered counts
         'unique_buyers': qs.values('buyer').distinct().count(),
         'unique_auctions': qs.values('auction').distinct().count(),
         'most_watched': most['auction__item__name'][:15] + '…' if most else '-',
@@ -456,6 +558,7 @@ def manage_watchlist(request):
     return render(request, 'Dashboard/manage_watchlist.html', context)
 
 @login_required
+@role_required(allowed_roles=['Admin'])
 def manage_activity_log(request):
     today = timezone.now().date()
     week_ago = timezone.now() - timedelta(days=7)
@@ -472,6 +575,7 @@ def manage_activity_log(request):
 from django.db.models import Count, Max
 
 @login_required
+@role_required(allowed_roles=['Seller'])
 def seller_manage_bids(request):
     seller = request.user.seller
 
@@ -495,5 +599,16 @@ def seller_manage_bids(request):
         'unique_bidders':        all_bids.values('buyer').distinct().count(),
         'highest_bid':           highest,
     }
-    return render(request, 'Dashboard/seller_manage_bids.html', context)    
+    return render(request, 'Dashboard/seller_manage_bids.html', context)   
+
+@login_required
+def dashboard_redirect(request):
+    if request.user.Role == 'Admin':
+        return redirect('AdminDashboard')
+    elif request.user.Role == 'Seller':
+        return redirect('SellerDashboard')
+    elif request.user.Role == 'Buyer':
+        return redirect('BuyerDashboard')
+    else:
+        return redirect('home')     
  
