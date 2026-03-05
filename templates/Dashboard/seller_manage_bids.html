@@ -1,0 +1,522 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Manage Bids</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+:root{--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--topbar-bg:#ffffff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);min-height:100vh;overflow-x:hidden;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes rowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
+.topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
+.brand-icon{width:32px;height:32px;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
+.topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--main-bg);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:13px;color:var(--text-mid);width:240px;}
+.search-wrap input{border:none;outline:none;background:transparent;font-size:13px;color:var(--text-dark);width:100%;font-family:'Inter',sans-serif;}
+.search-wrap input::placeholder{color:var(--text-light);}
+.topbar-icon{width:36px;height:36px;border-radius:50%;background:var(--main-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s,transform 0.2s;color:var(--text-mid);position:relative;}
+.topbar-icon:hover{background:var(--border);transform:scale(1.08);}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
+
+/* Sidebar */
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);overflow-y:auto;overflow-x:hidden;}
+.sidebar-nav{padding:10px 10px;flex:1;}
+.nav-section-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:8px 14px 5px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;transition:background 0.25s ease,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
+.nav-item .nav-icon{width:20px;text-align:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff;transform:translateX(3px) scale(1.02);}
+.nav-item:hover .nav-icon{transform:scale(1.2) rotate(-6deg);}
+.nav-item.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 4px 16px rgba(45,22,85,0.2);}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;min-width:20px;text-align:center;}
+.nav-badge.purple{background:var(--accent-purple);}
+.sidebar-divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 14px;}
+.sidebar-bottom{padding:10px 10px 14px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;}
+.settings-icon-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;width:100%;color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;cursor:pointer;border:none;background:rgba(255,255,255,0.06);transition:background 0.25s,color 0.2s,transform 0.25s;font-family:'Inter',sans-serif;margin-bottom:8px;}
+.settings-icon-btn:hover{background:rgba(255,255,255,0.12);color:#fff;transform:translateX(3px) scale(1.02);}
+.settings-icon-btn svg{transition:transform 0.4s;flex-shrink:0;}
+.settings-icon-btn:hover svg{transform:rotate(65deg);}
+.sidebar-profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s,transform 0.2s;}
+.sidebar-profile-card:hover{background:rgba(255,255,255,0.13);transform:scale(1.01);}
+.profile-info{flex:1;min-width:0;}
+.profile-info .name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-info .tier{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
+.logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
+.logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
+
+/* Main */
+.main{margin-left:260px;padding-top:56px;min-height:100vh;animation:fadeIn 0.6s 0.2s both;}
+.page-content{padding:28px;}
+
+/* Page header */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;animation:fadeInUp 0.5s 0.2s both;}
+.page-header h1{font-size:26px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;}
+.page-header p{font-size:13.5px;color:var(--text-mid);margin-top:4px;}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;animation:fadeInUp 0.5s 0.25s both;}
+.stat-card{background:var(--card-bg);border-radius:14px;padding:18px 20px;border:1px solid var(--border);transition:transform 0.3s,box-shadow 0.3s;}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(45,22,85,0.1);}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.stat-label{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
+.stat-value{font-size:26px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;}
+.stat-sub{font-size:11.5px;color:var(--text-light);margin-top:3px;}
+
+/* Filters */
+.filter-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;animation:fadeInUp 0.5s 0.3s both;flex-wrap:wrap;}
+.filter-search{display:flex;align-items:center;gap:8px;background:var(--card-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;flex:1;max-width:320px;transition:border-color 0.2s,box-shadow 0.2s;}
+.filter-search:focus-within{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+.filter-search input{border:none;outline:none;background:transparent;font-size:13px;color:var(--text-dark);width:100%;font-family:'Inter',sans-serif;}
+.filter-search input::placeholder{color:var(--text-light);}
+.filter-select{background:var(--card-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:13px;color:var(--text-dark);font-family:'Inter',sans-serif;outline:none;cursor:pointer;transition:border-color 0.2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;}
+.filter-select:focus{border-color:var(--accent-purple);}
+.filter-count{font-size:13px;color:var(--text-mid);margin-left:auto;white-space:nowrap;}
+
+/* Main table card */
+.table-card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);overflow:hidden;animation:fadeInUp 0.5s 0.35s both;}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 16px;border-bottom:1px solid var(--border);}
+.table-title{font-size:16px;font-weight:700;color:var(--text-dark);}
+.table-subtitle{font-size:12px;color:var(--text-mid);margin-top:2px;}
+
+/* Auction group header */
+.auction-group-header{display:flex;align-items:center;gap:12px;padding:12px 24px;background:#faf9fb;border-bottom:1px solid var(--border);border-top:1px solid var(--border);cursor:pointer;transition:background 0.2s;}
+.auction-group-header:hover{background:#f3f0ff;}
+.auction-group-header:first-child{border-top:none;}
+.auction-thumb{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent-purple));display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.auction-group-name{font-size:14px;font-weight:700;color:var(--text-dark);}
+.auction-group-meta{font-size:11.5px;color:var(--text-mid);margin-top:2px;}
+.auction-group-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.auction-status-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.pill-active{background:rgba(16,185,129,0.1);color:var(--green);}
+.pill-ended{background:rgba(107,114,128,0.1);color:var(--text-mid);}
+.pill-cancelled{background:rgba(239,68,68,0.1);color:var(--red);}
+.pill-dot{width:6px;height:6px;border-radius:50%;}
+.pill-dot-green{background:var(--green);}
+.pill-dot-gray{background:var(--text-mid);}
+.pill-dot-red{background:var(--red);}
+.bid-count-badge{background:#f3f0ff;color:var(--accent-purple);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.chevron{transition:transform 0.25s;color:var(--text-light);}
+.chevron.open{transform:rotate(180deg);}
+
+/* Table */
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 20px;font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);text-align:left;background:#faf9fb;border-bottom:1px solid var(--border);}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;animation:rowIn 0.35s both;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f9f8fc;}
+tbody td{padding:13px 20px;font-size:13px;color:var(--text-dark);vertical-align:middle;}
+
+/* Buyer cell */
+.buyer-cell{display:flex;align-items:center;gap:10px;}
+.buyer-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2d1655,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.buyer-name{font-size:13px;font-weight:600;color:var(--text-dark);}
+.buyer-email{font-size:11px;color:var(--text-light);margin-top:1px;}
+
+/* Amount */
+.amount-highest{font-size:15px;font-weight:800;color:var(--primary);}
+.amount-outbid{font-size:15px;font-weight:700;color:var(--text-mid);text-decoration:line-through;}
+.amount-lost{font-size:15px;font-weight:700;color:var(--text-light);}
+
+/* Status pills */
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.status-winning{background:rgba(59,130,246,0.1);color:var(--blue);}
+.status-highest{background:rgba(16,185,129,0.12);color:var(--green);}
+.status-outbid{background:rgba(245,158,11,0.1);color:var(--amber);}
+.status-lost{background:rgba(107,114,128,0.1);color:var(--text-mid);}
+.status-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s infinite;}
+.dot-blue{background:var(--blue);}
+.dot-green{background:var(--green);}
+.dot-amber{background:var(--amber);}
+.dot-gray{background:var(--text-light);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* Time */
+.time-cell{font-size:12px;color:var(--text-mid);}
+
+/* Empty state */
+.empty-state{padding:52px 24px;text-align:center;}
+.empty-icon{width:56px;height:56px;border-radius:14px;background:#f3f0ff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.empty-title{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:6px;}
+.empty-desc{font-size:13px;color:var(--text-mid);}
+
+/* No bids row */
+.no-bids-row td{padding:18px 20px;color:var(--text-light);font-size:13px;font-style:italic;text-align:center;background:#fdfcff;}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:#1a1035;color:white;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+    </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="topbar-brand">
+        <div class="brand-icon">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
+        </div>
+        <span class="brand-name">Auctora</span>
+    </div>
+    <div class="topbar-right">
+        <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search auctions..."/>
+        </div>
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div class="notif-dot"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
+            </div>
+            <div>
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|default:"?"|first|upper }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a href="{% url 'SellerDashboard' %}" class="nav-item {% if request.resolver_match.url_name == 'SellerDashboard' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        <a href="{% url 'seller_profile' %}" class="nav-item {% if request.resolver_match.url_name == 'seller_profile' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            My Profile
+        </a>
+
+        <div class="sidebar-divider"></div>
+        <div class="nav-section-label">Listings</div>
+
+        <a href="{% url 'auction_list' %}" class="nav-item {% if request.resolver_match.url_name == 'seller_auctions' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/></svg></span>
+            My Auctions
+        </a>
+
+        <a href="{% url 'seller_manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'seller_manage_bids' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            Manage Bids
+            <span class="nav-badge">{{ total_bids }}</span>
+        </a>
+
+        <a href="{% url 'manage_payments' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_payments' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            Payments
+        </a>
+
+        <a href="{% url 'manage_reviews' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_reviews' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+            Reviews
+        </a>
+
+        <a href="{% url 'manage_disputes' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_disputes' %}active{% endif %}">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            Disputes
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="{% url 'home' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            Home
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <button class="settings-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </button>
+        <div class="sidebar-profile-card">
+            <div style="flex-shrink:0;">
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|default:"?"|first|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+<div class="page-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Manage Bids</h1>
+            <p>All bids placed across your auctions</p>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon" style="background:#eff6ff;">📊</div>
+            </div>
+            <div class="stat-label">Total Bids</div>
+            <div class="stat-value">{{ total_bids }}</div>
+            <div class="stat-sub">Across all auctions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon" style="background:#f0fdf4;">🏆</div>
+            </div>
+            <div class="stat-label">Active Auctions</div>
+            <div class="stat-value">{{ active_auctions_count }}</div>
+            <div class="stat-sub">Currently live</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon" style="background:#fdf4ff;">👥</div>
+            </div>
+            <div class="stat-label">Unique Bidders</div>
+            <div class="stat-value">{{ unique_bidders }}</div>
+            <div class="stat-sub">Across all items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-top">
+                <div class="stat-icon" style="background:#fff7ed;">💰</div>
+            </div>
+            <div class="stat-label">Highest Bid</div>
+            <div class="stat-value">₹{{ highest_bid|default:"0" }}</div>
+            <div class="stat-sub">Best offer received</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-row">
+        <div class="filter-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search by item or buyer name..." oninput="filterBids()">
+        </div>
+        <select class="filter-select" id="statusFilter" onchange="filterBids()">
+            <option value="">All Statuses</option>
+            <option value="WINNING">Winning</option>
+            <option value="ACTIVE">Active</option>
+            <option value="OUTBID">Outbid</option>
+            <option value="LOST">Lost</option>
+        </select>
+        <select class="filter-select" id="auctionFilter" onchange="filterBids()">
+            <option value="">All Auctions</option>
+            {% for auction in auctions_with_bids %}
+            <option value="{{ auction.id }}">{{ auction.item.name }}</option>
+            {% endfor %}
+        </select>
+        <span class="filter-count" id="bidCount">{{ total_bids }} bids</span>
+    </div>
+
+    <!-- Bids Table grouped by auction -->
+    <div class="table-card">
+        <div class="table-header">
+            <div>
+                <div class="table-title">Bids by Auction</div>
+                <div class="table-subtitle">Click an auction to expand / collapse its bids</div>
+            </div>
+        </div>
+
+        {% if auctions_with_bids %}
+            {% for auction in auctions_with_bids %}
+            <div class="auction-group" data-auction-id="{{ auction.id }}">
+                <!-- Auction header row -->
+                <div class="auction-group-header" onclick="toggleGroup({{ auction.id }})">
+                    <div class="auction-thumb">
+                        {% if auction.item.category.name == "Electronics" %}💻
+                        {% elif auction.item.category.name == "Jewellery" %}💍
+                        {% elif auction.item.category.name == "Art" %}🖼️
+                        {% elif auction.item.category.name == "Watches" %}⌚
+                        {% elif auction.item.category.name == "Vehicles" %}🚗
+                        {% else %}🏷️{% endif %}
+                    </div>
+                    <div>
+                        <div class="auction-group-name">{{ auction.item.name }}</div>
+                        <div class="auction-group-meta">{{ auction.item.category.name }} · Starting ₹{{ auction.starting_price }} · Current ₹{{ auction.current_price }}</div>
+                    </div>
+                    <div class="auction-group-right">
+                        {% if auction.status == 'ACTIVE' %}
+                        <span class="auction-status-pill pill-active"><span class="pill-dot pill-dot-green"></span>Active</span>
+                        {% elif auction.status == 'ENDED' %}
+                        <span class="auction-status-pill pill-ended"><span class="pill-dot pill-dot-gray"></span>Ended</span>
+                        {% else %}
+                        <span class="auction-status-pill pill-cancelled"><span class="pill-dot pill-dot-red"></span>Cancelled</span>
+                        {% endif %}
+                        <span class="bid-count-badge">{{ auction.bids.count }} bid{{ auction.bids.count|pluralize }}</span>
+                        <svg class="chevron open" id="chevron-{{ auction.id }}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+
+                <!-- Bids table for this auction -->
+                <div class="bid-group-table" id="group-{{ auction.id }}">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Buyer</th>
+                                <th>Bid Amount</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bid in auction.bids.all %}
+                            <tr class="bid-row"
+                                data-auction-id="{{ auction.id }}"
+                                data-status="{{ bid.status }}"
+                                data-buyer="{{ bid.buyer.user.First_name }} {{ bid.buyer.user.Last_name }}"
+                                data-item="{{ auction.item.name }}">
+                                <td style="color:var(--text-light);font-size:12px;">{{ forloop.counter }}</td>
+                                <td>
+                                    <div class="buyer-cell">
+                                        <div class="buyer-avatar">{{ bid.buyer.user.First_name|first|upper }}</div>
+                                        <div>
+                                            <div class="buyer-name">{{ bid.buyer.user.First_name }} {{ bid.buyer.user.Last_name }}</div>
+                                            <div class="buyer-email">{{ bid.buyer.user.Email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if bid.status == 'WINNING' or bid.status == 'ACTIVE' %}
+                                        <span class="amount-highest">₹{{ bid.amount }}</span>
+                                    {% elif bid.status == 'OUTBID' %}
+                                        <span class="amount-outbid">₹{{ bid.amount }}</span>
+                                    {% else %}
+                                        <span class="amount-lost">₹{{ bid.amount }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bid.status == 'WINNING' %}
+                                        <span class="status-pill status-winning"><span class="status-dot dot-blue"></span>Winning</span>
+                                    {% elif bid.status == 'ACTIVE' %}
+                                        <span class="status-pill status-highest"><span class="status-dot dot-green"></span>Active</span>
+                                    {% elif bid.status == 'OUTBID' %}
+                                        <span class="status-pill status-outbid"><span class="status-dot dot-amber"></span>Outbid</span>
+                                    {% else %}
+                                        <span class="status-pill status-lost"><span class="status-dot dot-gray"></span>Lost</span>
+                                    {% endif %}
+                                </td>
+                                <td class="time-cell">{{ bid.bid_time|date:"d M Y, g:i A" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr class="no-bids-row"><td colspan="5">No bids placed on this auction yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="empty-title">No auctions yet</div>
+            <div class="empty-desc">Create your first auction to start receiving bids.</div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+</main>
+
+<div class="toast" id="toast">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg"></span>
+</div>
+
+<script>
+// Toggle auction group open/close
+function toggleGroup(auctionId) {
+    const table = document.getElementById('group-' + auctionId);
+    const chevron = document.getElementById('chevron-' + auctionId);
+    if (table.style.display === 'none') {
+        table.style.display = 'block';
+        chevron.classList.add('open');
+    } else {
+        table.style.display = 'none';
+        chevron.classList.remove('open');
+    }
+}
+
+// Filter bids by search + status + auction
+function filterBids() {
+    const search  = document.getElementById('searchInput').value.toLowerCase();
+    const status  = document.getElementById('statusFilter').value;
+    const auction = document.getElementById('auctionFilter').value;
+
+    let visibleCount = 0;
+
+    document.querySelectorAll('.auction-group').forEach(group => {
+        const auctionId  = group.dataset.auctionId;
+        const rows       = group.querySelectorAll('.bid-row');
+        let groupVisible = 0;
+
+        rows.forEach(row => {
+            const matchSearch  = !search  || row.dataset.buyer.toLowerCase().includes(search) || row.dataset.item.toLowerCase().includes(search);
+            const matchStatus  = !status  || row.dataset.status === status;
+            const matchAuction = !auction || row.dataset.auctionId === auction;
+
+            if (matchSearch && matchStatus && matchAuction) {
+                row.style.display = '';
+                groupVisible++;
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Show/hide entire auction group based on whether any rows match
+        if (auction && auctionId !== auction) {
+            group.style.display = 'none';
+        } else {
+            group.style.display = groupVisible > 0 || (!search && !status) ? '' : 'none';
+            // Auto-expand groups with matches
+            if (groupVisible > 0 && (search || status)) {
+                const table   = document.getElementById('group-' + auctionId);
+                const chevron = document.getElementById('chevron-' + auctionId);
+                table.style.display  = 'block';
+                chevron.classList.add('open');
+            }
+        }
+    });
+
+    document.getElementById('bidCount').textContent = visibleCount + ' bid' + (visibleCount !== 1 ? 's' : '');
+}
+</script>
+</body>
+</html>

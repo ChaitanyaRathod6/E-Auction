@@ -467,4 +467,33 @@ def manage_activity_log(request):
         'unique_users_logged': ActivityLog.objects.values('user').distinct().count(),
     }
     return render(request, 'Dashboard/manage_activity_log.html', context)
+
+
+from django.db.models import Count, Max
+
+@login_required
+def seller_manage_bids(request):
+    seller = request.user.seller
+
+    # All auctions by this seller, with their bids prefetched
+    auctions_with_bids = Auction.objects.filter(
+        item__seller=seller
+    ).select_related(
+        'item__category', 'item__seller__user'
+    ).prefetch_related(
+        'bids__buyer__user'
+    ).order_by('-created_at')
+
+    # Stats
+    all_bids = Bid.objects.filter(auction__item__seller=seller)
+    highest  = all_bids.aggregate(h=Max('amount'))['h'] or 0
+
+    context = {
+        'auctions_with_bids':    auctions_with_bids,
+        'total_bids':            all_bids.count(),
+        'active_auctions_count': auctions_with_bids.filter(status='ACTIVE').count(),
+        'unique_bidders':        all_bids.values('buyer').distinct().count(),
+        'highest_bid':           highest,
+    }
+    return render(request, 'Dashboard/seller_manage_bids.html', context)    
  

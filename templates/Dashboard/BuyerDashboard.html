@@ -155,6 +155,8 @@
       display: flex; flex-direction: column;
       animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
       box-shadow: 2px 0 20px rgba(45,22,85,0.15);
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .sidebar-nav { padding: 14px 10px; flex: 1; }
@@ -162,14 +164,14 @@
     .nav-section-label {
       font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
       text-transform: uppercase; color: rgba(255,255,255,0.28);
-      padding: 10px 14px 5px;
+      padding: 6px 14px 4px;
     }
 
     .nav-item {
       display: flex; align-items: center; gap: 12px;
-      padding: 11px 14px; border-radius: 10px;
+      padding: 9px 14px; border-radius: 10px;
       cursor: pointer; color: rgba(255,255,255,0.65);
-      font-size: 13.5px; font-weight: 500;
+      font-size: 13px; font-weight: 500;
       position: relative;
       transition: background 0.25s ease, color 0.2s,
                   transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
@@ -603,70 +605,69 @@
 
     <div class="nav-section-label">Main</div>
 
-    <div class="nav-item active" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      </span>
+    <a href="{% url 'BuyerDashboard' %}" class="nav-item {% if request.resolver_match.url_name == 'BuyerDashboard' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
       Dashboard
-    </div>
+    </a>
 
-    <div class="nav-item" onclick="setActive(this)">
-      <a href ="{% url 'auction_list' %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
-        <span class="nav-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        </span>
-        Browse Auctions
-      </a>
+    <a href="{% url 'auction_list' %}" class="nav-item {% if request.resolver_match.url_name == 'auction_list' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/></svg></span>
+      Browse Auctions
       <span class="nav-badge purple">New</span>
-    </div>
+    </a>
 
-    <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </span>
-      My Bids
-      <span class="nav-badge">3</span>
-    </div>
-
-    <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </span>
-      Watchlist
-      <span class="nav-badge">5</span>
-    </div>
+    <a href="{% url 'buyer_profile' %}" class="nav-item {% if request.resolver_match.url_name == 'buyer_profile' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      My Profile
+    </a>
 
     <div class="sidebar-divider"></div>
     <div class="nav-section-label">Account</div>
 
-    <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      </span>
-      Purchase History
-    </div>
-
-    
-    <a href="{% url 'buyer_profile' %}" style="text-decoration: none; color: inherit;">
-    <div class="nav-item" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </span>
-      My Profile
-    </div>
-    <a href="{% url 'home' %}" style="text-decoration: none;">
-    <div class="nav-item">
-        <span class="nav-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-        </span>
-        Home
-    </div>
+    <a href="{% url 'manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_bids' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+      My Bids
+      <span class="nav-badge">3</span>
     </a>
 
-  </nav>
+    <a href="{% url 'manage_watchlist' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_watchlist' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      Watchlist
+      <span class="nav-badge">3</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+      Purchase History
+    </a>
+
+    <a href="{% url 'manage_reviews' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_reviews' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      Reviews
+      <span class="nav-badge">3</span>
+    </a>
+
+    <a href="{% url 'manage_notifications' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_notifications' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+      Notifications
+      <span class="nav-badge">3</span>
+    </a>
+
+    <a href="{% url 'manage_disputes' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_disputes' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      Disputes
+      <span class="nav-badge">3</span>
+    </a>
+
+    <a href="{% url 'manage_payments' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_payments' %}active{% endif %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+      Payments
+      <span class="nav-badge">3</span>
+    </a>
+
+    
+
+</nav>
 
   <!-- ─── Sidebar Bottom ─── -->
   <div class="sidebar-bottom">
