@@ -36,4 +36,8 @@ urlpatterns = [
     path('dashboard_redirect/',views.dashboard_redirect,name='dashboard_redirect'),
     path('make_payment/<int:auction_id>/', views.make_payment, name='make_payment'),
     path('toggle_watchlist/<int:auction_id>/', views.toggle_watchlist, name='toggle_watchlist'),
+    path('submit_review/<int:auction_id>/', views.submit_review, name='submit_review'),
+    path('raise_dispute/<int:auction_id>/', views.raise_dispute, name='raise_dispute'),
+    path('purchase_history/', views.purchase_history, name='purchase_history'),
+    path('setting/', views.settings_page, name='setting'),
 ]

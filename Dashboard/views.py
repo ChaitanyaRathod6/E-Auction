@@ -12,6 +12,8 @@ from django.db.models import Count, Avg, Q
 from datetime import timedelta
 from Dashboard.decorators import role_required
 from django.contrib import messages 
+from django.db.models import Sum
+from django.contrib.auth import logout
 # Create your views here.
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
@@ -753,4 +755,186 @@ def toggle_watchlist(request, auction_id):
     return redirect('auction_detail', pk=auction_id)
 
 
-  
+# ============================================================
+# ADD THESE 2 VIEWS TO YOUR views.py
+# ============================================================
+
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def submit_review(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id, status='ENDED')
+    buyer = request.user.buyer
+
+    # Must have won
+    winning_bid = Bid.objects.filter(auction=auction, buyer=buyer, status='WINNING').first()
+    if not winning_bid:
+        messages.error(request, "You can only review auctions you won.")
+        return redirect('manage_reviews')
+
+    # Must have paid
+    payment = Payment.objects.filter(auction=auction, buyer=buyer, status='COMPLETED').first()
+    if not payment:
+        messages.error(request, "Please complete payment before leaving a review.")
+        return redirect('manage_payments')
+
+    # Not already reviewed
+    if Review.objects.filter(reviewer=request.user, auction=auction).exists():
+        messages.error(request, "You have already reviewed this auction.")
+        return redirect('manage_reviews')
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        if rating and comment:
+            Review.objects.create(
+                reviewer=request.user,
+                reviewee=auction.item.seller.user,
+                auction=auction,
+                rating=int(rating),
+                comment=comment
+            )
+            messages.success(request, "Review submitted successfully!")
+            return redirect('manage_reviews')
+        else:
+            messages.error(request, "Please provide both a rating and a comment.")
+
+    return render(request, 'Dashboard/submit_review.html', {
+        'auction': auction,
+        'winning_bid': winning_bid,
+    })
+
+
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def raise_dispute(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id, status='ENDED')
+    buyer = request.user.buyer
+
+    # Must have won
+    winning_bid = Bid.objects.filter(auction=auction, buyer=buyer, status='WINNING').first()
+    if not winning_bid:
+        messages.error(request, "You can only raise disputes for auctions you won.")
+        return redirect('manage_disputes')
+
+    # Must have paid
+    payment = Payment.objects.filter(auction=auction, buyer=buyer, status='COMPLETED').first()
+    if not payment:
+        messages.error(request, "Please complete payment before raising a dispute.")
+        return redirect('manage_payments')
+
+    # Not already disputed
+    if Dispute.objects.filter(raised_by=request.user, auction=auction).exists():
+        messages.error(request, "You have already raised a dispute for this auction.")
+        return redirect('manage_disputes')
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason')
+        if reason:
+            Dispute.objects.create(
+                auction=auction,
+                raised_by=request.user,
+                reason=reason,
+                status='OPEN'
+            )
+            # Notify all admins
+            for admin in User.objects.filter(Role='Admin'):
+                Notification.objects.create(
+                    user=admin,
+                    message=f"New dispute raised on '{auction.item.name}' by {request.user.First_name} {request.user.Last_name}.",
+                    notification_type='GENERAL',
+                    auction=auction
+                )
+            messages.success(request, "Dispute raised successfully. Our team will review it.")
+            return redirect('manage_disputes')
+        else:
+            messages.error(request, "Please provide a reason for the dispute.")
+
+    return render(request, 'Dashboard/raise_dispute.html', {
+        'auction': auction,
+        'payment': payment,
+        'winning_bid': winning_bid,
+    })
+
+
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def purchase_history(request):
+    buyer = request.user.buyer
+    payments = Payment.objects.filter(
+        buyer=buyer
+    ).select_related('auction__item__seller__user').order_by('-payment_date')
+
+    # Filter by status
+    status = request.GET.get('status', '')
+    if status:
+        payments = payments.filter(status=status)
+
+    context = {
+        'payments': payments,
+        'total_spent': payments.filter(status='COMPLETED').aggregate(total=Sum('amount'))['total'] or 0,
+        'total_purchases': payments.filter(status='COMPLETED').count(),
+        'pending_payments': payments.filter(status='PENDING').count(),
+        'current_status': status,
+    }
+    return render(request, 'Dashboard/purchase_history.html', context)
+
+
+
+@login_required
+def settings_page(request):
+    # Default prefs (you can store these in your User model or a separate UserSettings model)
+    notif_prefs = {
+        'bid_placed': True,
+        'outbid': True,
+        'auction_won': True,
+        'payment': True,
+        'dispute': True,
+    }
+    privacy_prefs = {
+        'public_profile': True,
+        'show_bids': False,
+    }
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'notifications':
+            # Save notification preferences to session (or DB if you add a model)
+            request.session['notif_bid_placed'] = 'notif_bid' in request.POST
+            request.session['notif_outbid'] = 'notif_outbid' in request.POST
+            request.session['notif_won'] = 'notif_won' in request.POST
+            request.session['notif_payment'] = 'notif_payment' in request.POST
+            request.session['notif_dispute'] = 'notif_dispute' in request.POST
+            messages.success(request, '🔔 Notification preferences saved!')
+
+        elif action == 'privacy':
+            request.session['public_profile'] = 'public_profile' in request.POST
+            request.session['show_bids'] = 'show_bids' in request.POST
+            messages.success(request, '🔒 Privacy settings saved!')
+
+        elif action == 'delete_account':
+            user = request.user
+            logout(request)
+            user.delete()
+            messages.success(request, 'Your account has been deleted.')
+            return redirect('home')
+
+        return redirect('settings_page')
+
+    # Load from session if previously saved
+    notif_prefs = {
+        'bid_placed': request.session.get('notif_bid_placed', True),
+        'outbid': request.session.get('notif_outbid', True),
+        'auction_won': request.session.get('notif_won', True),
+        'payment': request.session.get('notif_payment', True),
+        'dispute': request.session.get('notif_dispute', True),
+    }
+    privacy_prefs = {
+        'public_profile': request.session.get('public_profile', True),
+        'show_bids': request.session.get('show_bids', False),
+    }
+
+    return render(request, 'Dashboard/settings.html', {
+        'notif_prefs': notif_prefs,
+        'privacy_prefs': privacy_prefs,
+    })
