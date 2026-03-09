@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Complete Payment</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+:root{--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--topbar-bg:#ffffff;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);min-height:100vh;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
+.topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
+.brand-icon{width:32px;height:32px;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
+.topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px;}
+
+/* Sidebar */
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);}
+.sidebar-nav{padding:8px 10px;flex:1;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13.5px;font-weight:500;transition:background 0.25s,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff;transform:translateX(3px) scale(1.02);}
+.nav-item.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 4px 16px rgba(45,22,85,0.2);}
+.sidebar-divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 14px;}
+.sidebar-bottom{padding:10px 10px 14px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;}
+.settings-icon-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;width:100%;color:rgba(255,255,255,0.6);font-size:13.5px;font-weight:500;cursor:pointer;border:none;background:rgba(255,255,255,0.06);transition:background 0.25s,color 0.2s;font-family:'Inter',sans-serif;margin-bottom:8px;}
+.settings-icon-btn:hover{background:rgba(255,255,255,0.12);color:#fff;}
+.sidebar-profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s,transform 0.2s;}
+.sidebar-profile-card:hover{background:rgba(255,255,255,0.13);transform:scale(1.01);}
+.profile-info .name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-info .tier{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
+.profile-info{flex:1;min-width:0;}
+.logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
+.logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
+
+/* Main */
+.main{margin-left:260px;padding-top:56px;min-height:100vh;animation:fadeIn 0.6s 0.2s both;}
+.page-content{padding:28px;display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 56px);}
+
+/* Payment Layout */
+.payment-container{width:100%;max-width:900px;display:grid;grid-template-columns:1fr 420px;gap:24px;animation:fadeInUp 0.5s 0.3s both;}
+
+/* Order Summary */
+.summary-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);overflow:hidden;}
+.summary-header{padding:24px;background:linear-gradient(135deg,#2d1655,#4c1d95);color:white;}
+.summary-header h2{font-size:20px;font-weight:800;margin-bottom:4px;}
+.summary-header p{font-size:13px;opacity:0.7;}
+.summary-body{padding:24px;}
+
+.item-showcase{display:flex;gap:16px;align-items:center;padding:16px;background:var(--main-bg);border-radius:14px;border:1px solid var(--border);margin-bottom:20px;}
+.item-image-box{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#2d1655,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.item-details .item-name{font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:4px;}
+.item-details .item-category{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent-purple);}
+.item-details .item-condition{font-size:12px;color:var(--text-mid);margin-top:4px;}
+
+.divider{height:1px;background:var(--border);margin:20px 0;}
+
+.summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;}
+.summary-row .label{color:var(--text-mid);}
+.summary-row .value{font-weight:600;color:var(--text-dark);}
+.summary-row.total{margin-top:16px;padding-top:16px;border-top:2px solid var(--border);}
+.summary-row.total .label{font-size:14px;font-weight:700;color:var(--text-dark);}
+.summary-row.total .value{font-size:22px;font-weight:800;color:var(--primary);}
+
+.winner-badge{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;margin-bottom:20px;}
+.winner-badge-icon{width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.winner-badge-text .title{font-size:13px;font-weight:700;color:var(--green);}
+.winner-badge-text .sub{font-size:11px;color:var(--text-mid);margin-top:2px;}
+
+/* Payment Form */
+.payment-form-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);overflow:hidden;position:sticky;top:76px;}
+.form-header{padding:24px 24px 20px;border-bottom:1px solid var(--border);}
+.form-header h3{font-size:18px;font-weight:700;color:var(--text-dark);}
+.form-header p{font-size:13px;color:var(--text-mid);margin-top:4px;}
+.form-body{padding:24px;}
+
+.form-label{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;display:block;}
+.form-group{margin-bottom:18px;}
+
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.method-option{position:relative;}
+.method-option input[type="radio"]{position:absolute;opacity:0;width:0;height:0;}
+.method-label{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 10px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--text-mid);text-align:center;}
+.method-label:hover{border-color:var(--accent-purple);background:#f9f7ff;}
+.method-option input[type="radio"]:checked + .method-label{border-color:var(--accent-purple);background:#f3f0ff;color:var(--accent-purple);}
+.method-icon{font-size:22px;}
+
+.amount-display{background:linear-gradient(135deg,#f3f0ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.amount-display .amount-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent-purple);}
+.amount-display .amount-value{font-size:24px;font-weight:800;color:var(--primary);}
+
+.btn-pay{width:100%;padding:16px;background:var(--primary);color:white;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(45,22,85,0.3);}
+.btn-pay:hover{transform:scale(1.02);background:#3d2070;box-shadow:0 8px 28px rgba(45,22,85,0.4);}
+.btn-pay:active{transform:scale(0.98);}
+
+.secure-note{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:14px;font-size:12px;color:var(--text-light);}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text-mid);text-decoration:none;font-size:13px;font-weight:500;margin-bottom:20px;transition:color 0.2s;}
+.back-link:hover{color:var(--primary);}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:#1a1035;color:white;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-icon{width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+@media(max-width:900px){.payment-container{grid-template-columns:1fr;}.payment-form-card{position:static;}}
+@media(max-width:768px){.sidebar{transform:translateX(-260px)}.main{margin-left:0}.page-content{padding:16px}}
+    </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+    <div class="topbar-brand">
+        <div class="brand-icon">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
+        </div>
+        <span class="brand-name">Auctora</span>
+    </div>
+    <div class="topbar-right">
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
+            </div>
+            <div>
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <nav class="sidebar-nav">
+        <a href="{% url 'BuyerDashboard' %}" class="nav-item">
+            <span style="width:20px;text-align:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        <a href="{% url 'auction_list' %}" class="nav-item">
+            <span style="width:20px;text-align:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            Live Auctions
+        </a>
+        <a href="{% url 'manage_payments' %}" class="nav-item active">
+            <span style="width:20px;text-align:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+            Payments
+        </a>
+        <a href="{% url 'home' %}" class="nav-item">
+            <span style="width:20px;text-align:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            Home
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <button class="settings-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </button>
+        <div class="sidebar-profile-card" onclick="window.location.href='{% url 'buyer_profile' %}'">
+            <div style="flex-shrink:0;">
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="event.stopPropagation();window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+    <div class="page-content">
+        <div style="width:100%;max-width:900px;">
+
+            <!-- Back Link -->
+            <a href="{% url 'auction_detail' auction.pk %}" class="back-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Auction
+            </a>
+
+            <div class="payment-container">
+
+                <!-- Left: Order Summary -->
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h2>Order Summary</h2>
+                        <p>Review your winning auction details</p>
+                    </div>
+                    <div class="summary-body">
+
+                        <!-- Winner Badge -->
+                        <div class="winner-badge">
+                            <div class="winner-badge-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="winner-badge-text">
+                                <div class="title">🏆 Congratulations, You Won!</div>
+                                <div class="sub">Complete your payment to claim this item</div>
+                            </div>
+                        </div>
+
+                        <!-- Item Showcase -->
+                        <div class="item-showcase">
+                            <div class="item-image-box">
+                                {% if auction.item.image %}
+                                    <img src="{{ auction.item.image.url }}" style="width:72px;height:72px;border-radius:12px;object-fit:cover;">
+                                {% else %}
+                                    📦
+                                {% endif %}
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">{{ auction.item.name }}</div>
+                                <div class="item-category">{{ auction.item.category }}</div>
+                                <div class="item-condition">Condition: {{ auction.item.condition }}</div>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <!-- Summary Rows -->
+                        <div class="summary-row">
+                            <span class="label">Starting Price</span>
+                            <span class="value">₹{{ auction.starting_price }}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Your Winning Bid</span>
+                            <span class="value" style="color:var(--green);">₹{{ winning_bid.amount }}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Auction Ended</span>
+                            <span class="value">{{ auction.end_time|date:"d M Y, g:i A" }}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="label">Seller</span>
+                            <span class="value">{{ auction.item.seller.user.First_name }} {{ auction.item.seller.user.Last_name }}</span>
+                        </div>
+
+                        <div class="summary-row total">
+                            <span class="label">Total Amount Due</span>
+                            <span class="value">₹{{ winning_bid.amount }}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right: Payment Form -->
+                <div class="payment-form-card">
+                    <div class="form-header">
+                        <h3>Complete Payment</h3>
+                        <p>Choose your payment method and confirm</p>
+                    </div>
+                    <div class="form-body">
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <!-- Amount Display -->
+                            <div class="amount-display">
+                                <span class="amount-label">Amount to Pay</span>
+                                <span class="amount-value">₹{{ winning_bid.amount }}</span>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <label class="form-label">Payment Method</label>
+                            <div class="method-grid">
+                                <div class="method-option">
+                                    <input type="radio" name="payment_method" id="card" value="CARD" checked>
+                                    <label class="method-label" for="card">
+                                        <span class="method-icon">💳</span>
+                                        Credit Card
+                                    </label>
+                                </div>
+                                <div class="method-option">
+                                    <input type="radio" name="payment_method" id="paypal" value="PAYPAL">
+                                    <label class="method-label" for="paypal">
+                                        <span class="method-icon">🅿️</span>
+                                        PayPal
+                                    </label>
+                                </div>
+                                <div class="method-option">
+                                    <input type="radio" name="payment_method" id="upi" value="UPI">
+                                    <label class="method-label" for="upi">
+                                        <span class="method-icon">📱</span>
+                                        UPI
+                                    </label>
+                                </div>
+                                <div class="method-option">
+                                    <input type="radio" name="payment_method" id="netbank" value="NETBANK">
+                                    <label class="method-label" for="netbank">
+                                        <span class="method-icon">🏦</span>
+                                        Net Banking
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Hidden amount field -->
+                            <input type="hidden" name="amount" value="{{ winning_bid.amount }}">
+
+                            <button type="submit" class="btn-pay">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                Pay ₹{{ winning_bid.amount }}
+                            </button>
+
+                            <div class="secure-note">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                Secured & encrypted payment
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <div class="toast-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+{% if messages %}{% for message in messages %}window.addEventListener('load',()=>showToast('{{ message }}'));{% endfor %}{% endif %}
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg||'Done!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+</html>

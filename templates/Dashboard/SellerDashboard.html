@@ -489,6 +489,9 @@
       </svg>
     </div>
     <span class="brand-name">Auctora</span>
+    <span style="font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:6px; background:#2d1655; color:white;">
+    {{ request.user.Role }}
+</span>
   </div>
   <div class="topbar-right">
     <div class="search-bar">
@@ -557,7 +560,7 @@
 
     <a href="{% url 'seller_manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_bids' %}active{% endif %}">
       <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
-      My Bids
+      Manage Bids
       <span class="nav-badge">3</span>
     </a>
 

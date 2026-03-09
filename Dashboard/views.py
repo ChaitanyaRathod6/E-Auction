@@ -7,11 +7,11 @@ from django.utils import timezone
 from .decorators import role_required
 from django.shortcuts import get_object_or_404
 from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Avg, Q
 from datetime import timedelta
 from Dashboard.decorators import role_required
+from django.contrib import messages 
 # Create your views here.
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
@@ -94,10 +94,31 @@ def auction_list(request):
     auctions = Auction.objects.filter(
         status="ACTIVE",
         end_time__gt=timezone.now()
-    ).select_related("item", "item__seller")
+    ).select_related("item", "item__seller", "item__category").annotate(bid_count=Count('bids'))
+
+    # Category filter
+    category = request.GET.get('category', '')
+    if category:
+        auctions = auctions.filter(item__category__name=category)
+
+    # Sort
+    sort = request.GET.get('sort', 'ending')
+    if sort == 'price_low':
+        auctions = auctions.order_by('current_price')
+    elif sort == 'price_high':
+        auctions = auctions.order_by('-current_price')
+    elif sort == 'most_bids':
+        auctions = auctions.order_by('-bid_count')
+    elif sort == 'newest':
+        auctions = auctions.order_by('-created_at')
+    else:
+        auctions = auctions.order_by('end_time')
 
     return render(request, "Dashboard/auction_list.html", {
-        "auctions": auctions
+        "auctions": auctions,
+        "current_sort": sort,
+        "current_category": category,
+        "categories": Category.objects.all(),
     })
 
 
@@ -105,22 +126,37 @@ def auction_list(request):
 def auction_detail(request, pk):
     auction = get_object_or_404(Auction, pk=pk)
 
-    if auction.end_time <= timezone.now():
+    # Auto-end auction and determine winner
+    if auction.end_time <= timezone.now() and auction.status == 'ACTIVE':
         auction.status = "ENDED"
         auction.save()
 
-    if request.method == "POST":
-        print("=== POST HIT ===")
-        print("Status:", auction.status)
-        print("End time:", auction.end_time)
-        print("Now:", timezone.now())
-        print("bid_amount raw:", request.POST.get("bid_amount"))
+        winning_bid = Bid.objects.filter(auction=auction).order_by('-amount').first()
 
+        if winning_bid:
+            winning_bid.status = 'WINNING'
+            winning_bid.save()
+
+            Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
+
+            # Notify winner
+            Notification.objects.create(
+                user=winning_bid.buyer.user,
+                message=f"Congratulations! You won '{auction.item.name}' with ₹{winning_bid.amount}. Please complete your payment.",
+                notification_type='AUCTION_ENDED'
+            )
+
+            # Notify seller
+            Notification.objects.create(
+                user=auction.item.seller.user,
+                message=f"Your auction for '{auction.item.name}' has ended. Winner: {winning_bid.buyer.user.First_name} {winning_bid.buyer.user.Last_name} with ₹{winning_bid.amount}.",
+                notification_type='AUCTION_ENDED'
+            )
+
+    if request.method == "POST":
         try:
             buyer = request.user.buyer
-            print("Buyer:", buyer)
         except Exception as e:
-            print("BUYER ERROR:", e)
             messages.error(request, "Only registered buyers can place bids.")
             return redirect("auction_detail", pk=auction.pk)
 
@@ -128,33 +164,61 @@ def auction_detail(request, pk):
         if bid_amount:
             bid_amount = float(bid_amount)
             min_required = float(auction.current_price) + float(auction.bid_increment)
-            print("bid_amount:", bid_amount)
-            print("min_required:", min_required)
-            print("status check passes?", auction.status == "ACTIVE")
 
             if auction.status != "ACTIVE":
-                print("FAILED: auction not active")
                 messages.error(request, "This auction is no longer active.")
                 return redirect("auction_detail", pk=auction.pk)
 
             if bid_amount < min_required:
-                print("FAILED: bid too low")
                 messages.error(request, f"Your bid must be at least ₹{min_required}")
                 return redirect("auction_detail", pk=auction.pk)
 
-            Bid.objects.create(auction=auction, buyer=buyer, amount=bid_amount)
+            # Get outbid buyer BEFORE updating status
+            outbid_bid = Bid.objects.filter(auction=auction, status='WINNING').first()
+
+            # Mark previous winning bid as OUTBID
+            Bid.objects.filter(auction=auction, status='WINNING').update(status='OUTBID')
+
+            Bid.objects.create(auction=auction, buyer=buyer, amount=bid_amount, status='WINNING')
             auction.current_price = bid_amount
             auction.save()
-            print("BID CREATED SUCCESSFULLY")
+
+            # Notify seller of new bid
+            Notification.objects.create(
+                user=auction.item.seller.user,
+                message=f"A new bid of ₹{bid_amount} was placed on your auction '{auction.item.name}'.",
+                notification_type='BID_PLACED',
+                auction=auction
+            )
+
+            # Notify current buyer their bid was placed successfully
+            Notification.objects.create(
+                user=buyer.user,
+                message=f"Your bid of ₹{bid_amount} on '{auction.item.name}' was placed successfully.",
+                notification_type='BID_PLACED',
+                auction=auction
+            )
+
+            # Notify outbid buyer ONLY if it's a different person
+            if outbid_bid and outbid_bid.buyer != buyer:
+                Notification.objects.create(
+                    user=outbid_bid.buyer.user,
+                    message=f"You have been outbid on '{auction.item.name}'. Current bid is ₹{bid_amount}.",
+                    notification_type='OUTBID',
+                    auction=auction
+                )
+
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
-        else:
-            print("FAILED: bid_amount is empty")
 
     bids = auction.bids.all().order_by('-amount')
+    winner = Bid.objects.filter(auction=auction, status='WINNING').first()
+
     return render(request, "Dashboard/auction_detail.html", {
         "auction": auction,
         "bids": bids,
+        "winner": winner,
+        "end_time_ms": int(auction.end_time.timestamp() * 1000),
     })
 
 @login_required
@@ -224,9 +288,17 @@ def buyer_profile(request):
     else:
         form = BuyerProfileForm(instance=buyer)
 
+    is_watched = False
+    if request.user.is_authenticated and request.user.Role == 'Buyer':
+        is_watched = Watchlist.objects.filter(
+        auction=auction, buyer=request.user.buyer
+        ).exists()    
+
     context = {
         "form": form,
         "buyer": buyer,
+        "won_auctions": Bid.objects.filter(buyer=buyer, status='WINNING').count(),
+        "is_watched": is_watched,
     }
     return render(request, "Dashboard/buyer_profile.html", context)
 
@@ -610,5 +682,75 @@ def dashboard_redirect(request):
     elif request.user.Role == 'Buyer':
         return redirect('BuyerDashboard')
     else:
-        return redirect('home')     
+        return redirect('home') 
+
+
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def make_payment(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id, status='ENDED')
+    
+    try:
+        buyer = request.user.buyer
+    except:
+        messages.error(request, "Buyer profile not found.")
+        return redirect('home')
+
+    winning_bid = Bid.objects.filter(auction=auction, buyer=buyer).order_by('-amount').first()
+    highest_bid = Bid.objects.filter(auction=auction).order_by('-amount').first()
+    
+    if not winning_bid or winning_bid != highest_bid:
+        messages.error(request, "You did not win this auction.")
+        return redirect('BuyerDashboard')
+
+    existing_payment = Payment.objects.filter(auction=auction, buyer=buyer).first()
+    if existing_payment:
+        messages.info(request, "You have already made a payment for this auction.")
+        return redirect('BuyerDashboard')
+
+    if request.method == "POST":
+        payment_method = request.POST.get('payment_method')
+        Payment.objects.create(
+            auction=auction,
+            buyer=buyer,
+            amount=winning_bid.amount,
+            payment_method=payment_method,
+            status='COMPLETED'
+        )
+        Notification.objects.create(
+            user=auction.item.seller.user,
+            message=f"Payment of ₹{winning_bid.amount} received for your auction '{auction.item.name}'.",
+            notification_type='PAYMENT',
+            auction=auction
+        )
+        messages.success(request, f"Payment of ₹{winning_bid.amount} completed successfully!")
+        return redirect('manage_payments')
+
+    return render(request, 'Dashboard/make_payment.html', {
+        'auction': auction,
+        'winning_bid': winning_bid,
+    })
+       
  
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def toggle_watchlist(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id)
+    buyer = request.user.buyer
+    print("=== TOGGLE WATCHLIST ===")
+    print("auction:", auction)
+    print("buyer:", buyer)
+    watchlist_item = Watchlist.objects.filter(auction=auction, buyer=buyer).first()
+    print("existing entry:", watchlist_item)
+    if watchlist_item:
+        watchlist_item.delete()
+        messages.success(request, "Removed from watchlist.")
+        print("=== REMOVED ===")
+    else:
+        Watchlist.objects.create(auction=auction, buyer=buyer)
+        messages.success(request, "Added to watchlist.")
+        print("=== ADDED ===")
+    return redirect('auction_detail', pk=auction_id)
+
+
+  

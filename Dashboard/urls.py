@@ -34,4 +34,6 @@ urlpatterns = [
     path('manage_activity_log/',views.manage_activity_log,name='manage_activity_log'),
     path('seller_manage_bids/',views.seller_manage_bids,name='seller_manage_bids'),
     path('dashboard_redirect/',views.dashboard_redirect,name='dashboard_redirect'),
+    path('make_payment/<int:auction_id>/', views.make_payment, name='make_payment'),
+    path('toggle_watchlist/<int:auction_id>/', views.toggle_watchlist, name='toggle_watchlist'),
 ]

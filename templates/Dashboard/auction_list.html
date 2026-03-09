@@ -547,22 +547,19 @@
         </div>
 
         <div class="filter-bar">
-            <select class="filter-select">
-                <option>All Categories</option>
-                <option>Timepieces</option>
-                <option>Fine Jewellery</option>
-                <option>Rare Vehicles</option>
-                <option>Fine Art</option>
-                <option>Designer Handbags</option>
-                <option>Rare Wines</option>
-            </select>
-            <select class="filter-select">
-                <option>Sort by: Ending Soon</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Most Bids</option>
-                <option>Newest First</option>
-            </select>
+            <select class="filter-select" onchange="window.location.href='?sort={{ current_sort }}&category='+this.value">
+    <option value="" {% if not current_category %}selected{% endif %}>All Categories</option>
+    {% for category in categories %}
+    <option value="{{ category.name }}" {% if current_category == category.name %}selected{% endif %}>{{ category.name }}</option>
+    {% endfor %}
+</select>
+            <select class="filter-select" onchange="window.location.href='?sort='+this.value">
+    <option value="ending" {% if current_sort == 'ending' %}selected{% endif %}>Sort by: Ending Soon</option>
+    <option value="price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+    <option value="price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+    <option value="most_bids" {% if current_sort == 'most_bids' %}selected{% endif %}>Most Bids</option>
+    <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest First</option>
+</select>
             <div class="view-toggle">
                 <!-- ✅ FIX 3: Working grid/list toggle -->
                 <button class="view-btn active" id="gridBtn" onclick="setView('grid')">Grid</button>
