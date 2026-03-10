@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html class="" lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora — Sign Up</title>
 <meta charset="utf-8"/>
@@ -27,6 +28,63 @@
   }
 </script>
 <style>
+body.dark input[type="password"]::-ms-reveal,
+body.dark input[type="password"]::-ms-clear {
+    filter: invert(1);
+}
+body.dark input[type="password"]::-webkit-credentials-auto-fill-button {
+    filter: invert(1);
+}
+
+
+body.dark .text-primary { color: #c4b5fd !important; }
+
+body.dark a.rounded-full.border {
+    background: #ffffff !important;
+    color: #1a1035 !important;
+    border-color: #ffffff !important;
+}
+body.dark a.rounded-full.border:hover {
+    background: #2d1655 !important;
+    color: #ffffff !important;
+}
+
+  body.dark input[type="password"],
+body.dark input[type="text"] {
+    background: #130c28 !important;
+    color: #f1f0f5 !important;
+    border-color: #2d1e50 !important;
+}
+body.dark input::placeholder { color: #6b5f85 !important; }
+
+/* Password eye icon */
+body.dark .toggle-pw-btn,
+body.dark [onclick*="togglePw"] { color: #f1f0f5 !important; }
+
+/* "Already have an account?" and "Log in" text */
+body.dark .text-slate-500 { color: #f1f0f5 !important; }
+body.dark a.text-primary { color: #c4b5fd !important; }
+
+/* Security divider text */
+body.dark .text-slate-400 { color: #a89dc4 !important; }
+body.dark .bg-white.px-3 { background: #1c1640 !important; color: #a89dc4 !important; }
+  body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+body.dark .bg-white { background: #1c1640 !important; }
+body.dark .bg-slate-50 { background: #13102b !important; }
+body.dark .text-slate-900 { color: #f1f0f5 !important; }
+body.dark .text-slate-700 { color: #a89dc4 !important; }
+body.dark .text-slate-600 { color: #a89dc4 !important; }
+body.dark .text-slate-500 { color: #6b5f85 !important; }
+body.dark .border-slate-100,
+body.dark .border-slate-200 { border-color: #2d1e50 !important; }
+body.dark input, body.dark select {
+    background: #130c28 !important;
+    color: #f1f0f5 !important;
+    border-color: #2d1e50 !important;
+}
+body.dark .bg-slate-100 { background: #1c1640 !important; color: #a89dc4 !important; }
+body.dark label { color: #a89dc4 !important; }
+  
   .glass-panel {
     background: rgba(30, 31, 46, 0.7);
     backdrop-filter: blur(12px);
@@ -63,10 +121,14 @@
   .input-style::placeholder {
     color: #94a3b8;
   }
+
+  body.dark footer a:hover {
+    color: #ffffff !important;
+}
 </style>
 </head>
 <body class="bg-slate-50 font-display text-slate-900 antialiased overflow-x-hidden">
-
+<script>(function(){if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}})();</script>
 <div class="flex min-h-screen w-full flex-col lg:flex-row">
 
   <!-- ─── Left Side: Brand Messaging & Image ─── -->
@@ -116,7 +178,7 @@
     <!-- Home Button -->
 <div class="absolute top-6 right-6">
   <a href="{% url 'home' %}"
-     class="flex items-center gap-2 bg-slate-100 hover:bg-primary hover:text-white text-slate-700 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+     class="flex items-center gap-2 bg-white hover:bg-primary hover:text-white text-slate-700 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200">
 
     <span class="material-symbols-outlined text-lg">home</span>
     Home
@@ -128,7 +190,7 @@
       <!-- Mobile Logo -->
       <div class="flex lg:hidden items-center justify-center gap-2 mb-2 text-primary">
         <span class="material-symbols-outlined text-4xl">gavel</span>
-        <h2 class="text-2xl font-bold">Auctora</h2>
+        <h2 class="text-2xl font-bold text-slate-900">Auctora</h2>
       </div>
 
       <!-- Heading -->
@@ -243,6 +305,10 @@
 </div>
 
 <script>
+  
+   
+
+  (function(){if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}})();
   function togglePw(id, btn) {
     const input = document.getElementById(id);
     if (input.type === 'password') {

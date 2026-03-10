@@ -2,12 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora | My Profile</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
+        /* ===== LIGHT MODE DEFAULTS ===== */
         :root {
             --sidebar-bg: #2d1655;
             --sidebar-hover: rgba(255,255,255,0.07);
@@ -23,6 +25,34 @@
             --orange: #f59e0b;
             --topbar-bg: #ffffff;
         }
+
+        /* ===== DARK MODE — override variables ===== */
+        body.dark {
+            --main-bg: #13102b;
+            --card-bg: #1c1640;
+            --topbar-bg: #1a1438;
+            --text-dark: #f1f0f5;
+            --text-mid: #a89dc4;
+            --text-light: #6b5f85;
+            --border: #2d1e50;
+            --sidebar-bg: #0f0c24;
+        }
+        body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+        body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+        body.dark .brand-name { color: #c4b5fd !important; }
+        body.dark .main { background: #13102b !important; }
+        body.dark .profile-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        body.dark .section-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        body.dark .section-header { border-color: #2d1e50 !important; }
+        body.dark .pstat { background: #130c28 !important; border-color: #2d1e50 !important; }
+        body.dark .pstat-val { color: #c4b5fd !important; }
+        body.dark .photo-upload-area { background: #130c28 !important; border-color: #2d1e50 !important; }
+        body.dark .photo-preview { background: #130c28 !important; border-color: #2d1e50 !important; }
+        body.dark .search-bar { background: #130c28 !important; border-color: #2d1e50 !important; }
+        body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
+        body.dark .profile-divider { background: #2d1e50 !important; }
+        body.dark .form-select { color-scheme: dark; }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
 
@@ -30,16 +60,8 @@
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .topbar {
-            position: fixed; top: 0; left: 0; right: 0; height: 56px;
-            background: var(--topbar-bg); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; padding: 0 20px 0 0;
-            z-index: 200; animation: fadeIn 0.5s both;
-            box-shadow: 0 1px 8px rgba(45,22,85,0.06);
-        }
+        .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: var(--topbar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px 0 0; z-index: 200; animation: fadeIn 0.5s both; box-shadow: 0 1px 8px rgba(45,22,85,0.06); }
         .topbar-brand { width: 260px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--border); height: 100%; flex-shrink: 0; }
-        .brand-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .brand-icon svg { width: 18px; height: 18px; }
         .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
         .topbar-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 0 16px; }
         .search-bar { display: flex; align-items: center; gap: 8px; background: var(--main-bg); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; color: var(--text-mid); width: 220px; }
@@ -49,12 +71,7 @@
         .sidebar { width: 260px; min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; padding-top: 56px; display: flex; flex-direction: column; animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both; box-shadow: 2px 0 20px rgba(45,22,85,0.15); }
         .sidebar-nav { padding: 8px 10px; flex: 1; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 2px; animation: slideInLeft 0.45s both; text-decoration: none; }
-        .nav-item:nth-child(1) { animation-delay: 0.12s; }
-        .nav-item:nth-child(2) { animation-delay: 0.18s; }
-        .nav-item:nth-child(3) { animation-delay: 0.24s; }
-        .nav-item:nth-child(4) { animation-delay: 0.30s; }
-        .nav-item:nth-child(5) { animation-delay: 0.36s; }
-        .nav-item:nth-child(6) { animation-delay: 0.42s; }
+        .nav-item:nth-child(1) { animation-delay: 0.12s; } .nav-item:nth-child(2) { animation-delay: 0.18s; } .nav-item:nth-child(3) { animation-delay: 0.24s; } .nav-item:nth-child(4) { animation-delay: 0.30s; } .nav-item:nth-child(5) { animation-delay: 0.36s; } .nav-item:nth-child(6) { animation-delay: 0.42s; }
         .nav-item .nav-icon { width: 20px; text-align: center; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
         .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
         .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
@@ -138,11 +155,6 @@
         .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--text-mid); padding: 11px 20px; border-radius: 50px; font-size: 14px; font-weight: 500; border: 1.5px solid var(--border); cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
         .btn-ghost:hover { background: var(--border); color: var(--text-dark); }
 
-        .password-strength { margin-top: 8px; }
-        .strength-bar { height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
-        .strength-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.4s, background 0.4s; }
-        .strength-text { font-size: 11px; color: var(--text-mid); }
-
         .toast { position: fixed; bottom: 28px; right: 28px; background: #1a1035; color: white; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; }
         .toast.show { transform: translateY(0); opacity: 1; }
         .toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -153,13 +165,14 @@
 </head>
 <body>
 
+<!-- DARK MODE INIT — MUST be right after <body>, before any HTML renders -->
+<script>if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}</script>
+
 <!-- Topbar -->
 <header class="topbar">
     <div class="topbar-brand">
-        <div class="brand-icon">
-            <div class="brand-icon" style="background: transparent;">
-                <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
-            </div>
+        <div style="background: transparent; display:flex; align-items:center;">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
         </div>
         <span class="brand-name">Auctora</span>
     </div>
@@ -191,7 +204,7 @@
     </div>
 </header>
 
-<!-- Sidebar — Admin nav -->
+<!-- Sidebar -->
 <aside class="sidebar">
     <nav class="sidebar-nav">
         <a href="{% url 'AdminDashboard' %}" class="nav-item">
@@ -414,9 +427,14 @@
                         <div class="section-body">
                             <div class="form-group">
                                 <label class="form-label">Current Password</label>
-                                <input type="password" name="current_password" class="form-input" placeholder="Enter current password">
+                                <div style="position:relative;">
+                                    <input type="password" name="current_password" id="pw_current" class="form-input" placeholder="Enter current password" style="padding-right:70px; background:#130c28; color:#f1f0f5; border-color:#2d1e50;">
+                                    <button type="button" id="pw_toggle_btn" onclick="togglePw()"
+                                        style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:13px; font-weight:600; color:#7c3aed; cursor:pointer; font-family:'Inter',sans-serif; padding:0; line-height:1;">
+                                        Show
+                                    </button>
+                                </div>
                             </div>
-                            
                         </div>
                     </div>
 
@@ -446,6 +464,22 @@
 </div>
 
 <script>
+    function togglePw() {
+        const input = document.getElementById('pw_current');
+        const btn = document.getElementById('pw_toggle_btn');
+        if (input.type === 'password') {
+            input.type = 'text';
+            input.style.background = '#130c28';
+            input.style.color = '#f1f0f5';
+            btn.textContent = 'Hide';
+        } else {
+            input.type = 'password';
+            input.style.background = '#130c28';
+            input.style.color = '#f1f0f5';
+            btn.textContent = 'Show';
+        }
+    }
+
     const photoInput = document.getElementById('photoInput');
     const photoPreview = document.getElementById('photoPreview');
     const previewImg = document.getElementById('previewImg');
@@ -475,27 +509,6 @@
         photoPreview.style.display = 'none';
         if (avatarInitial) { avatarInitial.style.display = 'flex'; avatarPreview.style.display = 'none'; }
     });
-
-    function checkStrength(val) {
-        const fill = document.getElementById('strengthFill');
-        const text = document.getElementById('strengthText');
-        let score = 0;
-        if (val.length >= 8) score++;
-        if (/[A-Z]/.test(val)) score++;
-        if (/[0-9]/.test(val)) score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-        const levels = [
-            { w: '0%',   bg: '#e5e7eb', label: 'Enter a password' },
-            { w: '25%',  bg: '#ef4444', label: 'Weak' },
-            { w: '50%',  bg: '#f59e0b', label: 'Fair' },
-            { w: '75%',  bg: '#3b82f6', label: 'Good' },
-            { w: '100%', bg: '#10b981', label: 'Strong' },
-        ];
-        fill.style.width = levels[score].w;
-        fill.style.background = levels[score].bg;
-        text.textContent = levels[score].label;
-        text.style.color = levels[score].bg;
-    }
 
     {% if messages %}
         {% for message in messages %}

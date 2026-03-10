@@ -28,6 +28,82 @@
             --topbar-bg: #ffffff;
         }
 
+        /* ─── DARK MODE ─── */
+body.dark {
+  --main-bg: #13102b; --card-bg: #1c1640; --topbar-bg: #1a1438;
+  --text-dark: #f1f0f5; --text-mid: #a89dc4; --text-light: #6b5f85;
+  --border: #2d1e50; --sidebar-bg: #0f0c24;
+}
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .main { background: #13102b !important; }
+body.dark .search-bar { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
+
+/* Page header */
+body.dark .page-header h1 { color: #f1f0f5 !important; }
+body.dark .page-header p { color: #a89dc4 !important; }
+
+/* Filter bar */
+body.dark .filter-select {
+  background: #1c1640 !important; border-color: #2d1e50 !important;
+  color: #f1f0f5 !important;
+}
+body.dark .view-btn {
+  background: #1c1640 !important; border-color: #2d1e50 !important;
+  color: #a89dc4 !important;
+}
+body.dark .view-btn.active {
+  background: var(--primary) !important; color: #fff !important;
+  border-color: var(--primary) !important;
+}
+
+/* Grid cards */
+body.dark .auction-card {
+  background: #1c1640 !important; border-color: #2d1e50 !important;
+}
+body.dark .card-title { color: #f1f0f5 !important; }
+body.dark .card-description { color: #a89dc4 !important; }
+body.dark .card-details { border-color: #2d1e50 !important; }
+body.dark .price-value { color: #c4b5fd !important; }
+body.dark .bid-count { color: #f1f0f5 !important; }
+body.dark .bid-label { color: #6b5f85 !important; }
+body.dark .price-label { color: #6b5f85 !important; }
+body.dark .time-left { color: #a89dc4 !important; }
+body.dark .btn-watch {
+  background: #130c28 !important; border-color: #2d1e50 !important;
+  color: #a89dc4 !important;
+}
+
+/* List view */
+body.dark .auction-list-item {
+  background: #1c1640 !important; border-color: #2d1e50 !important;
+}
+body.dark .list-title { color: #f1f0f5 !important; }
+body.dark .list-desc { color: #a89dc4 !important; }
+body.dark .list-price-value { color: #c4b5fd !important; }
+body.dark .list-price-label,
+body.dark .list-bids-label,
+body.dark .list-time-label { color: #6b5f85 !important; }
+body.dark .list-bids-num { color: #f1f0f5 !important; }
+body.dark .list-time-value { color: #a89dc4 !important; }
+
+/* Empty state */
+body.dark .empty-state {
+  background: #1c1640 !important; border-color: #2d1e50 !important;
+}
+body.dark .empty-title { color: #f1f0f5 !important; }
+body.dark .empty-text { color: #a89dc4 !important; }
+
+/* Sidebar */
+body.dark .sidebar-divider { background: rgba(255,255,255,0.06) !important; }
+body.dark .admin-footer { background: #0f0c24 !important; }
+
+body.dark .nav-item.active {
+    background: #3d2272 !important; color: #ffffff !important;
+}
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -694,6 +770,7 @@
 </main>
 
 <script>
+    if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}
     // ✅ FIX 3: Working grid/list toggle
     function setView(view) {
         const gridView = document.getElementById('gridView');

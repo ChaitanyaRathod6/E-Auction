@@ -263,11 +263,7 @@ def buyer_profile(request):
         messages.error(request, "You don't have a buyer profile.")
         return redirect('home')
 
-    # ← PASTE HERE, replacing your existing if request.method == "POST": block
     if request.method == "POST":
-        print("=== FILES ===", request.FILES)
-        print("=== profile_photo in FILES ===", request.FILES.get('profile_photo'))
-        
         request.user.First_name = request.POST.get('First_name')
         request.user.Last_name = request.POST.get('Last_name')
         request.user.Mobile_number = request.POST.get('Mobile_number')
@@ -275,11 +271,8 @@ def buyer_profile(request):
 
         if request.FILES.get('profile_photo'):
             request.user.profile_photo = request.FILES['profile_photo']
-            print("=== photo set to ===", request.user.profile_photo)
 
         request.user.save()
-        print("=== saved ===", request.user.profile_photo)
-        print("=== url ===", request.user.profile_photo.url if request.user.profile_photo else "NO PHOTO")
 
         form = BuyerProfileForm(request.POST, request.FILES, instance=buyer)
         if form.is_valid():
@@ -290,17 +283,16 @@ def buyer_profile(request):
     else:
         form = BuyerProfileForm(instance=buyer)
 
-    is_watched = False
-    if request.user.is_authenticated and request.user.Role == 'Buyer':
-        is_watched = Watchlist.objects.filter(
-        auction=auction, buyer=request.user.buyer
-        ).exists()    
+    # Get all watchlisted auctions for this buyer
+    watchlist = Watchlist.objects.filter(buyer=buyer).select_related('auction')
+    watchlist_count = watchlist.count()
 
     context = {
         "form": form,
         "buyer": buyer,
         "won_auctions": Bid.objects.filter(buyer=buyer, status='WINNING').count(),
-        "is_watched": is_watched,
+        "watchlist": watchlist,
+        "watchlist_count": watchlist_count,
     }
     return render(request, "Dashboard/buyer_profile.html", context)
 

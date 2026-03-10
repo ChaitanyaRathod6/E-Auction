@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora | {{ auction.item.name }}</title>
     <meta charset="UTF-8"/>
@@ -27,6 +28,57 @@
             --gray-badge: #9ca3af;
             --topbar-bg: #ffffff;
         }
+
+        /* ─── DARK MODE ─── */
+body.dark {
+  --main-bg: #13102b; --card-bg: #1c1640; --topbar-bg: #1a1438;
+  --text-dark: #f1f0f5; --text-mid: #a89dc4; --text-light: #6b5f85;
+  --border: #2d1e50; --sidebar-bg: #0f0c24;
+}
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .brand-badge { background: #3d2070 !important; }
+body.dark .main { background: #13102b !important; }
+body.dark .search-wrap { background: #130c28 !important; border-color: #2d1e50 !important; }
+body.dark .search-wrap input { color: #f1f0f5 !important; background: transparent !important; }
+body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
+body.dark .admin-info .name { color: #f1f0f5 !important; }
+body.dark .stat-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .stat-value, body.dark .chart-value, body.dark .panel-title,
+body.dark .mini-title, body.dark .health-label, body.dark .item-name,
+body.dark .act-text .title, body.dark .page-header h1 { color: #f1f0f5 !important; }
+body.dark .stat-label, body.dark .stat-sub, body.dark .chart-x-labels span,
+body.dark .bar-label, body.dark .item-sub, body.dark .act-text .sub,
+body.dark .act-meta .time, body.dark .health-sub { color: #6b5f85 !important; }
+body.dark .chart-card, body.dark .panel-card, body.dark .mini-panel { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .chart-title, body.dark .page-header p, body.dark .health-pct { color: #a89dc4 !important; }
+body.dark thead th { background: #130c28 !important; border-color: #2d1e50 !important; color: #6b5f85 !important; }
+body.dark tbody tr { border-color: #2d1e50 !important; }
+body.dark tbody tr:hover { background: #1a1340 !important; }
+body.dark tbody td, body.dark .price-col { color: #f1f0f5 !important; }
+body.dark .activity-item, body.dark .health-item, body.dark .mini-header { border-color: #2d1e50 !important; }
+body.dark .activity-item:hover { background: #1a1340 !important; }
+body.dark .health-bar-track { background: #2d1e50 !important; }
+body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+body.dark .btn-sm-ghost { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .sidebar-divider { background: rgba(255,255,255,0.06) !important; }
+body.dark .admin-footer { background: #0f0c24 !important; }
+body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
+
+body.dark .current-price {
+    color: #ffffff;
+}
+
+body.dark .min-bid-hint {
+    color: var(--accent-purple);
+    background: rgba(124, 58, 237, 0.1);
+    border-color: rgba(124, 58, 237, 0.25);
+}
+body.dark .min-bid-hint strong {
+    color: var(--accent-purple);
+}
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -788,6 +840,7 @@
 </main>
 
 <script>
+    if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}
     {% if auction.status == "ACTIVE" %}
     const countdownEl = document.getElementById('countdown');
     const endTime = {{ end_time_ms }};  {# ✅ Use Unix timestamp — no timezone issues #}

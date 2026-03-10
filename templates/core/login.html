@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html class="light" lang="en"><head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora — Login</title>
 <meta charset="utf-8"/>
@@ -17,7 +18,7 @@
                     colors: {
                         "primary": "#2d1655",
                         "background-light": "#f6f6f8",
-                        "background-dark": "#14141e",
+                        "background-dark": "#13102b",
                     },
                     fontFamily: {
                         "display": ["Inter"]
@@ -33,27 +34,68 @@
         }
     </script>
 <style>
-        .glass-morphism {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-    
-        .btn-luxury-animate {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-luxury-animate:hover {
-            transform: scale(1.05);
-            filter: brightness(1.15);
-        }
-        .btn-luxury-animate:active {
-            transform: scale(0.95);
-        }
-    </style>
+/* ── Glass & Animations ── */
+.glass-morphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.btn-luxury-animate { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.btn-luxury-animate:hover { transform: scale(1.05); filter: brightness(1.15); }
+.btn-luxury-animate:active { transform: scale(0.95); }
+
+/* ── All inputs capsule shaped ── */
+input, select {
+    border-radius: 9999px !important;
+    padding-left: 1.25rem !important;
+}
+
+/* ── Dark Mode ── */
+body.dark {
+    background: #13102b !important;
+    color: #f1f0f5 !important;
+}
+body.dark .bg-white,
+body.dark .bg-background-light { background: #1c1640 !important; }
+body.dark .bg-background-dark { background: #13102b !important; }
+body.dark .text-slate-900 { color: #f1f0f5 !important; }
+body.dark .text-slate-700,
+body.dark .text-slate-600 { color: #a89dc4 !important; }
+body.dark .text-slate-500,
+body.dark .text-slate-400 { color: #6b5f85 !important; }
+body.dark label { color: #a89dc4 !important; }
+body.dark .border-slate-100,
+body.dark .border-slate-200 { border-color: #2d1e50 !important; }
+body.dark input, body.dark select {
+    background: #130c28 !important;
+    color: #f1f0f5 !important;
+    border-color: #2d1e50 !important;
+    color-scheme: dark;
+}
+body.dark input::placeholder { color: #6b5f85 !important; }
+body.dark .text-primary { color: #c4b5fd !important; }
+body.dark a[href*="signup"],
+body.dark a[href*="login"] { color: #ffffff !important; }
+body.dark a.rounded-full.border {
+    background: #ffffff !important;
+    color: #1a1035 !important;
+    border-color: #ffffff !important;
+}
+body.dark a.rounded-full.border:hover {
+    background: #2d1655 !important;
+    color: #ffffff !important;
+}
+body.dark .bg-white.px-3 { background: #1c1640 !important; color: #a89dc4 !important; }
+
+body.dark footer a:hover {
+    color: #ffffff !important;
+}
+</style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display antialiased">
-<div class="flex min-h-screen">
+    <script>(function(){if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}})();</script>
+<div class="flex min-h-screen signup-page">
 <!-- Left Side: Visual/Hero -->
 <div class="relative hidden w-1/2 lg:flex items-center justify-center bg-primary overflow-hidden">
 <div class="absolute inset-0 z-0">
@@ -87,7 +129,7 @@
     <!-- Home Button -->
 <div class="absolute top-6 right-6">
   <a href="{% url 'home' %}"
-     class="flex items-center gap-2 bg-slate-100 hover:bg-primary hover:text-white text-slate-700 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+     class="flex items-center gap-2 bg-white hover:bg-primary hover:text-white text-slate-700 px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200">
 
     <span class="material-symbols-outlined text-lg">home</span>
     Home
@@ -98,7 +140,7 @@
 <!-- Mobile Logo -->
 <div class="lg:hidden mb-8 flex items-center gap-2">
 <div class="bg-primary p-2 rounded-lg" style="background-color: #2d1655;">
-<span class="material-symbols-outlined text-white">diamond</span>
+<span class="material-symbols-outlined text-white">gavel</span>
 </div>
 <span class="text-2xl font-black text-slate-900 dark:text-slate-100">Auctora</span>
 </div>
@@ -156,7 +198,9 @@
   </div>
 </div>
 </div>
-</body></html>
+</body>
+
+</html>
 
 
 

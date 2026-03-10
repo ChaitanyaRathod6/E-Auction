@@ -23,6 +23,78 @@
             --orange: #f59e0b;
             --topbar-bg: #ffffff;
         }
+
+        /* ─── DARK MODE ─── */
+body.dark {
+  --main-bg: #13102b; --card-bg: #1c1640; --topbar-bg: #1a1438;
+  --text-dark: #f1f0f5; --text-mid: #a89dc4; --text-light: #6b5f85;
+  --border: #2d1e50; --sidebar-bg: #0f0c24;
+}
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .main { background: #13102b !important; }
+body.dark .search-bar { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
+
+/* Page header */
+body.dark .page-header h1 { color: #f1f0f5 !important; }
+body.dark .page-header p { color: #a89dc4 !important; }
+
+/* Active nav item */
+body.dark .nav-item.active { background: #3d2272 !important; color: #ffffff !important; }
+
+/* Profile card left */
+body.dark .profile-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .profile-name { color: #f1f0f5 !important; }
+body.dark .profile-role { background: #2d1e50 !important; color: #c4b5fd !important; }
+body.dark .pstat { background: #130c28 !important; border-color: #2d1e50 !important; }
+body.dark .pstat-val { color: #c4b5fd !important; }
+body.dark .pstat-lbl { color: #6b5f85 !important; }
+body.dark .profile-divider { background: #2d1e50 !important; }
+body.dark .profile-meta-item { color: #a89dc4 !important; }
+body.dark .profile-meta-item strong { color: #f1f0f5 !important; }
+
+/* Section cards */
+body.dark .section-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .section-header { border-color: #2d1e50 !important; }
+body.dark .section-title { color: #f1f0f5 !important; }
+
+/* Form inputs */
+body.dark .form-input {
+  background: #130c28 !important; border-color: #2d1e50 !important;
+  color: #f1f0f5 !important;
+}
+body.dark .form-input::placeholder { color: #6b5f85 !important; }
+body.dark .form-input:focus { border-color: var(--accent-purple) !important; }
+body.dark .form-select {
+  background: #130c28 !important; border-color: #2d1e50 !important;
+  color: #f1f0f5 !important;
+}
+body.dark .form-label { color: #6b5f85 !important; }
+
+/* Photo upload area */
+body.dark .photo-upload-area {
+  background: #130c28 !important; border-color: #2d1e50 !important;
+}
+body.dark .photo-upload-area:hover { background: #1a1340 !important; border-color: var(--accent-purple) !important; }
+body.dark .upload-title { color: #f1f0f5 !important; }
+body.dark .upload-hint { color: #a89dc4 !important; }
+body.dark .upload-icon { background: #2d1e50 !important; }
+body.dark .photo-preview { background: #130c28 !important; border-color: #2d1e50 !important; }
+body.dark .photo-preview-name { color: #f1f0f5 !important; }
+body.dark .photo-preview-size { color: #6b5f85 !important; }
+
+/* Rating section */
+body.dark .strength-text { color: #a89dc4 !important; }
+body.dark .strength-bar { background: #2d1e50 !important; }
+
+/* Buttons */
+body.dark .btn-ghost {
+  border-color: #2d1e50 !important; color: #a89dc4 !important;
+}
+body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
 
@@ -544,31 +616,16 @@
                     </div>
 
                     <!-- Change Password -->
-                    <div class="section-card">
-                        <div class="section-header">
-                            <span class="section-title">Change Password</span>
-                        </div>
-                        <div class="section-body">
-                            <div class="form-group">
-                                <label class="form-label">Current Password</label>
-                                <input type="password" name="current_password" class="form-input" placeholder="Enter current password">
-                            </div>
-                            <div class="form-row form-group">
-                                <div>
-                                    <label class="form-label">New Password</label>
-                                    <input type="password" name="new_password" class="form-input" id="newPassInput" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
-                                    <div class="password-strength">
-                                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-                                        <div class="strength-text" id="strengthText">Enter a password</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="form-label">Confirm New Password</label>
-                                    <input type="password" name="confirm_password" class="form-input" placeholder="Repeat new password">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="form-group">
+    <label class="form-label">Current Password</label>
+    <div style="position:relative;">
+        <input type="password" name="current_password" class="form-input" id="currentPass" placeholder="Enter current password" style="padding-right:48px;">
+        <button type="button" onclick="togglePass('currentPass', this)"
+            style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-mid);padding:0;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;">
+            Show
+        </button>
+    </div>
+</div>
 
                     <!-- Save buttons -->
                     <div style="display:flex; gap:12px; justify-content:flex-end; animation: fadeInUp 0.5s 0.5s both;">
@@ -596,6 +653,20 @@
 </div>
 
 <script>
+    function togglePass(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Hide';
+        btn.style.color = 'var(--accent-purple)';
+    } else {
+        input.type = 'password';
+        btn.textContent = 'Show';
+        btn.style.color = 'var(--text-mid)';
+    }
+}
+
+    if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}
     // Photo upload preview
     const photoInput = document.getElementById('photoInput');
     const photoPreview = document.getElementById('photoPreview');
