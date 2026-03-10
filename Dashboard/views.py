@@ -493,6 +493,7 @@ def manage_payments(request):
         'completed_payments': qs.filter(status='COMPLETED').count(),
         'pending_payments': qs.filter(status='PENDING').count(),
         'failed_payments': qs.filter(status='FAILED').count(),
+        'refunded_payments': qs.filter(status='REFUNDED').count(),
     }
     return render(request, 'Dashboard/manage_payments.html', context)
 

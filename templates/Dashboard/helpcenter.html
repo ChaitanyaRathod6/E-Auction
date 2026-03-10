@@ -25,6 +25,101 @@
   }
 </script>
 <style>
+  /* ─── DARK MODE ─── */
+
+
+/* Purple/violet text → white in dark mode */
+body.dark .text-primary { color: #ffffff !important; }
+body.dark a.text-primary { color: #ffffff !important; }
+body.dark span.text-primary { color: #ffffff !important; }
+body.dark li.text-primary { color: #ffffff !important; }
+
+/* Category card list items */
+body.dark ul.text-primary li { color: #ffffff !important; }
+body.dark .text-sm.text-primary { color: #ffffff !important; }
+body.dark .text-xs.text-primary { color: #ffffff !important; }
+
+/* FAQ Q. marker */
+body.dark h5 span.text-primary { color: #ffffff !important; }
+
+/* "View all categories" link */
+body.dark a.text-primary.font-semibold { color: #ffffff !important; }
+
+/* Article category labels (Security, Auction Guide, Logistics) */
+body.dark span.text-primary.font-bold { color: #c4b5fd !important; }
+
+/* "Visit the forum" link */
+body.dark a.text-primary.font-bold { color: #ffffff !important; }
+
+/* Header brand "Help" text */
+body.dark .text-primary\/50 { color: rgba(255,255,255,0.5) !important; }
+
+/* Knowledge Base underline bar */
+body.dark .h-1.bg-primary,
+body.dark .h-0\.5.bg-primary { background: #7c3aed !important; }
+
+body.dark footer { background: #1a1438 !important; }
+body.dark section.bg-primary { background: linear-gradient(135deg, #2d1655 0%, #3b1d72 50%, #2d1655 100%) !important; }
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+
+/* Header */
+body.dark header { background: rgba(26,20,56,0.95) !important; border-color: #2d1e50 !important; }
+body.dark header h2 { color: #c4b5fd !important; }
+body.dark header nav a { color: #a89dc4 !important; }
+body.dark header nav a:hover { color: #c4b5fd !important; }
+body.dark .bg-slate-100.rounded-xl { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .bg-slate-100.rounded-xl input { background: transparent !important; color: #f1f0f5 !important; }
+
+/* Auth buttons */
+body.dark header a[href*="signup"],
+body.dark header a[href*="login"],
+body.dark header a[href*="home"] {
+  background: #2d1655 !important; color: #fff !important; border-color: #2d1655 !important;
+}
+
+/* Text colors */
+body.dark h1 { color: #ffffff !important; }
+body.dark h2 { color: #ffffff !important; }
+body.dark h3 { color: #ffffff !important; }
+body.dark h4 { color: #ffffff !important; }
+body.dark h5 { color: #ffffff !important; }
+body.dark .text-slate-900 { color: #ffffff !important; }
+body.dark .text-slate-500 { color: #a89dc4 !important; }
+body.dark .text-slate-600 { color: #a89dc4 !important; }
+body.dark .text-slate-300 { color: #6b5f85 !important; }
+
+
+
+/* Cards — category grid */
+body.dark .bg-white { background: #1c1640 !important; }
+body.dark .border-slate-200 { border-color: #2d1e50 !important; }
+body.dark .border-slate-100 { border-color: #2d1e50 !important; }
+body.dark .bg-background-light { background: #160f30 !important; }
+
+/* Category card icon bg */
+body.dark .bg-primary\/10 { background: rgba(124,58,237,0.15) !important; }
+body.dark .border-primary\/20 { border-color: rgba(124,58,237,0.25) !important; }
+
+/* Featured articles section bg */
+body.dark .bg-white.py-16 { background: #1a1438 !important; }
+
+/* Sidebar community card */
+body.dark .border-primary\/20.bg-white { background: #1c1640 !important; border-color: rgba(124,58,237,0.3) !important; }
+
+/* FAQ section */
+body.dark .bg-white.hover-lift { background: #1c1640 !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+body.dark ::-webkit-scrollbar-track { background: #13102b; }
+body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+
+/* Footer protection */
+body.dark footer h2,
+body.dark footer h3,
+body.dark footer h4,
+body.dark footer p,
+body.dark footer span { color: inherit !important; }
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
@@ -32,6 +127,7 @@
   .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -8px rgba(45,22,85,0.15); }
 </style>
 </head>
+
 <body class="bg-background-light font-display text-slate-900">
 <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
 
@@ -57,9 +153,9 @@
         <input class="bg-transparent border-none focus:ring-0 text-sm text-slate-800 placeholder:text-slate-400 w-40" placeholder="Quick Search"/>
       </div>
     <div class="flex items-center gap-3">
-      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
-        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
-      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
+      <a href="{% url 'signup' %}" style="display:inline-flex;align-items:center;background:#2d1655;color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 16px rgba(45,22,85,0.28);" onmouseover="this.style.background='#3d2070'" onmouseout="this.style.background='#2d1655'">Sign Up</a>
+<a href="{% url 'login' %}" style="display:inline-flex;align-items:center;background:#2d1655;color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 16px rgba(45,22,85,0.28);" onmouseover="this.style.background='#3d2070'" onmouseout="this.style.background='#2d1655'">Login</a>
+<a href="{% url 'home' %}" style="display:inline-flex;align-items:center;background:#2d1655;color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 16px rgba(45,22,85,0.28);" onmouseover="this.style.background='#3d2070'" onmouseout="this.style.background='#2d1655'">Home</a>
       <div class="size-10 rounded-full bg-primary/10 border-2 border-accent-gold/30 flex items-center justify-center">
         <span class="material-symbols-outlined text-primary">person</span>
       </div> 
@@ -325,4 +421,10 @@
   </footer>
 
 </div>
-</body></html>
+</body>
+<script>
+  if(localStorage.getItem('auctora_dark')==='1'){
+    document.body.classList.add('dark');
+  }
+</script>
+</html>

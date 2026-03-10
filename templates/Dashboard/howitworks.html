@@ -15,6 +15,73 @@
       --text-mid:#6b7280; --text-light:#9ca3af; --border:#e8e5f0;
       --green:#10b981; --orange:#f59e0b; --red:#ef4444;
     }
+
+    /* ─── DARK MODE ─── */
+body.dark, html.dark-pending body {
+  background: #13102b !important;
+  color: #f1f0f5 !important;
+  --main-bg: #13102b;
+  --card-bg: #1c1640;
+  --text-dark: #f1f0f5;
+  --text-mid: #a89dc4;
+  --text-light: #6b5f85;
+  --border: #2d1e50;
+}
+
+/* Topbar */
+body.dark .topbar { background: rgba(26,20,56,0.95) !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .nav-link { color: #a89dc4 !important; }
+body.dark .nav-link:hover,
+body.dark .nav-link.active { background: rgba(124,58,237,0.15) !important; color: #c4b5fd !important; }
+body.dark .btn-ghost { background: transparent !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .btn-ghost:hover { background: rgba(45,22,85,0.4) !important; color: #f1f0f5 !important; }
+
+/* Tabs */
+body.dark .tabs-wrap { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .tab { color: #6b5f85 !important; }
+body.dark .tab:hover { color: #c4b5fd !important; }
+body.dark .tab.active { color: #c4b5fd !important; border-bottom-color: #7c3aed !important; }
+
+/* Section text */
+body.dark .section-title { color: #ffffff !important; }
+body.dark .section-sub { color: #a89dc4 !important; }
+body.dark .section-label { color: #a78bfa !important; }
+
+/* Steps timeline */
+body.dark .step-row::after { background: #2d1e50 !important; }
+body.dark .step-title { color: #ffffff !important; }
+body.dark .step-tag { color: #a78bfa !important; }
+body.dark .step-desc { color: #a89dc4 !important; }
+body.dark .chip { background: rgba(124,58,237,0.12) !important; border-color: rgba(124,58,237,0.2) !important; color: #c4b5fd !important; }
+
+/* Role cards */
+body.dark .role-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .role-card:hover { border-color: rgba(124,58,237,0.4) !important; box-shadow: 0 16px 48px rgba(0,0,0,0.4) !important; }
+body.dark .role-title { color: #ffffff !important; }
+body.dark .role-desc { color: #a89dc4 !important; }
+body.dark .role-step-text { color: #a89dc4 !important; }
+body.dark .role-step-text strong { color: #f1f0f5 !important; }
+
+/* Role section background */
+body.dark section[style*="background:var(--card-bg)"],
+body.dark .section { background: #13102b !important; }
+body.dark section.section { border-color: #2d1e50 !important; }
+
+/* FAQ */
+body.dark .faq-item { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .faq-q { color: #f1f0f5 !important; }
+body.dark .faq-q:hover { color: #c4b5fd !important; }
+body.dark .faq-arrow { color: #6b5f85 !important; }
+body.dark .faq-a { color: #a89dc4 !important; }
+
+/* Footer */
+body.dark footer { background: #1a1438 !important; }
+body.dark .footer-bottom { border-color: rgba(255,255,255,0.06) !important; }
+
+/* Scrollbar */
+body.dark ::-webkit-scrollbar-track { background: #13102b !important; }
+body.dark ::-webkit-scrollbar-thumb { background: #2d1655 !important; border-radius: 3px; }
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);overflow-x:hidden}
     @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -132,6 +199,11 @@
     @media(max-width:768px){.nav-links{display:none}.role-grid{grid-template-columns:1fr}.container{padding:0 16px}.page-hero h1{font-size:32px}.step-row{grid-template-columns:56px 1fr}.cta-section{padding:40px 24px}}
     ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--main-bg)}::-webkit-scrollbar-thumb{background:#d5cee8;border-radius:3px}
   </style>
+  <script>
+  if(localStorage.getItem('auctora_dark')==='1'){
+    document.documentElement.classList.add('dark-pending');
+  }
+</script>
 </head>
 <body>
 
@@ -154,7 +226,7 @@
       </nav>
     </div>
     <div class="topbar-right">
-      <a href="{% url 'login' %}" class="btn-ghost">Login</a>
+      <a href="{% url 'login' %}" class="btn-primary">Login</a>
       <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
     </div>
   </div>
@@ -397,6 +469,12 @@
 </footer>
 
 <script>
+  
+  if(localStorage.getItem('auctora_dark')==='1'){
+    document.body.classList.add('dark');
+    document.documentElement.classList.remove('dark-pending');
+  }
+
   function showTab(el, id) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');

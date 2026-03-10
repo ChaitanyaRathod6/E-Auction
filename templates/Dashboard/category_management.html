@@ -23,6 +23,87 @@
             --red: #ef4444;
             --topbar-bg: #ffffff;
         }
+
+        /* ─── DARK MODE ─── */
+body.dark {
+  --main-bg: #13102b; --card-bg: #1c1640; --topbar-bg: #1a1438;
+  --text-dark: #f1f0f5; --text-mid: #a89dc4; --text-light: #6b5f85;
+  --border: #2d1e50; --sidebar-bg: #0f0c24;
+}
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .main { background: #13102b !important; }
+body.dark .search-bar { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
+
+/* Page header */
+body.dark .page-header h1 { color: #f1f0f5 !important; }
+body.dark .page-header p { color: #a89dc4 !important; }
+
+/* Active nav */
+body.dark .nav-item.active { background: #3d2272 !important; color: #ffffff !important; }
+
+/* Form card */
+body.dark .form-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .card-header { border-color: #2d1e50 !important; }
+body.dark .card-title { color: #f1f0f5 !important; }
+body.dark .form-input {
+  background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important;
+}
+body.dark .form-input::placeholder { color: #6b5f85 !important; }
+body.dark .form-input:focus { background: #1a1340 !important; border-color: #7c3aed !important; }
+body.dark .form-textarea {
+  background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important;
+}
+body.dark .form-textarea::placeholder { color: #6b5f85 !important; }
+body.dark .form-textarea:focus { background: #1a1340 !important; border-color: #7c3aed !important; }
+body.dark .form-label { color: #6b5f85 !important; }
+
+/* Edit mode banner */
+body.dark .edit-mode-banner {
+  background: #2d1e50 !important; border-color: #3d2272 !important; color: #c4b5fd !important;
+}
+
+/* Buttons */
+body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+body.dark .btn-danger { border-color: rgba(239,68,68,0.3) !important; color: #fca5a5 !important; }
+body.dark .btn-danger:hover { background: rgba(239,68,68,0.1) !important; }
+
+/* Category list */
+body.dark .list-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .list-header { border-color: #2d1e50 !important; }
+body.dark .list-search { border-color: #2d1e50 !important; }
+body.dark .search-input-wrap {
+  background: #130c28 !important; border-color: #2d1e50 !important;
+}
+body.dark .search-input-wrap input { color: #f1f0f5 !important; }
+body.dark .search-input-wrap input::placeholder { color: #6b5f85 !important; }
+body.dark .category-count { background: #2d1e50 !important; color: #c4b5fd !important; }
+
+/* Category rows */
+body.dark .category-row { border-color: #2d1e50 !important; }
+body.dark .category-row:hover { background: #1a1340 !important; }
+body.dark .category-icon { background: #2d1e50 !important; }
+body.dark .category-name { color: #f1f0f5 !important; }
+body.dark .category-desc { color: #a89dc4 !important; }
+body.dark .category-date { color: #6b5f85 !important; }
+
+/* Action buttons */
+body.dark .action-btn {
+  background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important;
+}
+
+/* Empty state */
+body.dark .empty-title { color: #f1f0f5 !important; }
+body.dark .empty-desc { color: #a89dc4 !important; }
+body.dark .empty-icon { background: #2d1e50 !important; }
+
+/* Alerts */
+body.dark .alert-success { background: rgba(16,185,129,0.1) !important; border-color: rgba(16,185,129,0.2) !important; color: #6ee7b7 !important; }
+body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-color: rgba(239,68,68,0.2) !important; color: #fca5a5 !important; }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
 
@@ -212,11 +293,15 @@
         </button>
         <div class="sidebar-profile-card">
             <div style="flex-shrink:0;">
-                {% if request.user.profile_photo %}
-                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                {% else %}
-                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:""|first|upper }}</div>
-                {% endif %}
+              {% if request.user.profile_photo %}
+    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+{% elif request.user.Gender|lower == "male" %}
+    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+{% elif request.user.Gender|lower == "female" %}
+    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+{% else %}
+    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:""|first|upper }}</div>
+{% endif %} 
             </div>
             <div class="profile-info">
                 <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
@@ -350,6 +435,7 @@
 </div>
 
 <script>
+    (function(){if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}})();
     // Edit category — fill the form with existing data
     function editCategory(id, name, description) {
         document.getElementById('formAction').value = 'edit';
