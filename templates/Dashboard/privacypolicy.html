@@ -25,9 +25,100 @@
   }
 </script>
 <style>
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .sidebar-link:hover { background-color: rgba(45,22,85,0.08); color: #2d1655; }
-  .active-link { background-color: rgba(45,22,85,0.12); color: #2d1655; font-weight: 700; }
+
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.sidebar-link:hover { background-color: rgba(45,22,85,0.08); color: #2d1655; }
+.active-link { background-color: rgba(45,22,85,0.12); color: #2d1655; font-weight: 700; }
+
+/* ─── DARK MODE ─── */
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+
+/* Header */
+body.dark header { background: #1a1438 !important; border-color: #2d1e50 !important; }
+
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark header h2 { color: #e9e3ff !important; }
+
+/* Sidebar */
+body.dark aside { background: #13102b !important; }
+body.dark aside h3 { color: #6b5f85 !important; }
+body.dark aside .sidebar-link { color: #a89dc4 !important; }
+body.dark aside .sidebar-link:hover { background: rgba(124,58,237,0.15) !important; color: #c4b5fd !important; }
+body.dark aside .active-link { background: rgba(124,58,237,0.2) !important; color: #c4b5fd !important; }
+body.dark aside .material-symbols-outlined { color: #7c3aed !important; }
+
+/* Main content area */
+body.dark main { background: #13102b !important; }
+body.dark article { color: #a89dc4 !important; }
+body.dark article h1 { color: #c4b5fd !important; }
+body.dark article h2 { color: #c4b5fd !important; }
+body.dark article h3 { color: #c4b5fd !important; }
+body.dark article p { color: #a89dc4 !important; }
+body.dark article li span:not(.material-symbols-outlined) { color: #a89dc4 !important; }
+body.dark article span.text-slate-400 { color: #6b5f85 !important; }
+body.dark article span.text-slate-600 { color: #a89dc4 !important; }
+
+/* Title block meta info */
+body.dark .text-slate-400 { color: #6b5f85 !important; }
+body.dark .text-slate-300 { color: #2d1e50 !important; }
+body.dark .text-primary\/60 { color: rgba(124,58,237,0.7) !important; }
+
+/* Data collection white card */
+body.dark section.bg-white { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark section.bg-white h3 { color: #c4b5fd !important; }
+body.dark section.bg-white p { color: #a89dc4 !important; }
+body.dark section.bg-white .bg-primary\/10 { background: rgba(124,58,237,0.15) !important; }
+body.dark section.bg-white .material-symbols-outlined { color: #7c3aed !important; }
+
+/* Cookie callout */
+body.dark .bg-primary\/5 { background: rgba(124,58,237,0.1) !important; border-color: #7c3aed !important; }
+body.dark .bg-primary\/5 h4 { color: #c4b5fd !important; }
+body.dark .bg-primary\/5 p { color: #a89dc4 !important; }
+body.dark .nav-link:hover, body.dark .nav-link.active { background: rgba(255,255,255,0.12) !important; color: #ffffff !important; }
+/* Check icons */
+body.dark .material-symbols-outlined.text-primary { color: #7c3aed !important; }
+
+/* Bottom actions bar */
+body.dark .border-slate-200 { border-color: #2d1e50 !important; }
+body.dark button.border-primary { border-color: #7c3aed !important; color: #c4b5fd !important; }
+body.dark button.border-primary:hover { background: #7c3aed !important; color: #fff !important; }
+
+/* Page background */
+body.dark .bg-background-light { background: #13102b !important; }
+
+/* Scrollbar */
+body.dark ::-webkit-scrollbar-track { background: #13102b; }
+body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+::-webkit-scrollbar { width: 5px; }
+
+/* Footer text — white in dark mode only */
+body.dark footer p,
+body.dark footer span,
+body.dark footer h2,
+body.dark footer h4,
+body.dark footer li,
+body.dark footer a { color: rgba(255,255,255,0.7) !important; }
+body.dark footer a:hover { color: #ffffff !important; }
+body.dark footer .text-slate-400 { color: rgba(255,255,255,0.6) !important; }
+body.dark footer .text-slate-300 { color: rgba(255,255,255,0.8) !important; }
+body.dark footer .text-slate-500 { color: rgba(255,255,255,0.5) !important; }
+body.dark footer h2.text-white,
+body.dark footer a.text-white { color: #ffffff !important; }
+
+.btn-primary { display:inline-flex;align-items:center;gap:6px;background:#2d1655;color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:transform 0.25s,box-shadow 0.25s,background 0.2s;box-shadow:0 4px 16px rgba(45,22,85,0.28);text-decoration:none;font-family:'Inter',sans-serif; }
+.btn-primary:hover { background:#3d2070; box-shadow:0 6px 24px rgba(45,22,85,0.42); }
+.btn-ghost { display:inline-flex;align-items:center;gap:6px;background:transparent;color:#6b7280;padding:10px 20px;border-radius:50px;font-size:13.5px;font-weight:500;border:1px solid #e8e5f0;cursor:pointer;transition:all 0.2s;text-decoration:none;font-family:'Inter',sans-serif; }
+.btn-ghost:hover { background:#e8e5f0;color:#1a1035; }
+
+body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; background: transparent !important; }
+body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+body.dark .btn-primary { background: #3d2070 !important; }
+body.dark .btn-primary:hover { background: #4c1d95 !important; }
+
+.nav-link { font-size:13.5px; font-weight:500; color:#6b7280; padding:6px 12px; border-radius:8px; text-decoration:none; transition:background 0.2s, color 0.2s; }
+.nav-link:hover { background:rgba(45,22,85,0.06); color:#2d1655; font-weight:600; }
+
+
 </style>
 </head>
 <body class="bg-background-light text-slate-900 font-display">
@@ -43,23 +134,20 @@
         </div>
           <h2 class="text-xl font-bold tracking-tight text-primary">Auctora</h2>
         </div>
-        <nav class="hidden md:flex items-center gap-6">
-          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Auctions</a>
-          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Live</a>
-          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">About</a>
-          <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="#">Contact</a>
-        </nav>
+        <nav class="hidden md:flex items-center gap-1">
+  <a href="{% url 'auction_list' %}" class="nav-link">Auctions</a>
+  <a href="#" class="nav-link">Live</a>
+  <a href="{% url 'AboutUs' %}" class="nav-link">About</a>
+  <a href="{% url 'ContactUs' %}" class="nav-link">Contact</a>
+</nav>
+        
       </div>
-      <div class="flex items-center gap-3">
-      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
-        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
-      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
-      
-
-      <div class="size-10 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden bg-cover bg-center"
-           style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB8OTQPprsfW3VBaMMvFNhC6UZYLm1GMLckh9F_wsahBLE67DaEs6FywNd7z7kKNB3YBfNONLu8KRQ_RrBhThtFTELfNYzPiB5gRQWcn2i_RHkJ7G3OAfAdAJgm5f4xniSRDXHvUvuEXrOyydN0WfO-cz-hSDPc584H3LQBT1MY4KEDoZP9kBF1wLuf-urXHmQ1On4A3yL4fDbwaYlB29SM23daMR1SQRR5ueftoReuotYwwwE6Uhl04tPHIFGd0FqklWdnzdxYnbv");'>
-      </div>
-    </div>
+     <div class="flex items-center gap-3">
+  <a href="{% url 'login' %}" class="btn-primary">Login</a>
+  <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+  <a href="{% url 'home' %}" class="btn-primary">Home</a>
+  
+</div>
     </div>
   </header>
 
@@ -298,4 +386,10 @@
   </footer>
 
 </div>
-</body></html>
+</body>
+<script>
+  if(localStorage.getItem('auctora_dark')==='1'){
+    document.body.classList.add('dark');
+  }
+</script>
+</html>

@@ -10,6 +10,72 @@
     <style>
         :root { --sidebar-bg:#2d1655;--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444; }
         /* ─── DARK MODE ─── */
+
+/* Dispute form card */
+body.dark .dispute-form-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .form-section-title { color: #ffffff !important; }
+body.dark .form-section-sub { color: #a89dc4 !important; }
+body.dark .form-label { color: #6b5f85 !important; }
+body.dark .char-count { color: #6b5f85 !important; }
+
+/* Textarea */
+body.dark .form-textarea {
+  background: #160f30 !important;
+  border-color: #2d1e50 !important;
+  color: #f1f0f5 !important;
+}
+body.dark .form-textarea::placeholder { color: #6b5f85 !important; }
+body.dark .form-textarea:focus {
+  border-color: #7c3aed !important;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15) !important;
+}
+
+/* Issue category cards — unselected */
+body.dark .reason-cat {
+  background: #160f30 !important;
+  border-color: #2d1e50 !important;
+}
+body.dark .reason-cat:hover {
+  background: rgba(124,58,237,0.15) !important;
+  border-color: #7c3aed !important;
+}
+body.dark .reason-cat-text { color: #f1f0f5 !important; }
+body.dark .reason-cat-sub { color: #a89dc4 !important; }
+
+/* Issue category cards — selected */
+body.dark .reason-cat.selected {
+  background: rgba(124,58,237,0.2) !important;
+  border-color: #7c3aed !important;
+}
+body.dark .reason-cat.selected .reason-cat-text { color: #c4b5fd !important; }
+body.dark .reason-cat.selected .reason-cat-sub { color: #a89dc4 !important; }
+
+/* Auction summary card */
+body.dark .auction-summary { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .auction-summary div[style*="color:var(--text-dark)"] { color: #f1f0f5 !important; }
+body.dark .auction-summary div[style*="color:var(--text-mid)"] { color: #a89dc4 !important; }
+
+/* Payment info box */
+body.dark .payment-info {
+  background: rgba(16,185,129,0.08) !important;
+  border-color: rgba(16,185,129,0.2) !important;
+}
+body.dark .payment-label { color: #6ee7b7 !important; }
+body.dark .payment-val { color: #6ee7b7 !important; }
+
+/* Breadcrumb */
+body.dark .breadcrumb a { color: #a89dc4 !important; }
+body.dark .breadcrumb-current { color: #f1f0f5 !important; }
+
+/* Cancel button */
+body.dark .btn-cancel {
+  background: #13102b !important;
+  border-color: #2d1e50 !important;
+  color: #a89dc4 !important;
+}
+body.dark .btn-cancel:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+
+
 body.dark {
   --main-bg: #13102b;
   --card-bg: #1c1640;
@@ -170,7 +236,9 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
 
 <header class="topbar">
     <div class="topbar-brand">
-        <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 9l8 13 8-13-8-7z" fill="white" opacity="0.9"/></svg></div>
+       <div class="brand-icon" style="background: transparent;">
+        <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
+    </div>
         <span class="brand-name">Auctora</span>
     </div>
     <div class="topbar-right">

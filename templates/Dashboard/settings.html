@@ -2,22 +2,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora | Settings</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="{% static 'css/dark_mode.css' %}"/>
-    <!-- DARK MODE INIT: paste this script at top of body on EVERY page -->
-    <script>(function(){if(localStorage.getItem('auctora_dark')==='1'){document.documentElement.classList.add('dark-init');}})();</script>
     <style>
 :root{--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--topbar-bg:#ffffff;}
+
+/* ─── DARK MODE ─── */
+body.dark {
+    --main-bg: #13102b;
+    --card-bg: #1c1640;
+    --topbar-bg: #1a1438;
+    --text-dark: #f1f0f5;
+    --text-mid: #a89dc4;
+    --text-light: #6b5f85;
+    --border: #2d1e50;
+    --sidebar-bg: #0f0c24;
+}
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+
+/* Topbar */
+body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark .brand-name { color: #c4b5fd !important; }
+body.dark .search-bar { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .topbar-icon { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .topbar-icon:hover { background: #2d1e50 !important; }
+
+/* Sidebar */
+body.dark .sidebar { background: #0f0c24 !important; }
+body.dark .nav-section { color: rgba(255,255,255,0.2) !important; }
+body.dark .nav-item { color: rgba(255,255,255,0.6) !important; }
+body.dark .nav-item:hover { background: rgba(124,58,237,0.15) !important; color: #fff !important; }
+body.dark .nav-item.active { background: #2d1655 !important; color: #fff !important; }
+body.dark .sidebar-divider { background: rgba(255,255,255,0.06) !important; }
+body.dark .settings-icon-btn { background: rgba(255,255,255,0.04) !important; color: rgba(255,255,255,0.5) !important; }
+body.dark .settings-icon-btn:hover { background: rgba(255,255,255,0.08) !important; color: #fff !important; }
+body.dark .sidebar-profile-card { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.08) !important; }
+
+/* Page header */
+body.dark .page-header h1 { color: #ffffff !important; }
+body.dark .page-header p { color: #a89dc4 !important; }
+
+/* Settings sections */
+body.dark .settings-section { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .settings-section-header { border-color: #2d1e50 !important; }
+body.dark .settings-section-title { color: #f1f0f5 !important; }
+body.dark .settings-section-desc { color: #a89dc4 !important; }
+body.dark .settings-row { border-color: #2d1e50 !important; }
+body.dark .settings-row:hover { background: rgba(124,58,237,0.05) !important; }
+body.dark .settings-row-info .label { color: #f1f0f5 !important; }
+body.dark .settings-row-info .desc { color: #6b5f85 !important; }
+
+/* Toggle switch */
+body.dark .toggle-slider { background: #2d1e50 !important; }
+body.dark .toggle-wrap input:checked + .toggle-slider { background: var(--accent-purple) !important; }
+
+/* Danger zone */
+body.dark .danger-btn { background: rgba(239,68,68,0.1) !important; border-color: rgba(239,68,68,0.25) !important; }
+body.dark .danger-btn:hover { background: rgba(239,68,68,0.2) !important; }
+
+/* Modal */
+body.dark .modal-box { background: #1c1640 !important; border: 1px solid #2d1e50; }
+body.dark .modal-title { color: #f1f0f5 !important; }
+body.dark .modal-desc { color: #a89dc4 !important; }
+body.dark .btn-cancel { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .btn-cancel:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+
+/* Form inputs */
+body.dark .form-input { background: #13102b !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
+body.dark .form-input::placeholder { color: #6b5f85 !important; }
+body.dark .form-input:focus { border-color: var(--accent-purple) !important; }
+body.dark .form-label { color: #6b5f85 !important; }
+
+/* Toast */
+body.dark .toast { background: #1c1640 !important; border: 1px solid #2d1e50; }
+
+/* Dark mode toggle icon swap */
+.dark-toggle-icon-moon { display: none; }
+.dark-toggle-icon-sun  { display: block; }
+body.dark .dark-toggle-icon-moon { display: block; }
+body.dark .dark-toggle-icon-sun  { display: none; }
+
+/* Scrollbar */
+body.dark ::-webkit-scrollbar-track { background: #13102b; }
+body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+
+
+.profile-info { flex: 1; min-width: 0; }
+
+
+/* ─── BASE STYLES ─── */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);min-height:100vh;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Topbar */
 .topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
 .topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
 .brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
@@ -25,16 +108,19 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .search-bar{display:flex;align-items:center;gap:8px;background:var(--main-bg);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:13px;color:var(--text-mid);width:220px;}
 .topbar-icon{width:36px;height:36px;border-radius:50%;background:var(--main-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s,transform 0.2s;color:var(--text-mid);}
 .topbar-icon:hover{background:var(--border);transform:scale(1.08);}
+
+/* Sidebar */
 .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);}
-.sidebar-nav{padding:8px 10px;flex:1;}
+.sidebar-nav{padding:8px 10px;flex:1;overflow-y:auto;overflow-x:hidden;}
 .nav-section{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:10px 14px 5px;}
 .nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13.5px;font-weight:500;transition:background 0.25s ease,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
-.nav-item .nav-icon{width:20px;text-align:center;flex-shrink:0;}
+.nav-item .nav-icon{width:20px;text-align:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
 .nav-item:hover{background:var(--sidebar-hover);color:#fff;transform:translateX(3px) scale(1.02);}
+.nav-item:hover .nav-icon{transform:scale(1.2) rotate(-6deg);}
 .nav-item.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 4px 16px rgba(45,22,85,0.2);}
 .sidebar-divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 14px;}
 .sidebar-bottom{padding:10px 10px 14px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;}
-.settings-icon-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;width:100%;color:rgba(255,255,255,0.6);font-size:13.5px;font-weight:500;cursor:pointer;border:none;background:rgba(255,255,255,0.06);transition:background 0.25s,color 0.2s,transform 0.25s;font-family:'Inter',sans-serif;margin-bottom:8px;}
+.settings-icon-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;width:100%;color:rgba(255,255,255,0.6);font-size:13.5px;font-weight:500;cursor:pointer;border:none;background:rgba(255,255,255,0.06);transition:background 0.25s,color 0.2s,transform 0.25s;font-family:'Inter',sans-serif;margin-bottom:8px;text-decoration:none;}
 .settings-icon-btn:hover{background:rgba(255,255,255,0.12);color:#fff;transform:translateX(3px) scale(1.02);}
 .settings-icon-btn svg{transition:transform 0.4s;flex-shrink:0;}
 .settings-icon-btn:hover svg{transform:rotate(65deg);}
@@ -43,6 +129,8 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .profile-info .tier{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
 .logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
 .logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
+
+/* Main */
 .main{margin-left:260px;padding-top:56px;min-height:100vh;}
 .page-content{padding:28px;max-width:800px;}
 .page-header{margin-bottom:28px;animation:fadeInUp 0.5s 0.25s both;}
@@ -55,8 +143,9 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .settings-section-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .settings-section-title{font-size:15px;font-weight:700;color:var(--text-dark);}
 .settings-section-desc{font-size:12px;color:var(--text-mid);margin-top:2px;}
-.settings-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);transition:background 0.2s;}
 .settings-row:last-child{border-bottom:none;}
+.settings-row:hover{background:rgba(124,58,237,0.02);}
 .settings-row-info .label{font-size:14px;font-weight:600;color:var(--text-dark);}
 .settings-row-info .desc{font-size:12px;color:var(--text-mid);margin-top:3px;}
 
@@ -79,8 +168,10 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .modal-title{font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:8px;}
 .modal-desc{font-size:14px;color:var(--text-mid);margin-bottom:24px;line-height:1.6;}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;}
-.btn-cancel{padding:10px 20px;background:var(--main-bg);color:var(--text-mid);border:1.5px solid var(--border);border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
-.btn-delete{padding:10px 20px;background:var(--red);color:white;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-cancel{padding:10px 20px;background:var(--main-bg);color:var(--text-mid);border:1.5px solid var(--border);border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-cancel:hover{background:var(--border);}
+.btn-delete{padding:10px 20px;background:var(--red);color:white;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-delete:hover{background:#dc2626;transform:scale(1.02);}
 
 /* Toast */
 .toast{position:fixed;bottom:28px;right:28px;background:#1a1035;color:white;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
@@ -93,20 +184,17 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .form-label{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-light);margin-bottom:6px;display:block;}
 .btn-save{padding:10px 24px;background:var(--primary);color:white;border:none;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
 .btn-save:hover{background:#3d2070;transform:scale(1.03);}
-</style>
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--main-bg);}
+::-webkit-scrollbar-thumb{background:#d5cee8;border-radius:3px;}
+
+@media(max-width:768px){.sidebar{transform:translateX(-260px)}.main{margin-left:0}.page-content{padding:16px}}
+    </style>
 </head>
 <body>
 
-<!-- DARK MODE INIT SCRIPT — add this to every page right after <body> -->
-<script>
-(function(){
-    if(localStorage.getItem('auctora_dark')==='1'){
-        document.body.classList.add('dark');
-    }
-})();
-</script>
-
-<!-- Topbar -->
+<!-- ─── TOPBAR ─── -->
 <header class="topbar">
     <div class="topbar-brand">
         <div style="width:32px;height:32px;background:transparent;">
@@ -115,16 +203,37 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
         <span class="brand-name">Auctora</span>
     </div>
     <div class="topbar-right">
-        <div class="search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search...</div>
-        <div class="topbar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search...
+        </div>
+
+        <!-- Dark Mode Toggle Button in topbar -->
+        <div class="topbar-icon" onclick="toggleDark()" title="Toggle dark mode">
+            <svg class="dark-toggle-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="dark-toggle-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
+
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
         <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
-            <div style="text-align:right;"><div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div><div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div></div>
-            <div>{% if request.user.profile_photo %}<img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">{% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|first|upper }}</div>{% endif %}</div>
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
+            </div>
+            <div>
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </header>
 
-<!-- Sidebar -->
+<!-- ─── SIDEBAR ─── -->
 <aside class="sidebar">
     <nav class="sidebar-nav">
         <div class="nav-section">Overview</div>
@@ -144,19 +253,30 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
         <a href="{% url 'home' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
     </nav>
     <div class="sidebar-bottom">
-        <a href="{% url 'setting' %}" class="settings-icon-btn" style="text-decoration:none;">
+        <a href="{% url 'setting' %}" class="settings-icon-btn nav-item active" style="text-decoration:none;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             Settings
         </a>
         <div class="sidebar-profile-card">
-            <div style="flex-shrink:0;">{% if request.user.profile_photo %}<img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">{% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|first|upper }}</div>{% endif %}</div>
-            <div class="profile-info"><div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div><div class="tier">{{ request.user.Role }}</div></div>
-            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+            <div style="flex-shrink:0;">
+                {% if request.user.profile_photo %}
+                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|first|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
         </div>
     </div>
 </aside>
 
-<!-- Main -->
+<!-- ─── MAIN ─── -->
 <main class="main">
 <div class="page-content">
 
@@ -199,54 +319,24 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
             {% csrf_token %}
             <input type="hidden" name="action" value="notifications">
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">🏷️ Bid Placed</div>
-                    <div class="desc">Notify me when my bid is placed successfully</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="notif_bid" {% if notif_prefs.bid_placed %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">🏷️ Bid Placed</div><div class="desc">Notify me when my bid is placed successfully</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="notif_bid" {% if notif_prefs.bid_placed %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">📉 Outbid Alert</div>
-                    <div class="desc">Notify me when someone outbids me</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="notif_outbid" {% if notif_prefs.outbid %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">📉 Outbid Alert</div><div class="desc">Notify me when someone outbids me</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="notif_outbid" {% if notif_prefs.outbid %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">🏆 Auction Won</div>
-                    <div class="desc">Notify me when I win an auction</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="notif_won" {% if notif_prefs.auction_won %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">🏆 Auction Won</div><div class="desc">Notify me when I win an auction</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="notif_won" {% if notif_prefs.auction_won %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">💳 Payment Updates</div>
-                    <div class="desc">Notify me about payment confirmations and receipts</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="notif_payment" {% if notif_prefs.payment %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">💳 Payment Updates</div><div class="desc">Notify me about payment confirmations and receipts</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="notif_payment" {% if notif_prefs.payment %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">⚠️ Dispute Updates</div>
-                    <div class="desc">Notify me when my dispute status changes</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="notif_dispute" {% if notif_prefs.dispute %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">⚠️ Dispute Updates</div><div class="desc">Notify me when my dispute status changes</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="notif_dispute" {% if notif_prefs.dispute %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
         </form>
     </div>
@@ -264,24 +354,12 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
             {% csrf_token %}
             <input type="hidden" name="action" value="privacy">
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">👁 Public Profile</div>
-                    <div class="desc">Allow others to see your profile and bid history</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="public_profile" {% if privacy_prefs.public_profile %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">👁 Public Profile</div><div class="desc">Allow others to see your profile and bid history</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="public_profile" {% if privacy_prefs.public_profile %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
             <div class="settings-row">
-                <div class="settings-row-info">
-                    <div class="label">📊 Show Bid Amounts</div>
-                    <div class="desc">Show your bid amounts publicly on auction pages</div>
-                </div>
-                <label class="toggle-wrap">
-                    <input type="checkbox" name="show_bids" {% if privacy_prefs.show_bids %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="toggle-slider"></span>
-                </label>
+                <div class="settings-row-info"><div class="label">📊 Show Bid Amounts</div><div class="desc">Show your bid amounts publicly on auction pages</div></div>
+                <label class="toggle-wrap"><input type="checkbox" name="show_bids" {% if privacy_prefs.show_bids %}checked{% endif %} onchange="this.form.submit()"><span class="toggle-slider"></span></label>
             </div>
         </form>
     </div>
@@ -332,27 +410,27 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 </div>
 
 <script>
-// ── Dark Mode ──────────────────────────────────────────
+// ─── Dark Mode ───────────────────────────────────────
 const darkToggle = document.getElementById('darkModeToggle');
 const isDark = localStorage.getItem('auctora_dark') === '1';
 
-// Set initial toggle state
-darkToggle.checked = isDark;
+// Apply on load
 if (isDark) document.body.classList.add('dark');
+darkToggle.checked = isDark;
 
+function toggleDark() {
+    const nowDark = document.body.classList.toggle('dark');
+    localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
+    darkToggle.checked = nowDark;
+    showToast(nowDark ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
+}
+
+// Settings page toggle also calls toggleDark
 darkToggle.addEventListener('change', function () {
-    if (this.checked) {
-        document.body.classList.add('dark');
-        localStorage.setItem('auctora_dark', '1');
-        showToast('🌙 Dark mode enabled');
-    } else {
-        document.body.classList.remove('dark');
-        localStorage.setItem('auctora_dark', '0');
-        showToast('☀️ Light mode enabled');
-    }
+    toggleDark();
 });
 
-// ── Toast ──────────────────────────────────────────────
+// ─── Toast ───────────────────────────────────────────
 {% if messages %}{% for message in messages %}
 window.addEventListener('load', () => showToast('{{ message }}'));
 {% endfor %}{% endif %}

@@ -32,6 +32,79 @@
   }
 </script>
 <style>
+  
+/* ─── DARK MODE ─── */
+body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+
+/* Header */
+body.dark header { background: #1a1438 !important; border-color: #2d1e50 !important; }
+body.dark header h2 { color: #e9e3ff !important; }
+body.dark header nav a { color: #a89dc4 !important; }
+body.dark header nav a:hover { color: #c4b5fd !important; }
+body.dark header nav a.text-primary { color: #c4b5fd !important; border-color: #7c3aed !important; }
+
+/* Header buttons */
+.btn-primary { display:inline-flex;align-items:center;gap:6px;background:#2d1655;color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(45,22,85,0.28);text-decoration:none;font-family:'Inter',sans-serif; }
+.btn-primary:hover { background:#3d2070; }
+.btn-ghost { display:inline-flex;align-items:center;gap:6px;background:transparent;color:#6b7280;padding:10px 20px;border-radius:50px;font-size:13.5px;font-weight:500;border:1px solid #e8e5f0;cursor:pointer;transition:all 0.2s;text-decoration:none;font-family:'Inter',sans-serif; }
+.btn-ghost:hover { background:#e8e5f0;color:#1a1035; }
+body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; background: transparent !important; }
+body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
+body.dark .btn-primary { background: #3d2070 !important; }
+body.dark .btn-primary:hover { background: #4c1d95 !important; }
+
+/* Nav links */
+.nav-link { font-size:13.5px;font-weight:500;color:#6b7280;padding:6px 12px;border-radius:8px;text-decoration:none;transition:background 0.2s,color 0.2s; }
+.nav-link:hover { background:rgba(45,22,85,0.06);color:#2d1655;font-weight:600; }
+body.dark .nav-link { color: #a89dc4 !important; }
+body.dark .nav-link:hover { background: rgba(255,255,255,0.12) !important; color: #ffffff !important; }
+
+/* Main background */
+body.dark main { background: #13102b !important; }
+body.dark .bg-background-light { background: #160f30 !important; }
+
+/* White cards — core pillars */
+body.dark .bg-white { background: #1c1640 !important; border-color: #2d1e50 !important; }
+body.dark .bg-white h3 { color: #c4b5fd !important; }
+body.dark .bg-white p { color: #a89dc4 !important; }
+body.dark .bg-white .bg-primary\/10 { background: rgba(124,58,237,0.15) !important; }
+body.dark .bg-white .material-symbols-outlined { color: #7c3aed !important; }
+
+/* Section headings */
+body.dark h2.text-primary { color: #c4b5fd !important; }
+body.dark h3.text-primary { color: #c4b5fd !important; }
+body.dark h4.text-primary { color: #c4b5fd !important; }
+body.dark .text-primary { color: #c4b5fd !important; }
+body.dark .text-slate-500 { color: #a89dc4 !important; }
+body.dark .text-slate-600 { color: #a89dc4 !important; }
+
+/* Protect your account section */
+body.dark section.bg-background-light { background: #160f30 !important; }
+body.dark .bg-primary\/10 { background: rgba(124,58,237,0.15) !important; }
+
+/* Gold accent bar */
+body.dark .bg-accent-gold { background: #d4af37 !important; }
+body.dark .w-20.h-1 { background: #d4af37 !important; }
+
+/* Footer */
+body.dark footer p,
+body.dark footer span,
+body.dark footer h2,
+body.dark footer h4,
+body.dark footer li,
+body.dark footer a { color: rgba(255,255,255,0.7) !important; }
+body.dark footer a:hover { color: #ffffff !important; }
+body.dark footer .text-slate-400 { color: rgba(255,255,255,0.6) !important; }
+body.dark footer .text-slate-300 { color: rgba(255,255,255,0.8) !important; }
+body.dark footer .text-slate-500 { color: rgba(255,255,255,0.5) !important; }
+body.dark footer input { color: #f1f0f5 !important; }
+
+/* Scrollbar */
+body.dark ::-webkit-scrollbar-track { background: #13102b; }
+body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+::-webkit-scrollbar { width: 5px; }
+
+
   /* ── keep gold gradient text ── */
   .gold-gradient-text {
     background: linear-gradient(to right, #d4af37, #f1d592, #d4af37);
@@ -63,21 +136,18 @@
         <!-- font-bold tracking-tight matching support "Auctora" header -->
         <h2 class="text-primary text-2xl font-bold leading-tight tracking-tight">Auctora</h2>
       </div>
-      <nav class="hidden md:flex items-center gap-9">
-        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Marketplace</a>
-        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Auctions</a>
-        <!-- active link matching support nav active style -->
-        <a class="text-primary text-sm font-semibold border-b-2 border-primary pb-1" href="#">Security</a>
-        <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Support</a>
-      </nav>
+      <nav class="hidden md:flex items-center gap-1">
+  <a href="#" class="nav-link">Marketplace</a>
+  <a href="#" class="nav-link">Auctions</a>
+  <a href="#" class="nav-link" style="background:rgba(45,22,85,0.08);color:#2d1655;font-weight:600;">Security</a>
+  <a href="{% url 'Support' %}" class="nav-link">Support</a>
+</nav>
     </div>
     <div class="flex items-center gap-3">
-      <a href ="{% url 'signup' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Sign Up</a>
-        <a href ="{% url 'login' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
-      <a href ="{% url 'home' %}" class="text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
-      <div class="size-10 rounded-full bg-primary/10 border-2 border-accent-gold/30 flex items-center justify-center">
-        <span class="material-symbols-outlined text-primary">person</span>
-      </div>
+      <a href="{% url 'login' %}" class="btn-primary">Login</a>
+<a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+<a href="{% url 'home' %}" class="btn-primary">Home</a>
+      
     </div>
   </header>
 
@@ -101,9 +171,9 @@
           Experience the pinnacle of safe luxury auctions. Your protection is our royal mandate, secured with vault-grade technology and expert oversight.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button class="w-full sm:w-auto px-8 py-4 bg-accent-gold text-primary font-semibold rounded-xl hover:scale-105 transition-transform shadow-lg shadow-accent-gold/20">
-            View Security Protocols
-          </button>
+          <button class="w-full sm:w-auto px-8 py-4 bg-accent-gold text-white font-semibold rounded-xl hover:scale-105 transition-transform shadow-lg shadow-accent-gold/20" style="color:#1a0e35 !important;">
+  View Security Protocols
+</button>
           <button class="w-full sm:w-auto px-8 py-4 border-2 border-slate-100/20 text-slate-100 font-semibold rounded-xl hover:bg-slate-100/10 transition-colors">
             Contact Safety Team
           </button>
@@ -251,9 +321,9 @@
       <!-- Brand -->
       <div class="col-span-1">
         <div class="flex items-center gap-2 mb-5">
-          <div class="size-8 rounded bg-accent-gold flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary text-xl">shield_with_heart</span>
-          </div>
+          <div class="size-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+              <span class="material-symbols-outlined text-white text-xl">gavel</span>
+            </div>
           <!-- font-bold tracking-tight matching support footer brand -->
           <h2 class="text-white text-xl font-bold tracking-tight">Auctora</h2>
         </div>
@@ -327,4 +397,10 @@
   </footer>
 
 </div>
-</body></html>
+</body>
+<script>
+  if(localStorage.getItem('auctora_dark')==='1'){
+    document.body.classList.add('dark');
+  }
+</script>
+</html>
