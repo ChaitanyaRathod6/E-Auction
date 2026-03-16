@@ -300,4 +300,19 @@ class ActivityLog(models.Model):
         return f"{self.user.Email} - {self.action}"
 
 
-        
+class UserSettings(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
+    
+    # Notification preferences
+    notif_bid_placed = models.BooleanField(default=True)
+    notif_outbid = models.BooleanField(default=True)
+    notif_auction_won = models.BooleanField(default=True)
+    notif_payment = models.BooleanField(default=True)
+    notif_dispute = models.BooleanField(default=True)
+    
+    # Privacy preferences
+    public_profile = models.BooleanField(default=True)
+    show_bids = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"Settings for {self.user.Email}"        

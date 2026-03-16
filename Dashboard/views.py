@@ -6,7 +6,7 @@ from core.models import User
 from django.utils import timezone
 from .decorators import role_required
 from django.shortcuts import get_object_or_404
-from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog
+from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog,UserSettings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Avg, Q
 from datetime import timedelta
@@ -124,6 +124,29 @@ def auction_list(request):
         "categories": Category.objects.all(),
     })
 
+def should_notify(user, notif_type):
+    try:
+        user_settings, created = UserSettings.objects.get_or_create(user=user)  # corrected relation name
+
+        if notif_type == 'BID_PLACED':
+            return user_settings.notif_bid_placed
+
+        elif notif_type == 'OUTBID':
+            return user_settings.notif_outbid
+
+        elif notif_type == 'AUCTION_ENDED':
+            return user_settings.notif_auction_won
+
+        elif notif_type == 'PAYMENT':
+            return user_settings.notif_payment
+
+        elif notif_type == 'DISPUTE':
+            return user_settings.notif_dispute
+
+        return True
+
+    except UserSettings.DoesNotExist:
+        return True  # default: allow notification
 
 @login_required
 def auction_detail(request, pk):
@@ -143,18 +166,22 @@ def auction_detail(request, pk):
             Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
 
             # Notify winner
-            Notification.objects.create(
-                user=winning_bid.buyer.user,
-                message=f"Congratulations! You won '{auction.item.name}' with ₹{winning_bid.amount}. Please complete your payment.",
-                notification_type='AUCTION_ENDED'
-            )
+            if should_notify(winning_bid.buyer.user, 'AUCTION_ENDED'):
+                Notification.objects.create(
+                    user=winning_bid.buyer.user,
+                    message=f"Congratulations! You won '{auction.item.name}' with ₹{winning_bid.amount}. Please complete your payment.",
+                    notification_type='AUCTION_ENDED',
+                    auction=auction
+                )
 
             # Notify seller
-            Notification.objects.create(
-                user=auction.item.seller.user,
-                message=f"Your auction for '{auction.item.name}' has ended. Winner: {winning_bid.buyer.user.First_name} {winning_bid.buyer.user.Last_name} with ₹{winning_bid.amount}.",
-                notification_type='AUCTION_ENDED'
-            )
+            if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
+                Notification.objects.create(
+                    user=auction.item.seller.user,
+                    message=f"Your auction for '{auction.item.name}' has ended. Winner: {winning_bid.buyer.user.First_name} {winning_bid.buyer.user.Last_name} with ₹{winning_bid.amount}.",
+                    notification_type='AUCTION_ENDED',
+                    auction=auction
+                )
 
     if request.method == "POST":
         try:
@@ -187,29 +214,32 @@ def auction_detail(request, pk):
             auction.save()
 
             # Notify seller of new bid
-            Notification.objects.create(
-                user=auction.item.seller.user,
-                message=f"A new bid of ₹{bid_amount} was placed on your auction '{auction.item.name}'.",
-                notification_type='BID_PLACED',
-                auction=auction
-            )
+            if should_notify(auction.item.seller.user, 'BID_PLACED'):
+                Notification.objects.create(
+                    user=auction.item.seller.user,
+                    message=f"A new bid of ₹{bid_amount} was placed on your auction '{auction.item.name}'.",
+                    notification_type='BID_PLACED',
+                    auction=auction
+                )
 
             # Notify current buyer their bid was placed successfully
-            Notification.objects.create(
-                user=buyer.user,
-                message=f"Your bid of ₹{bid_amount} on '{auction.item.name}' was placed successfully.",
-                notification_type='BID_PLACED',
-                auction=auction
-            )
+            if should_notify(buyer.user, 'BID_PLACED'):
+                Notification.objects.create(
+                    user=buyer.user,
+                    message=f"Your bid of ₹{bid_amount} on '{auction.item.name}' was placed successfully.",
+                    notification_type='BID_PLACED',
+                    auction=auction
+                )
 
             # Notify outbid buyer ONLY if it's a different person
             if outbid_bid and outbid_bid.buyer != buyer:
-                Notification.objects.create(
-                    user=outbid_bid.buyer.user,
-                    message=f"You have been outbid on '{auction.item.name}'. Current bid is ₹{bid_amount}.",
-                    notification_type='OUTBID',
-                    auction=auction
-                )
+                if should_notify(outbid_bid.buyer.user, 'OUTBID'):
+                    Notification.objects.create(
+                        user=outbid_bid.buyer.user,
+                        message=f"You have been outbid on '{auction.item.name}'. Current bid is ₹{bid_amount}.",
+                        notification_type='OUTBID',
+                        auction=auction
+                    )
 
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
@@ -829,6 +859,24 @@ def raise_dispute(request, auction_id):
                     notification_type='GENERAL',
                     auction=auction
                 )
+
+            if should_notify(request.user, 'DISPUTE'):
+                Notification.objects.create(
+                    user=request.user,
+                    message=f"Your dispute for '{auction.item.name}' has been submitted and is under review.",
+                    notification_type='DISPUTE',
+                    auction=auction
+                )
+
+# ADD THIS — Notify seller
+            if should_notify(auction.item.seller.user, 'DISPUTE'):
+                Notification.objects.create(
+                    user=auction.item.seller.user,
+                    message=f"A dispute has been raised by {request.user.First_name} {request.user.Last_name} for your auction '{auction.item.name}'.",
+                    notification_type='DISPUTE',
+                    auction=auction
+                )
+
             messages.success(request, "Dispute raised successfully. Our team will review it.")
             return redirect('manage_disputes')
         else:
@@ -867,34 +915,28 @@ def purchase_history(request):
 
 @login_required
 def settings_page(request):
-    # Default prefs (you can store these in your User model or a separate UserSettings model)
-    notif_prefs = {
-        'bid_placed': True,
-        'outbid': True,
-        'auction_won': True,
-        'payment': True,
-        'dispute': True,
-    }
-    privacy_prefs = {
-        'public_profile': True,
-        'show_bids': False,
-    }
+
+    # Get or create settings for this user
+    user_settings, created = UserSettings.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         action = request.POST.get('action')
 
         if action == 'notifications':
-            # Save notification preferences to session (or DB if you add a model)
-            request.session['notif_bid_placed'] = 'notif_bid' in request.POST
-            request.session['notif_outbid'] = 'notif_outbid' in request.POST
-            request.session['notif_won'] = 'notif_won' in request.POST
-            request.session['notif_payment'] = 'notif_payment' in request.POST
-            request.session['notif_dispute'] = 'notif_dispute' in request.POST
+            user_settings.notif_bid_placed = 'notif_bid' in request.POST
+            user_settings.notif_outbid = 'notif_outbid' in request.POST
+            user_settings.notif_auction_won = 'notif_won' in request.POST
+            user_settings.notif_payment = 'notif_payment' in request.POST
+            user_settings.notif_dispute = 'notif_dispute' in request.POST
+
+            user_settings.save()
             messages.success(request, '🔔 Notification preferences saved!')
 
         elif action == 'privacy':
-            request.session['public_profile'] = 'public_profile' in request.POST
-            request.session['show_bids'] = 'show_bids' in request.POST
+            user_settings.public_profile = 'public_profile' in request.POST
+            user_settings.show_bids = 'show_bids' in request.POST
+
+            user_settings.save()
             messages.success(request, '🔒 Privacy settings saved!')
 
         elif action == 'delete_account':
@@ -904,24 +946,20 @@ def settings_page(request):
             messages.success(request, 'Your account has been deleted.')
             return redirect('home')
 
-        return redirect('settings_page')
-
-    # Load from session if previously saved
-    notif_prefs = {
-        'bid_placed': request.session.get('notif_bid_placed', True),
-        'outbid': request.session.get('notif_outbid', True),
-        'auction_won': request.session.get('notif_won', True),
-        'payment': request.session.get('notif_payment', True),
-        'dispute': request.session.get('notif_dispute', True),
-    }
-    privacy_prefs = {
-        'public_profile': request.session.get('public_profile', True),
-        'show_bids': request.session.get('show_bids', False),
-    }
+        return redirect('setting')
 
     return render(request, 'Dashboard/settings.html', {
-        'notif_prefs': notif_prefs,
-        'privacy_prefs': privacy_prefs,
+        'notif_prefs': {
+            'bid_placed': user_settings.notif_bid_placed,
+            'outbid': user_settings.notif_outbid,
+            'auction_won': user_settings.notif_auction_won,
+            'payment': user_settings.notif_payment,
+            'dispute': user_settings.notif_dispute,
+        },
+        'privacy_prefs': {
+            'public_profile': user_settings.public_profile,
+            'show_bids': user_settings.show_bids,
+        },
     })
 
 @login_required
@@ -967,6 +1005,14 @@ def payment_success(request, auction_id):
                 notification_type='PAYMENT',
                 auction=auction
             )
+
+            if should_notify(request.user, 'PAYMENT'):
+                Notification.objects.create(
+                    user=request.user,
+                    message=f"Your payment of ₹{winning_bid.amount} for '{auction.item.name}' was successful.",
+                    notification_type='PAYMENT',
+                    auction=auction
+                )
 
             messages.success(request, f"Payment of ₹{winning_bid.amount} successful!")
             return redirect('manage_payments')
