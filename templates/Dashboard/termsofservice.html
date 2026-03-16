@@ -4,280 +4,354 @@
 <head>
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora | Terms of Service</title>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Terms of Service | Auctora</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          "primary": "#2d1655",
-          "background-light": "#f8f7fb",
-        },
-        fontFamily: { "display": ["Inter", "sans-serif"] },
-        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-      },
-    },
-  }
-</script>
-<style>
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .sidebar-link:hover { background-color: rgba(45,22,85,0.08); color: #2d1655; }
-  .active-link { background-color: rgba(45,22,85,0.10); border-left: 4px solid #2d1655; color: #2d1655; }
-</style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2d1655",
+                        "background-light": "#f8f7fb",
+                        "background-dark": "#13102b",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-link:hover { background-color: rgba(45,22,85,0.08); color: #2d1655; }
+        .active-link { background-color: rgba(45,22,85,0.10); border-left: 4px solid #2d1655; color: #2d1655; }
+
+        /* ─── DARK MODE ─── */
+        .dark body, body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+        .dark .bg-background-light, .dark [class*="bg-background-light"] { background: #13102b !important; }
+
+        /* Header */
+        .dark .site-header { background: #1a1438 !important; border-color: #2d1e50 !important; }
+        .dark .site-header h2 { color: #c4b5fd !important; }
+        .dark .site-header nav a { color: #a89dc4 !important; }
+        .dark .site-header nav a:hover { color: #fff !important; }
+        .dark .search-wrap { background: #1c1640 !important; }
+        .dark .search-wrap input { color: #f1f0f5 !important; }
+        .dark .search-wrap input::placeholder { color: #6b5f85 !important; }
+        .dark .header-btn { border-color: #7c3aed !important; color: #c4b5fd !important; }
+        .dark .header-btn:hover { background: #7c3aed !important; color: #fff !important; }
+        .dark .notif-btn { background: #1c1640 !important; color: #a89dc4 !important; }
+
+        /* Sidebar */
+        .dark .sidebar-wrap { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        .dark .sidebar-section-label { color: #6b5f85 !important; }
+        .dark .sidebar-link { color: #a89dc4 !important; }
+        .dark .sidebar-link:hover { background: rgba(124,58,237,0.12) !important; color: #fff !important; }
+        .dark .active-link { background: rgba(124,58,237,0.15) !important; border-color: #7c3aed !important; color: #c4b5fd !important; }
+
+        /* Main content */
+        .dark .page-bg { background: #13102b !important; }
+        .dark .legal-badge { background: rgba(124,58,237,0.15) !important; color: #c4b5fd !important; }
+        .dark h1 { color: #f1f0f5 !important; }
+        .dark .meta-text { color: #6b5f85 !important; }
+        .dark .section-heading { color: #f1f0f5 !important; }
+        .dark .body-text { color: #a89dc4 !important; }
+        .dark .body-text li { color: #a89dc4 !important; }
+
+        /* Callout box */
+        .dark .callout-box { background: rgba(124,58,237,0.1) !important; border-color: #7c3aed !important; }
+        .dark .callout-box .font-bold { color: #c4b5fd !important; }
+        .dark .callout-box p { color: #a89dc4 !important; }
+
+        /* Rule cards */
+        .dark .rule-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        .dark .rule-card .font-bold { color: #f1f0f5 !important; }
+        .dark .rule-card p { color: #a89dc4 !important; }
+
+        /* Table */
+        .dark .terms-table thead { background: #2d1655 !important; }
+        .dark .terms-table tbody tr { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        .dark .terms-table tbody tr:hover { background: #231852 !important; }
+        .dark .terms-table td { color: #a89dc4 !important; }
+        .dark .table-wrap { border-color: #2d1e50 !important; }
+        .dark .table-note { color: #6b5f85 !important; }
+
+        /* Dark toggle icon swap */
+        .dark-toggle-icon-moon { display: none; }
+        .dark-toggle-icon-sun  { display: block; }
+        .dark .dark-toggle-icon-moon { display: block; }
+        .dark .dark-toggle-icon-sun  { display: none; }
+
+        /* Scrollbar */
+        .dark ::-webkit-scrollbar-track { background: #13102b; }
+        .dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 5px; }
+    </style>
 </head>
-<body class="bg-background-light text-slate-900 font-display">
+<body class="bg-background-light text-slate-900 font-display transition-colors duration-300">
 <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
 
-  <!-- ══ HEADER — white ══ -->
-  <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white backdrop-blur-md px-4 md:px-10 lg:px-20 py-3 shadow-sm">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-8">
-      <div class="flex items-center gap-8">
-        <div class="flex items-center gap-3">
-           <div class="brand-icon" style="background: transparent; border: none; box-shadow: none;">
-          <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px;"/>
-        </div>
-          <h2 class="text-primary text-xl font-bold leading-tight tracking-tight">Auctora</h2>
-        </div>
-        <nav class="hidden md:flex items-center gap-6">
-          <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Auctions</a>
-          <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Valuations</a>
-          <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Private Sales</a>
-        </nav>
-      </div>
-      <div class="flex items-center gap-4">
-        <div class="hidden sm:flex relative max-w-xs w-full">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
-          <input class="w-full bg-slate-100 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Search terms..." type="text"/>
-        </div>
-        <a href="{% url 'signup' %}" class="hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">SignIn</a>
-        <a href="{% url 'login' %}" class="hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
-        <a href="{% url 'home' %}" class="hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
-        <div class="size-10 rounded-full overflow-hidden border-2 border-primary/20">
-          <img alt="Profile" class="w-full h-full object-cover"
-               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKSimDeqhM0d-FKGsOyumQtKhA58laJdOlP-QnGICDrejp2_mX4cEriEm5Wr9HEZjx8X3lcask0VIpEAAZ-C4avpvqSsGVcEjw8GI-DoJxZHoAtkfOCYWgGTkG-bk8T1GTyoA0Dkjk7XF9C7ZRPNY6czPJezK9oOZu3XSA0gysI-E9z6yABI_z9JiPqmLsm7IUzC-eVyNgjo2Eo5Qqy2O2IslY3Y_Qr_UW-gRyaH8N_QDgvh-GXjCc-uF2T-Rj-OwDAiTNeAtIN8qj"/>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-1 w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-8 px-4 md:px-10 lg:px-20 py-12">
-
-    <!-- ══ SIDEBAR ══ -->
-    <aside class="w-full md:w-64 flex-shrink-0">
-      <div class="sticky top-28 flex flex-col gap-6">
-        <div>
-          <h3 class="font-bold text-xs uppercase tracking-widest mb-4 text-primary/60">On this page</h3>
-          <nav class="flex flex-col gap-1">
-            <a class="active-link sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all" href="#introduction">
-              <span class="material-symbols-outlined text-lg">info</span> Introduction
-            </a>
-            <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#accounts">
-              <span class="material-symbols-outlined text-lg">person</span> User Accounts
-            </a>
-            <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#rules">
-              <span class="material-symbols-outlined text-lg">gavel</span> Auction Rules
-            </a>
-            <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#payments">
-              <span class="material-symbols-outlined text-lg">payments</span> Payments &amp; Fees
-            </a>
-            <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#property">
-              <span class="material-symbols-outlined text-lg">copyright</span> Intellectual Property
-            </a>
-            <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#disputes">
-              <span class="material-symbols-outlined text-lg">shield</span> Dispute Resolution
-            </a>
-          </nav>
-        </div>
-
-        <!-- Help card — purple -->
-        <div class="p-6 rounded-2xl bg-primary text-white">
-          <p class="text-sm font-bold mb-1">Need help?</p>
-          <p class="text-xs text-white/60 mb-4">Contact our legal team if you have questions about our terms.</p>
-          <button class="w-full py-2.5 bg-white text-primary text-xs font-bold rounded-lg hover:bg-slate-100 transition-colors">
-            Contact Support
-          </button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ══ MAIN CONTENT ══ -->
-    <div class="flex-1 max-w-3xl">
-      <div class="mb-12">
-        <div class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-4">Legal Documentation</div>
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">Terms of Service</h1>
-        <div class="flex items-center gap-4 text-slate-400 text-sm">
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Last updated: October 24, 2023</span>
-          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 12 min read</span>
-        </div>
-      </div>
-
-      <div class="space-y-12">
-
-        <!-- 1. Introduction -->
-        <section class="scroll-mt-32" id="introduction">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">1</span>
-            Introduction
-          </h2>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>Welcome to Auctora. These Terms of Service ("Terms") govern your access to and use of the Auctora website, mobile applications, and other services (collectively, the "Platform"). Please read these Terms carefully before using the Platform.</p>
-            <p>By accessing or using the Platform, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these terms, you must not use our services. We provide a platform for the auction and sale of high-end luxury goods, collectibles, and fine art.</p>
-          </div>
-        </section>
-
-        <!-- 2. User Accounts -->
-        <section class="scroll-mt-32" id="accounts">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">2</span>
-            User Accounts
-          </h2>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>To access certain features of the Platform, you must register for an account. When you create an account, you agree to:</p>
-            <ul class="list-disc pl-6 space-y-2">
-              <li>Provide accurate, current, and complete information.</li>
-              <li>Maintain the security of your password and accept all risks of unauthorized access.</li>
-              <li>Notify us immediately if you discover or suspect any security breaches related to the Platform or your account.</li>
-              <li>Ensure you are at least 18 years of age or the legal age of majority in your jurisdiction.</li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- 3. Auction Rules -->
-        <section class="scroll-mt-32" id="rules">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">3</span>
-            Auction Rules
-          </h2>
-          <div class="bg-primary/5 p-6 rounded-2xl mb-6 border-l-4 border-primary">
-            <p class="font-bold text-primary text-sm mb-1">Crucial Policy:</p>
-            <p class="text-sm text-slate-600">Once a bid is placed, it cannot be retracted. All bids are legally binding contracts to purchase the item if you are the winning bidder.</p>
-          </div>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>Our auctions follow strict professional guidelines to ensure fairness and transparency:</p>
-            <div class="grid grid-cols-1 gap-4 mt-4">
-              <div class="p-5 rounded-xl border border-slate-200 bg-white flex gap-4 shadow-sm">
-                <span class="material-symbols-outlined text-primary flex-shrink-0">timer</span>
-                <div>
-                  <p class="font-bold text-slate-900 text-sm mb-1">Bidding Increments</p>
-                  <p class="text-sm text-slate-500">Bidding increments are standardized based on the current price of the lot. Auctora reserves the right to modify these increments at any time.</p>
+    <!-- ── HEADER ── -->
+    <header class="site-header sticky top-0 z-50 w-full border-b border-slate-200 bg-white backdrop-blur-md px-4 md:px-10 lg:px-20 py-3 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-8">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <div style="background:transparent;border:none;box-shadow:none;">
+                        <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;"/>
+                    </div>
+                    <h2 class="text-primary text-xl font-bold leading-tight tracking-tight">Auctora</h2>
                 </div>
-              </div>
-              <div class="p-5 rounded-xl border border-slate-200 bg-white flex gap-4 shadow-sm">
-                <span class="material-symbols-outlined text-primary flex-shrink-0">verified</span>
-                <div>
-                  <p class="font-bold text-slate-900 text-sm mb-1">Reserve Prices</p>
-                  <p class="text-sm text-slate-500">Most lots are subject to a confidential minimum price (the "Reserve"). If the bidding does not reach the reserve, the item will not be sold.</p>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Auctions</a>
+                    <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Valuations</a>
+                    <a class="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="#">Private Sales</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="search-wrap hidden sm:flex relative max-w-xs w-full bg-slate-100 rounded-xl">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                    <input class="w-full bg-transparent border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Search terms..." type="text"/>
                 </div>
-              </div>
+
+                <!-- Dark mode toggle -->
+                <button onclick="toggleDark()" class="notif-btn flex items-center justify-center rounded-xl size-10 bg-slate-100 text-slate-600 hover:bg-primary/10 transition-colors" title="Toggle dark mode">
+                    <svg class="dark-toggle-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="dark-toggle-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+
+                <a href="{% url 'signup' %}" class="header-btn hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">SignIn</a>
+                <a href="{% url 'login' %}" class="header-btn hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Login</a>
+                <a href="{% url 'home' %}" class="header-btn hidden sm:inline-block text-sm font-semibold text-primary border-2 border-primary px-5 py-2 rounded-full hover:bg-primary hover:text-white transition-all">Home</a>
             </div>
-          </div>
-        </section>
-
-        <!-- 4. Payments & Fees -->
-        <section class="scroll-mt-32" id="payments">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">4</span>
-            Payments &amp; Fees
-          </h2>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>Winning bidders are responsible for the hammer price plus the Buyer's Premium. The Buyer's Premium is calculated as follows:</p>
-            <div class="overflow-hidden rounded-xl border border-slate-200 mt-4">
-              <table class="w-full text-left border-collapse">
-                <thead class="bg-primary text-white">
-                  <tr>
-                    <th class="py-3 px-5 font-semibold text-sm">Hammer Price Threshold</th>
-                    <th class="py-3 px-5 font-semibold text-sm">Premium Rate</th>
-                  </tr>
-                </thead>
-                <tbody class="text-sm divide-y divide-slate-100">
-                  <tr class="bg-white hover:bg-slate-50 transition-colors">
-                    <td class="py-3 px-5 text-slate-700">Up to $500,000</td>
-                    <td class="py-3 px-5 text-slate-700">25%</td>
-                  </tr>
-                  <tr class="bg-white hover:bg-slate-50 transition-colors">
-                    <td class="py-3 px-5 text-slate-700">$500,001 to $5,000,000</td>
-                    <td class="py-3 px-5 text-slate-700">20%</td>
-                  </tr>
-                  <tr class="bg-white hover:bg-slate-50 transition-colors">
-                    <td class="py-3 px-5 text-slate-700">Above $5,000,000</td>
-                    <td class="py-3 px-5 text-slate-700">13.9%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="text-xs text-slate-400 mt-3 italic">* Taxes and shipping costs are calculated separately based on your location and the item's origin.</p>
-          </div>
-        </section>
-
-        <!-- 5. Intellectual Property -->
-        <section class="scroll-mt-32" id="property">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">5</span>
-            Intellectual Property
-          </h2>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>All content on the Platform, including text, graphics, logos, images, and software, is the property of Auctora or its content suppliers and is protected by international copyright laws.</p>
-            <p>You are granted a limited, non-exclusive, non-transferable license to access the Platform for personal, non-commercial use. Any other use, including reproduction or modification of content, is strictly prohibited without prior written consent.</p>
-          </div>
-        </section>
-
-        <!-- 6. Dispute Resolution -->
-        <section class="scroll-mt-32" id="disputes">
-          <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
-            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">6</span>
-            Dispute Resolution
-          </h2>
-          <div class="space-y-4 text-slate-600 leading-relaxed">
-            <p>Any dispute arising from these Terms or your use of the Platform will be resolved through binding arbitration, rather than in court, except that you may assert claims in small claims court if your claims qualify.</p>
-            <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Auctora is headquartered, without regard to its conflict of law provisions.</p>
-          </div>
-        </section>
-
-      </div>
-
-      <!-- Inner page footer -->
-      
-    </div>
-
-  </main>
-
-  <!-- ══ FOOTER — purple ══ -->
-  <footer class="bg-primary text-white py-12 px-6 md:px-20 border-t border-white/10">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <div class="flex items-center gap-3">
-         <div class="size-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
-          <span class="material-symbols-outlined text-white text-xl">storm</span>
         </div>
-        <span class="font-bold tracking-tight text-lg text-white">Auctora</span>
-      </div>
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-white/60">
-        
-        <a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
-        
-        <a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
-        
-        <a class="hover:text-white transition-colors" href="{% url 'Support' %}">Support</a>
-        
-        <a class="hover:text-white transition-colors" href="{% url 'Security' %}">Security</a>
-        
-        <a class="hover:text-white transition-colors" href="{% url 'Community' %}">Community</a>
-        
-        <a class="hover:text-white transition-colors" href="{% url 'ContactUs' %}">Contact Us</a>
-      </div>
-      <div class="flex gap-3">
-        <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">language</span>
-        <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">share</span>
-      </div>
-    </div>
-    <div class="text-center mt-8 text-white/30 text-xs">
-      © 2026 Auctora Luxury Auctions. All rights reserved.
-    </div>
-  </footer>
+    </header>
+
+    <main class="flex-1 w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-8 px-4 md:px-10 lg:px-20 py-12">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="sticky top-28 flex flex-col gap-6">
+                <div class="sidebar-wrap p-4 rounded-2xl transition-colors duration-300">
+                    <h3 class="sidebar-section-label font-bold text-xs uppercase tracking-widest mb-4 text-primary/60">On this page</h3>
+                    <nav class="flex flex-col gap-1">
+                        <a class="active-link sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all" href="#introduction">
+                            <span class="material-symbols-outlined text-lg">info</span> Introduction
+                        </a>
+                        <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#accounts">
+                            <span class="material-symbols-outlined text-lg">person</span> User Accounts
+                        </a>
+                        <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#rules">
+                            <span class="material-symbols-outlined text-lg">gavel</span> Auction Rules
+                        </a>
+                        <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#payments">
+                            <span class="material-symbols-outlined text-lg">payments</span> Payments &amp; Fees
+                        </a>
+                        <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#property">
+                            <span class="material-symbols-outlined text-lg">copyright</span> Intellectual Property
+                        </a>
+                        <a class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 transition-all" href="#disputes">
+                            <span class="material-symbols-outlined text-lg">shield</span> Dispute Resolution
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Help card -->
+                <div class="p-6 rounded-2xl bg-primary text-white">
+                    <p class="text-sm font-bold mb-1">Need help?</p>
+                    <p class="text-xs text-white/60 mb-4">Contact our legal team if you have questions about our terms.</p>
+                    <button class="w-full py-2.5 bg-white text-primary text-xs font-bold rounded-lg hover:bg-slate-100 transition-colors">Contact Support</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── MAIN CONTENT ── -->
+        <div class="flex-1 max-w-3xl">
+            <div class="mb-12">
+                <div class="legal-badge inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-4">Legal Documentation</div>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">Terms of Service</h1>
+                <div class="meta-text flex items-center gap-4 text-slate-400 text-sm">
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Last updated: October 24, 2023</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 12 min read</span>
+                </div>
+            </div>
+
+            <div class="space-y-12">
+
+                <!-- 1. Introduction -->
+                <section class="scroll-mt-32" id="introduction">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">1</span>
+                        Introduction
+                    </h2>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>Welcome to Auctora. These Terms of Service ("Terms") govern your access to and use of the Auctora website, mobile applications, and other services (collectively, the "Platform"). Please read these Terms carefully before using the Platform.</p>
+                        <p>By accessing or using the Platform, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these terms, you must not use our services. We provide a platform for the auction and sale of high-end luxury goods, collectibles, and fine art.</p>
+                    </div>
+                </section>
+
+                <!-- 2. User Accounts -->
+                <section class="scroll-mt-32" id="accounts">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">2</span>
+                        User Accounts
+                    </h2>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>To access certain features of the Platform, you must register for an account. When you create an account, you agree to:</p>
+                        <ul class="list-disc pl-6 space-y-2">
+                            <li>Provide accurate, current, and complete information.</li>
+                            <li>Maintain the security of your password and accept all risks of unauthorized access.</li>
+                            <li>Notify us immediately if you discover or suspect any security breaches related to the Platform or your account.</li>
+                            <li>Ensure you are at least 18 years of age or the legal age of majority in your jurisdiction.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 3. Auction Rules -->
+                <section class="scroll-mt-32" id="rules">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">3</span>
+                        Auction Rules
+                    </h2>
+                    <div class="callout-box bg-primary/5 p-6 rounded-2xl mb-6 border-l-4 border-primary">
+                        <p class="font-bold text-primary text-sm mb-1">Crucial Policy:</p>
+                        <p class="text-sm text-slate-600">Once a bid is placed, it cannot be retracted. All bids are legally binding contracts to purchase the item if you are the winning bidder.</p>
+                    </div>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>Our auctions follow strict professional guidelines to ensure fairness and transparency:</p>
+                        <div class="grid grid-cols-1 gap-4 mt-4">
+                            <div class="rule-card p-5 rounded-xl border border-slate-200 bg-white flex gap-4 shadow-sm transition-colors duration-300">
+                                <span class="material-symbols-outlined text-primary flex-shrink-0">timer</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm mb-1">Bidding Increments</p>
+                                    <p class="text-sm text-slate-500">Bidding increments are standardized based on the current price of the lot. Auctora reserves the right to modify these increments at any time.</p>
+                                </div>
+                            </div>
+                            <div class="rule-card p-5 rounded-xl border border-slate-200 bg-white flex gap-4 shadow-sm transition-colors duration-300">
+                                <span class="material-symbols-outlined text-primary flex-shrink-0">verified</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm mb-1">Reserve Prices</p>
+                                    <p class="text-sm text-slate-500">Most lots are subject to a confidential minimum price (the "Reserve"). If the bidding does not reach the reserve, the item will not be sold.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Payments & Fees -->
+                <section class="scroll-mt-32" id="payments">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">4</span>
+                        Payments &amp; Fees
+                    </h2>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>Winning bidders are responsible for the hammer price plus the Buyer's Premium. The Buyer's Premium is calculated as follows:</p>
+                        <div class="table-wrap overflow-hidden rounded-xl border border-slate-200 mt-4">
+                            <table class="terms-table w-full text-left border-collapse">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th class="py-3 px-5 font-semibold text-sm">Hammer Price Threshold</th>
+                                        <th class="py-3 px-5 font-semibold text-sm">Premium Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-slate-100">
+                                    <tr class="bg-white hover:bg-slate-50 transition-colors">
+                                        <td class="py-3 px-5 text-slate-700">Up to $500,000</td>
+                                        <td class="py-3 px-5 text-slate-700">25%</td>
+                                    </tr>
+                                    <tr class="bg-white hover:bg-slate-50 transition-colors">
+                                        <td class="py-3 px-5 text-slate-700">$500,001 to $5,000,000</td>
+                                        <td class="py-3 px-5 text-slate-700">20%</td>
+                                    </tr>
+                                    <tr class="bg-white hover:bg-slate-50 transition-colors">
+                                        <td class="py-3 px-5 text-slate-700">Above $5,000,000</td>
+                                        <td class="py-3 px-5 text-slate-700">13.9%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="table-note text-xs text-slate-400 mt-3 italic">* Taxes and shipping costs are calculated separately based on your location and the item's origin.</p>
+                    </div>
+                </section>
+
+                <!-- 5. Intellectual Property -->
+                <section class="scroll-mt-32" id="property">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">5</span>
+                        Intellectual Property
+                    </h2>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>All content on the Platform, including text, graphics, logos, images, and software, is the property of Auctora or its content suppliers and is protected by international copyright laws.</p>
+                        <p>You are granted a limited, non-exclusive, non-transferable license to access the Platform for personal, non-commercial use. Any other use, including reproduction or modification of content, is strictly prohibited without prior written consent.</p>
+                    </div>
+                </section>
+
+                <!-- 6. Dispute Resolution -->
+                <section class="scroll-mt-32" id="disputes">
+                    <h2 class="section-heading text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-primary text-white flex-shrink-0">6</span>
+                        Dispute Resolution
+                    </h2>
+                    <div class="space-y-4 body-text text-slate-600 leading-relaxed">
+                        <p>Any dispute arising from these Terms or your use of the Platform will be resolved through binding arbitration, rather than in court, except that you may assert claims in small claims court if your claims qualify.</p>
+                        <p>These Terms shall be governed by and construed in accordance with the laws of the jurisdiction in which Auctora is headquartered, without regard to its conflict of law provisions.</p>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ── FOOTER ── -->
+    <footer class="bg-primary text-white py-12 px-6 md:px-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-3">
+                <div class="size-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                    <span class="material-symbols-outlined text-white text-xl">storm</span>
+                </div>
+                <span class="font-bold tracking-tight text-lg text-white">Auctora</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-white/60">
+                <a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="{% url 'Support' %}">Support</a>
+                <a class="hover:text-white transition-colors" href="{% url 'Security' %}">Security</a>
+                <a class="hover:text-white transition-colors" href="{% url 'Community' %}">Community</a>
+                <a class="hover:text-white transition-colors" href="{% url 'ContactUs' %}">Contact Us</a>
+            </div>
+            <div class="flex gap-3">
+                <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">language</span>
+                <span class="material-symbols-outlined text-white/40 hover:text-white cursor-pointer transition-colors">share</span>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-white/30 text-xs">© 2026 Auctora Luxury Auctions. All rights reserved.</div>
+    </footer>
 
 </div>
-</body></html>
+
+<script>
+    // ─── Dark Mode ───────────────────────────────────
+    function applyDark(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
+        }
+    }
+
+    // Load on page start — syncs with all other pages
+    applyDark(localStorage.getItem('auctora_dark') === '1');
+
+    function toggleDark() {
+        const nowDark = !document.body.classList.contains('dark');
+        applyDark(nowDark);
+        localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
+    }
+</script>
+</body>
+</html>

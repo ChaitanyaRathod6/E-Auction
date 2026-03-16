@@ -14,6 +14,7 @@ from Dashboard.decorators import role_required
 from django.contrib import messages 
 from django.db.models import Sum
 from django.contrib.auth import logout
+import stripe
 # Create your views here.
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
@@ -343,7 +344,11 @@ def manage_categories(request):
             description = request.POST.get('description', '').strip()
             if name:
                 Category.objects.create(name=name, description=description)
-                messages.success(request, f'Category "{name}" added successfully!')
+                
+                if request.FILES.get('image'):
+                    category.image = request.FILES['image']
+                messages.success(request, f'Category "{name}" added successfully!')    
+                category.save()
             else:
                 messages.error(request, 'Category name is required.')
 
@@ -355,6 +360,8 @@ def manage_categories(request):
                 category = Category.objects.get(id=category_id)
                 category.name = name
                 category.description = description
+                if request.FILES.get('image'):
+                    category.image = request.FILES['image']
                 category.save()
                 messages.success(request, f'Category "{name}" updated successfully!')
             except Category.DoesNotExist:
@@ -679,7 +686,7 @@ def dashboard_redirect(request):
     else:
         return redirect('home') 
 
-
+from django.conf import settings
 @login_required
 @role_required(allowed_roles=['Buyer'])
 def make_payment(request, auction_id):
@@ -702,28 +709,13 @@ def make_payment(request, auction_id):
     if existing_payment:
         messages.info(request, "You have already made a payment for this auction.")
         return redirect('BuyerDashboard')
-
-    if request.method == "POST":
-        payment_method = request.POST.get('payment_method')
-        Payment.objects.create(
-            auction=auction,
-            buyer=buyer,
-            amount=winning_bid.amount,
-            payment_method=payment_method,
-            status='COMPLETED'
-        )
-        Notification.objects.create(
-            user=auction.item.seller.user,
-            message=f"Payment of ₹{winning_bid.amount} received for your auction '{auction.item.name}'.",
-            notification_type='PAYMENT',
-            auction=auction
-        )
-        messages.success(request, f"Payment of ₹{winning_bid.amount} completed successfully!")
-        return redirect('manage_payments')
-
+    
+    
     return render(request, 'Dashboard/make_payment.html', {
         'auction': auction,
         'winning_bid': winning_bid,
+        "stripe_public_key": settings.STRIPE_PUBLIC_KEY
+        
     })
        
  
@@ -931,3 +923,60 @@ def settings_page(request):
         'notif_prefs': notif_prefs,
         'privacy_prefs': privacy_prefs,
     })
+
+@login_required
+def payment_success(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id)
+
+    try:
+        buyer = request.user.buyer
+    except:
+        return redirect('home')
+
+    winning_bid = Bid.objects.filter(
+        auction=auction, buyer=buyer
+    ).order_by('-amount').first()
+
+    if request.method == 'POST':
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        token = request.POST.get('stripeToken')
+        amount_paise = int(winning_bid.amount * 100)
+
+        try:
+            # Charge the card
+            charge = stripe.Charge.create(
+                amount=amount_paise,
+                currency='inr',
+                description=f'Payment for {auction.item.name}',
+                source=token,
+            )
+
+            # Save payment as completed
+            Payment.objects.create(
+                auction=auction,
+                buyer=buyer,
+                amount=winning_bid.amount,
+                payment_method='CARD',
+                status='COMPLETED'
+            )
+
+            # Notify seller
+            Notification.objects.create(
+                user=auction.item.seller.user,
+                message=f"Payment of ₹{winning_bid.amount} received for '{auction.item.name}'.",
+                notification_type='PAYMENT',
+                auction=auction
+            )
+
+            messages.success(request, f"Payment of ₹{winning_bid.amount} successful!")
+            return redirect('manage_payments')
+
+        except stripe.error.CardError as e:
+            messages.error(request, f"Card error: {e.user_message}")
+            return redirect('make_payment', auction_id=auction_id)
+
+        except Exception as e:
+            messages.error(request, "Payment failed. Please try again.")
+            return redirect('make_payment', auction_id=auction_id)
+
+    return redirect('make_payment', auction_id=auction_id)

@@ -45,6 +45,8 @@ class AdminProfile(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='items/', null=True, blank=True)
+    # ... your other fields
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -65,7 +67,9 @@ class Item(models.Model):
 
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="items")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="items")
-
+    
+    image = models.ImageField(upload_to='items/', null=True, blank=True)
+    # ... your other fields
     name = models.CharField(max_length=200)
     description = models.TextField()
     condition = models.CharField(max_length=20, choices=CONDITION_CHOICES)

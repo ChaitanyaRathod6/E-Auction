@@ -39,10 +39,11 @@ class AdminProfileForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('name', 'description')
+        fields = ('name', 'description',"image")
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Category name'}),
             'description': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 3, 'placeholder': 'Description'}),
+            'image': forms.FileInput(attrs={'class': 'form-input', 'accept': 'image/*'}),
         }
 
     def clean_name(self):
@@ -59,13 +60,14 @@ class CategoryForm(forms.ModelForm):
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ('name', 'category', 'description', 'condition', 'shipping_cost')
+        fields = ('name', 'category', 'description', 'condition', 'shipping_cost',"image")
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Item name'}),
             'category': forms.Select(attrs={'class': 'form-select'}),
             'description': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 4, 'placeholder': 'Detailed description'}),
             'condition': forms.Select(attrs={'class': 'form-select'}),
             'shipping_cost': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01', 'min': '0'}),
+            'image': forms.FileInput(attrs={'class': 'form-input', 'accept': 'image/*'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -164,6 +166,10 @@ class AuctionQuickCreateForm(forms.Form):
     shipping_cost = forms.DecimalField(
         max_digits=10, decimal_places=2,
         widget=forms.NumberInput(attrs={'class': 'form-input', 'placeholder': '0.00'})
+    )
+    image = forms.ImageField(  # ← add this
+        required=False,
+        widget=forms.FileInput(attrs={'class': 'form-input', 'accept': 'image/*'})
     )
 
     def clean(self):

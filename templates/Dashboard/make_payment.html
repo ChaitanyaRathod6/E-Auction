@@ -7,6 +7,8 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
 :root{--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--topbar-bg:#ffffff;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -15,14 +17,12 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 @keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* Topbar */
 .topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
 .topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
 .brand-icon{width:32px;height:32px;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;}
 .brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
 .topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px;}
 
-/* Sidebar */
 .sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);}
 .sidebar-nav{padding:8px 10px;flex:1;}
 .nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13.5px;font-weight:500;transition:background 0.25s,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
@@ -40,14 +40,11 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
 .logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
 
-/* Main */
 .main{margin-left:260px;padding-top:56px;min-height:100vh;animation:fadeIn 0.6s 0.2s both;}
 .page-content{padding:28px;display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 56px);}
 
-/* Payment Layout */
 .payment-container{width:100%;max-width:900px;display:grid;grid-template-columns:1fr 420px;gap:24px;animation:fadeInUp 0.5s 0.3s both;}
 
-/* Order Summary */
 .summary-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);overflow:hidden;}
 .summary-header{padding:24px;background:linear-gradient(135deg,#2d1655,#4c1d95);color:white;}
 .summary-header h2{font-size:20px;font-weight:800;margin-bottom:4px;}
@@ -74,7 +71,6 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .winner-badge-text .title{font-size:13px;font-weight:700;color:var(--green);}
 .winner-badge-text .sub{font-size:11px;color:var(--text-mid);margin-top:2px;}
 
-/* Payment Form */
 .payment-form-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border);overflow:hidden;position:sticky;top:76px;}
 .form-header{padding:24px 24px 20px;border-bottom:1px solid var(--border);}
 .form-header h3{font-size:18px;font-weight:700;color:var(--text-dark);}
@@ -84,28 +80,44 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 .form-label{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;display:block;}
 .form-group{margin-bottom:18px;}
 
-.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-.method-option{position:relative;}
-.method-option input[type="radio"]{position:absolute;opacity:0;width:0;height:0;}
-.method-label{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 10px;border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--text-mid);text-align:center;}
-.method-label:hover{border-color:var(--accent-purple);background:#f9f7ff;}
-.method-option input[type="radio"]:checked + .method-label{border-color:var(--accent-purple);background:#f3f0ff;color:var(--accent-purple);}
-.method-icon{font-size:22px;}
-
-.amount-display{background:linear-gradient(135deg,#f3f0ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.amount-display{background:linear-gradient(135deg,#f3f0ff,#ede9fe);border:2px solid #c4b5fd;border-radius:12px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .amount-display .amount-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent-purple);}
 .amount-display .amount-value{font-size:24px;font-weight:800;color:var(--primary);}
+
+/* ─── Stripe card element ─── */
+.stripe-card-wrap{
+    padding:14px 16px;
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    background:var(--main-bg);
+    margin-bottom:6px;
+    transition:border-color 0.2s, box-shadow 0.2s;
+}
+.stripe-card-wrap.focused{
+    border-color:var(--accent-purple);
+    box-shadow:0 0 0 3px rgba(124,58,237,0.1);
+}
+.stripe-powered{
+    display:flex;align-items:center;gap:6px;
+    font-size:11px;color:var(--text-light);
+    margin-bottom:18px;margin-top:6px;
+}
+.card-error{
+    color:var(--red);font-size:12px;font-weight:500;
+    min-height:18px;margin-bottom:14px;
+    display:flex;align-items:center;gap:5px;
+}
 
 .btn-pay{width:100%;padding:16px;background:var(--primary);color:white;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(45,22,85,0.3);}
 .btn-pay:hover{transform:scale(1.02);background:#3d2070;box-shadow:0 8px 28px rgba(45,22,85,0.4);}
 .btn-pay:active{transform:scale(0.98);}
+.btn-pay:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
 
 .secure-note{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:14px;font-size:12px;color:var(--text-light);}
 
 .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text-mid);text-decoration:none;font-size:13px;font-weight:500;margin-bottom:20px;transition:color 0.2s;}
 .back-link:hover{color:var(--primary);}
 
-/* Toast */
 .toast{position:fixed;bottom:28px;right:28px;background:#1a1035;color:white;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast-icon{width:20px;height:20px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -114,75 +126,44 @@ body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-d
 @media(max-width:768px){.sidebar{transform:translateX(-260px)}.main{margin-left:0}.page-content{padding:16px}}
 
 /* ─── DARK MODE ─── */
-body.dark {
-  --main-bg: #13102b;
-  --card-bg: #1c1640;
-  --topbar-bg: #1a1438;
-  --text-dark: #f1f0f5;
-  --text-mid: #a89dc4;
-  --text-light: #6b5f85;
-  --border: #2d1e50;
-  --sidebar-bg: #0f0c24;
-  background: #13102b !important;
-}
-
-/* Topbar */
-body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
-body.dark .brand-name { color: #c4b5fd !important; }
-body.dark .topbar-right div[style*="color:var(--text-dark)"] { color: #f1f0f5 !important; }
-
-/* Sidebar */
-body.dark .sidebar { background: #0f0c24 !important; }
-body.dark .nav-item { color: rgba(255,255,255,0.6) !important; }
-body.dark .nav-item:hover { background: rgba(124,58,237,0.15) !important; color: #fff !important; }
-body.dark .nav-item.active { background: #2d1655 !important; color: #fff !important; }
-body.dark .settings-icon-btn { background: rgba(255,255,255,0.04) !important; color: rgba(255,255,255,0.5) !important; }
-body.dark .settings-icon-btn:hover { background: rgba(255,255,255,0.08) !important; }
-body.dark .sidebar-profile-card { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.08) !important; }
-
-/* Back link */
-body.dark .back-link { color: #a89dc4 !important; }
-body.dark .back-link:hover { color: #c4b5fd !important; }
-
-/* Summary card */
-body.dark .summary-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
-body.dark .item-showcase { background: #13102b !important; border-color: #2d1e50 !important; }
-body.dark .item-details .item-name { color: #f1f0f5 !important; }
-body.dark .item-details .item-condition { color: #a89dc4 !important; }
-body.dark .divider { background: #2d1e50 !important; }
-body.dark .summary-row .label { color: #a89dc4 !important; }
-body.dark .summary-row .value { color: #f1f0f5 !important; }
-body.dark .summary-row.total { border-color: #2d1e50 !important; }
-body.dark .summary-row.total .label { color: #f1f0f5 !important; }
-body.dark .summary-row.total .value { color: #c4b5fd !important; }
-body.dark .winner-badge { background: rgba(16,185,129,0.06) !important; border-color: rgba(16,185,129,0.15) !important; }
-body.dark .winner-badge-text .sub { color: #a89dc4 !important; }
-
-/* Payment form card */
-body.dark .payment-form-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
-body.dark .form-header { border-color: #2d1e50 !important; }
-body.dark .form-header h3 { color: #f1f0f5 !important; }
-body.dark .form-header p { color: #a89dc4 !important; }
-body.dark .form-label { color: #6b5f85 !important; }
-
-/* Amount display */
-body.dark .amount-display { background: linear-gradient(135deg,rgba(124,58,237,0.15),rgba(109,40,217,0.1)) !important; border-color: rgba(124,58,237,0.3) !important; }
-body.dark .amount-display .amount-value { color: #c4b5fd !important; }
-
-/* Payment method options */
-body.dark .method-label { border-color: #2d1e50 !important; color: #a89dc4 !important; background: #13102b !important; }
-body.dark .method-label:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.1) !important; }
-body.dark .method-option input[type="radio"]:checked + .method-label { border-color: #7c3aed !important; background: rgba(124,58,237,0.15) !important; color: #c4b5fd !important; }
-
-/* Secure note */
-body.dark .secure-note { color: #6b5f85 !important; }
-
-/* Toast */
-body.dark .toast { background: #1c1640 !important; border: 1px solid #2d1e50; }
-
-/* Scrollbar */
-body.dark ::-webkit-scrollbar-track { background: #13102b; }
-body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+body.dark{--main-bg:#13102b;--card-bg:#1c1640;--topbar-bg:#1a1438;--text-dark:#f1f0f5;--text-mid:#a89dc4;--text-light:#6b5f85;--border:#2d1e50;--sidebar-bg:#0f0c24;background:#13102b !important;}
+body.dark .topbar{background:#1a1438 !important;border-color:#2d1e50 !important;}
+body.dark .brand-name{color:#c4b5fd !important;}
+body.dark .sidebar{background:#0f0c24 !important;}
+body.dark .nav-item{color:rgba(255,255,255,0.6) !important;}
+body.dark .nav-item:hover{background:rgba(124,58,237,0.15) !important;color:#fff !important;}
+body.dark .nav-item.active{background:#2d1655 !important;color:#fff !important;}
+body.dark .settings-icon-btn{background:rgba(255,255,255,0.04) !important;color:rgba(255,255,255,0.5) !important;}
+body.dark .sidebar-profile-card{background:rgba(255,255,255,0.05) !important;border-color:rgba(255,255,255,0.08) !important;}
+body.dark .back-link{color:#a89dc4 !important;}
+body.dark .back-link:hover{color:#c4b5fd !important;}
+body.dark .summary-card{background:#1c1640 !important;border-color:#2d1e50 !important;}
+body.dark .item-showcase{background:#13102b !important;border-color:#2d1e50 !important;}
+body.dark .item-details .item-name{color:#f1f0f5 !important;}
+body.dark .item-details .item-condition{color:#a89dc4 !important;}
+body.dark .divider{background:#2d1e50 !important;}
+body.dark .summary-row .label{color:#a89dc4 !important;}
+body.dark .summary-row .value{color:#f1f0f5 !important;}
+body.dark .summary-row.total{border-color:#2d1e50 !important;}
+body.dark .summary-row.total .label{color:#f1f0f5 !important;}
+body.dark .summary-row.total .value{color:#c4b5fd !important;}
+body.dark .winner-badge{background:rgba(16,185,129,0.06) !important;border-color:rgba(16,185,129,0.15) !important;}
+body.dark .winner-badge-text .sub{color:#a89dc4 !important;}
+body.dark .payment-form-card{background:#1c1640 !important;border-color:#2d1e50 !important;}
+body.dark .form-header{border-color:#2d1e50 !important;}
+body.dark .form-header h3{color:#f1f0f5 !important;}
+body.dark .form-header p{color:#a89dc4 !important;}
+body.dark .form-label{color:#6b5f85 !important;}
+body.dark .amount-display{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(109,40,217,0.1)) !important;border-color:rgba(124,58,237,0.3) !important;}
+body.dark .amount-display .amount-value{color:#c4b5fd !important;}
+body.dark .stripe-card-wrap{background:#130c28 !important;border-color:#2d1e50 !important;}
+body.dark .stripe-card-wrap.focused{border-color:#7c3aed !important;}
+body.dark .stripe-powered{color:#6b5f85 !important;}
+body.dark .secure-note{color:#6b5f85 !important;}
+body.dark .toast{background:#1c1640 !important;border:1px solid #2d1e50;}
+body.dark ::-webkit-scrollbar-track{background:#13102b;}
+body.dark ::-webkit-scrollbar-thumb{background:#2d1655;border-radius:3px;}
+::-webkit-scrollbar{width:5px;}
     </style>
 </head>
 <body>
@@ -235,9 +216,9 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
         </a>
     </nav>
     <div class="sidebar-bottom">
-        <button class="settings-icon-btn">
+        <button class="settings-icon-btn" onclick="toggleDark()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Settings
+            Settings &amp; Dark Mode
         </button>
         <div class="sidebar-profile-card" onclick="window.location.href='{% url 'buyer_profile' %}'">
             <div style="flex-shrink:0;">
@@ -265,7 +246,6 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
     <div class="page-content">
         <div style="width:100%;max-width:900px;">
 
-            <!-- Back Link -->
             <a href="{% url 'auction_detail' auction.pk %}" class="back-link">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                 Back to Auction
@@ -281,7 +261,6 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
                     </div>
                     <div class="summary-body">
 
-                        <!-- Winner Badge -->
                         <div class="winner-badge">
                             <div class="winner-badge-icon">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -292,7 +271,6 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
                             </div>
                         </div>
 
-                        <!-- Item Showcase -->
                         <div class="item-showcase">
                             <div class="item-image-box">
                                 {% if auction.item.image %}
@@ -310,7 +288,6 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
 
                         <div class="divider"></div>
 
-                        <!-- Summary Rows -->
                         <div class="summary-row">
                             <span class="label">Starting Price</span>
                             <span class="value">₹{{ auction.starting_price }}</span>
@@ -327,7 +304,6 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
                             <span class="label">Seller</span>
                             <span class="value">{{ auction.item.seller.user.First_name }} {{ auction.item.seller.user.Last_name }}</span>
                         </div>
-
                         <div class="summary-row total">
                             <span class="label">Total Amount Due</span>
                             <span class="value">₹{{ winning_bid.amount }}</span>
@@ -336,68 +312,53 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
                     </div>
                 </div>
 
-                <!-- Right: Payment Form -->
+                <!-- Right: Stripe Payment Form -->
                 <div class="payment-form-card">
                     <div class="form-header">
                         <h3>Complete Payment</h3>
-                        <p>Choose your payment method and confirm</p>
+                        <p>Enter your card details to pay securely via Stripe</p>
                     </div>
                     <div class="form-body">
-                        <form method="POST">
+
+                        <!-- Amount Display -->
+                        <div class="amount-display">
+                            <span class="amount-label">Amount to Pay</span>
+                            <span class="amount-value">₹{{ winning_bid.amount }}</span>
+                        </div>
+
+                        <!-- Stripe Form -->
+                        <form action="{% url 'payment_success' auction.id %}" method="POST" id="payment-form">
                             {% csrf_token %}
 
-                            <!-- Amount Display -->
-                            <div class="amount-display">
-                                <span class="amount-label">Amount to Pay</span>
-                                <span class="amount-value">₹{{ winning_bid.amount }}</span>
+                            <label class="form-label">Card Details</label>
+                            <div class="stripe-card-wrap" id="card-wrap">
+                                <div id="card-element"></div>
+                            </div>
+                            <div class="stripe-powered">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                Powered by Stripe — SSL encrypted
                             </div>
 
-                            <!-- Payment Method -->
-                            <label class="form-label">Payment Method</label>
-                            <div class="method-grid">
-                                <div class="method-option">
-                                    <input type="radio" name="payment_method" id="card" value="CARD" checked>
-                                    <label class="method-label" for="card">
-                                        <span class="method-icon">💳</span>
-                                        Credit Card
-                                    </label>
-                                </div>
-                                <div class="method-option">
-                                    <input type="radio" name="payment_method" id="paypal" value="PAYPAL">
-                                    <label class="method-label" for="paypal">
-                                        <span class="method-icon">🅿️</span>
-                                        PayPal
-                                    </label>
-                                </div>
-                                <div class="method-option">
-                                    <input type="radio" name="payment_method" id="upi" value="UPI">
-                                    <label class="method-label" for="upi">
-                                        <span class="method-icon">📱</span>
-                                        UPI
-                                    </label>
-                                </div>
-                                <div class="method-option">
-                                    <input type="radio" name="payment_method" id="netbank" value="NETBANK">
-                                    <label class="method-label" for="netbank">
-                                        <span class="method-icon">🏦</span>
-                                        Net Banking
-                                    </label>
-                                </div>
-                            </div>
+                            <div class="card-error" id="card-errors"></div>
 
-                            <!-- Hidden amount field -->
-                            <input type="hidden" name="amount" value="{{ winning_bid.amount }}">
-
-                            <button type="submit" class="btn-pay">
+                            <button type="submit" class="btn-pay" id="pay-btn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
                                 Pay ₹{{ winning_bid.amount }}
                             </button>
-
-                            <div class="secure-note">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                Secured & encrypted payment
-                            </div>
                         </form>
+
+                        <div class="secure-note">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            Your payment is 100% secure &amp; encrypted
+                        </div>
+
+                        <!-- Test card hint -->
+                        <div style="margin-top:16px;padding:12px 14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;font-size:11.5px;color:var(--text-mid);line-height:1.6;">
+                            <strong style="color:var(--amber);">🧪 Test Mode</strong><br>
+                            Card: <strong>4242 4242 4242 4242</strong><br>
+                            Expiry: any future date &nbsp;|&nbsp; CVV: any 3 digits
+                        </div>
+
                     </div>
                 </div>
 
@@ -406,19 +367,86 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
     </div>
 </main>
 
-<!-- Toast -->
 <div class="toast" id="toast">
     <div class="toast-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
     <span id="toastMsg">Done!</span>
 </div>
+
 <script>
-  if(localStorage.getItem('auctora_dark')==='1'){
-    document.body.classList.add('dark');
-  }
-</script>
-<script>
-{% if messages %}{% for message in messages %}window.addEventListener('load',()=>showToast('{{ message }}'));{% endfor %}{% endif %}
-function showToast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg||'Done!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+    // ─── Dark Mode ───
+    if (localStorage.getItem('auctora_dark') === '1') document.body.classList.add('dark');
+    function toggleDark() {
+        const nowDark = document.body.classList.toggle('dark');
+        localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
+    }
+
+    // ─── Stripe ───
+    var stripe = Stripe('{{ stripe_public_key }}');
+    var elements = stripe.elements();
+
+    var isDark = document.body.classList.contains('dark');
+    var card = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '15px',
+                fontFamily: "'Inter', sans-serif",
+                color: isDark ? '#f1f0f5' : '#1a1035',
+                '::placeholder': { color: isDark ? '#6b5f85' : '#9ca3af' },
+                iconColor: isDark ? '#c4b5fd' : '#7c3aed',
+            },
+            invalid: { color: '#ef4444', iconColor: '#ef4444' }
+        }
+    });
+    card.mount('#card-element');
+
+    // Focus border effect
+    card.on('focus', function() {
+        document.getElementById('card-wrap').classList.add('focused');
+    });
+    card.on('blur', function() {
+        document.getElementById('card-wrap').classList.remove('focused');
+    });
+
+    // Show errors
+    card.on('change', function(e) {
+        var el = document.getElementById('card-errors');
+        el.textContent = e.error ? '⚠️ ' + e.error.message : '';
+    });
+
+    // Submit
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('pay-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> Processing...';
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                document.getElementById('card-errors').textContent = '⚠️ ' + result.error.message;
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay ₹{{ winning_bid.amount }}';
+            } else {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'stripeToken';
+                input.value = result.token.id;
+                form.appendChild(input);
+                form.submit();
+            }
+        });
+    });
+
+    // ─── Toast ───
+    {% if messages %}{% for message in messages %}
+    window.addEventListener('load', () => showToast('{{ message }}'));
+    {% endfor %}{% endif %}
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg || 'Done!';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
 </script>
 </body>
 </html>

@@ -40,4 +40,5 @@ urlpatterns = [
     path('raise_dispute/<int:auction_id>/', views.raise_dispute, name='raise_dispute'),
     path('purchase_history/', views.purchase_history, name='purchase_history'),
     path('setting/', views.settings_page, name='setting'),
+    path('payment/success/<int:auction_id>/', views.payment_success, name='payment_success'),
 ]

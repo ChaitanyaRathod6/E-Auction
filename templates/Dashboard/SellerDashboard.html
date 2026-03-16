@@ -4,861 +4,440 @@
 <head>
     <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
     <title>Auctora | Seller Dashboard</title>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Auctora — Luxury Seller Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-  <style>
-    :root {
-      --sidebar-bg: #2d1655;
-      --sidebar-active: #3d2272;
-      --sidebar-hover: rgba(255,255,255,0.07);
-      --primary: #2d1655;
-      --primary-btn: #2d1655;
-      --accent-purple: #7c3aed;
-      --accent-violet: #6d28d9;
-      --main-bg: #f7f6f8;
-      --card-bg: #ffffff;
-      --text-dark: #1a1035;
-      --text-mid: #6b7280;
-      --text-light: #9ca3af;
-      --border: #e8e5f0;
-      --green: #10b981;
-      --orange: #f59e0b;
-      --gray-badge: #9ca3af;
-      --topbar-bg: #ffffff;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        :root {
+            --sidebar-bg: #2d1655; --sidebar-active: #3d2272;
+            --sidebar-hover: rgba(255,255,255,0.07);
+            --primary: #2d1655; --primary-btn: #2d1655;
+            --accent-purple: #7c3aed; --accent-violet: #6d28d9;
+            --main-bg: #f7f6f8; --card-bg: #ffffff;
+            --text-dark: #1a1035; --text-mid: #6b7280; --text-light: #9ca3af;
+            --border: #e8e5f0; --green: #10b981; --orange: #f59e0b;
+            --red: #ef4444; --gray-badge: #9ca3af; --topbar-bg: #ffffff;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ─── DARK MODE ─── */
+        body.dark {
+            --main-bg: #13102b; --card-bg: #1c1640; --topbar-bg: #1a1438;
+            --text-dark: #f1f0f5; --text-mid: #a89dc4; --text-light: #6b5f85;
+            --border: #2d1e50; --sidebar-bg: #0f0c24;
+        }
+        body.dark { background: #13102b !important; color: #f1f0f5 !important; }
+        body.dark .topbar { background: #1a1438 !important; border-color: #2d1e50 !important; }
+        body.dark .brand-name { color: #c4b5fd !important; }
+        body.dark .search-bar { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+        body.dark .topbar-icon { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+        body.dark .topbar-icon:hover { background: #2d1e50 !important; }
+        body.dark .sidebar { background: #0f0c24 !important; }
+        body.dark .nav-item { color: rgba(255,255,255,0.6) !important; }
+        body.dark .nav-item:hover { background: rgba(124,58,237,0.15) !important; color: #fff !important; }
+        body.dark .nav-item.active { background: #2d1655 !important; color: #fff !important; }
+        body.dark .sidebar-divider { background: rgba(255,255,255,0.06) !important; }
+        body.dark .settings-icon-btn { background: rgba(255,255,255,0.04) !important; color: rgba(255,255,255,0.5) !important; }
+        body.dark .settings-icon-btn:hover { background: rgba(255,255,255,0.08) !important; color: #fff !important; }
+        body.dark .sidebar-profile-card { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.08) !important; }
+        body.dark .main { background: #13102b !important; }
+        body.dark .page-header h1 { color: #ffffff !important; }
+        body.dark .page-header p { color: #a89dc4 !important; }
+        body.dark .stat-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        body.dark .stat-label { color: #6b5f85 !important; }
+        body.dark .stat-value { color: #f1f0f5 !important; }
+        body.dark .panel-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        body.dark .panel-title { color: #f1f0f5 !important; }
+        body.dark thead th { background: #160f30 !important; border-color: #2d1e50 !important; color: #6b5f85 !important; }
+        body.dark tbody tr { border-color: #2d1e50 !important; }
+        body.dark tbody tr:hover { background: rgba(124,58,237,0.06) !important; }
+        body.dark tbody td { color: #f1f0f5 !important; }
+        body.dark .item-name { color: #f1f0f5 !important; }
+        body.dark .bids-sub { color: #6b5f85 !important; }
+        body.dark .time-cell { color: #a89dc4 !important; }
+        body.dark .price-cell { color: #c4b5fd !important; }
+        body.dark .quick-create { background: #1c1640 !important; border-color: #2d1e50 !important; }
+        body.dark .quick-title { color: #f1f0f5 !important; }
+        body.dark .form-label { color: #6b5f85 !important; }
+        body.dark .form-input { background: #13102b !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
+        body.dark .form-input::placeholder { color: #6b5f85 !important; }
+        body.dark .form-select { background-color: #13102b !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
+        body.dark .btn-upload { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+        body.dark .btn-upload:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.1) !important; color: #c4b5fd !important; }
+        body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; }
+        body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--main-bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+        /* Dark toggle icon swap */
+        .dark-toggle-icon-moon { display: none; }
+        .dark-toggle-icon-sun  { display: block; }
+        body.dark .dark-toggle-icon-moon { display: block; }
+        body.dark .dark-toggle-icon-sun  { display: none; }
 
-    /* ─── Animations ─── */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-24px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    @keyframes rowIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse-live {
-      0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); }
-      50%      { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
-    }
-    @keyframes pulse-soon {
-      0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.45); }
-      50%      { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
-    }
-    @keyframes dot-pulse {
-      0%,100% { transform: scale(1); opacity: 1; }
-      50%      { transform: scale(1.5); opacity: 0.7; }
-    }
+        body.dark ::-webkit-scrollbar-track { background: #13102b; }
+        body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
 
-    /* ─── Layout ─── */
-    .layout { display: flex; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
 
-    /* ─── Topbar (global) ─── */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; height: 56px;
-      background: var(--topbar-bg);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center;
-      padding: 0 20px 0 0;
-      z-index: 200;
-      animation: fadeIn 0.5s both;
-      box-shadow: 0 1px 8px rgba(45,22,85,0.06);
-    }
-    .topbar-brand {
-      width: 260px; display: flex; align-items: center; gap: 10px;
-      padding: 0 20px;
-      border-right: 1px solid var(--border);
-      height: 100%;
-      flex-shrink: 0;
-    }
-    .brand-icon {
-      width: 32px; height: 32px; background: var(--primary);
-      border-radius: 8px; display: flex; align-items: center; justify-content: center;
-    }
-    .brand-icon svg { width: 18px; height: 18px; }
-    .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-live { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); } 50% { box-shadow: 0 0 0 5px rgba(16,185,129,0); } }
+        @keyframes pulse-soon { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.45); } 50% { box-shadow: 0 0 0 5px rgba(245,158,11,0); } }
+        @keyframes dot-pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.7; } }
 
-    .topbar-right {
-      flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
-      padding: 0 16px;
-    }
-    .search-bar {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--main-bg); border: 1px solid var(--border);
-      border-radius: 20px; padding: 7px 16px;
-      font-size: 13px; color: var(--text-mid);
-      width: 220px;
-    }
-    .search-bar svg { flex-shrink: 0; opacity: 0.5; }
-    .topbar-icon {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--main-bg); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-      color: var(--text-mid);
-    }
-    .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
-    .avatar-circle {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: #111; cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .avatar-circle:hover { transform: scale(1.08); }
+        .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: var(--topbar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px 0 0; z-index: 200; animation: fadeIn 0.5s both; box-shadow: 0 1px 8px rgba(45,22,85,0.06); }
+        .topbar-brand { width: 260px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--border); height: 100%; flex-shrink: 0; }
+        .brand-name { font-size: 18px; font-weight: 700; color: var(--primary); letter-spacing: -0.3px; }
+        .topbar-right { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 0 16px; }
+        .search-bar { display: flex; align-items: center; gap: 8px; background: var(--main-bg); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; color: var(--text-mid); width: 220px; }
+        .topbar-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--main-bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, transform 0.2s; color: var(--text-mid); }
+        .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
 
-    /* ─── Sidebar ─── */
-    .sidebar {
-      width: 260px; min-height: 100vh;
-      background: var(--sidebar-bg);
-      position: fixed; top: 0; left: 0; bottom: 0;
-      z-index: 100; padding-top: 56px;
-      display: flex; flex-direction: column;
-      animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;
-      box-shadow: 2px 0 20px rgba(45,22,85,0.15);
-    }
+        .sidebar { width: 260px; min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; padding-top: 56px; display: flex; flex-direction: column; animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both; box-shadow: 2px 0 20px rgba(45,22,85,0.15); }
+        .sidebar-nav { padding: 8px 10px; flex: 1; overflow-y: auto; overflow-x: hidden; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 2px; text-decoration: none; }
+        .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
+        .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
+        .nav-item.active { background: #fff; color: var(--primary); font-weight: 600; box-shadow: 0 4px 16px rgba(45,22,85,0.2); }
+        .nav-badge { margin-left: auto; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; min-width: 20px; text-align: center; }
+        .sidebar-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 10px 14px; }
+        .sidebar-bottom { padding: 10px 10px 14px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; }
+        .settings-icon-btn { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; width: 100%; color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500; cursor: pointer; border: none; background: rgba(255,255,255,0.06); transition: background 0.25s, color 0.2s, transform 0.25s; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
+        .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
+        .settings-icon-btn svg { transition: transform 0.4s; flex-shrink: 0; }
+        .settings-icon-btn:hover svg { transform: rotate(65deg); }
+        .sidebar-profile-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+        .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
+        .profile-info { flex: 1; min-width: 0; }
+        .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+        .logout-btn { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.4); transition: background 0.2s, color 0.2s, transform 0.25s; }
+        .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
 
-    .sidebar-nav { padding: 8px 10px; flex: 1; }
+        .main { margin-left: 260px; padding-top: 56px; flex: 1; background: var(--main-bg); min-height: 100vh; animation: fadeIn 0.6s 0.2s both; }
+        .page-content { padding: 28px; }
+        .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; animation: fadeInUp 0.5s 0.25s both; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
+        .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
 
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 14px; border-radius: 10px;
-      cursor: pointer; color: rgba(255,255,255,0.7);
-      font-size: 14px; font-weight: 500;
-      position: relative; overflow: hidden;
-      transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
-      margin-bottom: 2px;
-      animation: slideInLeft 0.45s both;
-      text-decoration: none;
-    }
+        .btn-primary { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: #fff; padding: 11px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s; box-shadow: 0 4px 16px rgba(45,22,85,0.3); white-space: nowrap; font-family: 'Inter', sans-serif; }
+        .btn-primary:hover { transform: scale(1.045); background: #3d2070; box-shadow: 0 6px 24px rgba(45,22,85,0.45); }
+        .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--text-mid); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s, background 0.2s, color 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-ghost:hover { background: var(--border); color: var(--text-dark); transform: scale(1.03); }
+        .btn-upload { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 13px; border: 2px dashed var(--border); border-radius: 12px; background: var(--main-bg); color: var(--text-mid); font-size: 13.5px; font-weight: 500; cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.2s; font-family: 'Inter', sans-serif; }
+        .btn-upload:hover { border-color: var(--accent-purple); background: #f3f0ff; color: var(--accent-purple); transform: scale(1.01); }
+        .btn-launch { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s; box-shadow: 0 4px 18px rgba(45,22,85,0.35); font-family: 'Inter', sans-serif; }
+        .btn-launch:hover { transform: scale(1.03); box-shadow: 0 8px 28px rgba(45,22,85,0.5); background: #3d2070; }
 
-    .nav-badge {
-        margin-left: auto;
-        background: #ef4444;
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 20px;
-        min-width: 20px;
-        text-align: center;
-    }
-    .nav-item:nth-child(1) { animation-delay: 0.12s; }
-    .nav-item:nth-child(2) { animation-delay: 0.18s; }
-    .nav-item:nth-child(3) { animation-delay: 0.24s; }
-    .nav-item:nth-child(4) { animation-delay: 0.30s; }
-    .nav-item:nth-child(5) { animation-delay: 0.36s; }
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+        .stat-card { background: var(--card-bg); border-radius: 14px; padding: 22px 24px; border: 1px solid var(--border); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s; animation: fadeInUp 0.5s both; cursor: default; }
+        .stat-card:nth-child(1) { animation-delay: 0.2s; } .stat-card:nth-child(2) { animation-delay: 0.28s; } .stat-card:nth-child(3) { animation-delay: 0.36s; }
+        .stat-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 10px 36px rgba(45,22,85,0.1); }
+        .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .stat-icon-wrap { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .stat-card:hover .stat-icon-wrap { transform: scale(1.12) rotate(-6deg); }
+        .stat-trend { font-size: 12px; font-weight: 600; }
+        .trend-green { color: var(--green); } .trend-purple { color: var(--accent-purple); }
+        .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 6px; }
+        .stat-value { font-size: 30px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
 
-    .nav-item .nav-icon {
-      font-size: 16px; width: 20px; text-align: center; flex-shrink: 0;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .nav-item:hover { background: var(--sidebar-hover); color: #fff; transform: translateX(3px) scale(1.02); }
-    .nav-item:hover .nav-icon { transform: scale(1.2) rotate(-6deg); }
+        .content-grid { display: grid; grid-template-columns: 1fr 320px; gap: 22px; animation: fadeInUp 0.5s 0.38s both; }
+        .panel-card { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 22px 14px; }
+        .panel-title { font-size: 17px; font-weight: 700; color: var(--text-dark); }
 
-    .nav-item.active {
-      background: #fff;
-      color: var(--primary);
-      font-weight: 600;
-      box-shadow: 0 4px 16px rgba(45,22,85,0.2);
-    }
-    .nav-item.active .nav-icon { transform: scale(1.1); }
-    .nav-item.active:hover { transform: none; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { padding: 9px 16px; font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); text-align: left; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #faf9fb; }
+        tbody tr { border-bottom: 1px solid var(--border); opacity: 0; animation: rowIn 0.4s forwards; transition: background 0.18s; cursor: pointer; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:nth-child(1){animation-delay:0.42s;} tbody tr:nth-child(2){animation-delay:0.50s;} tbody tr:nth-child(3){animation-delay:0.58s;}
+        tbody tr:hover { background: #f9f8fc; }
+        tbody td { padding: 14px 16px; font-size: 13.5px; color: var(--text-dark); vertical-align: middle; }
+        .item-cell { display: flex; align-items: center; gap: 12px; }
+        .item-avatar { width: 38px; height: 38px; border-radius: 50%; background: #1a1035; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .item-avatar.green { background: #134e4a; }
+        .item-name { font-size: 13.5px; font-weight: 600; color: var(--text-dark); }
+        .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; padding: 3px 0; }
+        .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .badge-live { color: var(--green); } .badge-live .badge-dot { background: var(--green); animation: dot-pulse 2s infinite, pulse-live 2s infinite; }
+        .badge-soon { color: var(--orange); } .badge-soon .badge-dot { background: var(--orange); animation: dot-pulse 2s infinite, pulse-soon 2s infinite; }
+        .badge-sched { color: var(--gray-badge); } .badge-sched .badge-dot { background: var(--gray-badge); }
+        .bids-cell { font-size: 13.5px; color: var(--text-dark); font-weight: 500; }
+        .bids-sub { font-size: 11.5px; color: var(--text-light); }
+        .price-cell { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .time-cell { font-size: 13.5px; color: var(--text-mid); }
 
-    .sidebar-divider {
-      height: 1px; background: rgba(255,255,255,0.1);
-      margin: 10px 14px;
-    }
+        .quick-create { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border); padding: 22px; animation: fadeInUp 0.5s 0.44s both; }
+        .quick-title { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 18px; }
+        .form-group { margin-bottom: 14px; }
+        .form-label { font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; display: block; }
+        .form-input, .form-select { width: 100%; padding: 10px 12px; background: var(--main-bg); border: 1px solid var(--border); border-radius: 9px; font-size: 13.5px; color: var(--text-dark); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; }
+        .form-input:focus, .form-select:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+        .form-input::placeholder { color: var(--text-light); }
+        .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    /* ─── Sidebar bottom ─── */
-    .sidebar-bottom {
-      padding: 10px 10px 14px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: auto;
-      animation: slideInLeft 0.5s 0.38s both;
-    }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--main-bg); }
+        ::-webkit-scrollbar-thumb { background: #d5cee8; border-radius: 3px; }
 
-    .sidebar-settings-row {
-      padding: 0 0 8px 0;
-    }
-    .settings-icon-btn {
-      display: flex; align-items: center; gap: 10px;
-      padding: 11px 14px; border-radius: 10px; width: 100%;
-      color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500;
-      cursor: pointer; border: none;
-      background: rgba(255,255,255,0.06);
-      transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-      font-family: 'Inter', sans-serif;
-    }
-    .settings-icon-btn:hover {
-      background: rgba(255,255,255,0.12); color: #fff;
-      transform: translateX(3px) scale(1.02);
-    }
-    .settings-icon-btn svg {
-      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      flex-shrink: 0;
-    }
-    .settings-icon-btn:hover svg { transform: rotate(65deg); }
-
-    .sidebar-profile-card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 12px 14px;
-      display: flex; align-items: center; gap: 10px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .sidebar-profile-card:hover { background: rgba(255,255,255,0.13); transform: scale(1.01); }
-
-    .profile-avatar-card {
-      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
-      border: 1px solid rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; font-size: 15px;
-    }
-    .profile-info { flex: 1; min-width: 0; }
-    .profile-info .name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .profile-info .tier { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
-
-    .logout-btn {
-      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: rgba(255,255,255,0.4);
-      transition: background 0.2s, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-      flex-shrink: 0;
-    }
-    .logout-btn:hover {
-      background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3);
-      transform: scale(1.1);
-    }
-
-    /* ─── Main ─── */
-    .main {
-      margin-left: 260px; padding-top: 56px;
-      flex: 1; background: var(--main-bg); min-height: 100vh;
-      animation: fadeIn 0.6s 0.2s both;
-    }
-
-    .page-content { padding: 28px 28px 28px 28px; }
-
-    /* ─── Page header ─── */
-    .page-header {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 24px;
-      animation: fadeInUp 0.5s 0.25s both;
-    }
-    .page-header h1 {
-      font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px;
-    }
-    .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
-
-    /* ─── Buttons ─── */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--primary); color: #fff;
-      padding: 11px 22px; border-radius: 50px;
-      font-size: 14px; font-weight: 600;
-      border: none; cursor: pointer;
-      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, background 0.2s;
-      box-shadow: 0 4px 16px rgba(45,22,85,0.3);
-      white-space: nowrap;
-    }
-    .btn-primary:hover {
-      transform: scale(1.045);
-      background: #3d2070;
-      box-shadow: 0 6px 24px rgba(45,22,85,0.45);
-    }
-    .btn-primary:active { transform: scale(0.98); }
-
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: transparent; color: var(--text-mid);
-      padding: 8px 16px; border-radius: 8px;
-      font-size: 13px; font-weight: 500;
-      border: 1px solid var(--border); cursor: pointer;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, color 0.2s;
-    }
-    .btn-ghost:hover { background: var(--border); color: var(--text-dark); transform: scale(1.03); }
-
-    .btn-upload {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 13px;
-      border: 2px dashed var(--border); border-radius: 12px;
-      background: var(--main-bg); color: var(--text-mid);
-      font-size: 13.5px; font-weight: 500; cursor: pointer;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .btn-upload:hover { border-color: var(--accent-purple); background: #f3f0ff; color: var(--accent-purple); transform: scale(1.01); }
-
-    .btn-launch {
-      width: 100%; padding: 14px;
-      background: var(--primary); color: #fff;
-      border: none; border-radius: 50px;
-      font-size: 15px; font-weight: 700; cursor: pointer;
-      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, background 0.2s;
-      box-shadow: 0 4px 18px rgba(45,22,85,0.35);
-    }
-    .btn-launch:hover { transform: scale(1.03); box-shadow: 0 8px 28px rgba(45,22,85,0.5); background: #3d2070; }
-    .btn-launch:active { transform: scale(0.98); }
-
-    /* ─── Stats ─── */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
-      margin-bottom: 28px;
-    }
-    .stat-card {
-      background: var(--card-bg); border-radius: 14px;
-      padding: 22px 24px;
-      border: 1px solid var(--border);
-      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s;
-      animation: fadeInUp 0.5s both;
-      cursor: default;
-    }
-    .stat-card:nth-child(1) { animation-delay: 0.2s; }
-    .stat-card:nth-child(2) { animation-delay: 0.28s; }
-    .stat-card:nth-child(3) { animation-delay: 0.36s; }
-    .stat-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 10px 36px rgba(45,22,85,0.1);
-    }
-
-    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .stat-icon-wrap {
-      width: 42px; height: 42px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; font-size: 20px;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .stat-card:hover .stat-icon-wrap { transform: scale(1.12) rotate(-6deg); }
-    .stat-trend { font-size: 12px; font-weight: 600; }
-    .trend-green { color: var(--green); }
-    .trend-purple { color: var(--accent-purple); }
-
-    .stat-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 6px; }
-    .stat-value { font-size: 30px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
-
-    /* ─── Content grid ─── */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 22px;
-      animation: fadeInUp 0.5s 0.38s both;
-    }
-
-    /* ─── Auctions panel ─── */
-    .panel-card {
-      background: var(--card-bg); border-radius: 14px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .panel-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 22px 14px;
-    }
-    .panel-title { font-size: 17px; font-weight: 700; color: var(--text-dark); }
-
-    /* table */
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-      padding: 9px 16px; font-size: 10.5px; font-weight: 600;
-      letter-spacing: 1px; text-transform: uppercase; color: var(--text-light);
-      text-align: left; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      background: #faf9fb;
-    }
-    tbody tr {
-      border-bottom: 1px solid var(--border);
-      opacity: 0;
-      animation: rowIn 0.4s forwards;
-      transition: background 0.18s;
-      cursor: pointer;
-    }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:nth-child(1) { animation-delay: 0.42s; }
-    tbody tr:nth-child(2) { animation-delay: 0.50s; }
-    tbody tr:nth-child(3) { animation-delay: 0.58s; }
-    tbody tr:hover { background: #f9f8fc; }
-    tbody td { padding: 14px 16px; font-size: 13.5px; color: var(--text-dark); vertical-align: middle; }
-
-    .item-cell { display: flex; align-items: center; gap: 12px; }
-    .item-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: #1a1035; flex-shrink: 0;
-      overflow: hidden; display: flex; align-items: center; justify-content: center;
-    }
-    .item-avatar.green { background: #134e4a; }
-    .item-name { font-size: 13.5px; font-weight: 600; color: var(--text-dark); }
-
-    /* badges */
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 12.5px; font-weight: 600; padding: 3px 0;
-    }
-    .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .badge-live { color: var(--green); }
-    .badge-live .badge-dot { background: var(--green); animation: dot-pulse 2s infinite, pulse-live 2s infinite; }
-    .badge-soon { color: var(--orange); }
-    .badge-soon .badge-dot { background: var(--orange); animation: dot-pulse 2s infinite, pulse-soon 2s infinite; }
-    .badge-sched { color: var(--gray-badge); }
-    .badge-sched .badge-dot { background: var(--gray-badge); }
-
-    .bids-cell { font-size: 13.5px; color: var(--text-dark); font-weight: 500; }
-    .bids-sub { font-size: 11.5px; color: var(--text-light); }
-    .price-cell { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-    .time-cell { font-size: 13.5px; color: var(--text-mid); }
-
-    /* ─── Quick Create ─── */
-    .quick-create {
-      background: var(--card-bg); border-radius: 14px;
-      border: 1px solid var(--border);
-      padding: 22px;
-      animation: fadeInUp 0.5s 0.44s both;
-    }
-    .quick-title { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 18px; }
-
-    .form-group { margin-bottom: 14px; }
-    .form-label {
-      font-size: 10.5px; font-weight: 600; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; display: block;
-    }
-    .form-input, .form-select {
-      width: 100%; padding: 10px 12px;
-      background: var(--main-bg); border: 1px solid var(--border);
-      border-radius: 9px; font-size: 13.5px; color: var(--text-dark);
-      font-family: 'Inter', sans-serif; outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none;
-    }
-    .form-input:focus, .form-select:focus {
-      border-color: var(--accent-purple);
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
-    }
-    .form-input::placeholder { color: var(--text-light); }
-    .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    /* ─── Scrollbar ─── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--main-bg); }
-    ::-webkit-scrollbar-thumb { background: #d5cee8; border-radius: 3px; }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 1024px) {
-      .content-grid { grid-template-columns: 1fr; }
-      .stats-row { grid-template-columns: repeat(3,1fr); }
-    }
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-260px); }
-      .main { margin-left: 0; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .page-content { padding: 16px; }
-    }
-  </style>
+        @media (max-width: 1024px) { .content-grid { grid-template-columns: 1fr; } .stats-row { grid-template-columns: repeat(3,1fr); } }
+        @media (max-width: 768px) { .sidebar { transform: translateX(-260px); } .main { margin-left: 0; } .stats-row { grid-template-columns: 1fr 1fr; } .page-content { padding: 16px; } }
+    </style>
 </head>
 <body>
 
 <!-- ─── TOPBAR ─── -->
 <header class="topbar">
-  <div class="topbar-brand">
-    <!-- Auctora diamond logo -->
-    <div class="brand-icon">
-      <div class="brand-icon" style="background: transparent;">
-        <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
-      </div>
-        <path d="M12 2L4 9l8 13 8-13-8-7z" fill="white" opacity="0.9"/>
-        <path d="M4 9h16" stroke="white" stroke-width="1.5" opacity="0.6"/>
-        <path d="M8 9L12 2l4 7" stroke="white" stroke-width="1" opacity="0.5"/>
-      
+    <div class="topbar-brand">
+        <div style="width:32px;height:32px;background:transparent;">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
+        </div>
+        <span class="brand-name">Auctora</span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:6px;background:#2d1655;color:white;">{{ request.user.Role }}</span>
     </div>
-    <span class="brand-name">Auctora</span>
-    <span style="font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:6px; background:#2d1655; color:white;">
-    {{ request.user.Role }}
-</span>
-  </div>
-  <div class="topbar-right">
-    <div class="search-bar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Search auctions...
-    </div>
-    <div class="topbar-icon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    </div>
-    
-    <!-- User Profile -->
-<div style="display:flex; align-items:center; gap:10px; margin-left:8px;">
+    <div class="topbar-right">
+        <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search auctions...
+        </div>
 
-  <div style="text-align:right;">
-    <div style="font-size:13px; font-weight:600; color:var(--text-dark);">
-      {{ request.user.First_name }} {{ request.user.Last_name }}
-    </div>
-    <div style="font-size:11px; color:var(--text-light);">
-      {{ request.user.Role }}
-    </div>
-  </div>
+        <!-- Dark Mode Toggle -->
+        <div class="topbar-icon" onclick="toggleDark()" title="Toggle dark mode">
+            <svg class="dark-toggle-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="dark-toggle-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
 
-  <div class="avatar-circle" style="background:none; padding:0;">
-    {% with request.user.Gender|lower as gender %}
-        {% if gender == "male" %}
-            <img src="{% static 'images/male.png' %}" 
-                 style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-        {% elif gender == "female" %}
-            <img src="{% static 'images/female.png' %}" 
-                 style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-        {% else %}
-            <div class="avatar-circle" style="display:flex; align-items:center; justify-content:center; font-weight:600; color:white;">
-               <!-- AFTER — safe fallback -->
-                  {{ request.user.First_name|default:"?"|first|upper }}
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
             </div>
-        {% endif %}
-    {% endwith %}
-  </div>
-
-</div>
-  </div>
+            <div>
+                {% with request.user.Gender|lower as gender %}
+                    {% if gender == "male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                    {% elif gender == "female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                    {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|default:"?"|first|upper }}</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
 </header>
 
 <!-- ─── SIDEBAR ─── -->
 <aside class="sidebar">
-  <nav class="sidebar-nav">
-    <div class="nav-item active" onclick="setActive(this)">
-      <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      </span>
-      Dashboard
+    <nav class="sidebar-nav">
+        <a href="{% url 'dashboard_redirect' %}" class="nav-item active">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        <a href="{% url 'manage_auctions' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            My Auctions
+        </a>
+        <a href="{% url 'seller_profile' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            My Profile
+        </a>
+        <a href="{% url 'seller_manage_bids' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            Manage Bids
+            <span class="nav-badge">3</span>
+        </a>
+        <a href="{% url 'manage_payments' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            Payments
+            <span class="nav-badge">3</span>
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="{% url 'manage_watchlist' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+            Watchlist
+            <span class="nav-badge">3</span>
+        </a>
+        <a href="{% url 'manage_reviews' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+            Reviews
+            <span class="nav-badge">3</span>
+        </a>
+        <a href="{% url 'manage_notifications' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+            Notifications
+            <span class="nav-badge">3</span>
+        </a>
+        <a href="{% url 'manage_disputes' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            Disputes
+            <span class="nav-badge">3</span>
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="{% url 'home' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+            Home
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <button class="settings-icon-btn" onclick="toggleDark()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings &amp; Dark Mode
+        </button>
+        <div class="sidebar-profile-card">
+            <div style="flex-shrink:0;">
+                {% with request.user.Gender|lower as gender %}
+                    {% if gender == "male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                    {% elif gender == "female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                    {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:"?"|first|upper }}</div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
     </div>
-    <a href="{% url 'manage_auctions' %}" style="text-decoration: none;">
-      <div class="nav-item">
-        <span class="nav-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </span>
-      My Auctions
-    </div>
-    
-    <a href="{% url 'seller_profile' %}" style="text-decoration: none;">
-    <div class="nav-item">
-        <span class="material-symbols-outlined">person</span>
-        My Profile
-    </div>
-
-    <a href="{% url 'seller_manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_bids' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
-      Manage Bids
-      <span class="nav-badge">3</span>
-    </a>
-
-    <a href="{% url 'manage_watchlist' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_watchlist' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
-      Watchlist
-      <span class="nav-badge">3</span>
-    </a>
-
-    
-
-    <a href="{% url 'manage_reviews' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_reviews' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-      Reviews
-      <span class="nav-badge">3</span>
-    </a>
-
-    <a href="{% url 'manage_notifications' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_notifications' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
-      Notifications
-      <span class="nav-badge">3</span>
-    </a>
-
-    <a href="{% url 'manage_disputes' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_disputes' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-      Disputes
-      <span class="nav-badge">3</span>
-    </a>
-
-    <a href="{% url 'manage_payments' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_payments' %}active{% endif %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-      Payments
-      <span class="nav-badge">3</span>
-    </a>
-
-    <a href="{% url 'home' %}" style="text-decoration: none;">
-    <div class="nav-item">
-        <span class="nav-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-        </span>
-        Home
-    </div>
-    </a>
-  </nav>
-
-  <!-- ─── Sidebar Bottom ─── -->
-  <div class="sidebar-bottom">
-    <!-- Settings pinned above profile -->
-    <div class="sidebar-settings-row">
-      <button class="settings-icon-btn" onclick="setActive(document.querySelector('.nav-item'))">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Settings
-      </button>
-    </div>
-
-    <!-- Profile card with logout -->
-    <div class="sidebar-profile-card">
-      <div class="profile-avatar-card" style="background:none; border:none; padding:0;">
-    {% with request.user.Gender|lower as gender %}
-        {% if gender == "male" %}
-            <img src="{% static 'images/male.png' %}" 
-                 style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-        {% elif gender == "female" %}
-            <img src="{% static 'images/female.png' %}" 
-                 style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
-        {% else %}
-            <!-- AFTER — safe fallback -->
-{               { request.user.First_name|default:"?"|first|upper }}
-        {% endif %}
-    {% endwith %}
-</div>
-
-<div class="profile-info">
-  <div class="name">
-      {{ request.user.First_name }} {{ request.user.Last_name }}
-  </div>
-  <div class="tier">
-      {{ request.user.Role }}
-  </div>
-</div>
-
-<div class="logout-btn" title="Logout" onclick="window.location.href='{% url 'logout' %}'">
-      
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      </div>
-    </div>
-  </div>
 </aside>
 
 <!-- ─── MAIN ─── -->
 <main class="main">
-  <div class="page-content">
+    <div class="page-content">
 
-    <!-- Page header -->
-    <div class="page-header">
-      <div>
-        <h1>Luxury Seller Hub</h1>
-        <p>
-            Welcome back, {{ request.user.First_name }} —
-            your portfolio is performing 12% better this week.
-        </p>
-      </div>
-      <button class="btn-primary">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New Listing
-      </button>
-    </div>
+        <div class="page-header">
+            <div>
+                <h1>Luxury Seller Hub</h1>
+                <p>Welcome back, {{ request.user.First_name }} — your portfolio is performing 12% better this week.</p>
+            </div>
+            <button class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Listing
+            </button>
+        </div>
 
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#f0fdf4;">💰</div>
-          <span class="stat-trend trend-green">+12.5%</span>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon-wrap" style="background:#f0fdf4;">💰</div><span class="stat-trend trend-green">+12.5%</span></div>
+                <div class="stat-label">Total Earnings</div>
+                <div class="stat-value" data-count="128450" data-prefix="$" data-format="money">$128,450.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon-wrap" style="background:#eff6ff;">⏱️</div><span class="stat-trend trend-purple">+4%</span></div>
+                <div class="stat-label">Active Auctions</div>
+                <div class="stat-value" data-count="24">24</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-top"><div class="stat-icon-wrap" style="background:#f5f3ff;">🛍️</div><span class="stat-trend trend-purple">+8%</span></div>
+                <div class="stat-label">Items Sold</div>
+                <div class="stat-value" data-count="142">142</div>
+            </div>
         </div>
-        <div class="stat-label">Total Earnings</div>
-        <div class="stat-value" data-count="128450" data-prefix="$" data-format="money">$128,450.00</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#eff6ff;">⏱️</div>
-          <span class="stat-trend trend-purple">+4%</span>
-        </div>
-        <div class="stat-label">Active Auctions</div>
-        <div class="stat-value" data-count="24">24</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#f5f3ff;">🛍️</div>
-          <span class="stat-trend trend-purple">+8%</span>
-        </div>
-        <div class="stat-label">Items Sold</div>
-        <div class="stat-value" data-count="142">142</div>
-      </div>
-    </div>
 
-    <!-- Content grid -->
-    <div class="content-grid">
-
-      <!-- Live Auctions -->
-      <div class="panel-card">
-        <div class="panel-header">
-          <span class="panel-title">Live Auctions</span>
-          <button class="btn-ghost">View All</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Status</th>
-              <th>Bids</th>
-              <th>Current Price</th>
-              <th>Time Left</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-avatar"></div>
-                  <div class="item-name">Patek Philippe Ref. 5270P</div>
+        <div class="content-grid">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <span class="panel-title">Live Auctions</span>
+                    <button class="btn-ghost">View All</button>
                 </div>
-              </td>
-              <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
-              <td>
-                <div class="bids-cell">18</div>
-                <div class="bids-sub">Bids</div>
-              </td>
-              <td class="price-cell">$185,200</td>
-              <td class="time-cell">02h 45m</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-avatar green"></div>
-                  <div class="item-name">1967 Jaguar E-Type Series 1</div>
+                <table>
+                    <thead><tr><th>Item</th><th>Status</th><th>Bids</th><th>Current Price</th><th>Time Left</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="item-cell"><div class="item-avatar"></div><div class="item-name">Patek Philippe Ref. 5270P</div></div></td>
+                            <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
+                            <td><div class="bids-cell">18</div><div class="bids-sub">Bids</div></td>
+                            <td class="price-cell">$185,200</td>
+                            <td class="time-cell">02h 45m</td>
+                        </tr>
+                        <tr>
+                            <td><div class="item-cell"><div class="item-avatar green"></div><div class="item-name">1967 Jaguar E-Type Series 1</div></div></td>
+                            <td><span class="badge badge-soon"><span class="badge-dot"></span>Ending Soon</span></td>
+                            <td><div class="bids-cell">42</div><div class="bids-sub">Bids</div></td>
+                            <td class="price-cell">$210,000</td>
+                            <td class="time-cell">14m 20s</td>
+                        </tr>
+                        <tr>
+                            <td><div class="item-cell"><div class="item-avatar"></div><div class="item-name">Contemporary Canvas #42</div></div></td>
+                            <td><span class="badge badge-sched"><span class="badge-dot"></span>Scheduled</span></td>
+                            <td><div class="bids-cell">0</div><div class="bids-sub">Bids</div></td>
+                            <td class="price-cell">$45,000</td>
+                            <td class="time-cell">Tomorrow</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="quick-create">
+                <div class="quick-title">Quick Create</div>
+                <div class="form-group">
+                    <label class="form-label">Item Category</label>
+                    <select class="form-select"><option>Timepieces</option><option>Fine Jewellery</option><option>Rare Vehicles</option><option>Fine Art</option><option>Designer Handbags</option><option>Rare Wines</option></select>
                 </div>
-              </td>
-              <td><span class="badge badge-soon"><span class="badge-dot"></span>Ending Soon</span></td>
-              <td>
-                <div class="bids-cell">42</div>
-                <div class="bids-sub">Bids</div>
-              </td>
-              <td class="price-cell">$210,000</td>
-              <td class="time-cell">14m 20s</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-avatar"></div>
-                  <div class="item-name">Contemporary Canvas #42</div>
+                <div class="form-group">
+                    <label class="form-label">Auction Title</label>
+                    <input class="form-input" type="text" placeholder="e.g. Rolex Daytona Rose Gold"/>
                 </div>
-              </td>
-              <td><span class="badge badge-sched"><span class="badge-dot"></span>Scheduled</span></td>
-              <td>
-                <div class="bids-cell">0</div>
-                <div class="bids-sub">Bids</div>
-              </td>
-              <td class="price-cell">$45,000</td>
-              <td class="time-cell">Tomorrow</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Quick Create -->
-      <div class="quick-create">
-        <div class="quick-title">Quick Create</div>
-
-        <div class="form-group">
-          <label class="form-label">Item Category</label>
-          <select class="form-select">
-            <option>Timepieces</option>
-            <option>Fine Jewellery</option>
-            <option>Rare Vehicles</option>
-            <option>Fine Art</option>
-            <option>Designer Handbags</option>
-            <option>Rare Wines</option>
-          </select>
+                <div class="form-row form-group">
+                    <div>
+                        <label class="form-label">Reserve Price</label>
+                        <input class="form-input" type="text" placeholder="$0.00"/>
+                    </div>
+                    <div>
+                        <label class="form-label">Duration</label>
+                        <select class="form-select"><option>3 Days</option><option>5 Days</option><option>7 Days</option><option>14 Days</option></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn-upload">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        Upload Media
+                    </button>
+                </div>
+                <a href="{% url 'create_auction' %}" style="text-decoration:none;">
+                    <button class="btn-launch">Launch Auction</button>
+                </a>
+            </div>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Auction Title</label>
-          <input class="form-input" type="text" placeholder="e.g. Rolex Daytona Rose Gold"/>
-        </div>
-
-        <div class="form-row form-group">
-          <div>
-            <label class="form-label">Reserve Price</label>
-            <input class="form-input" type="text" placeholder="$0.00"/>
-          </div>
-          <div>
-            <label class="form-label">Duration</label>
-            <select class="form-select">
-              <option>3 Days</option>
-              <option>5 Days</option>
-              <option>7 Days</option>
-              <option>14 Days</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <button class="btn-upload">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            Upload Media
-          </button>
-        </div>
-
-        <a href ="{% url 'create_auction' %}" style="text-decoration:none;">
-          <button class="btn-launch">Launch Auction</button>
-      </div>
-
     </div>
-  </div>
 </main>
 
 <script>
-  // Active nav
-  function setActive(el) {
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  // Count-up animation
-  function animateCount(el) {
-    const target = parseFloat(el.dataset.count);
-    const prefix = el.dataset.prefix || '';
-    const isMoney = el.dataset.format === 'money';
-    const duration = 1600;
-    const start = performance.now();
-
-    function update(now) {
-      const elapsed = now - start;
-      const p = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const val = eased * target;
-      if (isMoney) {
-        el.textContent = prefix + val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      } else {
-        el.textContent = Math.floor(val).toLocaleString();
-      }
-      if (p < 1) requestAnimationFrame(update);
-      else el.textContent = isMoney
-        ? prefix + target.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-        : Math.floor(target).toLocaleString();
+    // ─── Dark Mode ───
+    if (localStorage.getItem('auctora_dark') === '1') document.body.classList.add('dark');
+    function toggleDark() {
+        const nowDark = document.body.classList.toggle('dark');
+        localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
     }
-    requestAnimationFrame(update);
-  }
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.querySelectorAll('[data-count]').forEach(animateCount);
-    }, 350);
-  });
+    // ─── Count-up animation ───
+    function animateCount(el) {
+        const target = parseFloat(el.dataset.count);
+        const prefix = el.dataset.prefix || '';
+        const isMoney = el.dataset.format === 'money';
+        const duration = 1600;
+        const start = performance.now();
+        function update(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = eased * target;
+            if (isMoney) el.textContent = prefix + val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            else el.textContent = Math.floor(val).toLocaleString();
+            if (p < 1) requestAnimationFrame(update);
+            else el.textContent = isMoney ? prefix + target.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : Math.floor(target).toLocaleString();
+        }
+        requestAnimationFrame(update);
+    }
+    window.addEventListener('load', () => { setTimeout(() => { document.querySelectorAll('[data-count]').forEach(animateCount); }, 350); });
 </script>
 </body>
 </html>

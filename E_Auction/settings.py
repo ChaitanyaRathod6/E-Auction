@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -134,4 +135,7 @@ EMAIL_HOST_PASSWORD = 'dash ypny thgm atjx'
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STRIPE_PUBLIC_KEY = 'pk_test_51TBV5uH3uwdelLJjIYGuJb2gqF5hCtK3mJlkLHIfKgYYntwiSjIt6W830LgMG6RWpFlU5MlbFVUi7qx4fejg5yg700bLskl4Bv'
+STRIPE_SECRET_KEY = 'sk_test_51TBV5uH3uwdelLJjCOjUWCdQtKVTOanTVaDS9YuW27DVqP4TNePR0D0fH4fv4akIUQqAbjvjR9YxaPCGuzz6qIZw0026eOzw5Q'

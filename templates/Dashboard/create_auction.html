@@ -19,179 +19,112 @@
                     "background-light": "#f8f6f6",
                     "background-dark": "#221610",
                 },
-                fontFamily: {
-                    "display": ["Public Sans", "sans-serif"]
-                },
-                borderRadius: {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-                },
+                fontFamily: { "display": ["Public Sans", "sans-serif"] },
+                borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
             },
         },
     }
-
 </script>
 <script>
-   if(localStorage.getItem('auctora_dark')==='1'){
-    document.documentElement.classList.add('dark-pending');
-  }
+    if(localStorage.getItem('auctora_dark')==='1'){
+        document.documentElement.classList.add('dark-pending');
+    }
 </script>
 <style>
     /* ─── DARK MODE ─── */
-body.dark , html.dark-pending body { background: #13102b !important; color: #f1f0f5 !important; }
+    body.dark, html.dark-pending body { background: #13102b !important; color: #f1f0f5 !important; }
+    body.dark aside { background: #1a1438 !important; border-color: #2d1e50 !important; }
+    body.dark aside h2 { color: #c4b5fd !important; }
+    body.dark aside a { color: #a89dc4 !important; }
+    body.dark aside a:hover { background: rgba(45,22,85,0.4) !important; color: #f1f0f5 !important; }
+    body.dark aside a.bg-primary\/10 { background: rgba(124,58,237,0.2) !important; color: #c4b5fd !important; }
+    body.dark aside .bg-slate-100 { background: #0f0c24 !important; }
+    body.dark aside p.text-slate-500 { color: #6b5f85 !important; }
+    body.dark header { background: rgba(26,20,56,0.9) !important; border-color: #2d1e50 !important; }
+    body.dark h1 { color: #ffffff !important; }
+    body.dark h3 { color: #ffffff !important; }
+    body.dark .text-slate-900 { color: #ffffff !important; }
+    body.dark .text-slate-500 { color: #a89dc4 !important; }
+    body.dark .text-slate-700 { color: #c4b5fd !important; }
+    body.dark .text-slate-400 { color: #6b5f85 !important; }
+    body.dark label { color: #c4b5fd !important; }
+    body.dark .text-4xl.font-black { color: #ffffff !important; }
+    body.dark .bg-white { background: #1c1640 !important; }
+    body.dark .border-slate-200 { border-color: #2d1e50 !important; }
+    body.dark .border-slate-100 { border-color: #2d1e50 !important; }
+    body.dark .text-slate-400 { color: #6b5f85 !important; }
+    body.dark .ring-white { --tw-ring-color: #13102b !important; }
+    body.dark .rounded-3xl.bg-white, body.dark .rounded-3xl { background: #1c1640 !important; border-color: #2d1e50 !important; }
+    body.dark .shadow-xl { box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important; }
+    body.dark input[type="text"],
+    body.dark input[type="number"],
+    body.dark input[type="datetime-local"],
+    body.dark select,
+    body.dark textarea { background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
+    body.dark input::placeholder, body.dark textarea::placeholder { color: #6b5f85 !important; }
+    body.dark input:focus, body.dark textarea:focus, body.dark select:focus { border-color: #7c3aed !important; box-shadow: 0 0 0 3px rgba(124,58,237,0.15) !important; background: #1a1438 !important; }
+    body.dark .bg-red-50 { background: rgba(220,38,38,0.1) !important; }
+    body.dark .border-red-200 { border-color: rgba(220,38,38,0.3) !important; }
+    body.dark main { background: #13102b !important; }
 
-/* Sidebar */
-body.dark aside { background: #1a1438 !important; border-color: #2d1e50 !important; }
-body.dark aside h2 { color: #c4b5fd !important; }
-body.dark aside a { color: #a89dc4 !important; }
-body.dark aside a:hover { background: rgba(45,22,85,0.4) !important; color: #f1f0f5 !important; }
-body.dark aside a.bg-primary\/10 { background: rgba(124,58,237,0.2) !important; color: #c4b5fd !important; }
-body.dark aside .bg-slate-100 { background: #0f0c24 !important; }
-body.dark aside p.text-slate-500 { color: #6b5f85 !important; }
+    /* Image upload dark mode */
+    body.dark .img-upload-zone { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+    body.dark .img-upload-zone:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.08) !important; color: #c4b5fd !important; }
+    body.dark .img-preview-box { background: #130c28 !important; border-color: #2d1e50 !important; }
+    body.dark .img-upload-note { color: #6b5f85 !important; }
 
-/* Topbar */
-body.dark header { background: rgba(26,20,56,0.9) !important; border-color: #2d1e50 !important; }
-body.dark header span.text-slate-500 { color: #a89dc4 !important; }
-body.dark header span.text-slate-300 { color: #4a3f6b !important; }
+    ::-webkit-scrollbar { width: 5px; }
+    body.dark ::-webkit-scrollbar-track { background: #13102b; }
+    body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
 
-/* Page title */
-body.dark h1 { color: #ffffff !important; }
-body.dark h3 { color: #ffffff !important; }
-body.dark .text-slate-900 { color: #ffffff !important; }
-body.dark .text-slate-500 { color: #a89dc4 !important; }
-body.dark .text-slate-700 { color: #c4b5fd !important; }
-body.dark .text-slate-400 { color: #6b5f85 !important; }
-body.dark label { color: #c4b5fd !important; }
-
-body.dark .text-4xl.font-black { color: #ffffff !important; }
-/* Stepper */
-body.dark .bg-white.dark\:bg-slate-800,
-body.dark .bg-white { background: #1c1640 !important; }
-body.dark .border-slate-200 { border-color: #2d1e50 !important; }
-body.dark .border-slate-100 { border-color: #2d1e50 !important; }
-body.dark .text-slate-400 { color: #6b5f85 !important; }
-body.dark .ring-white { --tw-ring-color: #13102b !important; }
-
-/* Section cards */
-body.dark .rounded-3xl.bg-white,
-body.dark .rounded-3xl { background: #1c1640 !important; border-color: #2d1e50 !important; }
-body.dark .shadow-xl { box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important; }
-
-/* Form inputs */
-body.dark input[type="text"],
-body.dark input[type="number"],
-body.dark input[type="datetime-local"],
-body.dark input[type="date"],
-body.dark select,
-body.dark textarea {
-  background: #130c28 !important;
-  border-color: #2d1e50 !important;
-  color: #f1f0f5 !important;
-}
-body.dark input::placeholder,
-body.dark textarea::placeholder { color: #6b5f85 !important; }
-body.dark input:focus,
-body.dark textarea:focus,
-body.dark select:focus {
-  border-color: #7c3aed !important;
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.15) !important;
-  background: #1a1438 !important;
-}
-
-/* Error block */
-body.dark .bg-red-50 { background: rgba(220,38,38,0.1) !important; }
-body.dark .border-red-200 { border-color: rgba(220,38,38,0.3) !important; }
-
-/* Back link */
-body.dark .text-slate-500.font-bold { color: #a89dc4 !important; }
-body.dark .text-slate-500.font-bold:hover { color: #f1f0f5 !important; }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-body.dark ::-webkit-scrollbar-track { background: #13102b; }
-body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
-    .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     body { font-family: 'Public Sans', sans-serif; }
-    
 
-    /* Django form input styling - matching your form classes */
-    .form-input,
-    .form-select,
-    .form-textarea,
-    input[type="text"],
-    input[type="number"],
-    input[type="datetime-local"],
-    input[type="date"],
-    select,
-    textarea {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        border: 1.5px solid #e2e8f0;
-        background: #f8fafc;
-        font-size: 0.95rem;
-        color: #1e293b;
-        font-family: 'Public Sans', sans-serif;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        outline: none;
+    .form-input, .form-select, .form-textarea,
+    input[type="text"], input[type="number"], input[type="datetime-local"], select, textarea {
+        width: 100%; padding: 0.75rem 1rem; border-radius: 0.75rem;
+        border: 1.5px solid #e2e8f0; background: #f8fafc;
+        font-size: 0.95rem; color: #1e293b; font-family: 'Public Sans', sans-serif;
+        transition: border-color 0.2s, box-shadow 0.2s; outline: none;
     }
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus,
+    .form-input:focus, .form-select:focus, .form-textarea:focus,
     input:focus, select:focus, textarea:focus {
-        border-color: #2d1655;
-        box-shadow: 0 0 0 3px rgba(45, 22, 85, 0.12);
-        background: #fff;
+        border-color: #2d1655; box-shadow: 0 0 0 3px rgba(45,22,85,0.12); background: #fff;
     }
     .form-select, select {
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232d1655'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.75rem center;
-        background-size: 1.2rem;
-        padding-right: 2.5rem;
+        background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1.2rem; padding-right: 2.5rem;
     }
-    .form-textarea {
-        min-height: 100px;
-        resize: vertical;
-    }
-    .errorlist {
-        list-style: none;
-        padding: 0;
-        margin: 0.5rem 0 0;
-        color: #dc2626;
-        font-size: 0.875rem;
-    }
-    .errorlist li {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-    .errorlist li::before {
-        content: "⚠️";
-        font-size: 0.75rem;
-    }
-    .field-error {
-        border-color: #dc2626 !important;
-    }
+    .form-textarea { min-height: 100px; resize: vertical; }
+    .errorlist { list-style: none; padding: 0; margin: 0.5rem 0 0; color: #dc2626; font-size: 0.875rem; }
+    .errorlist li { display: flex; align-items: center; gap: 0.25rem; }
+    .errorlist li::before { content: "⚠️"; font-size: 0.75rem; }
 
-    body.dark main { background: #13102b !important; }
-body.dark .bg-background-light { background: #13102b !important; }
-body.dark > div { background: #13102b !important; }
-
-body.dark footer h2,
-body.dark footer h4 { color: inherit !important; }
-body.dark footer p { color: inherit !important; }
+    /* ─── Image Upload Zone ─── */
+    .img-upload-zone {
+        display: flex; align-items: center; justify-content: center;
+        flex-direction: column; gap: 8px;
+        width: 100%; padding: 28px 16px;
+        border: 2px dashed #e2e8f0; border-radius: 0.75rem;
+        background: #f8fafc; color: #6b7280;
+        font-size: 13.5px; font-weight: 500; cursor: pointer;
+        transition: border-color 0.2s, background 0.2s, color 0.2s;
+        position: relative;
+    }
+    .img-upload-zone:hover { border-color: #2d1655; background: #f5f3ff; color: #2d1655; }
+    .img-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .img-upload-note { font-size: 11.5px; color: #94a3b8; margin-top: 2px; }
+    .img-preview-box { margin-top: 12px; display: none; position: relative; border-radius: 0.75rem; overflow: hidden; border: 1.5px solid #e2e8f0; background: #f8fafc; }
+    .img-preview-box img { width: 100%; max-height: 200px; object-fit: cover; display: block; }
+    .img-remove-btn { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: rgba(239,68,68,0.85); color: #fff; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .img-remove-btn:hover { background: #ef4444; }
 </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
 <div class="flex min-h-screen">
 
-    <!-- Sidebar Navigation -->
+    <!-- Sidebar -->
     <aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full z-20">
         <div class="p-6 flex items-center gap-3">
             <div class="bg-primary p-2 rounded-lg">
@@ -204,12 +137,10 @@ body.dark footer p { color: inherit !important; }
                 <span class="material-symbols-outlined">dashboard</span>
                 <span class="font-medium">Dashboard</span>
             </a>
-            
             <a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl" href="#">
                 <span class="material-symbols-outlined">add_circle</span>
                 <span class="font-medium">Create Auction</span>
             </a>
-            
             <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors" href="{% url 'auction_list' %}">
                 <span class="material-symbols-outlined">grid_view</span>
                 <span class="font-medium">Live Auctions</span>
@@ -225,20 +156,14 @@ body.dark footer p { color: inherit !important; }
                     <p class="text-xs text-slate-500">Premium Seller</p>
                 </div>
             </div>
-            <a href="{% url 'home' %}" class="block w-full py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all text-center">
-                Go to Home
-            </a>
+            <a href="{% url 'home' %}" class="block w-full py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all text-center">Go to Home</a>
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 ml-72">
 
-        <!-- Top Navigation Bar -->
         <header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
-            <div class="flex items-center gap-4">
-                
-            </div>
+            <div></div>
             <div class="flex items-center gap-6">
                 <div class="relative">
                     <span class="material-symbols-outlined text-slate-500 cursor-pointer">notifications</span>
@@ -250,7 +175,6 @@ body.dark footer p { color: inherit !important; }
             </div>
         </header>
 
-        <!-- Form Content -->
         <div class="max-w-4xl mx-auto px-8 py-12">
 
             <div class="mb-12">
@@ -288,84 +212,61 @@ body.dark footer p { color: inherit !important; }
                         <span class="material-symbols-outlined text-accent text-3xl">inventory_2</span>
                         <h3 class="text-2xl font-bold">Step 1: Item Details</h3>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Item Name -->
                         <div class="col-span-2">
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Item Name <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Item Name <span class="text-red-500">*</span></label>
                             {{ item_form.name }}
-                            {% if item_form.name.errors %}
-                                <ul class="errorlist">
-                                    {% for error in item_form.name.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if item_form.name.errors %}<ul class="errorlist">{% for e in item_form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
 
                         <!-- Category -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Category <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category <span class="text-red-500">*</span></label>
                             {{ item_form.category }}
-                            {% if item_form.category.errors %}
-                                <ul class="errorlist">
-                                    {% for error in item_form.category.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if item_form.category.errors %}<ul class="errorlist">{% for e in item_form.category.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
 
                         <!-- Condition -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Condition <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Condition <span class="text-red-500">*</span></label>
                             {{ item_form.condition }}
-                            {% if item_form.condition.errors %}
-                                <ul class="errorlist">
-                                    {% for error in item_form.condition.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if item_form.condition.errors %}<ul class="errorlist">{% for e in item_form.condition.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
 
                         <!-- Description -->
                         <div class="col-span-2">
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Description <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Description <span class="text-red-500">*</span></label>
                             {{ item_form.description }}
                             <p class="mt-1 text-xs text-slate-400">Provide a detailed description of your item (condition, features, history, etc.)</p>
-                            {% if item_form.description.errors %}
-                                <ul class="errorlist">
-                                    {% for error in item_form.description.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if item_form.description.errors %}<ul class="errorlist">{% for e in item_form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
 
                         <!-- Shipping Cost -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Shipping Cost ($) <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Shipping Cost (₹) <span class="text-red-500">*</span></label>
                             {{ item_form.shipping_cost }}
                             <p class="mt-1 text-xs text-slate-400">Cost to ship the item to buyer</p>
-                            {% if item_form.shipping_cost.errors %}
-                                <ul class="errorlist">
-                                    {% for error in item_form.shipping_cost.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if item_form.shipping_cost.errors %}<ul class="errorlist">{% for e in item_form.shipping_cost.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
+
+                        <!-- ─── ITEM IMAGE UPLOAD ─── -->
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Item Image</label>
+                            <div class="img-upload-zone" id="itemUploadZone">
+                                <span class="material-symbols-outlined" style="font-size:28px;">add_photo_alternate</span>
+                                <span>Click to upload item image</span>
+                                <input type="file" name="image" id="itemImageInput" accept="image/*" onchange="previewItemImage(this)">
+                            </div>
+                            <div class="img-preview-box" id="itemPreviewBox">
+                                <img id="itemPreviewImg" src="" alt="Preview">
+                                <button type="button" class="img-remove-btn" onclick="removeItemImage()" title="Remove">✕</button>
+                            </div>
+                            <p class="img-upload-note mt-2">PNG, JPG or WEBP — max 5MB. Optional but recommended.</p>
+                            {% if item_form.image.errors %}<ul class="errorlist mt-1">{% for e in item_form.image.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+
                     </div>
                 </div>
 
@@ -375,58 +276,26 @@ body.dark footer p { color: inherit !important; }
                         <span class="material-symbols-outlined text-accent text-3xl">payments</span>
                         <h3 class="text-2xl font-bold">Step 2: Pricing</h3>
                     </div>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Starting Price -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Starting Price ($) <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Starting Price (₹) <span class="text-red-500">*</span></label>
                             {{ auction_form.starting_price }}
                             <p class="mt-1 text-xs text-slate-400">Minimum opening bid amount</p>
-                            {% if auction_form.starting_price.errors %}
-                                <ul class="errorlist">
-                                    {% for error in auction_form.starting_price.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if auction_form.starting_price.errors %}<ul class="errorlist">{% for e in auction_form.starting_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
-
-                        <!-- Reserve Price -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Reserve Price ($) <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Reserve Price (₹) <span class="text-red-500">*</span></label>
                             {{ auction_form.reserve_price }}
-                            <p class="mt-1 text-xs text-slate-400">Minimum price to sell (must be > starting price)</p>
-                            {% if auction_form.reserve_price.errors %}
-                                <ul class="errorlist">
-                                    {% for error in auction_form.reserve_price.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            <p class="mt-1 text-xs text-slate-400">Minimum price to sell (must be > starting)</p>
+                            {% if auction_form.reserve_price.errors %}<ul class="errorlist">{% for e in auction_form.reserve_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
-
-                        <!-- Bid Increment -->
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                                Bid Increment ($) <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Bid Increment (₹) <span class="text-red-500">*</span></label>
                             {{ auction_form.bid_increment }}
                             <p class="mt-1 text-xs text-slate-400">Minimum raise per bid</p>
-                            {% if auction_form.bid_increment.errors %}
-                                <ul class="errorlist">
-                                    {% for error in auction_form.bid_increment.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                            {% if auction_form.bid_increment.errors %}<ul class="errorlist">{% for e in auction_form.bid_increment.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                         </div>
                     </div>
-
-                    <!-- Current Price (Hidden - will be set to starting price) -->
                     {{ auction_form.current_price.as_hidden }}
                     {{ auction_form.status.as_hidden }}
                 </div>
@@ -437,49 +306,31 @@ body.dark footer p { color: inherit !important; }
                         <span class="material-symbols-outlined text-accent text-3xl">schedule</span>
                         <h3 class="text-2xl font-bold">Step 3: Schedule</h3>
                     </div>
-                    
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
-                            Auction End Time <span class="text-red-500">*</span>
-                        </label>
+                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Auction End Time <span class="text-red-500">*</span></label>
                         {{ auction_form.end_time }}
                         <p class="mt-2 text-xs text-slate-400">Set when the auction will close (must be in the future)</p>
-                        {% if auction_form.end_time.errors %}
-                            <ul class="errorlist">
-                                {% for error in auction_form.end_time.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
+                        {% if auction_form.end_time.errors %}<ul class="errorlist">{% for e in auction_form.end_time.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                     </div>
                 </div>
 
-                <!-- Non-field Errors (form-wide errors) -->
                 {% if auction_form.non_field_errors or item_form.non_field_errors %}
                 <div class="bg-red-50 border border-red-200 rounded-2xl p-5">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="material-symbols-outlined text-red-500">error</span>
                         <p class="font-bold text-red-700">Please fix the following errors:</p>
                     </div>
-                    
-                    {% for error in item_form.non_field_errors %}
-                        <p class="text-sm text-red-600 ml-7">• Item: {{ error }}</p>
-                    {% endfor %}
-                    
-                    {% for error in auction_form.non_field_errors %}
-                        <p class="text-sm text-red-600 ml-7">• Auction: {{ error }}</p>
-                    {% endfor %}
+                    {% for error in item_form.non_field_errors %}<p class="text-sm text-red-600 ml-7">• Item: {{ error }}</p>{% endfor %}
+                    {% for error in auction_form.non_field_errors %}<p class="text-sm text-red-600 ml-7">• Auction: {{ error }}</p>{% endfor %}
                 </div>
                 {% endif %}
 
-                <!-- Action Buttons -->
                 <div class="flex items-center justify-between pb-8">
                     <a href="{% url 'SellerDashboard' %}" class="px-8 py-4 text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
                         <span class="material-symbols-outlined">arrow_back</span>
                         Back to Dashboard
                     </a>
-                    <button type="submit"
-                        class="px-10 py-4 bg-primary text-white rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                    <button type="submit" class="px-10 py-4 bg-primary text-white rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
                         Launch Auction
                         <span class="material-symbols-outlined">gavel</span>
                     </button>
@@ -488,7 +339,6 @@ body.dark footer p { color: inherit !important; }
             </form>
         </div>
 
-        <!-- Footer -->
         <footer class="bg-primary text-white py-12 px-8">
             <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
@@ -496,17 +346,13 @@ body.dark footer p { color: inherit !important; }
                         <span class="material-symbols-outlined text-accent text-3xl">diamond</span>
                         <h2 class="text-3xl font-black tracking-tight">Auctora</h2>
                     </div>
-                    <p class="text-white/60 max-w-sm mb-6">
-                        The world's premier destination for rare collectibles, luxury goods, and historical artifacts. Authenticity guaranteed for every listing.
-                    </p>
+                    <p class="text-white/60 max-w-sm mb-6">The world's premier destination for rare collectibles, luxury goods, and historical artifacts.</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-lg mb-6 text-accent">Platform</h4>
                     <ul class="space-y-4 text-white/60 font-medium">
                         <li><a class="hover:text-white transition-colors" href="#">How it works</a></li>
                         <li><a class="hover:text-white transition-colors" href="#">Seller Guide</a></li>
-                        <li><a class="hover:text-white transition-colors" href="#">Fees &amp; Pricing</a></li>
-                        <li><a class="hover:text-white transition-colors" href="#">Authentication</a></li>
                     </ul>
                 </div>
                 <div>
@@ -521,20 +367,35 @@ body.dark footer p { color: inherit !important; }
             </div>
             <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
                 <p>© 2026 Auctora International. All rights reserved.</p>
-                <div class="flex gap-6">
-                    <a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a>
-                    <a class="hover:text-white transition-colors" href="{% url 'Security' %}">Security</a>
-                </div>
             </div>
         </footer>
 
     </main>
 </div>
-</body> 
+
 <script>
-  if(localStorage.getItem('auctora_dark')==='1'){
-    document.body.classList.add('dark');
-    document.documentElement.classList.remove('dark-pending');
-  }
+    // ─── Dark Mode ───
+    if (localStorage.getItem('auctora_dark') === '1') {
+        document.body.classList.add('dark');
+        document.documentElement.classList.remove('dark-pending');
+    }
+
+    // ─── Item Image Preview ───
+    function previewItemImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('itemPreviewImg').src = e.target.result;
+                document.getElementById('itemPreviewBox').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function removeItemImage() {
+        document.getElementById('itemImageInput').value = '';
+        document.getElementById('itemPreviewBox').style.display = 'none';
+        document.getElementById('itemPreviewImg').src = '';
+    }
 </script>
+</body>
 </html>

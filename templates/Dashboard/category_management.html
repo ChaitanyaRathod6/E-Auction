@@ -36,73 +36,49 @@ body.dark .brand-name { color: #c4b5fd !important; }
 body.dark .main { background: #13102b !important; }
 body.dark .search-bar { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
 body.dark .topbar-icon { background: #130c28 !important; border-color: #2d1e50 !important; }
-
-/* Page header */
 body.dark .page-header h1 { color: #f1f0f5 !important; }
 body.dark .page-header p { color: #a89dc4 !important; }
-
-/* Active nav */
 body.dark .nav-item.active { background: #3d2272 !important; color: #ffffff !important; }
-
-/* Form card */
 body.dark .form-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
 body.dark .card-header { border-color: #2d1e50 !important; }
 body.dark .card-title { color: #f1f0f5 !important; }
-body.dark .form-input {
-  background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important;
-}
+body.dark .form-input { background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
 body.dark .form-input::placeholder { color: #6b5f85 !important; }
 body.dark .form-input:focus { background: #1a1340 !important; border-color: #7c3aed !important; }
-body.dark .form-textarea {
-  background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important;
-}
+body.dark .form-textarea { background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
 body.dark .form-textarea::placeholder { color: #6b5f85 !important; }
 body.dark .form-textarea:focus { background: #1a1340 !important; border-color: #7c3aed !important; }
 body.dark .form-label { color: #6b5f85 !important; }
-
-/* Edit mode banner */
-body.dark .edit-mode-banner {
-  background: #2d1e50 !important; border-color: #3d2272 !important; color: #c4b5fd !important;
-}
-
-/* Buttons */
+body.dark .edit-mode-banner { background: #2d1e50 !important; border-color: #3d2272 !important; color: #c4b5fd !important; }
 body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; }
 body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
 body.dark .btn-danger { border-color: rgba(239,68,68,0.3) !important; color: #fca5a5 !important; }
 body.dark .btn-danger:hover { background: rgba(239,68,68,0.1) !important; }
-
-/* Category list */
 body.dark .list-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
 body.dark .list-header { border-color: #2d1e50 !important; }
 body.dark .list-search { border-color: #2d1e50 !important; }
-body.dark .search-input-wrap {
-  background: #130c28 !important; border-color: #2d1e50 !important;
-}
+body.dark .search-input-wrap { background: #130c28 !important; border-color: #2d1e50 !important; }
 body.dark .search-input-wrap input { color: #f1f0f5 !important; }
 body.dark .search-input-wrap input::placeholder { color: #6b5f85 !important; }
 body.dark .category-count { background: #2d1e50 !important; color: #c4b5fd !important; }
-
-/* Category rows */
 body.dark .category-row { border-color: #2d1e50 !important; }
 body.dark .category-row:hover { background: #1a1340 !important; }
 body.dark .category-icon { background: #2d1e50 !important; }
 body.dark .category-name { color: #f1f0f5 !important; }
 body.dark .category-desc { color: #a89dc4 !important; }
 body.dark .category-date { color: #6b5f85 !important; }
-
-/* Action buttons */
-body.dark .action-btn {
-  background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important;
-}
-
-/* Empty state */
+body.dark .action-btn { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
 body.dark .empty-title { color: #f1f0f5 !important; }
 body.dark .empty-desc { color: #a89dc4 !important; }
 body.dark .empty-icon { background: #2d1e50 !important; }
-
-/* Alerts */
 body.dark .alert-success { background: rgba(16,185,129,0.1) !important; border-color: rgba(16,185,129,0.2) !important; color: #6ee7b7 !important; }
 body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-color: rgba(239,68,68,0.2) !important; color: #fca5a5 !important; }
+
+/* Image upload dark mode */
+body.dark .img-upload-area { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
+body.dark .img-upload-area:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.08) !important; color: #c4b5fd !important; }
+body.dark .img-upload-note { color: #6b5f85 !important; }
+body.dark .img-preview-wrap { border-color: #2d1e50 !important; background: #130c28 !important; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: var(--main-bg); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; }
@@ -111,7 +87,6 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Topbar */
         .topbar { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: var(--topbar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px 0 0; z-index: 200; animation: fadeIn 0.5s both; box-shadow: 0 1px 8px rgba(45,22,85,0.06); }
         .topbar-brand { width: 260px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--border); height: 100%; flex-shrink: 0; }
         .brand-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
@@ -122,7 +97,6 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         .topbar-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--main-bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, transform 0.2s; color: var(--text-mid); }
         .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
 
-        /* Sidebar */
         .sidebar { width: 260px; min-height: 100vh; background: var(--sidebar-bg); position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; padding-top: 56px; display: flex; flex-direction: column; animation: slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both; box-shadow: 2px 0 20px rgba(45,22,85,0.15); }
         .sidebar-nav { padding: 8px 10px; flex: 1; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; transition: background 0.25s ease, color 0.2s, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 2px; text-decoration: none; }
@@ -143,17 +117,14 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         .logout-btn { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.4); transition: background 0.2s, color 0.2s, transform 0.25s; }
         .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
 
-        /* Main */
         .main { margin-left: 260px; padding-top: 56px; min-height: 100vh; animation: fadeIn 0.6s 0.2s both; }
         .page-content { padding: 28px; }
         .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; animation: fadeInUp 0.5s 0.25s both; }
         .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
         .page-header p { font-size: 14px; color: var(--text-mid); margin-top: 4px; }
 
-        /* Two column layout */
         .category-grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; animation: fadeInUp 0.5s 0.3s both; }
 
-        /* Form card */
         .form-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; position: sticky; top: 76px; }
         .card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
         .card-title { font-size: 16px; font-weight: 700; color: var(--text-dark); }
@@ -168,6 +139,25 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         .form-textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); background: #fff; }
         .form-textarea::placeholder { color: var(--text-light); }
 
+        /* ─── Image Upload ─── */
+        .img-upload-area {
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 8px;
+            width: 100%; padding: 20px 14px;
+            border: 2px dashed var(--border); border-radius: 10px;
+            background: var(--main-bg); color: var(--text-mid);
+            font-size: 13px; font-weight: 500; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+            position: relative;
+        }
+        .img-upload-area:hover { border-color: var(--accent-purple); background: #f3f0ff; color: var(--accent-purple); }
+        .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .img-upload-note { font-size: 11px; color: var(--text-light); margin-top: 4px; text-align: center; }
+        .img-preview-wrap { margin-top: 10px; display: none; position: relative; border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border); background: var(--main-bg); }
+        .img-preview-wrap img { width: 100%; max-height: 160px; object-fit: cover; display: block; }
+        .img-preview-remove { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%; background: rgba(239,68,68,0.85); color: #fff; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+        .img-preview-remove:hover { background: var(--red); }
+
         .btn-primary { display: inline-flex; align-items: center; gap: 6px; background: var(--primary); color: white; padding: 11px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 4px 16px rgba(45,22,85,0.3); width: 100%; justify-content: center; }
         .btn-primary:hover { transform: scale(1.02); background: #3d2070; box-shadow: 0 6px 24px rgba(45,22,85,0.45); }
         .btn-ghost { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--text-mid); padding: 9px 16px; border-radius: 50px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border); cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
@@ -175,23 +165,20 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         .btn-danger { display: inline-flex; align-items: center; gap: 6px; background: transparent; color: var(--red); padding: 9px 16px; border-radius: 50px; font-size: 13px; font-weight: 500; border: 1.5px solid #fecaca; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
         .btn-danger:hover { background: #fef2f2; border-color: var(--red); }
 
-        /* Category list */
         .list-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
         .list-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
         .category-count { font-size: 12px; font-weight: 600; background: #f3f0ff; color: var(--accent-purple); padding: 4px 12px; border-radius: 20px; }
-
-        /* Search bar in list */
         .list-search { padding: 16px 24px; border-bottom: 1px solid var(--border); }
         .search-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--main-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 9px 14px; }
         .search-input-wrap svg { flex-shrink: 0; color: var(--text-light); }
         .search-input-wrap input { border: none; background: transparent; outline: none; font-size: 14px; color: var(--text-dark); font-family: 'Inter', sans-serif; width: 100%; }
         .search-input-wrap input::placeholder { color: var(--text-light); }
 
-        /* Category rows */
         .category-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); transition: background 0.2s; animation: fadeInUp 0.4s both; }
         .category-row:last-child { border-bottom: none; }
         .category-row:hover { background: #faf9ff; }
-        .category-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #f3f0ff, #ede9fe); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+        .category-icon { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #f3f0ff, #ede9fe); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .category-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
         .category-info { flex: 1; min-width: 0; }
         .category-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .category-desc { font-size: 12px; color: var(--text-mid); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
@@ -202,24 +189,20 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         .action-btn:hover.edit { background: #f3f0ff; border-color: var(--accent-purple); color: var(--accent-purple); }
         .action-btn:hover.delete { background: #fef2f2; border-color: var(--red); color: var(--red); }
 
-        /* Empty state */
         .empty-state { padding: 48px 24px; text-align: center; }
         .empty-icon { width: 64px; height: 64px; border-radius: 16px; background: #f3f0ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
         .empty-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
         .empty-desc { font-size: 13px; color: var(--text-mid); }
 
-        /* Edit mode indicator */
         .edit-mode-banner { background: #f3f0ff; border: 1px solid #ddd6fe; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; display: none; align-items: center; gap: 10px; font-size: 13px; color: var(--accent-purple); font-weight: 500; }
         .edit-mode-banner.show { display: flex; }
         .edit-cancel { margin-left: auto; cursor: pointer; font-size: 12px; color: var(--text-mid); text-decoration: underline; }
 
-        /* Toast */
         .toast { position: fixed; bottom: 28px; right: 28px; background: #1a1035; color: white; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; }
         .toast.show { transform: translateY(0); opacity: 1; }
         .toast-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .toast.error .toast-icon { background: var(--red); }
 
-        /* Messages */
         .alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; font-weight: 500; }
         .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
         .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
@@ -230,13 +213,10 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
 </head>
 <body>
 
-<!-- Topbar -->
 <header class="topbar">
     <div class="topbar-brand">
-        <div class="brand-icon">
-            <div class="brand-icon" style="background: transparent;">
-                <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px; height:32px; object-fit:contain;"/>
-            </div>
+        <div class="brand-icon" style="background:transparent;">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
         </div>
         <span class="brand-name">Auctora</span>
     </div>
@@ -248,60 +228,47 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         <div class="topbar-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </div>
-        <div style="display:flex; align-items:center; gap:10px; margin-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
             <div style="text-align:right;">
-                <div style="font-size:13px; font-weight:600; color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
-                <div style="font-size:11px; color:var(--text-light);">{{ request.user.Role }}</div>
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
             </div>
             <div>
-                {% if request.user.profile_photo %}
-                    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                {% elif request.user.Gender|lower == "male" %}
-                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                {% elif request.user.Gender|lower == "female" %}
-                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-                {% else %}
-                    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|default:""|first|upper }}</div>
-                {% endif %}
+                {% if request.user.profile_photo %}<img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:14px;">{{ request.user.First_name|default:""|first|upper }}</div>{% endif %}
             </div>
         </div>
     </div>
 </header>
 
-<!-- Sidebar -->
 <aside class="sidebar">
     <nav class="sidebar-nav">
         <a href="{% url 'AdminDashboard' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
             Dashboard
         </a>
-        
         <a href="{% url 'manage_categories' %}" class="nav-item active">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></span>
             Manage_Categories
         </a>
-        
         <a href="{% url 'home' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
             Home
         </a>
     </nav>
     <div class="sidebar-bottom">
-        <button class="settings-icon-btn">
+        <button class="settings-icon-btn" onclick="toggleDark()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Settings
+            Settings &amp; Dark Mode
         </button>
         <div class="sidebar-profile-card">
             <div style="flex-shrink:0;">
-              {% if request.user.profile_photo %}
-    <img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-{% elif request.user.Gender|lower == "male" %}
-    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-{% elif request.user.Gender|lower == "female" %}
-    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-{% else %}
-    <div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:""|first|upper }}</div>
-{% endif %} 
+                {% if request.user.profile_photo %}<img src="{{ request.user.profile_photo.url }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender|lower == "female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;">{{ request.user.First_name|default:""|first|upper }}</div>{% endif %}
             </div>
             <div class="profile-info">
                 <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
@@ -314,7 +281,6 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
     </div>
 </aside>
 
-<!-- Main -->
 <main class="main">
     <div class="page-content">
 
@@ -340,14 +306,13 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
                 </div>
                 <div class="card-body">
 
-                    <!-- Edit mode banner -->
                     <div class="edit-mode-banner" id="editBanner">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         Editing: <strong id="editingName"></strong>
                         <span class="edit-cancel" onclick="cancelEdit()">Cancel</span>
                     </div>
 
-                    <form method="POST" id="categoryForm">
+                    <form method="POST" id="categoryForm" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="action" id="formAction" value="add">
                         <input type="hidden" name="category_id" id="categoryId" value="">
@@ -356,9 +321,25 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
                             <label class="form-label">Category Name *</label>
                             <input type="text" name="name" id="nameInput" class="form-input" placeholder="e.g. Electronics, Jewellery, Art..." required>
                         </div>
+
                         <div class="form-group">
                             <label class="form-label">Description</label>
                             <textarea name="description" id="descInput" class="form-textarea" placeholder="Brief description of what belongs in this category..."></textarea>
+                        </div>
+
+                        <!-- ─── IMAGE UPLOAD ─── -->
+                        <div class="form-group">
+                            <label class="form-label">Category Image</label>
+                            <div class="img-upload-area" id="uploadArea">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <span>Click to upload image</span>
+                                <input type="file" name="image" id="imageInput" accept="image/*" onchange="previewImage(this)">
+                            </div>
+                            <div class="img-preview-wrap" id="previewWrap">
+                                <img id="previewImg" src="" alt="Preview">
+                                <button type="button" class="img-preview-remove" onclick="removeImage()" title="Remove">✕</button>
+                            </div>
+                            <p class="img-upload-note">PNG, JPG or WEBP — max 5MB</p>
                         </div>
 
                         <button type="submit" class="btn-primary" id="submitBtn">
@@ -386,19 +367,23 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
                     {% if categories %}
                         {% for category in categories %}
                         <div class="category-row" id="row-{{ category.id }}" data-name="{{ category.name|lower }}">
-                            <div class="category-icon">🏷️</div>
+                            <div class="category-icon">
+                                {% if category.image %}
+                                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                                {% else %}
+                                    🏷️
+                                {% endif %}
+                            </div>
                             <div class="category-info">
                                 <div class="category-name">{{ category.name }}</div>
                                 <div class="category-desc">{{ category.description|default:"No description" }}</div>
                                 <div class="category-date">Added {{ category.created_at|date:"d M Y" }}</div>
                             </div>
                             <div class="category-actions">
-                                <!-- Edit button -->
                                 <button class="action-btn edit" title="Edit"
                                     onclick="editCategory({{ category.id }}, '{{ category.name|escapejs }}', '{{ category.description|escapejs }}')">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
-                                <!-- Delete button -->
                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Delete \'{{ category.name }}\'? This cannot be undone.')">
                                     {% csrf_token %}
                                     <input type="hidden" name="action" value="delete">
@@ -426,17 +411,37 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
     </div>
 </main>
 
-<!-- Toast -->
 <div class="toast" id="toast">
-    <div class="toast-icon">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
+    <div class="toast-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
     <span id="toastMsg">Category saved!</span>
 </div>
 
 <script>
-    (function(){if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}})();
-    // Edit category — fill the form with existing data
+    // ─── Dark Mode ───
+    if (localStorage.getItem('auctora_dark') === '1') document.body.classList.add('dark');
+    function toggleDark() {
+        const nowDark = document.body.classList.toggle('dark');
+        localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
+    }
+
+    // ─── Image Preview ───
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('previewWrap').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function removeImage() {
+        document.getElementById('imageInput').value = '';
+        document.getElementById('previewWrap').style.display = 'none';
+        document.getElementById('previewImg').src = '';
+    }
+
+    // ─── Edit category ───
     function editCategory(id, name, description) {
         document.getElementById('formAction').value = 'edit';
         document.getElementById('categoryId').value = id;
@@ -446,11 +451,10 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         document.getElementById('formTitle').textContent = 'Edit Category';
         document.getElementById('editingName').textContent = name;
         document.getElementById('editBanner').classList.add('show');
-        // Scroll to form
+        removeImage();
         document.getElementById('categoryForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Cancel edit — reset form back to add mode
     function cancelEdit() {
         document.getElementById('formAction').value = 'add';
         document.getElementById('categoryId').value = '';
@@ -459,18 +463,16 @@ body.dark .alert-error { background: rgba(239,68,68,0.1) !important; border-colo
         document.getElementById('submitText').textContent = 'Add Category';
         document.getElementById('formTitle').textContent = 'Add New Category';
         document.getElementById('editBanner').classList.remove('show');
+        removeImage();
     }
 
-    // Live search filter
     function filterCategories() {
         const query = document.getElementById('searchInput').value.toLowerCase();
         document.querySelectorAll('.category-row').forEach(row => {
-            const name = row.getAttribute('data-name');
-            row.style.display = name.includes(query) ? 'flex' : 'none';
+            row.style.display = row.getAttribute('data-name').includes(query) ? 'flex' : 'none';
         });
     }
 
-    // Show toast on Django message
     {% if messages %}
         {% for message in messages %}
             window.addEventListener('load', () => showToast('{{ message }}', '{% if "error" in message.tags %}error{% endif %}'));
