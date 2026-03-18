@@ -702,22 +702,22 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
       Activity Log
     </a>
 
-    <div class="sidebar-divider"></div>
-
-    <a class="nav-item {% if request.resolver_match.url_name == 'admin_profile' %}active{% endif %}" href="{% url 'admin_profile' %}">
-      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-      My Profile
-    </a>
+    
 
   </nav>
 
   <!-- ─── Sidebar Bottom ─── -->
   <div class="sidebar-bottom">
     <div>
-      <button class="settings-icon-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Settings
-      </button>
+      <a href="{% url 'setting' %}" class="nav-item">
+    <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+    </span>
+    Settings
+</a>
     </div>
     <div class="sidebar-profile-card" onclick="window.location.href='{% url 'admin_profile' %}'">
       <div class="profile-avatar-card" style="background:none; border:none; padding:0;">
@@ -763,121 +763,93 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Last 30 Days
         </button>
-        <button class="btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          New Auction
-        </button>
+        <a href="{% url 'manage_auctions' %}" class="btn-primary" style="text-decoration:none;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Manage Auctions
+</a>
       </div>
     </div>
 
     <!-- Stats -->
     <div class="stats-row">
-      <div class="stat-card">
+    <div class="stat-card">
         <div class="stat-card-bg-icon" style="font-size:60px;">💰</div>
         <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#f5f3ff;">💰</div>
-          <span class="stat-trend trend-green">↑ 12.5%</span>
+            <div class="stat-icon-wrap" style="background:#f5f3ff;">💰</div>
+            <span class="stat-trend trend-green">↑ Lifetime</span>
         </div>
         <div class="stat-label">Total GMV</div>
-        <div class="stat-value" data-count="4200000" data-prefix="$" data-format="gmv">$4.2M</div>
-        <div class="stat-sub">vs $3.7M last month</div>
-      </div>
-      <div class="stat-card">
+        <div class="stat-value">₹{{ total_gmv }}</div>
+        <div class="stat-sub">All completed payments</div>
+    </div>
+    <div class="stat-card">
         <div class="stat-card-bg-icon" style="font-size:60px;">🔨</div>
         <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#eff6ff;">🔨</div>
-          <span class="stat-trend trend-blue">↑ 4.2%</span>
+            <div class="stat-icon-wrap" style="background:#eff6ff;">🔨</div>
+            <span class="stat-trend trend-blue">Live now</span>
         </div>
         <div class="stat-label">Active Auctions</div>
-        <div class="stat-value" data-count="1284">1,284</div>
-        <div class="stat-sub">284 ending today</div>
-      </div>
-      <div class="stat-card">
+        <div class="stat-value">{{ active_auctions }}</div>
+        <div class="stat-sub">Currently running</div>
+    </div>
+    <div class="stat-card">
         <div class="stat-card-bg-icon" style="font-size:60px;">👤</div>
         <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#f0fdf4;">👤</div>
-          <span class="stat-trend trend-green">↑ 8.1%</span>
+            <div class="stat-icon-wrap" style="background:#f0fdf4;">👤</div>
+            <span class="stat-trend trend-green">All time</span>
         </div>
-        <div class="stat-label">New Bidders</div>
-        <div class="stat-value" data-count="856">856</div>
-        <div class="stat-sub">This month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-bg-icon" style="font-size:60px;">⚡</div>
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#fefce8;">⚡</div>
-          <span class="stat-trend trend-green" style="color:var(--green);">✓ Optimal</span>
-        </div>
-        <div class="stat-label">System Uptime</div>
-        <div class="stat-value">99.9%</div>
-        <div class="stat-sub">0 incidents active</div>
-      </div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value">{{ total_users }}</div>
+        <div class="stat-sub">Registered accounts</div>
     </div>
+    <div class="stat-card">
+        <div class="stat-card-bg-icon" style="font-size:60px;">⚠️</div>
+        <div class="stat-top">
+            <div class="stat-icon-wrap" style="background:#fef2f2;">⚠️</div>
+            <span class="stat-trend" style="color:var(--red);">Needs attention</span>
+        </div>
+        <div class="stat-label">Open Disputes</div>
+        <div class="stat-value">{{ open_disputes }}</div>
+        <div class="stat-sub">Awaiting resolution</div>
+    </div>
+</div>
 
     <!-- Charts -->
-    <div class="charts-row">
+   <div class="charts-row">
 
-      <!-- GMV Line Chart -->
-      <div class="chart-card">
+    <!-- GMV Line Chart -->
+    <div class="chart-card">
         <div class="chart-header">
-          <div>
-            <div class="chart-title">GMV Growth (Weekly)</div>
-            <div class="chart-value">$4,200,500</div>
-            <span class="chart-badge badge-green-soft">↑ +15.2% vs last week</span>
-          </div>
-          <button class="btn-ghost" style="padding:7px 12px; font-size:12px; border-radius:8px;">Export</button>
+            <div>
+                <div class="chart-title">GMV Growth</div>
+                <div class="chart-value">₹{{ total_gmv }}</div>
+                <span class="chart-badge badge-green-soft">Completed Payments</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="btn-ghost" style="padding:7px 12px;font-size:12px;border-radius:8px;" onclick="switchGMV('weekly')" id="btn-weekly">Weekly</button>
+                <button class="btn-ghost" style="padding:7px 12px;font-size:12px;border-radius:8px;" onclick="switchGMV('monthly')" id="btn-monthly">Monthly</button>
+            </div>
         </div>
         <div class="chart-svg-wrap">
-          <svg viewBox="0 0 472 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="160">
-            <defs>
-              <linearGradient id="gmvGrad" x1="236" y1="1" x2="236" y2="149" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#2d1655" stop-opacity="0.18"/>
-                <stop offset="1" stop-color="#2d1655" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 109C18 109 18 21 36 21C54 21 54 41 72 41C90 41 90 93 109 93C127 93 127 33 145 33C163 33 163 101 182 101C200 101 200 61 218 61C236 61 236 45 254 45C272 45 272 121 290 121C309 121 309 149 327 149C345 149 345 1 363 1C381 1 381 81 399 81C418 81 418 129 436 129C454 129 454 25 472 25V149H327H0V109Z" fill="url(#gmvGrad)"/>
-            <path d="M0 109C18 109 18 21 36 21C54 21 54 41 72 41C90 41 90 93 109 93C127 93 127 33 145 33C163 33 163 101 182 101C200 101 200 61 218 61C236 61 236 45 254 45C272 45 272 121 290 121C309 121 309 149 327 149C345 149 345 1 363 1C381 1 381 81 399 81C418 81 418 129 436 129C454 129 454 25 472 25" stroke="#2d1655" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-          <div class="chart-x-labels">
-            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-          </div>
+            <canvas id="gmvChart" height="160"></canvas>
+            <div class="chart-x-labels" id="gmvLabels" style="display:flex;justify-content:space-between;padding:6px 2px 0;">
+            </div>
         </div>
-      </div>
-
-      <!-- Volume by Category Bar Chart -->
-      <div class="chart-card">
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">Volume by Category</div>
-            <div class="chart-value">1,284 Lots</div>
-            <span class="chart-badge badge-red-soft">↓ -2.1% this session</span>
-          </div>
-          <button class="btn-ghost" style="padding:7px 12px; font-size:12px; border-radius:8px;">Filter</button>
-        </div>
-        <div class="bar-chart">
-          <div class="bar-col">
-            <div class="bar-fill" style="height:85%; --bar-h:85%;"></div>
-            <span class="bar-label">Luxury</span>
-          </div>
-          <div class="bar-col">
-            <div class="bar-fill" style="height:35%; --bar-h:35%; opacity:0.55;"></div>
-            <span class="bar-label">Art</span>
-          </div>
-          <div class="bar-col">
-            <div class="bar-fill" style="height:70%; --bar-h:70%; opacity:0.82;"></div>
-            <span class="bar-label">Tech</span>
-          </div>
-          <div class="bar-col">
-            <div class="bar-fill" style="height:55%; --bar-h:55%; opacity:0.68;"></div>
-            <span class="bar-label">Estate</span>
-          </div>
-          <div class="bar-col">
-            <div class="bar-fill" style="height:22%; --bar-h:22%; opacity:0.38;"></div>
-            <span class="bar-label">Rare</span>
-          </div>
-        </div>
-      </div>
     </div>
+
+    <!-- Volume by Category Bar Chart -->
+    <div class="chart-card">
+        <div class="chart-header">
+            <div>
+                <div class="chart-title">Volume by Category</div>
+                <div class="chart-value">{{ total_auctions }} Auctions</div>
+                <span class="chart-badge badge-green-soft">From your database</span>
+            </div>
+        </div>
+        <div class="bar-chart" id="catBarChart">
+        </div>
+    </div>
+</div>
 
     <!-- Content Grid -->
     <div class="content-grid">
@@ -886,7 +858,7 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
       <div class="panel-card">
         <div class="panel-header">
           <span class="panel-title">Recent High-Value Activity</span>
-          <button class="btn-ghost" style="font-size:12px; padding:6px 14px; border-radius:8px;">View All</button>
+         <a href="{% url 'manage_auctions' %}" class="btn-ghost" style="font-size:12px;padding:6px 14px;border-radius:8px;text-decoration:none;">View All</a>
         </div>
         <table>
           <thead>
@@ -900,108 +872,43 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-thumb">⌚</div>
-                  <div>
-                    <div class="item-name">Emerald Sovereign Watch</div>
-                    <div class="item-sub">New bid placed</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
-              <td><span style="font-size:12.5px; font-weight:600; color:var(--text-mid);">#VIP-992</span></td>
-              <td class="price-col">$284,500</td>
-              <td style="font-size:12.5px; color:var(--text-light);">2m ago</td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn-sm btn-sm-ghost">View</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-thumb">💻</div>
-                  <div>
-                    <div class="item-name">Vanguard Tech Suite</div>
-                    <div class="item-sub">Auction closed</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="pill pill-gray">Sold</span></td>
-              <td><span style="font-size:12.5px; font-weight:600; color:var(--text-mid);">#VIP-110</span></td>
-              <td class="price-col">$1,120,000</td>
-              <td style="font-size:12.5px; color:var(--text-light);">15m ago</td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn-sm btn-sm-ghost">Details</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-thumb">👤</div>
-                  <div>
-                    <div class="item-name">VIP Verification Request</div>
-                    <div class="item-sub">Julianna V. — Applicant</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge badge-warn"><span class="badge-dot"></span>Pending</span></td>
-              <td><span style="font-size:12.5px; font-weight:600; color:var(--text-mid);">New</span></td>
-              <td class="price-col" style="color:var(--text-mid); font-size:12.5px;">—</td>
-              <td style="font-size:12.5px; color:var(--text-light);">1h ago</td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn-sm btn-sm-primary">Review</button>
-                  <button class="btn-sm btn-sm-danger">Deny</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-thumb">💎</div>
-                  <div>
-                    <div class="item-name">Royal Blue Diamond</div>
-                    <div class="item-sub">High bid increment</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
-              <td><span style="font-size:12.5px; font-weight:600; color:var(--text-mid);">#VIP-447</span></td>
-              <td class="price-col">$620,000</td>
-              <td style="font-size:12.5px; color:var(--text-light);">2h ago</td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn-sm btn-sm-ghost">View</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="item-cell">
-                  <div class="item-thumb">⚠️</div>
-                  <div>
-                    <div class="item-name">API Latency Spike</div>
-                    <div class="item-sub">Node: EU-WEST-1</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="pill pill-amber">Resolved</span></td>
-              <td><span style="font-size:12.5px; font-weight:600; color:var(--text-mid);">System</span></td>
-              <td class="price-col" style="color:var(--text-mid); font-size:12.5px;">—</td>
-              <td style="font-size:12.5px; color:var(--text-light);">3h ago</td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn-sm btn-sm-ghost">Log</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+{% for auction in recent_auctions %}
+<tr onclick="window.location.href='{% url 'auction_detail' auction.pk %}'">
+    <td>
+        <div class="item-cell">
+            <div class="item-thumb">
+                {% if auction.item.image %}
+                    <img src="{{ auction.item.image.url }}" style="width:38px;height:38px;object-fit:cover;border-radius:9px;">
+                {% else %}🏷️{% endif %}
+            </div>
+            <div>
+                <div class="item-name">{{ auction.item.name }}</div>
+                <div class="item-sub">{{ auction.item.category.name }}</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        {% if auction.status == 'ACTIVE' %}
+            <span class="badge badge-live"><span class="badge-dot"></span>Live</span>
+        {% elif auction.status == 'ENDED' %}
+            <span class="pill pill-gray">Ended</span>
+        {% else %}
+            <span class="pill pill-amber">Cancelled</span>
+        {% endif %}
+    </td>
+    <td><span style="font-size:12.5px;font-weight:600;color:var(--text-mid);">{{ auction.item.seller.user.First_name }} {{ auction.item.seller.user.Last_name }}</span></td>
+    <td class="price-col">₹{{ auction.current_price }}</td>
+    <td style="font-size:12.5px;color:var(--text-light);">{{ auction.created_at|timesince }} ago</td>
+    <td>
+        <div class="actions-cell">
+            <a href="{% url 'auction_detail' auction.pk %}" class="btn-sm btn-sm-ghost" style="text-decoration:none;">View</a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-light);">No recent activity.</td></tr>
+{% endfor %}
+</tbody>
         </table>
       </div>
 
@@ -1010,126 +917,64 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
 
         <!-- System Health -->
         <div class="mini-panel">
-          <div class="mini-header">
-            <span class="mini-title">System Health</span>
-            <span class="pill pill-green" style="font-size:11px; padding:2px 8px;">All Operational</span>
-          </div>
-          <div class="health-item">
-            <div>
-              <div class="health-label">API Response</div>
-              <div class="health-sub">Avg 48ms latency</div>
-            </div>
-            <div class="health-bar-wrap">
-              <div class="health-bar-track">
-                <div class="health-bar-fill hb-green" style="--progress-w:94%; width:94%;"></div>
-              </div>
-              <div class="health-pct">94%</div>
-            </div>
-          </div>
-          <div class="health-item">
-            <div>
-              <div class="health-label">Database Load</div>
-              <div class="health-sub">3 active clusters</div>
-            </div>
-            <div class="health-bar-wrap">
-              <div class="health-bar-track">
-                <div class="health-bar-fill hb-amber" style="--progress-w:72%; width:72%;"></div>
-              </div>
-              <div class="health-pct">72%</div>
-            </div>
-          </div>
-          <div class="health-item">
-            <div>
-              <div class="health-label">CDN Uptime</div>
-              <div class="health-sub">Global edge nodes</div>
-            </div>
-            <div class="health-bar-wrap">
-              <div class="health-bar-track">
-                <div class="health-bar-fill hb-green" style="--progress-w:99%; width:99%;"></div>
-              </div>
-              <div class="health-pct">99%</div>
-            </div>
-          </div>
-          <div class="health-item">
-            <div>
-              <div class="health-label">Payment Gateway</div>
-              <div class="health-sub">Stripe + Backup</div>
-            </div>
-            <div class="health-bar-wrap">
-              <div class="health-bar-track">
-                <div class="health-bar-fill hb-blue" style="--progress-w:100%; width:100%;"></div>
-              </div>
-              <div class="health-pct">100%</div>
-            </div>
-          </div>
+    <div class="mini-header">
+        <span class="mini-title">Pending Disputes</span>
+        <a href="{% url 'manage_disputes' %}" class="mini-link">View All →</a>
+    </div>
+    {% for dispute in pending_disputes %}
+    <div class="activity-item">
+        <div class="act-icon act-icon-red">🚩</div>
+        <div class="act-text">
+            <div class="title">{{ dispute.raised_by.First_name }} {{ dispute.raised_by.Last_name }}</div>
+            <div class="sub">{{ dispute.auction.item.name|truncatechars:30 }}</div>
         </div>
+        <div class="act-meta">
+            <div class="time">{{ dispute.created_at|timesince }} ago</div>
+        </div>
+    </div>
+    {% empty %}
+    <div style="padding:20px;text-align:center;color:var(--text-light);font-size:13px;">No pending disputes.</div>
+    {% endfor %}
+</div>
 
         <!-- VIP Pending Actions -->
-        <div class="mini-panel">
-          <div class="mini-header">
-            <span class="mini-title">Pending Actions</span>
-            <a class="mini-link">View All →</a>
-          </div>
-          <div class="activity-item">
-            <div class="act-icon act-icon-amber">👤</div>
-            <div class="act-text">
-              <div class="title">VIP Verification — Julianna V.</div>
-              <div class="sub">KYC docs submitted</div>
-            </div>
-            <div class="act-meta">
-              <div class="time">1h ago</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="act-icon act-icon-green">💰</div>
-            <div class="act-text">
-              <div class="title">Payout Request — Seller #441</div>
-              <div class="sub">$48,200 withdrawal</div>
-            </div>
-            <div class="act-meta">
-              <div class="amount">$48,200</div>
-              <div class="time">3h ago</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="act-icon act-icon-red">🚩</div>
-            <div class="act-text">
-              <div class="title">Dispute — Buyer #VIP-881</div>
-              <div class="sub">Hermès Birkin listing</div>
-            </div>
-            <div class="act-meta">
-              <div class="time">5h ago</div>
-            </div>
-          </div>
-          <div class="activity-item">
-            <div class="act-icon act-icon-blue">📋</div>
-            <div class="act-text">
-              <div class="title">New Auction Approval</div>
-              <div class="sub">Ferrari 250 GTO listing</div>
-            </div>
-            <div class="act-meta">
-              <div class="time">8h ago</div>
-            </div>
-          </div>
+        <!-- Recent Notifications -->
+<div class="mini-panel">
+    <div class="mini-header">
+        <span class="mini-title">Recent Activity</span>
+        <a href="{% url 'manage_notifications' %}" class="mini-link">View All →</a>
+    </div>
+    {% for notif in recent_activity %}
+    <div class="activity-item">
+        <div class="act-icon 
+            {% if notif.notification_type == 'BID_PLACED' %}act-icon-blue
+            {% elif notif.notification_type == 'DISPUTE' %}act-icon-red
+            {% elif notif.notification_type == 'PAYMENT' %}act-icon-green
+            {% else %}act-icon-amber{% endif %}">
+            {% if notif.notification_type == 'BID_PLACED' %}🔨
+            {% elif notif.notification_type == 'DISPUTE' %}🚩
+            {% elif notif.notification_type == 'PAYMENT' %}💰
+            {% else %}🔔{% endif %}
         </div>
+        <div class="act-text">
+            <div class="title">{{ notif.message|truncatechars:45 }}</div>
+            <div class="sub">{{ notif.user.First_name }} {{ notif.user.Last_name }}</div>
+        </div>
+        <div class="act-meta">
+            <div class="time">{{ notif.created_at|timesince }} ago</div>
+        </div>
+    </div>
+    {% empty %}
+    <div style="padding:20px;text-align:center;color:var(--text-light);font-size:13px;">No recent activity.</div>
+    {% endfor %}
+</div>
 
       </div>
     </div>
   </div>
 </main>
 
-<!-- ─── FOOTER ─── -->
-<footer class="admin-footer">
-  <div class="footer-copy">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.5"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83a4 4 0 1 1 0-5.66"/></svg>
-    2024 Auctora Enterprise. All rights reserved.
-  </div>
-  <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Service</a>
-    <a href="#">Support Center</a>
-  </div>
-</footer>
+
 
 <script>
   if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}
@@ -1165,6 +1010,104 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
     }
     requestAnimationFrame(update);
   }
+
+
+  // ─── GMV Chart Data from Django ───
+const weeklyGMV = {{ weekly_gmv|safe }};
+const weeklyLabels = {{ weekly_labels|safe }};
+const monthlyGMV = {{ monthly_gmv|safe }};
+const monthlyLabels = {{ monthly_labels|safe }};
+const catLabels = {{ cat_labels|safe }};
+const catValues = {{ cat_values|safe }};
+const maxCat = {{ max_cat }};
+
+let currentGMV = 'weekly';
+
+function switchGMV(type) {
+    currentGMV = type;
+    drawGMVChart(type === 'weekly' ? weeklyGMV : monthlyGMV, type === 'weekly' ? weeklyLabels : monthlyLabels);
+    document.getElementById('btn-weekly').style.background = type === 'weekly' ? 'var(--primary)' : '';
+    document.getElementById('btn-weekly').style.color = type === 'weekly' ? '#fff' : '';
+    document.getElementById('btn-monthly').style.background = type === 'monthly' ? 'var(--primary)' : '';
+    document.getElementById('btn-monthly').style.color = type === 'monthly' ? '#fff' : '';
+}
+
+function drawGMVChart(data, labels) {
+    const canvas = document.getElementById('gmvChart');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.offsetWidth;
+    const h = 160;
+    canvas.width = w;
+    canvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    const max = Math.max(...data) || 1;
+    const pts = data.map((v, i) => ({
+        x: (i / (data.length - 1)) * (w - 20) + 10,
+        y: h - 20 - ((v / max) * (h - 40))
+    }));
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, 'rgba(45,22,85,0.25)');
+    grad.addColorStop(1, 'rgba(45,22,85,0)');
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, h - 20);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length-1].x, h - 20);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.strokeStyle = '#2d1655';
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // Dots
+    pts.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#2d1655';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    });
+
+    // Labels
+    const labelsEl = document.getElementById('gmvLabels');
+    labelsEl.innerHTML = labels.map(l => `<span style="font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;">${l}</span>`).join('');
+}
+
+function drawCatChart() {
+    const container = document.getElementById('catBarChart');
+    container.innerHTML = '';
+    catLabels.forEach((label, i) => {
+        const pct = maxCat > 0 ? (catValues[i] / maxCat * 100) : 0;
+        container.innerHTML += `
+            <div class="bar-col">
+                <div class="bar-fill" style="height:${pct}%;--bar-h:${pct}%;"></div>
+                <span class="bar-label">${label}</span>
+            </div>`;
+    });
+    if (catLabels.length === 0) {
+        container.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;width:100%;padding:40px 0;">No category data yet.</div>';
+    }
+}
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.querySelectorAll('[data-count]').forEach(animateCount);
+        drawGMVChart(weeklyGMV, weeklyLabels);
+        drawCatChart();
+        switchGMV('weekly');
+    }, 350);
+});  
 
   window.addEventListener('load', () => {
     setTimeout(() => {

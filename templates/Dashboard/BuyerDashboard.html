@@ -467,7 +467,8 @@
     .watch-item:nth-child(2) { animation-delay: 0.55s; }
     .watch-item:nth-child(3) { animation-delay: 0.62s; }
     .watch-item:last-child { border-bottom: none; }
-    .watch-item:hover { background: #f9f8fc; }
+    .watch-item:hover { background: rgba(124,58,237,0.06); }
+    body.dark .watch-item:hover { background: rgba(124,58,237,0.08) !important; }
     .watch-thumb {
       width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
       background: linear-gradient(135deg, #2d1655, #7c3aed);
@@ -519,11 +520,11 @@
     }
     .browse-body { padding: 10px 12px; }
     .browse-name { font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .browse-price { font-size: 13px; font-weight: 700; color: var(--primary); }
+    .browse-price { font-size: 13px; font-weight: 700; color: var(--text-dark); }
     .browse-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .browse-bids { font-size: 11px; color: var(--text-light); }
     .browse-time { font-size: 11px; color: var(--orange); font-weight: 600; }
-
+    body.dark .browse-price { color: #ffffff !important; }
     /* ─── Hidden sections (tab switching) ─── */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
@@ -724,47 +725,35 @@
   you have 3 active bids and 2 auctions ending soon.
 </p>
       </div>
-      <button class="btn-primary">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Browse Auctions
-      </button>
+      <a href="{% url 'auction_list' %}" class="btn-primary" style="text-decoration:none;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Browse Auctions
+</a>
     </div>
 
     <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#eff6ff;">🎯</div>
-          <span class="stat-trend trend-blue">+6 this week</span>
-        </div>
+ <div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#eff6ff;">🎯</div><span class="stat-trend trend-blue">All time</span></div>
         <div class="stat-label">Total Bids Placed</div>
-        <div class="stat-value" data-count="48">48</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#f0fdf4;">🏆</div>
-          <span class="stat-trend trend-green">All time</span>
-        </div>
-        <div class="stat-label">Auctions Won</div>
-        <div class="stat-value" data-count="12">12</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#fdf4ff;">💸</div>
-          <span class="stat-trend trend-purple">Lifetime</span>
-        </div>
-        <div class="stat-label">Total Amount Spent</div>
-        <div class="stat-value" data-count="94200" data-prefix="$" data-format="money">$94,200</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-top">
-          <div class="stat-icon-wrap" style="background:#fff7ed;">❤️</div>
-          <span class="stat-trend trend-orange">Watching</span>
-        </div>
-        <div class="stat-label">Watchlist Items</div>
-        <div class="stat-value" data-count="5">5</div>
-      </div>
+        <div class="stat-value">{{ total_bids }}</div>
     </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#f0fdf4;">🏆</div><span class="stat-trend trend-green">All time</span></div>
+        <div class="stat-label">Auctions Won</div>
+        <div class="stat-value">{{ won_auctions }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#fdf4ff;">💸</div><span class="stat-trend trend-purple">Lifetime</span></div>
+        <div class="stat-label">Total Amount Spent</div>
+        <div class="stat-value">₹{{ total_spent }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#fff7ed;">❤️</div><span class="stat-trend trend-orange">Watching</span></div>
+        <div class="stat-label">Watchlist Items</div>
+        <div class="stat-value">{{ watchlist_count }}</div>
+    </div>
+</div>
 
     <!-- Content Grid -->
     <div class="content-grid">
@@ -776,7 +765,7 @@
         <div class="panel-card">
           <div class="panel-header">
             <span class="panel-title">My Bids</span>
-            <button class="btn-ghost" style="font-size:12px; padding:6px 12px;">View All</button>
+            <a href="{% url 'manage_bids' %}" class="btn-ghost" style="font-size:12px; padding:6px 12px; text-decoration:none;">View All</a>
           </div>
 
           <!-- Tabs -->
@@ -799,88 +788,46 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">⌚</div>
-                      <div>
-                        <div class="item-name">Patek Philippe Ref. 5270P</div>
-                        <div class="item-cat">Luxury Watches</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-winning"><span class="badge-dot"></span>Winning</span></td>
-                  <td>
-                    <div class="price-cell">$185,200</div>
-                  </td>
-                  <td>
-                    <div class="price-cell" style="color:var(--blue)">$185,200</div>
-                    <div class="my-bid">Your bid</div>
-                  </td>
-                  <td class="time-cell">2h 45m</td>
-                  <td>
-                    <div class="actions-cell">
-                      <button class="btn-bid">Raise Bid</button>
-                      <button class="btn-watch" title="Watchlist">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">🚗</div>
-                      <div>
-                        <div class="item-name">1967 Jaguar E-Type Series 1</div>
-                        <div class="item-cat">Rare Vehicles</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-outbid"><span class="badge-dot"></span>Outbid</span></td>
-                  <td>
-                    <div class="price-cell">$210,000</div>
-                  </td>
-                  <td>
-                    <div class="price-cell" style="color:var(--red)">$198,500</div>
-                    <div class="my-bid">Your bid</div>
-                  </td>
-                  <td class="time-cell" style="color:var(--orange); font-weight:600;">14m 20s</td>
-                  <td>
-                    <div class="actions-cell">
-                      <button class="btn-bid">Rebid Now</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">💍</div>
-                      <div>
-                        <div class="item-name">Cartier Diamond Ring</div>
-                        <div class="item-cat">Fine Jewellery</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge badge-winning"><span class="badge-dot"></span>Winning</span></td>
-                  <td>
-                    <div class="price-cell">$48,200</div>
-                  </td>
-                  <td>
-                    <div class="price-cell" style="color:var(--blue)">$48,200</div>
-                    <div class="my-bid">Your bid</div>
-                  </td>
-                  <td class="time-cell">6h 05m</td>
-                  <td>
-                    <div class="actions-cell">
-                      <button class="btn-bid">Raise Bid</button>
-                      <button class="btn-watch" title="Watchlist">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
+{% for bid in active_bids %}
+<tr onclick="window.location.href='{% url 'auction_detail' bid.auction.pk %}'">
+    <td>
+        <div class="item-cell">
+            <div class="item-thumb">
+                {% if bid.auction.item.image %}
+                    <img src="{{ bid.auction.item.image.url }}" style="width:40px;height:40px;object-fit:cover;border-radius:9px;">
+                {% else %}🏷️{% endif %}
+            </div>
+            <div>
+                <div class="item-name">{{ bid.auction.item.name }}</div>
+                <div class="item-cat">{{ bid.auction.item.category.name }}</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        {% if bid.status == 'WINNING' %}
+            <span class="badge badge-winning"><span class="badge-dot"></span>Winning</span>
+        {% elif bid.status == 'OUTBID' %}
+            <span class="badge badge-outbid"><span class="badge-dot"></span>Outbid</span>
+        {% else %}
+            <span class="badge badge-soon"><span class="badge-dot"></span>{{ bid.status }}</span>
+        {% endif %}
+    </td>
+    <td><div class="price-cell">₹{{ bid.auction.current_price }}</div></td>
+    <td>
+        <div class="price-cell" style="color:var(--blue)">₹{{ bid.amount }}</div>
+        <div class="my-bid">Your bid</div>
+    </td>
+    <td class="time-cell">
+        <span class="countdown" data-end="{{ bid.auction.end_time.isoformat }}">--:--:--</span>
+    </td>
+    <td>
+        <a href="{% url 'auction_detail' bid.auction.pk %}" class="btn-bid">Bid Now</a>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-light);">No active bids yet.</td></tr>
+{% endfor %}
+</tbody>
             </table>
           </div>
 
@@ -897,98 +844,73 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">🎨</div>
-                      <div>
-                        <div class="item-name">Basquiat Lithograph</div>
-                        <div class="item-cat">Fine Art</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge-pill pill-won">Won</span></td>
-                  <td class="price-cell">$67,000</td>
-                  <td class="price-cell" style="color:var(--green)">$67,000</td>
-                  <td class="time-cell">Feb 14, 2026</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">👜</div>
-                      <div>
-                        <div class="item-name">Hermès Birkin 35</div>
-                        <div class="item-cat">Designer Handbags</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge-pill pill-outbid">Lost</span></td>
-                  <td class="price-cell">$29,800</td>
-                  <td class="price-cell" style="color:var(--red)">$27,500</td>
-                  <td class="time-cell">Feb 10, 2026</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="item-cell">
-                      <div class="item-thumb">🍷</div>
-                      <div>
-                        <div class="item-name">Château Pétrus 1982</div>
-                        <div class="item-cat">Rare Wines</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge-pill pill-won">Won</span></td>
-                  <td class="price-cell">$18,400</td>
-                  <td class="price-cell" style="color:var(--green)">$18,400</td>
-                  <td class="time-cell">Jan 28, 2026</td>
-                </tr>
-              </tbody>
+{% for bid in past_bids %}
+<tr>
+    <td>
+        <div class="item-cell">
+            <div class="item-thumb">
+                {% if bid.auction.item.image %}
+                    <img src="{{ bid.auction.item.image.url }}" style="width:40px;height:40px;object-fit:cover;border-radius:9px;">
+                {% else %}🏷️{% endif %}
+            </div>
+            <div>
+                <div class="item-name">{{ bid.auction.item.name }}</div>
+                <div class="item-cat">{{ bid.auction.item.category.name }}</div>
+            </div>
+        </div>
+    </td>
+    <td>
+        {% if bid.status == 'WINNING' %}
+            <span class="badge-pill pill-won">Won</span>
+        {% else %}
+            <span class="badge-pill pill-outbid">Lost</span>
+        {% endif %}
+    </td>
+    <td class="price-cell">₹{{ bid.auction.current_price }}</td>
+    <td class="price-cell" style="color:{% if bid.status == 'WINNING' %}var(--green){% else %}var(--red){% endif %}">₹{{ bid.amount }}</td>
+    <td class="time-cell">{{ bid.bid_time|date:"d M Y" }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-light);">No past bids yet.</td></tr>
+{% endfor %}
+</tbody>
             </table>
           </div>
         </div>
 
         <!-- Browse Auctions Panel -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <span class="panel-title">Browse Live Auctions</span>
-            <button class="btn-ghost" style="font-size:12px; padding:6px 12px;">View All</button>
-          </div>
-          <div class="browse-grid">
-            <div class="browse-card">
-              <div class="browse-img">💎</div>
-              <div class="browse-body">
-                <div class="browse-name">Royal Blue Diamond</div>
-                <div class="browse-price">$320,000</div>
-                <div class="browse-meta">
-                  <span class="browse-bids">24 bids</span>
-                  <span class="browse-time">3h 12m</span>
-                </div>
-              </div>
-            </div>
-            <div class="browse-card">
-              <div class="browse-img">🏺</div>
-              <div class="browse-body">
-                <div class="browse-name">Ming Dynasty Vase</div>
-                <div class="browse-price">$145,000</div>
-                <div class="browse-meta">
-                  <span class="browse-bids">11 bids</span>
-                  <span class="browse-time">1d 4h</span>
-                </div>
-              </div>
-            </div>
-            <div class="browse-card">
-              <div class="browse-img">🎻</div>
-              <div class="browse-body">
-                <div class="browse-name">Stradivarius Violin</div>
-                <div class="browse-price">$890,000</div>
-                <div class="browse-meta">
-                  <span class="browse-bids">7 bids</span>
-                  <span class="browse-time">2d 8h</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Browse Auctions Panel -->
+<div class="panel-card">
+  <div class="panel-header">
+    <span class="panel-title">Browse Live Auctions</span>
+    <a href="{% url 'auction_list' %}" class="btn-ghost" style="font-size:12px; padding:6px 12px; text-decoration:none;">View All</a>
+  </div>
+  <div class="browse-grid">
+    {% for auction in live_auctions %}
+    <a href="{% url 'auction_detail' auction.pk %}" class="browse-card" style="text-decoration:none;">
+      <div class="browse-img">
+        {% if auction.item.image %}
+          <img src="{{ auction.item.image.url }}" style="width:100%;height:100%;object-fit:cover;">
+        {% else %}
+          🏷️
+        {% endif %}
+      </div>
+      <div class="browse-body">
+        <div class="browse-name">{{ auction.item.name }}</div>
+        <div class="browse-price">₹{{ auction.current_price }}</div>
+        <div class="browse-meta">
+          <span class="browse-bids">{{ auction.bid_count }} bids</span>
+          <span class="browse-time">
+            <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--</span>
+          </span>
         </div>
+      </div>
+    </a>
+    {% empty %}
+    <div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-light);">No live auctions at the moment.</div>
+    {% endfor %}
+  </div>
+</div>
 
       </div>
 
@@ -999,101 +921,80 @@
         <div class="mini-panel">
           <div class="mini-header">
             <span class="mini-title">Watchlist</span>
-            <a class="mini-link">Manage →</a>
+            <a href="{% url 'manage_watchlist' %}" class="mini-link">Manage →</a>
           </div>
-          <div class="watch-item">
-            <div class="watch-thumb">🏎️</div>
-            <div class="watch-info">
-              <div class="watch-name">Ferrari 250 GTO</div>
-              <div class="watch-price">Current: $4.2M</div>
-            </div>
-            <div class="watch-time">2d left</div>
-          </div>
-          <div class="watch-item">
-            <div class="watch-thumb">🖼️</div>
-            <div class="watch-info">
-              <div class="watch-name">Monet Waterlilies</div>
-              <div class="watch-price">Current: $520,000</div>
-            </div>
-            <div class="watch-time">5h left</div>
-          </div>
-          <div class="watch-item">
-            <div class="watch-thumb">💠</div>
-            <div class="watch-info">
-              <div class="watch-name">Sapphire Pendant</div>
-              <div class="watch-price">Current: $38,000</div>
-            </div>
-            <div class="watch-time">1d left</div>
-          </div>
+          {% for item in watchlist %}
+<div class="watch-item">
+    <div class="watch-thumb">
+        {% if item.auction.item.image %}
+            <img src="{{ item.auction.item.image.url }}" style="width:36px;height:36px;object-fit:cover;border-radius:8px;">
+        {% else %}🏷️{% endif %}
+    </div>
+    <div class="watch-info">
+        <div class="watch-name">{{ item.auction.item.name }}</div>
+        <div class="watch-price">Current: ₹{{ item.auction.current_price }}</div>
+    </div>
+    <div class="watch-time">
+        <span class="countdown" data-end="{{ item.auction.end_time.isoformat }}">--:--</span>
+    </div>
+</div>
+{% empty %}
+<div style="padding:20px;text-align:center;color:var(--text-light);font-size:13px;">No items in watchlist.</div>
+{% endfor %}
         </div>
 
-        <!-- Recent Activity -->
-        <div class="mini-panel">
-          <div class="mini-header">
-            <span class="mini-title">Recent Activity</span>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-blue"></div>
-            <div class="activity-text">
-              <div class="title">You're winning Cartier Diamond Ring</div>
-              <div class="subtitle">Your bid of $48,200 is highest</div>
-            </div>
-            <div class="activity-time">5m ago</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-red"></div>
-            <div class="activity-text">
-              <div class="title">Outbid on Jaguar E-Type</div>
-              <div class="subtitle">New high bid: $210,000</div>
-            </div>
-            <div class="activity-time">22m ago</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-green"></div>
-            <div class="activity-text">
-              <div class="title">Auction won — Basquiat Lithograph</div>
-              <div class="subtitle">Payment confirmed · $67,000</div>
-            </div>
-            <div class="activity-time">2d ago</div>
-          </div>
-          <div class="activity-item">
-            <div class="activity-dot dot-orange"></div>
-            <div class="activity-text">
-              <div class="title">Ferrari 250 GTO ending soon</div>
-              <div class="subtitle">On your watchlist · 2 days left</div>
-            </div>
-            <div class="activity-time">3d ago</div>
-          </div>
-        </div>
+
+         <!-- Recent Activity -->
+<div class="mini-panel">
+  <div class="mini-header">
+    <span class="mini-title">Recent Activity</span>
+  </div>
+  {% for notif in recent_notifications %}
+  <div class="activity-item">
+      <div class="activity-dot 
+          {% if notif.notification_type == 'BID_PLACED' %}dot-blue
+          {% elif notif.notification_type == 'OUTBID' %}dot-red
+          {% elif notif.notification_type == 'AUCTION_ENDED' %}dot-green
+          {% else %}dot-orange{% endif %}">
+      </div>
+      <div class="activity-text">
+          <div class="title">{{ notif.message|truncatechars:50 }}</div>
+          <div class="subtitle">{{ notif.created_at|date:"d M Y, g:i A" }}</div>
+      </div>
+      <div class="activity-time">{{ notif.created_at|timesince }} ago</div>
+  </div>
+  {% empty %}
+  <div style="padding:20px;text-align:center;color:var(--text-light);font-size:13px;">No recent activity.</div>
+  {% endfor %}
+</div>
+
+ 
+
 
         <!-- Purchase History Summary -->
-        <div class="mini-panel">
-          <div class="mini-header">
-            <span class="mini-title">Purchase History</span>
-            <a class="mini-link">All →</a>
-          </div>
-          <div style="padding: 14px 18px;">
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12.5px; color:var(--text-mid);">Basquiat Lithograph</span>
-                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$67,000</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12.5px; color:var(--text-mid);">Château Pétrus 1982</span>
-                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$18,400</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12.5px; color:var(--text-mid);">Rolex Submariner</span>
-                <span style="font-size:13px; font-weight:700; color:var(--text-dark);">$8,800</span>
-              </div>
-              <div style="height:1px; background:var(--border);"></div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:600; color:var(--text-mid);">Total Spent</span>
-                <span style="font-size:15px; font-weight:800; color:var(--primary);">$94,200</span>
-              </div>
-            </div>
-          </div>
-        </div>
+       <div class="mini-panel">
+  <div class="mini-header">
+    <span class="mini-title">Purchase History</span>
+    <a href="{% url 'purchase_history' %}" class="mini-link">All →</a>
+  </div>
+  <div style="padding: 14px 18px;">
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      {% for payment in recent_payments %}
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12.5px; color:var(--text-mid);">{{ payment.auction.item.name|truncatechars:20 }}</span>
+        <span style="font-size:13px; font-weight:700; color:var(--text-dark);">₹{{ payment.amount }}</span>
+      </div>
+      {% empty %}
+      <div style="text-align:center; color:var(--text-light); font-size:13px;">No purchases yet.</div>
+      {% endfor %}
+      <div style="height:1px; background:var(--border);"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; font-weight:600; color:var(--text-mid);">Total Spent</span>
+        <span style="font-size:15px; font-weight:800; color:var(--text-mid);">₹{{ total_spent }}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
       </div>
     </div>
@@ -1128,6 +1029,24 @@
       }, 10);
     });
   }
+
+  function updateCountdowns() {
+    document.querySelectorAll('.countdown').forEach(el => {
+        const end = new Date(el.dataset.end);
+        const now = new Date();
+        const diff = end - now;
+        if (diff <= 0) { el.textContent = 'Ended'; el.style.color = '#ef4444'; return; }
+        const days = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        if (days > 0) { el.textContent = `${days}d ${h}h`; }
+        else if (h > 0) { el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+        else { el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; el.style.color = '#ef4444'; }
+    });
+}
+setInterval(updateCountdowns, 1000);
+updateCountdowns();
 
   // Count-up animation
   function animateCount(el) {

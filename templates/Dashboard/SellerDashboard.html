@@ -286,10 +286,15 @@
     </nav>
 
     <div class="sidebar-bottom">
-        <button class="settings-icon-btn" onclick="toggleDark()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Settings &amp; Dark Mode
-        </button>
+        <a href="{% url 'setting' %}" class="nav-item">
+    <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+    </span>
+    Settings
+</a>
         <div class="sidebar-profile-card">
             <div style="flex-shrink:0;">
                 {% with request.user.Gender|lower as gender %}
@@ -319,94 +324,145 @@
                 <h1>Luxury Seller Hub</h1>
                 <p>Welcome back, {{ request.user.First_name }} — your portfolio is performing 12% better this week.</p>
             </div>
-            <button class="btn-primary">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                New Listing
-            </button>
+            <a href="{% url 'create_auction' %}" class="btn-primary" style="text-decoration:none;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    New Listing
+</a>
         </div>
 
         <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-top"><div class="stat-icon-wrap" style="background:#f0fdf4;">💰</div><span class="stat-trend trend-green">+12.5%</span></div>
-                <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" data-count="128450" data-prefix="$" data-format="money">$128,450.00</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-top"><div class="stat-icon-wrap" style="background:#eff6ff;">⏱️</div><span class="stat-trend trend-purple">+4%</span></div>
-                <div class="stat-label">Active Auctions</div>
-                <div class="stat-value" data-count="24">24</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-top"><div class="stat-icon-wrap" style="background:#f5f3ff;">🛍️</div><span class="stat-trend trend-purple">+8%</span></div>
-                <div class="stat-label">Items Sold</div>
-                <div class="stat-value" data-count="142">142</div>
-            </div>
-        </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#f0fdf4;">💰</div><span class="stat-trend trend-green">Lifetime</span></div>
+        <div class="stat-label">Total Earnings</div>
+        <div class="stat-value">₹{{ total_earnings }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#eff6ff;">⏱️</div><span class="stat-trend trend-purple">Live now</span></div>
+        <div class="stat-label">Active Auctions</div>
+        <div class="stat-value">{{ active_auctions }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-top"><div class="stat-icon-wrap" style="background:#f5f3ff;">🛍️</div><span class="stat-trend trend-purple">All time</span></div>
+        <div class="stat-label">Items Sold</div>
+        <div class="stat-value">{{ items_sold }}</div>
+    </div>
+</div>
 
         <div class="content-grid">
             <div class="panel-card">
                 <div class="panel-header">
                     <span class="panel-title">Live Auctions</span>
-                    <button class="btn-ghost">View All</button>
+                    <a href="{% url 'manage_auctions' %}" class="btn-ghost" style="text-decoration:none;">View All</a>
                 </div>
                 <table>
                     <thead><tr><th>Item</th><th>Status</th><th>Bids</th><th>Current Price</th><th>Time Left</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td><div class="item-cell"><div class="item-avatar"></div><div class="item-name">Patek Philippe Ref. 5270P</div></div></td>
-                            <td><span class="badge badge-live"><span class="badge-dot"></span>Live</span></td>
-                            <td><div class="bids-cell">18</div><div class="bids-sub">Bids</div></td>
-                            <td class="price-cell">$185,200</td>
-                            <td class="time-cell">02h 45m</td>
-                        </tr>
-                        <tr>
-                            <td><div class="item-cell"><div class="item-avatar green"></div><div class="item-name">1967 Jaguar E-Type Series 1</div></div></td>
-                            <td><span class="badge badge-soon"><span class="badge-dot"></span>Ending Soon</span></td>
-                            <td><div class="bids-cell">42</div><div class="bids-sub">Bids</div></td>
-                            <td class="price-cell">$210,000</td>
-                            <td class="time-cell">14m 20s</td>
-                        </tr>
-                        <tr>
-                            <td><div class="item-cell"><div class="item-avatar"></div><div class="item-name">Contemporary Canvas #42</div></div></td>
-                            <td><span class="badge badge-sched"><span class="badge-dot"></span>Scheduled</span></td>
-                            <td><div class="bids-cell">0</div><div class="bids-sub">Bids</div></td>
-                            <td class="price-cell">$45,000</td>
-                            <td class="time-cell">Tomorrow</td>
-                        </tr>
-                    </tbody>
+{% for auction in live_auctions %}
+<tr onclick="window.location.href='{% url 'auction_detail' auction.pk %}'">
+    <td>
+        <div class="item-cell">
+            <div class="item-avatar">
+                {% if auction.item.image %}
+                    <img src="{{ auction.item.image.url }}" style="width:38px;height:38px;object-fit:cover;border-radius:50%;">
+                {% else %}
+                    <div style="width:38px;height:38px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;">🏷️</div>
+                {% endif %}
+            </div>
+            <div class="item-name">{{ auction.item.name }}</div>
+        </div>
+    </td>
+    <td>
+        {% if auction.status == 'ACTIVE' %}
+            {% if auction.end_time|timeuntil < "1 hour" %}
+                <span class="badge badge-soon"><span class="badge-dot"></span>Ending Soon</span>
+            {% else %}
+                <span class="badge badge-live"><span class="badge-dot"></span>Live</span>
+            {% endif %}
+        {% else %}
+            <span class="badge badge-sched"><span class="badge-dot"></span>{{ auction.status }}</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="bids-cell">{{ auction.bid_count }}</div>
+        <div class="bids-sub">Bids</div>
+    </td>
+    <td class="price-cell">₹{{ auction.current_price }}</td>
+    <td class="time-cell">
+        <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--:--</span>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-light);">No active auctions yet.</td></tr>
+{% endfor %}
+</tbody>
                 </table>
             </div>
 
             <div class="quick-create">
-                <div class="quick-title">Quick Create</div>
-                <div class="form-group">
-                    <label class="form-label">Item Category</label>
-                    <select class="form-select"><option>Timepieces</option><option>Fine Jewellery</option><option>Rare Vehicles</option><option>Fine Art</option><option>Designer Handbags</option><option>Rare Wines</option></select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Auction Title</label>
-                    <input class="form-input" type="text" placeholder="e.g. Rolex Daytona Rose Gold"/>
-                </div>
-                <div class="form-row form-group">
-                    <div>
-                        <label class="form-label">Reserve Price</label>
-                        <input class="form-input" type="text" placeholder="$0.00"/>
-                    </div>
-                    <div>
-                        <label class="form-label">Duration</label>
-                        <select class="form-select"><option>3 Days</option><option>5 Days</option><option>7 Days</option><option>14 Days</option></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button class="btn-upload">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        Upload Media
-                    </button>
-                </div>
-                <a href="{% url 'create_auction' %}" style="text-decoration:none;">
-                    <button class="btn-launch">Launch Auction</button>
-                </a>
+    <div class="quick-title">Quick Create</div>
+    <form method="POST" action="{% url 'quick_create_auction' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label">Item Name</label>
+            <input class="form-input" type="text" name="name" placeholder="e.g. Rolex Daytona Rose Gold" required/>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Item Category</label>
+            <select class="form-select" name="category">
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Description</label>
+            <input class="form-input" type="text" name="description" placeholder="Brief description" required/>
+        </div>
+        <div class="form-row form-group">
+            <div>
+                <label class="form-label">Starting Price</label>
+                <input class="form-input" type="number" name="starting_price" placeholder="0.00" step="0.01" required/>
             </div>
+            <div>
+                <label class="form-label">Reserve Price</label>
+                <input class="form-input" type="number" name="reserve_price" placeholder="0.00" step="0.01" required/>
+            </div>
+        </div>
+        <div class="form-row form-group">
+            <div>
+                <label class="form-label">Bid Increment</label>
+                <input class="form-input" type="number" name="bid_increment" placeholder="1.00" step="0.01" required/>
+            </div>
+            <div>
+                <label class="form-label">Condition</label>
+                <select class="form-select" name="condition">
+                    <option value="NEW">New</option>
+                    <option value="USED">Used</option>
+                    <option value="REFURB">Refurbished</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row form-group">
+            <div>
+                <label class="form-label">End Date</label>
+                <input class="form-input" type="datetime-local" name="end_time" required/>
+            </div>
+            <div>
+                <label class="form-label">Shipping Cost</label>
+                <input class="form-input" type="number" name="shipping_cost" placeholder="0.00" step="0.01" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Item Image</label>
+            <label class="btn-upload">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span id="uploadLabel">Upload Image</span>
+                <input type="file" name="image" accept="image/*" style="display:none;" onchange="document.getElementById('uploadLabel').textContent = this.files[0]?.name || 'Upload Image'">
+            </label>
+        </div>
+        <button type="submit" class="btn-launch">Launch Auction</button>
+    </form>
+</div>
         </div>
     </div>
 </main>
@@ -418,6 +474,27 @@
         const nowDark = document.body.classList.toggle('dark');
         localStorage.setItem('auctora_dark', nowDark ? '1' : '0');
     }
+
+    function updateCountdowns() {
+    document.querySelectorAll('.countdown').forEach(el => {
+        const raw = el.dataset.end;
+        if (!raw) return;
+        const end = new Date(raw);
+        if (isNaN(end)) { el.textContent = 'Invalid'; return; }
+        const now = new Date();
+        const diff = end - now;
+        if (diff <= 0) { el.textContent = 'Ended'; el.style.color = '#ef4444'; return; }
+        const days = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        if (days > 0) { el.textContent = `${days}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`; }
+        else if (h > 0) { el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+        else { el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; el.style.color = '#ef4444'; }
+    });
+}
+setInterval(updateCountdowns, 1000);
+updateCountdowns();
 
     // ─── Count-up animation ───
     function animateCount(el) {

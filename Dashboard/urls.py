@@ -41,4 +41,6 @@ urlpatterns = [
     path('purchase_history/', views.purchase_history, name='purchase_history'),
     path('setting/', views.settings_page, name='setting'),
     path('payment/success/<int:auction_id>/', views.payment_success, name='payment_success'),
+    path('quick-create/', views.quick_create_auction, name='quick_create_auction'),
+    
 ]

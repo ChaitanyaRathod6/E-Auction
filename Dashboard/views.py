@@ -16,17 +16,164 @@ from django.db.models import Sum
 from django.contrib.auth import logout
 import stripe
 # Create your views here.
+@login_required
 @role_required(allowed_roles=['Admin'])
 def AdminDashboard(request):
-    return render(request,"Dashboard/AdminDashboard.html")
+    from django.db.models import Sum, Count
+    from datetime import timedelta
+    from django.utils import timezone
+    import json
 
+    now = timezone.now()
+
+    # Weekly GMV (last 7 days)
+    weekly_gmv = []
+    weekly_labels = []
+    for i in range(6, -1, -1):
+        day = now - timedelta(days=i)
+        total = Payment.objects.filter(
+            status='COMPLETED',
+            payment_date__date=day.date()
+        ).aggregate(total=Sum('amount'))['total'] or 0
+        weekly_gmv.append(float(total))
+        weekly_labels.append(day.strftime('%a'))
+
+    # Monthly GMV (last 6 months)
+    monthly_gmv = []
+    monthly_labels = []
+    for i in range(5, -1, -1):
+        month_start = (now.replace(day=1) - timedelta(days=i*30)).replace(day=1)
+        month_end = (month_start + timedelta(days=32)).replace(day=1)
+        total = Payment.objects.filter(
+            status='COMPLETED',
+            payment_date__gte=month_start,
+            payment_date__lt=month_end
+        ).aggregate(total=Sum('amount'))['total'] or 0
+        monthly_gmv.append(float(total))
+        monthly_labels.append(month_start.strftime('%b'))
+
+    # Volume by Category
+    category_data = Category.objects.annotate(
+        auction_count=Count('items__auction')
+    ).values('name', 'auction_count').order_by('-auction_count')[:5]
+    cat_labels = [c['name'][:8] for c in category_data]
+    cat_values = [c['auction_count'] for c in category_data]
+    max_cat = max(cat_values) if cat_values else 1
+
+    total_gmv = Payment.objects.filter(status='COMPLETED').aggregate(total=Sum('amount'))['total'] or 0
+    active_auctions = Auction.objects.filter(status='ACTIVE').count()
+    total_users = User.objects.count()
+    open_disputes = Dispute.objects.filter(status='OPEN').count()
+    total_auctions = Auction.objects.count()
+    recent_activity = Notification.objects.select_related('user', 'auction').order_by('-created_at')[:5]
+    recent_auctions = Auction.objects.select_related('item__category', 'item__seller__user').annotate(bid_count=Count('bids')).order_by('-created_at')[:5]
+    pending_disputes = Dispute.objects.filter(status='OPEN').select_related('raised_by', 'auction__item').order_by('-created_at')[:4]
+
+    context = {
+        'total_gmv': total_gmv,
+        'active_auctions': active_auctions,
+        'total_users': total_users,
+        'open_disputes': open_disputes,
+        'total_auctions': total_auctions,
+        'recent_activity': recent_activity,
+        'recent_auctions': recent_auctions,
+        'pending_disputes': pending_disputes,
+        'weekly_gmv': json.dumps(weekly_gmv),
+        'weekly_labels': json.dumps(weekly_labels),
+        'monthly_gmv': json.dumps(monthly_gmv),
+        'monthly_labels': json.dumps(monthly_labels),
+        'cat_labels': json.dumps(cat_labels),
+        'cat_values': json.dumps(cat_values),
+        'max_cat': max_cat,
+    }
+    return render(request, 'Dashboard/AdminDashboard.html', context)
+
+@login_required
 @role_required(allowed_roles=['Buyer'])
 def BuyerDashboard(request):
-    return render(request,"Dashboard/BuyerDashboard.html")
+    try:
+        buyer = request.user.buyer
+    except:
+        return redirect('home')
 
+    # Real data
+    active_bids = Bid.objects.filter(
+        buyer=buyer, 
+        auction__status='ACTIVE'
+    ).select_related('auction__item__category').order_by('-bid_time')
+
+    past_bids = Bid.objects.filter(
+        buyer=buyer,
+        auction__status='ENDED'
+    ).select_related('auction__item__category').order_by('-bid_time')
+
+    watchlist = Watchlist.objects.filter(
+        buyer=buyer
+    ).select_related('auction__item').order_by('-added_at')[:3]
+
+    live_auctions = Auction.objects.filter(
+        status='ACTIVE',
+        end_time__gt=timezone.now()
+    ).select_related('item__category').annotate(
+        bid_count=Count('bids')
+    ).order_by('end_time')[:3]
+
+    recent_notifications = Notification.objects.filter(
+        user=request.user
+    ).order_by('-created_at')[:4]
+
+    total_spent = Payment.objects.filter(
+        buyer=buyer, status='COMPLETED'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    recent_payments = Payment.objects.filter(
+    buyer=buyer, status='COMPLETED'
+).select_related('auction__item').order_by('-payment_date')[:3]
+
+    context = {
+        'buyer': buyer,
+        'active_bids': active_bids,
+        'past_bids': past_bids,
+        'watchlist': watchlist,
+        'live_auctions': live_auctions,
+        'recent_notifications': recent_notifications,
+        'total_bids': Bid.objects.filter(buyer=buyer).count(),
+        'won_auctions': Bid.objects.filter(buyer=buyer, status='WINNING', auction__status='ENDED').count(),
+        'total_spent': total_spent,
+        'watchlist_count': Watchlist.objects.filter(buyer=buyer).count(),
+        "recent_payments": recent_payments,
+    }
+    return render(request, 'Dashboard/BuyerDashboard.html', context)
+
+@login_required
 @role_required(allowed_roles=['Seller'])
 def SellerDashboard(request):
-    return render(request,"Dashboard/SellerDashboard.html")
+    try:
+        seller = request.user.seller
+    except:
+        return redirect('home')
+
+    auctions = Auction.objects.filter(
+        item__seller=seller
+    ).select_related('item__category').annotate(
+        bid_count=Count('bids')
+    ).order_by('end_time')
+
+    live_auctions = auctions.filter(status='ACTIVE', end_time__gt=timezone.now())[:5]
+
+    total_earnings = Payment.objects.filter(
+        auction__item__seller=seller, status='COMPLETED'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+        'seller': seller,
+        'live_auctions': live_auctions,
+        'total_earnings': total_earnings,
+        'active_auctions': auctions.filter(status='ACTIVE').count(),
+        'items_sold': auctions.filter(status='ENDED').count(),
+        'categories': Category.objects.all(),
+    }
+    return render(request, 'Dashboard/SellerDashboard.html', context)
 
 def  privacypolicy(request):
     return render(request,"Dashboard/privacypolicy.html")
@@ -148,7 +295,7 @@ def should_notify(user, notif_type):
     except UserSettings.DoesNotExist:
         return True  # default: allow notification
 
-@login_required
+
 def auction_detail(request, pk):
     auction = get_object_or_404(Auction, pk=pk)
 
@@ -373,12 +520,11 @@ def manage_categories(request):
             name = request.POST.get('name', '').strip()
             description = request.POST.get('description', '').strip()
             if name:
-                Category.objects.create(name=name, description=description)
-                
+                category = Category.objects.create(name=name, description=description)
                 if request.FILES.get('image'):
                     category.image = request.FILES['image']
-                messages.success(request, f'Category "{name}" added successfully!')    
-                category.save()
+                    category.save()
+                messages.success(request, f'Category "{name}" added successfully!')
             else:
                 messages.error(request, 'Category name is required.')
 
@@ -1026,3 +1172,50 @@ def payment_success(request, auction_id):
             return redirect('make_payment', auction_id=auction_id)
 
     return redirect('make_payment', auction_id=auction_id)
+
+@login_required
+@role_required(allowed_roles=['Seller'])
+def quick_create_auction(request):
+    if request.method == 'POST':
+        try:
+            seller = request.user.seller
+            category = Category.objects.get(id=request.POST.get('category'))
+            
+            # Create Item
+            item = Item.objects.create(
+                seller=seller,
+                category=category,
+                name=request.POST.get('name'),
+                description=request.POST.get('description'),
+                condition=request.POST.get('condition'),
+                shipping_cost=request.POST.get('shipping_cost'),
+            )
+            
+            # Save image if uploaded
+            if request.FILES.get('image'):
+                item.image = request.FILES['image']
+                item.save()
+
+            # Create Auction
+            starting_price = request.POST.get('starting_price')
+            Auction.objects.create(
+                item=item,
+                starting_price=starting_price,
+                reserve_price=request.POST.get('reserve_price'),
+                current_price=starting_price,
+                bid_increment=request.POST.get('bid_increment'),
+                end_time=request.POST.get('end_time'),
+                status='ACTIVE',
+            )
+
+            messages.success(request, f"Auction for '{item.name}' launched successfully!")
+            return redirect('SellerDashboard')
+
+        except Exception as e:
+            messages.error(request, f"Error creating auction: {str(e)}")
+            return redirect('SellerDashboard')
+
+    return redirect('SellerDashboard')    
+
+
+    

@@ -35,7 +35,7 @@
             --border: #2d1e50;
         }
         body.dark { background: #13102b !important; color: #f1f0f5 !important; }
-
+        body.dark .cat-icon-wrap img { filter: brightness(0.9); }
         /* Topbar */
         body.dark .topbar { background: rgba(26,20,56,0.95) !important; border-color: #2d1e50 !important; }
         body.dark .brand-name { color: #c4b5fd !important; }
@@ -342,13 +342,41 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Explore Categories</h2>
-            <a href="#" class="section-link">View All →</a>
+            <a href="#" class="section-link" onclick="toggleAllCategories(); return false;">View All →</a>
         </div>
-        <div class="categories-grid">
-            <a href="#" class="cat-card"><div class="cat-icon-wrap">🎨</div><div class="cat-name">Fine Art</div><div class="cat-count">1,240 Items</div></a>
-            <a href="#" class="cat-card"><div class="cat-icon-wrap">⌚</div><div class="cat-name">Luxury Watches</div><div class="cat-count">856 Items</div></a>
-            <a href="#" class="cat-card"><div class="cat-icon-wrap">💎</div><div class="cat-name">Fine Jewellery</div><div class="cat-count">2,105 Items</div></a>
-            <a href="#" class="cat-card"><div class="cat-icon-wrap">💻</div><div class="cat-name">Premium Tech</div><div class="cat-count">432 Items</div></a>
+
+        <!-- First 4 categories -->
+        <div class="categories-grid" id="categoriesGrid">
+            {% for category in categories %}
+            <a href="#" class="cat-card">
+                <div class="cat-icon-wrap">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width:42px;height:42px;object-fit:cover;border-radius:10px;">
+                    {% else %}
+                        🏷️
+                    {% endif %}
+                </div>
+                <div class="cat-name">{{ category.name }}</div>
+                <div class="cat-count">{{ category.description|truncatechars:40 }}</div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- All categories (hidden by default) -->
+        <div class="categories-grid" id="allCategoriesGrid" style="display:none; margin-top:16px;">
+            {% for category in all_categories %}
+            <a href="#" class="cat-card">
+                <div class="cat-icon-wrap">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" style="width:42px;height:42px;object-fit:cover;border-radius:10px;">
+                    {% else %}
+                        🏷️
+                    {% endif %}
+                </div>
+                <div class="cat-name">{{ category.name }}</div>
+                <div class="cat-count">{{ category.description|truncatechars:40 }}</div>
+            </a>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -358,43 +386,42 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title"><span class="live-dot" style="margin-left:8px;"></span>Live Auctions</h2>
-            <a href="#" class="section-link">View All →</a>
+            <a href="{% url 'auction_list' %}" class="section-link">View All →</a>
         </div>
         <div class="auctions-grid">
-            <div class="auction-card">
-                <div class="auction-img">⌚<div class="auction-timer"><span class="timer-dot"></span>02:14:55</div><div class="auction-wishlist">🤍</div></div>
-                <div class="auction-body">
-                    <div class="auction-name">2022 Sapphire Nebula Watch</div>
-                    <div class="auction-cat">Luxury Watches</div>
-                    <div class="auction-footer">
-                        <div><div class="auction-bid-label">Current Bid</div><div class="auction-bid-value">$12,400</div></div>
-                        <div style="text-align:right;"><div class="auction-bids">24 Bids</div><button class="btn-bid">Place Bid</button></div>
-                    </div>
-                </div>
+    {% for auction in live_auctions %}
+    <a href="{% url 'auction_detail' auction.pk %}" class="auction-card" style="text-decoration:none;display:block;">
+        <div class="auction-img" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">
+            {% if auction.item.image %}
+                <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+            {% else %}
+                🏷️
+            {% endif %}
+            <div class="auction-timer">
+                <span class="timer-dot"></span>
+                <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--:--</span>
             </div>
-            <div class="auction-card">
-                <div class="auction-img" style="background:linear-gradient(135deg,#1a3a2a,#2d6a4f);">🎨<div class="auction-timer"><span class="timer-dot"></span>05:30:10</div><div class="auction-wishlist">🤍</div></div>
-                <div class="auction-body">
-                    <div class="auction-name">Eternal Horizon Canvas</div>
-                    <div class="auction-cat">Fine Art</div>
-                    <div class="auction-footer">
-                        <div><div class="auction-bid-label">Current Bid</div><div class="auction-bid-value">$45,000</div></div>
-                        <div style="text-align:right;"><div class="auction-bids">12 Bids</div><button class="btn-bid">Place Bid</button></div>
-                    </div>
+            <div class="auction-wishlist">🤍</div>
+        </div>
+        <div class="auction-body">
+            <div class="auction-name">{{ auction.item.name }}</div>
+            <div class="auction-cat">{{ auction.item.category.name }}</div>
+            <div class="auction-footer">
+                <div>
+                    <div class="auction-bid-label">Current Bid</div>
+                    <div class="auction-bid-value">₹{{ auction.current_price }}</div>
                 </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img" style="background:linear-gradient(135deg,#1a1a35,#3b3b8a);">💎<div class="auction-timer"><span class="timer-dot"></span>00:45:12</div><div class="auction-wishlist">🤍</div></div>
-                <div class="auction-body">
-                    <div class="auction-name">Royal Blue Diamond Set</div>
-                    <div class="auction-cat">Fine Jewellery</div>
-                    <div class="auction-footer">
-                        <div><div class="auction-bid-label">Current Bid</div><div class="auction-bid-value">$320,000</div></div>
-                        <div style="text-align:right;"><div class="auction-bids">38 Bids</div><button class="btn-bid">Place Bid</button></div>
-                    </div>
+                <div style="text-align:right;">
+                    <div class="auction-bids">{{ auction.bid_count }} Bids</div>
+                    <span class="btn-bid">Place Bid →</span>
                 </div>
             </div>
         </div>
+    </a>
+    {% empty %}
+    <p style="color:var(--text-mid);grid-column:1/-1;text-align:center;padding:40px;">No live auctions at the moment.</p>
+    {% endfor %}
+</div>
     </div>
 </section>
 
@@ -477,6 +504,22 @@
 </footer>
 
 <script>
+
+    function toggleAllCategories() {
+    const grid = document.getElementById('categoriesGrid');
+    const allGrid = document.getElementById('allCategoriesGrid');
+    const link = document.querySelector('.section-link');
+    if (allGrid.style.display === 'none') {
+        grid.style.display = 'none';
+        allGrid.style.display = 'grid';
+        link.textContent = '← Show Less';
+    } else {
+        allGrid.style.display = 'none';
+        grid.style.display = 'grid';
+        link.textContent = 'View All →';
+    }
+}
+
     // ─── Dark Mode ───────────────────────────────────
     if (localStorage.getItem('auctora_dark') === '1') {
         document.body.classList.add('dark');
@@ -506,6 +549,34 @@
         }
         requestAnimationFrame(update);
     }
+
+    // Countdown timers
+function updateCountdowns() {
+    document.querySelectorAll('.countdown').forEach(el => {
+        const end = new Date(el.dataset.end);
+        const now = new Date();
+        const diff = end - now;
+        if (diff <= 0) {
+            el.textContent = 'Ended';
+            el.style.color = '#ef4444';
+            return;
+        }
+        const days = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        if (days > 0) {
+            el.textContent = `${days}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`;
+        } else if (h > 0) {
+            el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        } else {
+            el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            el.style.color = '#ef4444';
+        }
+    });
+}
+setInterval(updateCountdowns, 1000);
+updateCountdowns();
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) { animateCount(entry.target); observer.unobserve(entry.target); } });
