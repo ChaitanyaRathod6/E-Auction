@@ -59,14 +59,20 @@
         body.dark .quick-create { background: #1c1640 !important; border-color: #2d1e50 !important; }
         body.dark .quick-title { color: #f1f0f5 !important; }
         body.dark .form-label { color: #6b5f85 !important; }
-        body.dark .form-input { background: #13102b !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
+        body.dark .form-input, body.dark .form-select { background:#13102b !important; border-color:#2d1e50 !important; color:#a89dc4 !important; }
         body.dark .form-input::placeholder { color: #6b5f85 !important; }
+        body.dark .form-input { color:#f1f0f5 !important; }
         body.dark .form-select { background-color: #13102b !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
         body.dark .btn-upload { background: #13102b !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
         body.dark .btn-upload:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.1) !important; color: #c4b5fd !important; }
         body.dark .btn-ghost { border-color: #2d1e50 !important; color: #a89dc4 !important; }
         body.dark .btn-ghost:hover { background: #2d1e50 !important; color: #f1f0f5 !important; }
-
+        body.dark .form-select option { background:#13102b !important; color:#a89dc4 !important; }
+        body.dark input[type="datetime-local"] { color:#f1f0f5 !important; }
+body.dark input[type="number"] { color:#f1f0f5 !important; }
+body.dark select option { background:#13102b !important; color:#a89dc4 !important; }
+body.dark input[type="datetime-local"] { color:#a89dc4 !important; background:#13102b !important; border-color:#2d1e50 !important; }
+body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(0.5) sepia(1) saturate(0.5) hue-rotate(200deg); cursor:pointer; }
         /* Dark toggle icon swap */
         .dark-toggle-icon-moon { display: none; }
         .dark-toggle-icon-sun  { display: block; }
@@ -105,7 +111,7 @@
         .nav-badge { margin-left: auto; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; min-width: 20px; text-align: center; }
         .sidebar-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 10px 14px; }
         .sidebar-bottom { padding: 10px 10px 14px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto; }
-        .settings-icon-btn { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; width: 100%; color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500; cursor: pointer; border: none; background: rgba(255,255,255,0.06); transition: background 0.25s, color 0.2s, transform 0.25s; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
+        .settings-icon-btn { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; width:100%; color:rgba(255,255,255,0.6); font-size:13px; font-weight:500; cursor:pointer; border:none; background:rgba(255,255,255,0.06); transition:background 0.25s,color 0.2s,transform 0.25s; font-family:'Inter',sans-serif; margin-bottom:8px; text-decoration:none; }
         .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
         .settings-icon-btn svg { transition: transform 0.4s; flex-shrink: 0; }
         .settings-icon-btn:hover svg { transform: rotate(65deg); }
@@ -278,23 +284,14 @@
             Disputes
             <span class="nav-badge">3</span>
         </a>
-        <div class="sidebar-divider"></div>
-        <a href="{% url 'home' %}" class="nav-item">
-            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-            Home
-        </a>
+        
     </nav>
 
     <div class="sidebar-bottom">
-        <a href="{% url 'setting' %}" class="nav-item">
-    <span class="nav-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-    </span>
-    Settings
-</a>
+        <a href="{% url 'setting' %}" class="settings-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </a>
         <div class="sidebar-profile-card">
             <div style="flex-shrink:0;">
                 {% with request.user.Gender|lower as gender %}
@@ -408,11 +405,12 @@
         </div>
         <div class="form-group">
             <label class="form-label">Item Category</label>
-            <select class="form-select" name="category">
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
+            <select class="form-select" name="category" required style="color:#a89dc4;">
+    <option value="" disabled selected>Select a category</option>
+    {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+</select>
         </div>
         <div class="form-group">
             <label class="form-label">Description</label>
@@ -435,17 +433,19 @@
             </div>
             <div>
                 <label class="form-label">Condition</label>
-                <select class="form-select" name="condition">
-                    <option value="NEW">New</option>
-                    <option value="USED">Used</option>
-                    <option value="REFURB">Refurbished</option>
-                </select>
+                <select class="form-select" name="condition" required style="color:#a89dc4;">
+    <option value="" disabled selected>condition</option>
+    <option value="NEW">New</option>
+    <option value="USED">Used</option>
+    <option value="REFURB">Refurbished</option>
+</select>
             </div>
         </div>
         <div class="form-row form-group">
             <div>
                 <label class="form-label">End Date</label>
-                <input class="form-input" type="datetime-local" name="end_time" required/>
+                <input class="form-input" type="datetime-local" name="end_time" required style="color:#ffffff;">
+                
             </div>
             <div>
                 <label class="form-label">Shipping Cost</label>

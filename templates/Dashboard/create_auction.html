@@ -2,399 +2,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Auctora - Create New Auction</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    "primary": "#2d1655",
-                    "accent": "#D4AF37",
-                    "background-light": "#f8f6f6",
-                    "background-dark": "#221610",
-                },
-                fontFamily: { "display": ["Public Sans", "sans-serif"] },
-                borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-            },
-        },
-    }
-</script>
-<script>
-    if(localStorage.getItem('auctora_dark')==='1'){
-        document.documentElement.classList.add('dark-pending');
-    }
-</script>
-<style>
-    /* ─── DARK MODE ─── */
-    body.dark, html.dark-pending body { background: #13102b !important; color: #f1f0f5 !important; }
-    body.dark aside { background: #1a1438 !important; border-color: #2d1e50 !important; }
-    body.dark aside h2 { color: #c4b5fd !important; }
-    body.dark aside a { color: #a89dc4 !important; }
-    body.dark aside a:hover { background: rgba(45,22,85,0.4) !important; color: #f1f0f5 !important; }
-    body.dark aside a.bg-primary\/10 { background: rgba(124,58,237,0.2) !important; color: #c4b5fd !important; }
-    body.dark aside .bg-slate-100 { background: #0f0c24 !important; }
-    body.dark aside p.text-slate-500 { color: #6b5f85 !important; }
-    body.dark header { background: rgba(26,20,56,0.9) !important; border-color: #2d1e50 !important; }
-    body.dark h1 { color: #ffffff !important; }
-    body.dark h3 { color: #ffffff !important; }
-    body.dark .text-slate-900 { color: #ffffff !important; }
-    body.dark .text-slate-500 { color: #a89dc4 !important; }
-    body.dark .text-slate-700 { color: #c4b5fd !important; }
-    body.dark .text-slate-400 { color: #6b5f85 !important; }
-    body.dark label { color: #c4b5fd !important; }
-    body.dark .text-4xl.font-black { color: #ffffff !important; }
-    body.dark .bg-white { background: #1c1640 !important; }
-    body.dark .border-slate-200 { border-color: #2d1e50 !important; }
-    body.dark .border-slate-100 { border-color: #2d1e50 !important; }
-    body.dark .text-slate-400 { color: #6b5f85 !important; }
-    body.dark .ring-white { --tw-ring-color: #13102b !important; }
-    body.dark .rounded-3xl.bg-white, body.dark .rounded-3xl { background: #1c1640 !important; border-color: #2d1e50 !important; }
-    body.dark .shadow-xl { box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important; }
-    body.dark input[type="text"],
-    body.dark input[type="number"],
-    body.dark input[type="datetime-local"],
-    body.dark select,
-    body.dark textarea { background: #130c28 !important; border-color: #2d1e50 !important; color: #f1f0f5 !important; }
-    body.dark input::placeholder, body.dark textarea::placeholder { color: #6b5f85 !important; }
-    body.dark input:focus, body.dark textarea:focus, body.dark select:focus { border-color: #7c3aed !important; box-shadow: 0 0 0 3px rgba(124,58,237,0.15) !important; background: #1a1438 !important; }
-    body.dark .bg-red-50 { background: rgba(220,38,38,0.1) !important; }
-    body.dark .border-red-200 { border-color: rgba(220,38,38,0.3) !important; }
-    body.dark main { background: #13102b !important; }
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Create New Auction</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+:root{--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--topbar-bg:#ffffff;}
 
-    /* Image upload dark mode */
-    body.dark .img-upload-zone { background: #130c28 !important; border-color: #2d1e50 !important; color: #a89dc4 !important; }
-    body.dark .img-upload-zone:hover { border-color: #7c3aed !important; background: rgba(124,58,237,0.08) !important; color: #c4b5fd !important; }
-    body.dark .img-preview-box { background: #130c28 !important; border-color: #2d1e50 !important; }
-    body.dark .img-upload-note { color: #6b5f85 !important; }
+/* ─── DARK MODE ─── */
+body.dark{--main-bg:#13102b;--card-bg:#1c1640;--topbar-bg:#1a1438;--text-dark:#f1f0f5;--text-mid:#a89dc4;--text-light:#6b5f85;--border:#2d1e50;--sidebar-bg:#0f0c24;background:#13102b !important;}
+body.dark .topbar{background:#1a1438 !important;border-color:#2d1e50 !important;}
+body.dark .brand-name{color:#ffffff !important;}
+body.dark .search-wrap{background:#13102b !important;border-color:#2d1e50 !important;}
+body.dark .search-wrap input{color:#f1f0f5 !important;}
+body.dark .topbar-icon{background:#13102b !important;border-color:#2d1e50 !important;color:#a89dc4 !important;}
+body.dark .topbar-icon:hover{background:#2d1e50 !important;}
+body.dark .notif-dot{border-color:#1a1438 !important;}
+body.dark .sidebar{background:#0f0c24 !important;}
+body.dark .nav-section-label{color:rgba(255,255,255,0.2) !important;}
+body.dark .nav-item{color:rgba(255,255,255,0.6) !important;}
+body.dark .nav-item:hover{background:rgba(124,58,237,0.15) !important;color:#fff !important;}
+body.dark .nav-item.active{background:#2d1655 !important;color:#fff !important;}
+body.dark .sidebar-divider{background:rgba(255,255,255,0.06) !important;}
+body.dark .settings-icon-btn{background:rgba(255,255,255,0.04) !important;color:rgba(255,255,255,0.5) !important;}
+body.dark .sidebar-profile-card{background:rgba(255,255,255,0.05) !important;border-color:rgba(255,255,255,0.08) !important;}
+body.dark .page-header h1{color:#ffffff !important;}
+body.dark .page-header p{color:#a89dc4 !important;}
+body.dark .form-card{background:#1c1640 !important;border-color:#2d1e50 !important;}
+body.dark .form-card-header{border-color:#2d1e50 !important;}
+body.dark .form-card h3{color:#f1f0f5 !important;}
+body.dark .form-label{color:#6b5f85 !important;}
+body.dark .form-input,body.dark .form-select,body.dark .form-textarea{background:#13102b !important;border-color:#2d1e50 !important;color:#f1f0f5 !important;}
+body.dark .form-input::placeholder,body.dark .form-textarea::placeholder{color:#6b5f85 !important;}
+body.dark .form-input:focus,body.dark .form-select:focus,body.dark .form-textarea:focus{border-color:#7c3aed !important;box-shadow:0 0 0 3px rgba(124,58,237,0.15) !important;}
+body.dark .upload-zone{background:#13102b !important;border-color:#2d1e50 !important;color:#a89dc4 !important;}
+body.dark .upload-zone:hover{border-color:#7c3aed !important;background:rgba(124,58,237,0.08) !important;color:#c4b5fd !important;}
+body.dark .form-hint{color:#6b5f85 !important;}
+body.dark .step-bar{background:#2d1e50 !important;}
+body.dark .step-circle{background:#1c1640 !important;border-color:#2d1e50 !important;color:#6b5f85 !important;}
+body.dark .step-circle.active{background:#2d1655 !important;border-color:#7c3aed !important;color:#fff !important;}
+body.dark .step-label{color:#6b5f85 !important;}
+body.dark .step-label.active{color:#c4b5fd !important;}
+body.dark .btn-ghost{border-color:#2d1e50 !important;color:#a89dc4 !important;}
+body.dark .btn-ghost:hover{background:#2d1e50 !important;color:#f1f0f5 !important;}
+body.dark .img-preview-box{background:#13102b !important;border-color:#2d1e50 !important;}
+body.dark ::-webkit-scrollbar-track{background:#13102b;}
+body.dark ::-webkit-scrollbar-thumb{background:#2d1655;border-radius:3px;}
+::-webkit-scrollbar{width:5px;}
+body.dark .form-select option { background:#13102b !important; color:#a89dc4 !important; }
+body.dark select option { background:#13102b !important; color:#a89dc4 !important; }
+body.dark input[type="datetime-local"] { color:#a89dc4 !important; background:#13102b !important; border-color:#2d1e50 !important; }
+body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(0.5) sepia(1) saturate(0.5) hue-rotate(200deg); cursor:pointer; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);min-height:100vh;overflow-x:hidden;}
 
-    ::-webkit-scrollbar { width: 5px; }
-    body.dark ::-webkit-scrollbar-track { background: #13102b; }
-    body.dark ::-webkit-scrollbar-thumb { background: #2d1655; border-radius: 3px; }
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    body { font-family: 'Public Sans', sans-serif; }
+/* Topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
+.topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
+.brand-icon{width:32px;height:32px;background:transparent;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
+.topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--main-bg);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:13px;color:var(--text-mid);width:240px;}
+.search-wrap input{border:none;outline:none;background:transparent;font-size:13px;color:var(--text-dark);width:100%;font-family:'Inter',sans-serif;}
+.search-wrap input::placeholder{color:var(--text-light);}
+.topbar-icon{width:36px;height:36px;border-radius:50%;background:var(--main-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s,transform 0.2s;color:var(--text-mid);position:relative;}
+.topbar-icon:hover{background:var(--border);transform:scale(1.08);}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;}
 
-    .form-input, .form-select, .form-textarea,
-    input[type="text"], input[type="number"], input[type="datetime-local"], select, textarea {
-        width: 100%; padding: 0.75rem 1rem; border-radius: 0.75rem;
-        border: 1.5px solid #e2e8f0; background: #f8fafc;
-        font-size: 0.95rem; color: #1e293b; font-family: 'Public Sans', sans-serif;
-        transition: border-color 0.2s, box-shadow 0.2s; outline: none;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus,
-    input:focus, select:focus, textarea:focus {
-        border-color: #2d1655; box-shadow: 0 0 0 3px rgba(45,22,85,0.12); background: #fff;
-    }
-    .form-select, select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232d1655'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-        background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1.2rem; padding-right: 2.5rem;
-    }
-    .form-textarea { min-height: 100px; resize: vertical; }
-    .errorlist { list-style: none; padding: 0; margin: 0.5rem 0 0; color: #dc2626; font-size: 0.875rem; }
-    .errorlist li { display: flex; align-items: center; gap: 0.25rem; }
-    .errorlist li::before { content: "⚠️"; font-size: 0.75rem; }
+/* Sidebar */
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);overflow-y:auto;overflow-x:hidden;}
+.sidebar-nav{padding:10px 10px;flex:1;}
+.nav-section-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:8px 14px 5px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;transition:background 0.25s ease,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
+.nav-item .nav-icon{width:20px;text-align:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff;transform:translateX(3px) scale(1.02);}
+.nav-item:hover .nav-icon{transform:scale(1.2) rotate(-6deg);}
+.nav-item.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 4px 16px rgba(45,22,85,0.2);}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;min-width:20px;text-align:center;}
+.sidebar-divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 14px;}
+.sidebar-bottom{padding:10px 10px 14px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;}
+.settings-icon-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;width:100%;color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;cursor:pointer;border:none;background:rgba(255,255,255,0.06);transition:background 0.25s,color 0.2s,transform 0.25s;font-family:'Inter',sans-serif;margin-bottom:8px;text-decoration:none;}
+.settings-icon-btn:hover{background:rgba(255,255,255,0.12);color:#fff;transform:translateX(3px) scale(1.02);}
+.settings-icon-btn svg{transition:transform 0.4s;flex-shrink:0;}
+.settings-icon-btn:hover svg{transform:rotate(65deg);}
+.sidebar-profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s,transform 0.2s;}
+.sidebar-profile-card:hover{background:rgba(255,255,255,0.13);transform:scale(1.01);}
+.profile-info{flex:1;min-width:0;}
+.profile-info .name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-info .tier{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
+.logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
+.logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
 
-    /* ─── Image Upload Zone ─── */
-    .img-upload-zone {
-        display: flex; align-items: center; justify-content: center;
-        flex-direction: column; gap: 8px;
-        width: 100%; padding: 28px 16px;
-        border: 2px dashed #e2e8f0; border-radius: 0.75rem;
-        background: #f8fafc; color: #6b7280;
-        font-size: 13.5px; font-weight: 500; cursor: pointer;
-        transition: border-color 0.2s, background 0.2s, color 0.2s;
-        position: relative;
-    }
-    .img-upload-zone:hover { border-color: #2d1655; background: #f5f3ff; color: #2d1655; }
-    .img-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .img-upload-note { font-size: 11.5px; color: #94a3b8; margin-top: 2px; }
-    .img-preview-box { margin-top: 12px; display: none; position: relative; border-radius: 0.75rem; overflow: hidden; border: 1.5px solid #e2e8f0; background: #f8fafc; }
-    .img-preview-box img { width: 100%; max-height: 200px; object-fit: cover; display: block; }
-    .img-remove-btn { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: rgba(239,68,68,0.85); color: #fff; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-    .img-remove-btn:hover { background: #ef4444; }
-</style>
+/* Main */
+.main{margin-left:260px;padding-top:56px;min-height:100vh;animation:fadeIn 0.6s 0.2s both;}
+.page-content{padding:28px;max-width:860px;}
+.page-header{margin-bottom:24px;animation:fadeInUp 0.5s 0.2s both;}
+.page-header h1{font-size:26px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;}
+.page-header p{font-size:13.5px;color:var(--text-mid);margin-top:4px;}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;margin-bottom:24px;position:relative;animation:fadeInUp 0.5s 0.25s both;}
+.step-bar{position:absolute;top:17px;left:0;right:0;height:2px;background:var(--border);z-index:0;}
+.step-bar-fill{height:100%;background:var(--primary);width:25%;}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative;z-index:1;}
+.step-circle{width:34px;height:34px;border-radius:50%;background:var(--card-bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-light);}
+.step-circle.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(45,22,85,0.3);}
+.step-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);}
+.step-label.active{color:var(--primary);}
+
+/* Form cards */
+.form-card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);padding:24px;margin-bottom:18px;animation:fadeInUp 0.5s both;}
+.form-card:nth-child(1){animation-delay:0.3s;}
+.form-card:nth-child(2){animation-delay:0.35s;}
+.form-card:nth-child(3){animation-delay:0.4s;}
+.form-card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.form-card-icon{width:38px;height:38px;border-radius:10px;background:rgba(45,22,85,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.form-card h3{font-size:15px;font-weight:700;color:var(--text-dark);}
+.form-card h3 span{font-size:11px;font-weight:500;color:var(--text-mid);margin-left:6px;}
+
+/* Form fields */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.col3{grid-template-columns:1fr 1fr 1fr;}
+.form-grid.col1{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);}
+.form-label .req{color:var(--red);margin-left:2px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;background:var(--main-bg);border:1.5px solid var(--border);border-radius:10px;font-size:13px;color:var(--text-dark);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent-purple);box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-light);}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+.form-textarea{min-height:88px;resize:vertical;}
+.form-hint{font-size:11px;color:var(--text-light);}
+.errorlist{list-style:none;padding:0;margin:4px 0 0;color:var(--red);font-size:12px;}
+.errorlist li::before{content:"⚠ ";}
+
+/* Upload zone */
+.upload-zone{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;width:100%;padding:22px 16px;border:2px dashed var(--border);border-radius:10px;background:var(--main-bg);color:var(--text-mid);font-size:13px;font-weight:500;cursor:pointer;transition:border-color 0.2s,background 0.2s,color 0.2s;position:relative;}
+.upload-zone:hover{border-color:var(--accent-purple);background:#f3f0ff;color:var(--accent-purple);}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-preview-box{margin-top:10px;display:none;position:relative;border-radius:10px;overflow:hidden;border:1.5px solid var(--border);}
+.img-preview-box img{width:100%;max-height:160px;object-fit:cover;display:block;}
+.img-remove-btn{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(239,68,68,0.85);color:#fff;border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.img-remove-btn:hover{background:#ef4444;}
+
+/* Error box */
+.error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:14px 18px;margin-bottom:18px;}
+.error-box p{font-size:13px;color:#dc2626;}
+
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;padding:11px 26px;border-radius:50px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s,background 0.2s;box-shadow:0 4px 16px rgba(45,22,85,0.3);font-family:'Inter',sans-serif;}
+.btn-primary:hover{transform:scale(1.04);background:#3d2070;box-shadow:0 6px 24px rgba(45,22,85,0.45);}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text-mid);padding:11px 20px;border-radius:50px;font-size:14px;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:background 0.2s,color 0.2s;font-family:'Inter',sans-serif;text-decoration:none;}
+.btn-ghost:hover{background:var(--border);color:var(--text-dark);}
+.form-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 0 20px;animation:fadeInUp 0.5s 0.45s both;}
+
+@media(max-width:768px){.sidebar{transform:translateX(-260px)}.main{margin-left:0}.page-content{padding:16px}.form-grid{grid-template-columns:1fr}.form-grid.col3{grid-template-columns:1fr}}
+    </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
-<div class="flex min-h-screen">
+<body>
 
-    <!-- Sidebar -->
-    <aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full z-20">
-        <div class="p-6 flex items-center gap-3">
-            <div class="bg-primary p-2 rounded-lg">
-                <span class="material-symbols-outlined text-white">diamond</span>
-            </div>
-            <h2 class="text-2xl font-black tracking-tight text-primary">Auctora</h2>
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="topbar-brand">
+        <div class="brand-icon">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
         </div>
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors" href="{% url 'SellerDashboard' %}">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-medium">Dashboard</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl" href="#">
-                <span class="material-symbols-outlined">add_circle</span>
-                <span class="font-medium">Create Auction</span>
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors" href="{% url 'auction_list' %}">
-                <span class="material-symbols-outlined">grid_view</span>
-                <span class="font-medium">Live Auctions</span>
-            </a>
-        </nav>
-        <div class="p-4 m-4 bg-slate-100 dark:bg-slate-800 rounded-2xl">
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-                    {{ request.user.First_name|first }}{{ request.user.Last_name|first }}
-                </div>
-                <div>
-                    <p class="text-sm font-bold truncate">{{ request.user.First_name }} {{ request.user.Last_name }}</p>
-                    <p class="text-xs text-slate-500">Premium Seller</p>
-                </div>
-            </div>
-            <a href="{% url 'home' %}" class="block w-full py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary/90 transition-all text-center">Go to Home</a>
+        <span class="brand-name">Auctora</span>
+    </div>
+    <div class="topbar-right">
+        <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search auctions..."/>
         </div>
-    </aside>
-
-    <main class="flex-1 ml-72">
-
-        <header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
-            <div></div>
-            <div class="flex items-center gap-6">
-                <div class="relative">
-                    <span class="material-symbols-outlined text-slate-500 cursor-pointer">notifications</span>
-                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-                    {{ request.user.First_name|first }}{{ request.user.Last_name|first }}
-                </div>
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <div class="notif-dot"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
             </div>
-        </header>
-
-        <div class="max-w-4xl mx-auto px-8 py-12">
-
-            <div class="mb-12">
-                <h1 class="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">Create New Auction</h1>
-                <p class="text-slate-500 text-lg">Provide details about your item to start the bidding process.</p>
-            </div>
-
-            <!-- Stepper -->
-            <div class="flex items-center justify-between mb-12 relative">
-                <div class="absolute top-5 left-0 w-full h-0.5 bg-slate-200 dark:bg-slate-800 -z-10"></div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold ring-4 ring-white dark:ring-slate-900">1</div>
-                    <span class="text-xs font-bold text-primary uppercase tracking-wider">Item</span>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-400 flex items-center justify-center font-bold ring-4 ring-white dark:ring-slate-900">2</div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pricing</span>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-400 flex items-center justify-center font-bold ring-4 ring-white dark:ring-slate-900">3</div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Schedule</span>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-400 flex items-center justify-center font-bold ring-4 ring-white dark:ring-slate-900">4</div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Launch</span>
-                </div>
-            </div>
-
-            <form method="POST" class="space-y-8" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <!-- Section 1: Item Details -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="flex items-center gap-3 mb-8 border-b border-slate-100 dark:border-slate-800 pb-6">
-                        <span class="material-symbols-outlined text-accent text-3xl">inventory_2</span>
-                        <h3 class="text-2xl font-bold">Step 1: Item Details</h3>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Item Name -->
-                        <div class="col-span-2">
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Item Name <span class="text-red-500">*</span></label>
-                            {{ item_form.name }}
-                            {% if item_form.name.errors %}<ul class="errorlist">{% for e in item_form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                        <!-- Category -->
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category <span class="text-red-500">*</span></label>
-                            {{ item_form.category }}
-                            {% if item_form.category.errors %}<ul class="errorlist">{% for e in item_form.category.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                        <!-- Condition -->
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Condition <span class="text-red-500">*</span></label>
-                            {{ item_form.condition }}
-                            {% if item_form.condition.errors %}<ul class="errorlist">{% for e in item_form.condition.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                        <!-- Description -->
-                        <div class="col-span-2">
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Description <span class="text-red-500">*</span></label>
-                            {{ item_form.description }}
-                            <p class="mt-1 text-xs text-slate-400">Provide a detailed description of your item (condition, features, history, etc.)</p>
-                            {% if item_form.description.errors %}<ul class="errorlist">{% for e in item_form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                        <!-- Shipping Cost -->
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Shipping Cost (₹) <span class="text-red-500">*</span></label>
-                            {{ item_form.shipping_cost }}
-                            <p class="mt-1 text-xs text-slate-400">Cost to ship the item to buyer</p>
-                            {% if item_form.shipping_cost.errors %}<ul class="errorlist">{% for e in item_form.shipping_cost.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                        <!-- ─── ITEM IMAGE UPLOAD ─── -->
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Item Image</label>
-                            <div class="img-upload-zone" id="itemUploadZone">
-                                <span class="material-symbols-outlined" style="font-size:28px;">add_photo_alternate</span>
-                                <span>Click to upload item image</span>
-                                <input type="file" name="image" id="itemImageInput" accept="image/*" onchange="previewItemImage(this)">
-                            </div>
-                            <div class="img-preview-box" id="itemPreviewBox">
-                                <img id="itemPreviewImg" src="" alt="Preview">
-                                <button type="button" class="img-remove-btn" onclick="removeItemImage()" title="Remove">✕</button>
-                            </div>
-                            <p class="img-upload-note mt-2">PNG, JPG or WEBP — max 5MB. Optional but recommended.</p>
-                            {% if item_form.image.errors %}<ul class="errorlist mt-1">{% for e in item_form.image.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Section 2: Pricing -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="flex items-center gap-3 mb-8 border-b border-slate-100 dark:border-slate-800 pb-6">
-                        <span class="material-symbols-outlined text-accent text-3xl">payments</span>
-                        <h3 class="text-2xl font-bold">Step 2: Pricing</h3>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Starting Price (₹) <span class="text-red-500">*</span></label>
-                            {{ auction_form.starting_price }}
-                            <p class="mt-1 text-xs text-slate-400">Minimum opening bid amount</p>
-                            {% if auction_form.starting_price.errors %}<ul class="errorlist">{% for e in auction_form.starting_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Reserve Price (₹) <span class="text-red-500">*</span></label>
-                            {{ auction_form.reserve_price }}
-                            <p class="mt-1 text-xs text-slate-400">Minimum price to sell (must be > starting)</p>
-                            {% if auction_form.reserve_price.errors %}<ul class="errorlist">{% for e in auction_form.reserve_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Bid Increment (₹) <span class="text-red-500">*</span></label>
-                            {{ auction_form.bid_increment }}
-                            <p class="mt-1 text-xs text-slate-400">Minimum raise per bid</p>
-                            {% if auction_form.bid_increment.errors %}<ul class="errorlist">{% for e in auction_form.bid_increment.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                        </div>
-                    </div>
-                    {{ auction_form.current_price.as_hidden }}
-                    {{ auction_form.status.as_hidden }}
-                </div>
-
-                <!-- Section 3: Schedule -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="flex items-center gap-3 mb-8 border-b border-slate-100 dark:border-slate-800 pb-6">
-                        <span class="material-symbols-outlined text-accent text-3xl">schedule</span>
-                        <h3 class="text-2xl font-bold">Step 3: Schedule</h3>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Auction End Time <span class="text-red-500">*</span></label>
-                        {{ auction_form.end_time }}
-                        <p class="mt-2 text-xs text-slate-400">Set when the auction will close (must be in the future)</p>
-                        {% if auction_form.end_time.errors %}<ul class="errorlist">{% for e in auction_form.end_time.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
-                    </div>
-                </div>
-
-                {% if auction_form.non_field_errors or item_form.non_field_errors %}
-                <div class="bg-red-50 border border-red-200 rounded-2xl p-5">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-red-500">error</span>
-                        <p class="font-bold text-red-700">Please fix the following errors:</p>
-                    </div>
-                    {% for error in item_form.non_field_errors %}<p class="text-sm text-red-600 ml-7">• Item: {{ error }}</p>{% endfor %}
-                    {% for error in auction_form.non_field_errors %}<p class="text-sm text-red-600 ml-7">• Auction: {{ error }}</p>{% endfor %}
-                </div>
+            <div>
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|default:"?"|first|upper }}</div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
 
-                <div class="flex items-center justify-between pb-8">
-                    <a href="{% url 'SellerDashboard' %}" class="px-8 py-4 text-slate-500 font-bold flex items-center gap-2 hover:text-slate-900 transition-colors">
-                        <span class="material-symbols-outlined">arrow_back</span>
-                        Back to Dashboard
-                    </a>
-                    <button type="submit" class="px-10 py-4 bg-primary text-white rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-                        Launch Auction
-                        <span class="material-symbols-outlined">gavel</span>
-                    </button>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a href="{% url 'SellerDashboard' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        <a href="{% url 'seller_profile' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            My Profile
+        </a>
+        <div class="sidebar-divider"></div>
+        <div class="nav-section-label">Listings</div>
+        <a href="{% url 'create_auction' %}" class="nav-item active">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            Create Auction
+        </a>
+        <a href="{% url 'auction_list' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/></svg></span>
+            My Auctions
+        </a>
+        <a href="{% url 'seller_manage_bids' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+            Manage Bids
+        </a>
+        <a href="{% url 'manage_payments' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            Payments
+        </a>
+        <a href="{% url 'manage_reviews' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+            Reviews
+        </a>
+        <a href="{% url 'manage_disputes' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            Disputes
+        </a>
+        
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'setting' %}" class="settings-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </a>
+        <div class="sidebar-profile-card">
+            <div style="flex-shrink:0;">
+                {% if request.user.Gender == "Male" %}
+                    <img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}
+                    <img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|default:"?"|first|upper }}</div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+<div class="page-content">
+
+    <div class="page-header">
+        <h1>Create New Auction</h1>
+        <p>Fill in the details below to launch your auction listing.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper">
+        <div class="step-bar"><div class="step-bar-fill"></div></div>
+        <div class="step-item">
+            <div class="step-circle active">1</div>
+            <span class="step-label active">Item</span>
+        </div>
+        <div class="step-item">
+            <div class="step-circle">2</div>
+            <span class="step-label">Pricing</span>
+        </div>
+        <div class="step-item">
+            <div class="step-circle">3</div>
+            <span class="step-label">Schedule</span>
+        </div>
+        <div class="step-item">
+            <div class="step-circle">4</div>
+            <span class="step-label">Launch</span>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Step 1: Item Details -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <div class="form-card-icon">📦</div>
+                <h3>Step 1: Item Details <span>Tell us about your item</span></h3>
+            </div>
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label class="form-label">Item Name <span class="req">*</span></label>
+                    {{ item_form.name }}
+                    {% if item_form.name.errors %}<ul class="errorlist">{% for e in item_form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                 </div>
-
-            </form>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="req">*</span></label>
+                    {{ item_form.category }}
+                    {% if item_form.category.errors %}<ul class="errorlist">{% for e in item_form.category.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Condition <span class="req">*</span></label>
+                    {{ item_form.condition }}
+                    {% if item_form.condition.errors %}<ul class="errorlist">{% for e in item_form.condition.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Description <span class="req">*</span></label>
+                    {{ item_form.description }}
+                    <span class="form-hint">Condition, features, history, provenance, etc.</span>
+                    {% if item_form.description.errors %}<ul class="errorlist">{% for e in item_form.description.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Shipping Cost (₹) <span class="req">*</span></label>
+                    {{ item_form.shipping_cost }}
+                    <span class="form-hint">Cost to ship to winning buyer</span>
+                    {% if item_form.shipping_cost.errors %}<ul class="errorlist">{% for e in item_form.shipping_cost.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Item Image</label>
+                    <div class="upload-zone" id="uploadZone">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <span id="uploadLabel">Click to upload image</span>
+                        <input type="file" name="image" id="itemImageInput" accept="image/*" onchange="previewImage(this)">
+                    </div>
+                    <div class="img-preview-box" id="previewBox">
+                        <img id="previewImg" src="" alt="Preview">
+                        <button type="button" class="img-remove-btn" onclick="removeImage()">✕</button>
+                    </div>
+                    <span class="form-hint">PNG, JPG, WEBP — max 5MB. Optional.</span>
+                    {% if item_form.image.errors %}<ul class="errorlist">{% for e in item_form.image.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+            </div>
         </div>
 
-        <footer class="bg-primary text-white py-12 px-8">
-            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="material-symbols-outlined text-accent text-3xl">diamond</span>
-                        <h2 class="text-3xl font-black tracking-tight">Auctora</h2>
-                    </div>
-                    <p class="text-white/60 max-w-sm mb-6">The world's premier destination for rare collectibles, luxury goods, and historical artifacts.</p>
+        <!-- Step 2: Pricing -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <div class="form-card-icon">💰</div>
+                <h3>Step 2: Pricing <span>Set your auction prices</span></h3>
+            </div>
+            <div class="form-grid col3">
+                <div class="form-group">
+                    <label class="form-label">Starting Price (₹) <span class="req">*</span></label>
+                    {{ auction_form.starting_price }}
+                    <span class="form-hint">Minimum opening bid</span>
+                    {% if auction_form.starting_price.errors %}<ul class="errorlist">{% for e in auction_form.starting_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                 </div>
-                <div>
-                    <h4 class="font-bold text-lg mb-6 text-accent">Platform</h4>
-                    <ul class="space-y-4 text-white/60 font-medium">
-                        <li><a class="hover:text-white transition-colors" href="#">How it works</a></li>
-                        <li><a class="hover:text-white transition-colors" href="#">Seller Guide</a></li>
-                    </ul>
+                <div class="form-group">
+                    <label class="form-label">Reserve Price (₹) <span class="req">*</span></label>
+                    {{ auction_form.reserve_price }}
+                    <span class="form-hint">Minimum to sell</span>
+                    {% if auction_form.reserve_price.errors %}<ul class="errorlist">{% for e in auction_form.reserve_price.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                 </div>
-                <div>
-                    <h4 class="font-bold text-lg mb-6 text-accent">Support</h4>
-                    <ul class="space-y-4 text-white/60 font-medium">
-                        <li><a class="hover:text-white transition-colors" href="{% url 'HelpCenter' %}">Help Center</a></li>
-                        <li><a class="hover:text-white transition-colors" href="{% url 'Support' %}">Contact Us</a></li>
-                        <li><a class="hover:text-white transition-colors" href="{% url 'termsofservice' %}">Terms of Service</a></li>
-                        <li><a class="hover:text-white transition-colors" href="{% url 'privacypolicy' %}">Privacy Policy</a></li>
-                    </ul>
+                <div class="form-group">
+                    <label class="form-label">Bid Increment (₹) <span class="req">*</span></label>
+                    {{ auction_form.bid_increment }}
+                    <span class="form-hint">Minimum raise per bid</span>
+                    {% if auction_form.bid_increment.errors %}<ul class="errorlist">{% for e in auction_form.bid_increment.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
                 </div>
             </div>
-            <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
-                <p>© 2026 Auctora International. All rights reserved.</p>
-            </div>
-        </footer>
+            {{ auction_form.current_price.as_hidden }}
+            {{ auction_form.status.as_hidden }}
+        </div>
 
-    </main>
+        <!-- Step 3: Schedule -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <div class="form-card-icon">🗓️</div>
+                <h3>Step 3: Schedule <span>When does it end?</span></h3>
+            </div>
+            <div class="form-grid col1">
+                <div class="form-group">
+                    <label class="form-label">Auction End Time <span class="req">*</span></label>
+                    {{ auction_form.end_time }}
+                    <span class="form-hint">Must be a future date and time</span>
+                    {% if auction_form.end_time.errors %}<ul class="errorlist">{% for e in auction_form.end_time.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if auction_form.non_field_errors or item_form.non_field_errors %}
+        <div class="error-box">
+            <p style="font-weight:700;margin-bottom:6px;">⚠ Please fix these errors:</p>
+            {% for error in item_form.non_field_errors %}<p>• Item: {{ error }}</p>{% endfor %}
+            {% for error in auction_form.non_field_errors %}<p>• Auction: {{ error }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <a href="{% url 'SellerDashboard' %}" class="btn-ghost">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Dashboard
+            </a>
+            <button type="submit" class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Launch Auction
+            </button>
+        </div>
+    </form>
+
 </div>
+</main>
 
 <script>
-    // ─── Dark Mode ───
-    if (localStorage.getItem('auctora_dark') === '1') {
-        document.body.classList.add('dark');
-        document.documentElement.classList.remove('dark-pending');
-    }
+    if(localStorage.getItem('auctora_dark')==='1') document.body.classList.add('dark');
 
-    // ─── Item Image Preview ───
-    function previewItemImage(input) {
+    function previewImage(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('itemPreviewImg').src = e.target.result;
-                document.getElementById('itemPreviewBox').style.display = 'block';
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('previewBox').style.display = 'block';
+                document.getElementById('uploadLabel').textContent = input.files[0].name;
             };
             reader.readAsDataURL(input.files[0]);
         }
     }
-    function removeItemImage() {
+    function removeImage() {
         document.getElementById('itemImageInput').value = '';
-        document.getElementById('itemPreviewBox').style.display = 'none';
-        document.getElementById('itemPreviewImg').src = '';
+        document.getElementById('previewBox').style.display = 'none';
+        document.getElementById('previewImg').src = '';
+        document.getElementById('uploadLabel').textContent = 'Click to upload image';
     }
 </script>
 </body>

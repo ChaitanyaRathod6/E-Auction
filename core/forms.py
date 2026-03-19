@@ -22,6 +22,22 @@ class UserSignupForm(UserCreationForm):
             'placeholder': 'Confirm password'
         })
     )
+
+      
+    Gender = forms.ChoiceField(
+        choices=[('', 'Select gender')] + list(User.choice),
+        widget=forms.Select(attrs={
+            'class': 'input-style rounded-full px-5'
+        })
+    )
+    
+    Role = forms.ChoiceField(
+        choices=[('', 'Select role')] + list(User.Rolechoice),
+        widget=forms.Select(attrs={
+            'class': 'input-style rounded-full px-5'
+        })
+    )
+
     class Meta:
         model = User
         fields = [
