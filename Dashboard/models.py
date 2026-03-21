@@ -160,7 +160,8 @@ class Payment(models.Model):
         ('COMPLETED', 'Completed'),
         ('FAILED', 'Failed'),
         ('REFUNDED', 'Refunded'),
-    ]
+         ('REFUND_REQUESTED', 'Refund Requested'),
+        ]
 
     METHOD_CHOICES = [
         ('CARD', 'Credit Card'),

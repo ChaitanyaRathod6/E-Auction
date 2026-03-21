@@ -181,8 +181,6 @@ tbody td{padding:13px 18px;font-size:13px;color:var(--text-dark);vertical-align:
 .stat-mini-val{font-size:22px;font-weight:800;color:var(--primary);}
 .stat-mini-lbl{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-light);margin-top:3px;}
 @media(max-width:768px){.sidebar{transform:translateX(-260px)}.main{margin-left:0}.page-content{padding:16px}.stats-mini{grid-template-columns:1fr 1fr}}
-
-
     </style>
 </head>
 <body>
@@ -263,6 +261,7 @@ tbody td{padding:13px 18px;font-size:13px;color:var(--text-dark);vertical-align:
                 <option value="COMPLETED" {% if request.GET.status == 'COMPLETED' %}selected{% endif %}>Completed</option>
                 <option value="FAILED" {% if request.GET.status == 'FAILED' %}selected{% endif %}>Failed</option>
                 <option value="REFUNDED" {% if request.GET.status == 'REFUNDED' %}selected{% endif %}>Refunded</option>
+                <option value="REFUND_REQUESTED" {% if request.GET.status == 'REFUND_REQUESTED' %}selected{% endif %}>Refund Requested</option>
             </select>
         </form>
     </div>
@@ -280,35 +279,60 @@ tbody td{padding:13px 18px;font-size:13px;color:var(--text-dark);vertical-align:
                 {% if payment.status == 'COMPLETED' %}<span class="pill pill-green">Completed</span>
                 {% elif payment.status == 'PENDING' %}<span class="pill pill-amber">Pending</span>
                 {% elif payment.status == 'FAILED' %}<span class="pill pill-red">Failed</span>
-                {% else %}<span class="pill pill-blue">Refunded</span>{% endif %}
+                {% elif payment.status == 'REFUND_REQUESTED' %}<span class="pill pill-blue">Refund Requested</span>
+                {% elif payment.status == 'REFUNDED' %}<span class="pill pill-purple">Refunded</span>
+                {% else %}<span class="pill pill-gray">{{ payment.status }}</span>{% endif %}
             </td>
             <td style="font-size:12px;color:var(--text-mid);">{{ payment.payment_date|date:"d M Y" }}</td>
             {% if request.user.Role == 'Buyer' %}
 <td>
     {% if payment.status == 'COMPLETED' %}
-    <div style="display:flex;gap:6px;">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
         <a href="{% url 'submit_review' payment.auction.id %}"
            style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.2);border-radius:50px;font-size:11px;font-weight:600;text-decoration:none;">
             ⭐ Review
         </a>
+        <a href="{% url 'download_invoice' payment.id %}"
+   style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(16,185,129,0.08);color:#059669;border:1px solid rgba(16,185,129,0.3);border-radius:50px;font-size:11px;font-weight:600;text-decoration:none;">
+    📄 Invoice
+</a>
         <a href="{% url 'raise_dispute' payment.auction.id %}"
            style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.2);border-radius:50px;font-size:11px;font-weight:600;text-decoration:none;">
             ⚠️ Dispute
         </a>
+        <a href="{% url 'request_refund' payment.id %}"
+           style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(59,130,246,0.08);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);border-radius:50px;font-size:11px;font-weight:600;text-decoration:none;">
+            💰 Refund
+        </a>
     </div>
+    {% elif payment.status == 'REFUND_REQUESTED' %}
+    <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(59,130,246,0.08);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);border-radius:50px;font-size:11px;font-weight:600;">
+        🔄 Refund Pending
+    </span>
+    {% elif payment.status == 'REFUNDED' %}
+    <span style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(16,185,129,0.08);color:#10b981;border:1px solid rgba(16,185,129,0.2);border-radius:50px;font-size:11px;font-weight:600;">
+        ✅ Refunded
+    </span>
     {% else %}
     <span style="font-size:12px;color:var(--text-light);">—</span>
     {% endif %}
 </td>
 {% else %}
 <td>
+        {% if payment.status == 'REFUND_REQUESTED' and request.user.Role == 'Seller' or payment.status == 'REFUND_REQUESTED' and request.user.Role == 'Admin' %}
+    <a href="{% url 'approve_refund' payment.id %}"
+       style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.3);border-radius:50px;font-size:11px;font-weight:600;text-decoration:none;margin-bottom:6px;">
+        ✅ Approve Refund
+    </a>
+    {% endif %}
     <form method="POST" style="display:flex;gap:6px;align-items:center;">{% csrf_token %}
         <input type="hidden" name="payment_id" value="{{ payment.id }}">
         <select name="new_status" class="form-select" style="width:130px;padding:5px 10px;font-size:11px;">
-            <option value="PENDING">Pending</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="FAILED">Failed</option>
-            <option value="REFUNDED">Refunded</option>
+            <option value="PENDING" {% if payment.status == 'PENDING' %}selected{% endif %}>Pending</option>
+            <option value="COMPLETED" {% if payment.status == 'COMPLETED' %}selected{% endif %}>Completed</option>
+            <option value="FAILED" {% if payment.status == 'FAILED' %}selected{% endif %}>Failed</option>
+            <option value="REFUND_REQUESTED" {% if payment.status == 'REFUND_REQUESTED' %}selected{% endif %}>Refund Requested</option>
+            <option value="REFUNDED" {% if payment.status == 'REFUNDED' %}selected{% endif %}>Refunded</option>
         </select>
         <button type="submit" class="btn-success" style="padding:5px 10px;font-size:11px;">Save</button>
     </form>

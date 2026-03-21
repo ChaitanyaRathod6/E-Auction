@@ -73,6 +73,7 @@ body.dark input[type="number"] { color:#f1f0f5 !important; }
 body.dark select option { background:#13102b !important; color:#a89dc4 !important; }
 body.dark input[type="datetime-local"] { color:#a89dc4 !important; background:#13102b !important; border-color:#2d1e50 !important; }
 body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(0.5) sepia(1) saturate(0.5) hue-rotate(200deg); cursor:pointer; }
+body.dark .panel-card { background: #1c1640 !important; border-color: #2d1e50 !important; }
         /* Dark toggle icon swap */
         .dark-toggle-icon-moon { display: none; }
         .dark-toggle-icon-sun  { display: block; }
@@ -256,12 +257,12 @@ body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filt
         <a href="{% url 'seller_manage_bids' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
             Manage Bids
-            <span class="nav-badge">3</span>
+            <span class="nav-badge">{{unread_bids}}</span>
         </a>
         <a href="{% url 'manage_payments' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
             Payments
-            <span class="nav-badge">3</span>
+            <span class="nav-badge">{{pending_payments_count}}</span>
         </a>
         <div class="sidebar-divider"></div>
         <a href="{% url 'manage_watchlist' %}" class="nav-item">
@@ -344,7 +345,61 @@ body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator { filt
         <div class="stat-value">{{ items_sold }}</div>
     </div>
 </div>
-
+    <!-- ─── PENDING PAYMENTS ─── -->
+{% if pending_payments %}
+<div class="panel-card" style="margin-bottom:22px;border:2px solid rgba(245,158,11,0.25);animation:fadeInUp 0.5s 0.35s both;">
+    <div class="panel-header" style="background:linear-gradient(135deg,rgba(245,158,11,0.06),rgba(245,158,11,0.02));border-bottom:1px solid rgba(245,158,11,0.15);">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <div class="stat-icon-wrap" style="background:rgba(245,158,11,0.12);width:38px;height:38px;font-size:18px;">⏳</div>
+            <div>
+                <div class="panel-title" style="color:var(--orange);">Awaiting Buyer Payment</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:2px;">These auctions ended — waiting for buyers to complete payment</div>
+            </div>
+        </div>
+        <span style="background:rgba(245,158,11,0.12);color:var(--orange);font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;">{{ pending_payments|length }} pending</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Winning Buyer</th>
+                <th>Winning Bid</th>
+                <th>Auction Ended</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid in pending_payments %}
+            <tr onclick="window.location.href='{% url 'auction_detail' bid.auction.pk %}'">
+                <td>
+                    <div class="item-cell">
+                        <div class="item-avatar">
+                            {% if bid.auction.item.image %}
+                                <img src="{{ bid.auction.item.image.url }}" style="width:38px;height:38px;object-fit:cover;border-radius:50%;">
+                            {% else %}
+                                <div style="width:38px;height:38px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;">🏷️</div>
+                            {% endif %}
+                        </div>
+                        <div class="item-name">{{ bid.auction.item.name }}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="item-name">{{ bid.buyer.user.First_name }} {{ bid.buyer.user.Last_name }}</div>
+                    <div class="bids-sub">{{ bid.buyer.user.Email }}</div>
+                </td>
+                <td class="price-cell">₹{{ bid.amount }}</td>
+                <td class="time-cell">{{ bid.auction.end_time|date:"d M Y, g:i A" }}</td>
+                <td>
+                    <span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--orange);background:rgba(245,158,11,0.1);padding:4px 10px;border-radius:20px;">
+                        ⏳ Payment Pending
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
         <div class="content-grid">
             <div class="panel-card">
                 <div class="panel-header">

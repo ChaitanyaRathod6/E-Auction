@@ -42,5 +42,10 @@ urlpatterns = [
     path('setting/', views.settings_page, name='setting'),
     path('payment/success/<int:auction_id>/', views.payment_success, name='payment_success'),
     path('quick-create/', views.quick_create_auction, name='quick_create_auction'),
-    
+    path('payments/refund/<int:payment_id>/', views.request_refund, name='request_refund'),
+    path('payments/approve-refund/<int:payment_id>/', views.approve_refund, name='approve_refund'),
+    path('buyers/', views.manage_buyers, name='manage_buyers'),
+    path('sellers/', views.manage_sellers, name='manage_sellers'),
+    path('categories-analytics/', views.manage_categories_analytics, name='manage_categories_analytics'),
+    path('invoice/<int:payment_id>/', views.download_invoice, name='download_invoice'),
 ]

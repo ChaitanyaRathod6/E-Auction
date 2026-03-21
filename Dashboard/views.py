@@ -15,6 +15,14 @@ from django.contrib import messages
 from django.db.models import Sum
 from django.contrib.auth import logout
 import stripe
+from Dashboard.emails import (
+    send_bid_placed_email,
+    send_outbid_email,
+    send_auction_won_email,
+    send_payment_received_email,
+    send_auction_ended_seller_email,
+)
+from django.db.models import Q,Sum,Count
 # Create your views here.
 @login_required
 @role_required(allowed_roles=['Admin'])
@@ -69,6 +77,26 @@ def AdminDashboard(request):
     recent_auctions = Auction.objects.select_related('item__category', 'item__seller__user').annotate(bid_count=Count('bids')).order_by('-created_at')[:5]
     pending_disputes = Dispute.objects.filter(status='OPEN').select_related('raised_by', 'auction__item').order_by('-created_at')[:4]
 
+    # Top Buyers
+    top_buyers = Buyer.objects.annotate(
+    total_spent=Sum('payments__amount', filter=Q(payments__status='COMPLETED')),
+    total_bids=Count('bids')
+    ).filter(total_spent__isnull=False).order_by('-total_spent')[:5]
+
+# Top Sellers
+    top_sellers = Seller.objects.annotate(
+    total_earned=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED')),
+    total_auctions=Count('items__auction')
+    ).filter(total_earned__isnull=False).order_by('-total_earned')[:5]
+
+# Most Active Categories
+    active_categories = Category.objects.annotate(
+    total_auctions=Count('items__auction'),
+    total_bids=Count('items__auction__bids'),
+    total_revenue=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED'))
+    ).order_by('-total_bids')[:5]
+
+
     context = {
         'total_gmv': total_gmv,
         'active_auctions': active_auctions,
@@ -85,65 +113,83 @@ def AdminDashboard(request):
         'cat_labels': json.dumps(cat_labels),
         'cat_values': json.dumps(cat_values),
         'max_cat': max_cat,
+        'top_buyers': top_buyers,
+        'top_sellers': top_sellers,
+        'active_categories': active_categories,
     }
     return render(request, 'Dashboard/AdminDashboard.html', context)
 
 @login_required
 @role_required(allowed_roles=['Buyer'])
 def BuyerDashboard(request):
-    try:
-        buyer = request.user.buyer
-    except:
-        return redirect('home')
+    buyer = request.user.buyer
 
-    # Real data
+    # Won auctions that need payment
+    won_unpaid = Bid.objects.filter(
+    buyer=buyer,
+    status='WINNING',
+    auction__status='ENDED'
+).exclude(
+    auction__payments__buyer=buyer,
+    auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
+).select_related('auction__item__category', 'auction__item__seller__user')
+
+    # Active bids
     active_bids = Bid.objects.filter(
-        buyer=buyer, 
+        buyer=buyer,
         auction__status='ACTIVE'
     ).select_related('auction__item__category').order_by('-bid_time')
 
+    # Past bids
     past_bids = Bid.objects.filter(
         buyer=buyer,
         auction__status='ENDED'
-    ).select_related('auction__item__category').order_by('-bid_time')
+    ).select_related('auction__item__category').order_by('-bid_time')[:10]
 
-    watchlist = Watchlist.objects.filter(
-        buyer=buyer
-    ).select_related('auction__item').order_by('-added_at')[:3]
-
+    # Live auctions
+    from django.db.models import Count
     live_auctions = Auction.objects.filter(
         status='ACTIVE',
         end_time__gt=timezone.now()
-    ).select_related('item__category').annotate(
-        bid_count=Count('bids')
-    ).order_by('end_time')[:3]
+    ).annotate(bid_count=Count('bids')).order_by('end_time')[:6]
 
+    # Watchlist
+    watchlist = Watchlist.objects.filter(
+        buyer=buyer
+    ).select_related('auction__item').order_by('-added_at')[:5]
+
+    # Recent notifications
     recent_notifications = Notification.objects.filter(
         user=request.user
-    ).order_by('-created_at')[:4]
+    ).order_by('-created_at')[:5]
 
+    # Recent payments
+    recent_payments = Payment.objects.filter(
+        buyer=buyer,
+        status='COMPLETED'
+    ).select_related('auction__item').order_by('-payment_date')[:3]
+
+    # Stats
+    total_bids = Bid.objects.filter(buyer=buyer).count()
+    won_auctions = Bid.objects.filter(buyer=buyer, status='WINNING').count()
     total_spent = Payment.objects.filter(
         buyer=buyer, status='COMPLETED'
     ).aggregate(total=Sum('amount'))['total'] or 0
+    watchlist_count = Watchlist.objects.filter(buyer=buyer).count()
 
-    recent_payments = Payment.objects.filter(
-    buyer=buyer, status='COMPLETED'
-).select_related('auction__item').order_by('-payment_date')[:3]
-
-    context = {
-        'buyer': buyer,
+    return render(request, 'Dashboard/BuyerDashboard.html', {
+        'won_unpaid': won_unpaid,
         'active_bids': active_bids,
         'past_bids': past_bids,
-        'watchlist': watchlist,
         'live_auctions': live_auctions,
+        'watchlist': watchlist,
         'recent_notifications': recent_notifications,
-        'total_bids': Bid.objects.filter(buyer=buyer).count(),
-        'won_auctions': Bid.objects.filter(buyer=buyer, status='WINNING', auction__status='ENDED').count(),
+        'recent_payments': recent_payments,
+        'total_bids': total_bids,
+        'won_auctions': won_auctions,
         'total_spent': total_spent,
-        'watchlist_count': Watchlist.objects.filter(buyer=buyer).count(),
-        "recent_payments": recent_payments,
-    }
-    return render(request, 'Dashboard/BuyerDashboard.html', context)
+        'watchlist_count': watchlist_count,
+    })
 
 @login_required
 @role_required(allowed_roles=['Seller'])
@@ -162,8 +208,32 @@ def SellerDashboard(request):
     live_auctions = auctions.filter(status='ACTIVE', end_time__gt=timezone.now())[:5]
 
     total_earnings = Payment.objects.filter(
-        auction__item__seller=seller, status='COMPLETED'
+    auction__item__seller=seller, status='COMPLETED'
     ).aggregate(total=Sum('amount'))['total'] or 0
+
+    refunded_amount = Payment.objects.filter(
+    auction__item__seller=seller, status='REFUNDED'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_earnings = total_earnings - refunded_amount
+
+    # ← ADD THIS — ended auctions waiting for buyer payment
+    pending_payments = Bid.objects.filter(
+    auction__item__seller=seller,
+    status='WINNING',
+    auction__status='ENDED'
+).exclude(
+    auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
+).select_related(
+    'auction__item__category',
+    'buyer__user'
+).order_by('-auction__end_time')
+
+    unread_notifications = Notification.objects.filter(user=request.user, is_read=False).count()
+    pending_payments_count = Payment.objects.filter(auction__item__seller=seller, status='PENDING').count()
+    open_disputes_count = Dispute.objects.filter(auction__item__seller=seller, status='OPEN').count()
+    unread_bids = Bid.objects.filter(auction__item__seller=seller, auction__status='ACTIVE').count()
+    unread_reviews = Review.objects.filter(seller=seller, is_read=False).count() if hasattr(Review, 'is_read') else 0
 
     context = {
         'seller': seller,
@@ -172,6 +242,11 @@ def SellerDashboard(request):
         'active_auctions': auctions.filter(status='ACTIVE').count(),
         'items_sold': auctions.filter(status='ENDED').count(),
         'categories': Category.objects.all(),
+        'pending_payments': pending_payments,
+        'unread_notifications': unread_notifications,
+        'pending_payments_count': pending_payments_count,
+        'open_disputes_count': open_disputes_count,
+        'unread_bids': unread_bids,
     }
     return render(request, 'Dashboard/SellerDashboard.html', context)
 
@@ -240,11 +315,22 @@ def create_auction(request):
     })
 
 
+from django.core.paginator import Paginator
+
 def auction_list(request):
     auctions = Auction.objects.filter(
         status="ACTIVE",
         end_time__gt=timezone.now()
     ).select_related("item", "item__seller", "item__category").annotate(bid_count=Count('bids'))
+
+    # Search
+    search = request.GET.get('search', '').strip()
+    if search:
+        auctions = auctions.filter(
+            Q(item__name__icontains=search) |
+            Q(item__description__icontains=search) |
+            Q(item__category__name__icontains=search)
+        )
 
     # Category filter
     category = request.GET.get('category', '')
@@ -264,38 +350,22 @@ def auction_list(request):
     else:
         auctions = auctions.order_by('end_time')
 
+    # Pagination — 12 auctions per page
+    paginator = Paginator(auctions, 12)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "Dashboard/auction_list.html", {
-        "auctions": auctions,
+        "auctions": page_obj,          # ← now sends page_obj not auctions
+        "page_obj": page_obj,
         "current_sort": sort,
         "current_category": category,
+        "current_search": search,
         "categories": Category.objects.all(),
     })
 
-def should_notify(user, notif_type):
-    try:
-        user_settings, created = UserSettings.objects.get_or_create(user=user)  # corrected relation name
-
-        if notif_type == 'BID_PLACED':
-            return user_settings.notif_bid_placed
-
-        elif notif_type == 'OUTBID':
-            return user_settings.notif_outbid
-
-        elif notif_type == 'AUCTION_ENDED':
-            return user_settings.notif_auction_won
-
-        elif notif_type == 'PAYMENT':
-            return user_settings.notif_payment
-
-        elif notif_type == 'DISPUTE':
-            return user_settings.notif_dispute
-
-        return True
-
-    except UserSettings.DoesNotExist:
-        return True  # default: allow notification
-
-
+def should_notify(user, notification_type):
+    return True
 def auction_detail(request, pk):
     auction = get_object_or_404(Auction, pk=pk)
 
@@ -320,6 +390,35 @@ def auction_detail(request, pk):
                     notification_type='AUCTION_ENDED',
                     auction=auction
                 )
+
+
+            if winning_bid:
+                winning_bid.status = 'WINNING'
+                winning_bid.save()
+                Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
+
+                if should_notify(winning_bid.buyer.user, 'AUCTION_ENDED'):
+                    Notification.objects.create(
+                    user=winning_bid.buyer.user,
+                    message=f"Congratulations! You won '{auction.item.name}' with ₹{winning_bid.amount}.",
+                    notification_type='AUCTION_ENDED',
+                    auction=auction
+                    )
+                send_auction_won_email(winning_bid.buyer.user, auction, winning_bid.amount)  # ← add
+
+                if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
+                    Notification.objects.create(
+                    user=auction.item.seller.user,
+                    message=f"Your auction for '{auction.item.name}' has ended.",
+                    notification_type='AUCTION_ENDED',
+                    auction=auction
+                    )
+                send_auction_ended_seller_email(  # ← add
+                    auction.item.seller.user,
+                    auction,
+                    winning_bid.buyer.user,
+                    winning_bid.amount
+                    )
 
             # Notify seller
             if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
@@ -387,6 +486,11 @@ def auction_detail(request, pk):
                         notification_type='OUTBID',
                         auction=auction
                     )
+                    send_outbid_email(outbid_bid.buyer.user, auction, bid_amount)  # ← inside same if block
+            send_bid_placed_email(buyer.user, auction, bid_amount)    
+
+            # After outbid notification
+                    
 
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
@@ -881,9 +985,11 @@ def make_payment(request, auction_id):
         messages.error(request, "You did not win this auction.")
         return redirect('BuyerDashboard')
 
-    existing_payment = Payment.objects.filter(auction=auction, buyer=buyer).first()
+    existing_payment = Payment.objects.filter(
+    auction=auction, buyer=buyer, status='COMPLETED'
+    ).first()
     if existing_payment:
-        messages.info(request, "You have already made a payment for this auction.")
+        messages.info(request, "You have already paid for this auction.")
         return redirect('BuyerDashboard')
     
     
@@ -1152,13 +1258,20 @@ def payment_success(request, auction_id):
                 auction=auction
             )
 
-            if should_notify(request.user, 'PAYMENT'):
+            user_settings, _ = UserSettings.objects.get_or_create(user=request.user)
+            if user_settings.notif_payment:
                 Notification.objects.create(
-                    user=request.user,
-                    message=f"Your payment of ₹{winning_bid.amount} for '{auction.item.name}' was successful.",
-                    notification_type='PAYMENT',
-                    auction=auction
+                user=request.user,
+                message=f"Your payment of ₹{winning_bid.amount} for '{auction.item.name}' was successful.",
+                notification_type='PAYMENT',
+                auction=auction
                 )
+
+            send_payment_received_email(
+                auction.item.seller.user,
+                auction,
+                winning_bid.amount
+            )    
 
             messages.success(request, f"Payment of ₹{winning_bid.amount} successful!")
             return redirect('manage_payments')
@@ -1218,4 +1331,412 @@ def quick_create_auction(request):
     return redirect('SellerDashboard')    
 
 
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def request_refund(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id, buyer=request.user.buyer)
     
+    if payment.status != 'COMPLETED':
+        messages.error(request, "You can only request a refund for completed payments.")
+        return redirect('manage_payments')
+    
+    payment.status = 'REFUND_REQUESTED'
+    payment.save()
+    
+    # Notify seller
+    Notification.objects.create(
+        user=payment.auction.item.seller.user,
+        message=f"{request.user.First_name} {request.user.Last_name} has requested a refund for '{payment.auction.item.name}' (₹{payment.amount}).",
+        notification_type='PAYMENT',
+        auction=payment.auction
+    )
+    
+    # Notify all admins
+    for admin in User.objects.filter(Role='Admin'):
+        Notification.objects.create(
+            user=admin,
+            message=f"Refund requested by {request.user.First_name} {request.user.Last_name} for '{payment.auction.item.name}' (₹{payment.amount}).",
+            notification_type='PAYMENT',
+            auction=payment.auction
+        )
+    
+    messages.success(request, "Refund request submitted successfully. We will review it shortly.")
+    return redirect('manage_payments')
+
+
+@login_required
+@role_required(allowed_roles=['Seller', 'Admin'])
+def approve_refund(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id, status='REFUND_REQUESTED')
+
+    # Seller can only refund their own auctions
+    if request.user.Role == 'Seller':
+        if payment.auction.item.seller.user != request.user:
+            messages.error(request, "You can only approve refunds for your own auctions.")
+            return redirect('manage_payments')
+
+    try:
+        payment.status = 'REFUNDED'
+        payment.save()
+
+        # Notify buyer
+        Notification.objects.create(
+            user=payment.buyer.user,
+            message=f"Your refund of ₹{payment.amount} for '{payment.auction.item.name}' has been approved by the seller.",
+            notification_type='PAYMENT',
+            auction=payment.auction
+        )
+
+        # Notify admin
+        for admin in User.objects.filter(Role='Admin'):
+            Notification.objects.create(
+                user=admin,
+                message=f"Refund of ₹{payment.amount} approved by {request.user.First_name} {request.user.Last_name} for '{payment.auction.item.name}'.",
+                notification_type='PAYMENT',
+                auction=payment.auction
+            )
+
+        messages.success(request, f"Refund of ₹{payment.amount} approved successfully.")
+
+    except Exception as e:
+        messages.error(request, f"Refund failed: {str(e)}")
+
+    return redirect('manage_payments')   
+
+
+@login_required
+@role_required(allowed_roles=['Admin'])
+def manage_buyers(request):
+    from django.db.models import Sum, Count, Q
+    
+    buyers = Buyer.objects.annotate(
+        total_bids=Count('bids'),
+        auctions_won=Count('bids', filter=Q(bids__status='WINNING')),
+        total_spent=Sum('payments__amount', filter=Q(payments__status='COMPLETED'))
+    ).select_related('user').order_by('-total_spent')
+    
+    total_won = Bid.objects.filter(status='WINNING').count()
+    total_platform_spent = Payment.objects.filter(status='COMPLETED').aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+    'buyers': buyers,
+    'total_buyers': buyers.count(),
+    'total_won': total_won,
+    'total_platform_spent': total_platform_spent,
+    }
+    return render(request, 'Dashboard/manage_buyers.html', context)    
+
+
+@login_required
+@role_required(allowed_roles=['Admin'])
+def manage_sellers(request):
+    sellers = Seller.objects.annotate(
+        total_auctions=Count('items__auction'),
+        total_sold=Count('items__auction', filter=Q(items__auction__status='ENDED')),
+        total_earned=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED'))
+    ).filter(total_auctions__gte=1).select_related('user').order_by('-total_earned')
+
+    total_platform_earned = Payment.objects.filter(status='COMPLETED').aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+        'sellers': sellers,
+        'total_sellers': sellers.count(),
+        'total_platform_earned': total_platform_earned,
+    }
+    return render(request, 'Dashboard/manage_sellers.html', context)
+
+
+@login_required
+@role_required(allowed_roles=['Admin'])
+def manage_categories_analytics(request):
+    categories = Category.objects.annotate(
+        total_auctions=Count('items__auction'),
+        total_bids=Count('items__auction__bids'),
+        total_revenue=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED'))
+    ).order_by('-total_bids')
+
+    context = {
+        'categories': categories,
+        'total_categories': categories.count(),
+        'total_auctions_count': sum(c.total_auctions for c in categories),
+    'total_bids_count': sum(c.total_bids for c in categories),
+    }
+    return render(request, 'Dashboard/manage_categories_analytics.html', context)    
+
+
+
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, HRFlowable
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
+from django.http import HttpResponse
+import io
+
+@login_required
+@role_required(allowed_roles=['Buyer'])
+def download_invoice(request, payment_id):
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib import colors
+    from reportlab.lib.units import cm
+    import io
+
+    payment = get_object_or_404(Payment, id=payment_id, buyer=request.user.buyer)
+
+    buffer = io.BytesIO()
+    w, h = A4
+    c = canvas.Canvas(buffer, pagesize=A4)
+
+    BG_MAIN      = colors.HexColor('#13102b')
+    BG_CARD      = colors.HexColor('#1c1640')
+    BG_DARKER    = colors.HexColor('#0f0c24')
+    PRIMARY      = colors.HexColor('#2d1655')
+    ACCENT       = colors.HexColor('#7c3aed')
+    ACCENT_LIGHT = colors.HexColor('#c4b5fd')
+    BORDER       = colors.HexColor('#2d1e50')
+    TEXT_WHITE   = colors.HexColor('#f1f0f5')
+    TEXT_MID     = colors.HexColor('#a89dc4')
+    TEXT_LIGHT   = colors.HexColor('#6b5f85')
+    GREEN        = colors.HexColor('#10b981')
+    GREEN_DARK   = colors.HexColor('#064e3b')
+    WHITE        = colors.white
+
+    pid = payment.id
+    shipping = float(payment.auction.item.shipping_cost or 0)
+    subtotal = float(payment.amount) - shipping
+
+    # Full dark background
+    c.setFillColor(BG_MAIN)
+    c.rect(0, 0, w, h, fill=1, stroke=0)
+
+    # Header band
+    c.setFillColor(BG_DARKER)
+    c.rect(0, h - 130, w, 130, fill=1, stroke=0)
+    c.setFillColor(ACCENT)
+    c.rect(0, h - 4, w, 4, fill=1, stroke=0)
+
+    # Glow circles
+    c.setFillColor(ACCENT)
+    c.setFillAlpha(0.12)
+    c.circle(w - 80, h - 30, 110, fill=1, stroke=0)
+    c.setFillAlpha(0.08)
+    c.circle(60, h - 110, 80, fill=1, stroke=0)
+    c.setFillAlpha(1)
+
+    # Brand
+    c.setFillColor(WHITE)
+    c.setFont('Helvetica-Bold', 34)
+    c.drawString(2*cm, h - 52, 'Auctora')
+    c.setFillColor(ACCENT)
+    c.rect(2*cm, h - 58, 90, 3, fill=1, stroke=0)
+    c.setFillColor(TEXT_MID)
+    c.setFont('Helvetica', 9)
+    c.drawString(2*cm, h - 72, "The World's Premier Auction Platform")
+
+    # Invoice label
+    c.setFillColor(ACCENT_LIGHT)
+    c.setFont('Helvetica-Bold', 24)
+    c.drawRightString(w - 2*cm, h - 52, 'INVOICE')
+    c.setFillColor(PRIMARY)
+    c.roundRect(w - 2*cm - 90, h - 82, 90, 22, 11, fill=1, stroke=0)
+    c.setStrokeColor(ACCENT)
+    c.setLineWidth(0.8)
+    c.roundRect(w - 2*cm - 90, h - 82, 90, 22, 11, fill=0, stroke=1)
+    c.setFillColor(ACCENT_LIGHT)
+    c.setFont('Helvetica-Bold', 10)
+    c.drawCentredString(w - 2*cm - 45, h - 75, f'#{pid:06d}')
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(1)
+    c.line(2*cm, h - 130, w - 2*cm, h - 130)
+
+    # Status pill
+    status_y = h - 158
+    c.setFillColor(GREEN_DARK)
+    c.roundRect(2*cm, status_y, 155, 22, 11, fill=1, stroke=0)
+    c.setStrokeColor(GREEN)
+    c.setLineWidth(0.8)
+    c.roundRect(2*cm, status_y, 155, 22, 11, fill=0, stroke=1)
+    c.setFillColor(GREEN)
+    c.circle(2*cm + 16, status_y + 11, 5, fill=1, stroke=0)
+    c.setFillColor(GREEN)
+    c.setFont('Helvetica-Bold', 9)
+    c.drawString(2*cm + 26, status_y + 7, f'PAYMENT {payment.status}')
+    c.setFillColor(TEXT_MID)
+    c.setFont('Helvetica', 10)
+    c.drawRightString(w - 2*cm, status_y + 7, f'Issued: {payment.payment_date.strftime("%d %B %Y")}')
+
+    # Billed To card
+    card_y = status_y - 90
+    card_h = 75
+    c.setFillColor(BG_CARD)
+    c.roundRect(2*cm, card_y, 11.2*cm, card_h, 8, fill=1, stroke=0)
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(0.8)
+    c.roundRect(2*cm, card_y, 11.2*cm, card_h, 8, fill=0, stroke=1)
+    c.setFillColor(ACCENT)
+    c.roundRect(2*cm, card_y, 4, card_h, 2, fill=1, stroke=0)
+    c.setFillColor(ACCENT)
+    c.setFont('Helvetica-Bold', 7.5)
+    c.drawString(2*cm + 14, card_y + card_h - 14, 'BILLED TO')
+    c.setFillColor(TEXT_WHITE)
+    c.setFont('Helvetica-Bold', 13)
+    c.drawString(2*cm + 14, card_y + card_h - 30, f'{payment.buyer.user.First_name} {payment.buyer.user.Last_name}')
+    c.setFillColor(TEXT_MID)
+    c.setFont('Helvetica', 10)
+    c.drawString(2*cm + 14, card_y + card_h - 45, payment.buyer.user.Email)
+    c.drawString(2*cm + 14, card_y + card_h - 59, str(payment.buyer.user.Mobile_number or '—'))
+
+    # Payment details card
+    right_x = w/2 + 0.3*cm
+    c.setFillColor(BG_CARD)
+    c.roundRect(right_x, card_y, 11.2*cm, card_h, 8, fill=1, stroke=0)
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(0.8)
+    c.roundRect(right_x, card_y, 11.2*cm, card_h, 8, fill=0, stroke=1)
+    c.setFillColor(colors.HexColor('#4c1d95'))
+    c.roundRect(right_x, card_y, 4, card_h, 2, fill=1, stroke=0)
+    c.setFillColor(colors.HexColor('#4c1d95'))
+    c.setFont('Helvetica-Bold', 7.5)
+    c.drawString(right_x + 14, card_y + card_h - 14, 'PAYMENT DETAILS')
+    prows = [
+        ('Method', payment.get_payment_method_display()),
+        ('Payment ID', f'#{pid:06d}'),
+        ('Date', payment.payment_date.strftime('%d %B %Y')),
+    ]
+    ry = card_y + card_h - 30
+    for lbl, val in prows:
+        c.setFillColor(TEXT_LIGHT)
+        c.setFont('Helvetica', 9)
+        c.drawString(right_x + 14, ry, lbl + ':')
+        c.setFillColor(TEXT_WHITE)
+        c.setFont('Helvetica-Bold', 9)
+        c.drawString(right_x + 75, ry, val)
+        ry -= 15
+
+    # Item details table
+    tbl_label_y = card_y - 28
+    c.setFillColor(ACCENT_LIGHT)
+    c.setFont('Helvetica-Bold', 8)
+    c.drawString(2*cm, tbl_label_y, 'ITEM DETAILS')
+    c.setStrokeColor(ACCENT)
+    c.setLineWidth(1.5)
+    c.line(2*cm, tbl_label_y - 3, 2*cm + 72, tbl_label_y - 3)
+
+    thead_y = tbl_label_y - 32
+    c.setFillColor(colors.HexColor('#1a0e35'))
+    c.roundRect(2*cm, thead_y, w - 4*cm, 26, 6, fill=1, stroke=0)
+    c.setStrokeColor(ACCENT)
+    c.setLineWidth(0.8)
+    c.roundRect(2*cm, thead_y, w - 4*cm, 26, 6, fill=0, stroke=1)
+
+    col_x = [2*cm + 10, 6.5*cm, 10.5*cm, 13.8*cm, 15.8*cm]
+    headers = ['ITEM', 'CATEGORY', 'CONDITION', 'AUC #', 'AMOUNT']
+    c.setFillColor(ACCENT_LIGHT)
+    c.setFont('Helvetica-Bold', 8.5)
+    for i, ht in enumerate(headers):
+        c.drawString(col_x[i], thead_y + 9, ht)
+
+    trow_y = thead_y - 34
+    c.setFillColor(BG_CARD)
+    c.roundRect(2*cm, trow_y, w - 4*cm, 30, 4, fill=1, stroke=0)
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(0.6)
+    c.roundRect(2*cm, trow_y, w - 4*cm, 30, 4, fill=0, stroke=1)
+
+    condition = payment.auction.item.condition
+    try:
+        condition = payment.auction.item.get_condition_display()
+    except:
+        pass
+
+    values = [
+        payment.auction.item.name,
+        payment.auction.item.category.name if payment.auction.item.category else '—',
+        condition,
+        f'#{payment.auction.id}',
+        f'Rs. {float(payment.amount):,.2f}',
+    ]
+    for i, val in enumerate(values):
+        if i == len(values) - 1:
+            c.setFillColor(ACCENT_LIGHT)
+            c.setFont('Helvetica-Bold', 12)
+        else:
+            c.setFillColor(TEXT_WHITE)
+            c.setFont('Helvetica', 10)
+        c.drawString(col_x[i], trow_y + 10, str(val))
+
+    # Totals
+    totals_y = trow_y - 24
+    box_x = w - 2*cm - 8.5*cm
+    box_w = 8.5*cm
+    c.setFillColor(BG_CARD)
+    c.roundRect(box_x, totals_y - 90, box_w, 90, 8, fill=1, stroke=0)
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(0.6)
+    c.roundRect(box_x, totals_y - 90, box_w, 90, 8, fill=0, stroke=1)
+    c.setFillColor(TEXT_MID)
+    c.setFont('Helvetica', 10)
+    c.drawString(box_x + 16, totals_y - 20, 'Subtotal')
+    c.setFillColor(TEXT_WHITE)
+    c.drawRightString(box_x + box_w - 16, totals_y - 20, f'Rs. {subtotal:,.2f}')
+    c.setFillColor(TEXT_MID)
+    c.drawString(box_x + 16, totals_y - 38, 'Shipping')
+    c.setFillColor(TEXT_WHITE)
+    c.drawRightString(box_x + box_w - 16, totals_y - 38, f'Rs. {shipping:,.2f}')
+    c.setStrokeColor(BORDER)
+    c.setLineWidth(1)
+    c.line(box_x + 16, totals_y - 50, box_x + box_w - 16, totals_y - 50)
+    c.setFillColor(ACCENT)
+    c.roundRect(box_x, totals_y - 90, box_w, 36, 8, fill=1, stroke=0)
+    c.setFillColor(WHITE)
+    c.setFont('Helvetica-Bold', 11)
+    c.drawString(box_x + 16, totals_y - 78, 'TOTAL PAID')
+    c.setFont('Helvetica-Bold', 14)
+    c.drawRightString(box_x + box_w - 16, totals_y - 78, f'Rs. {float(payment.amount):,.2f}')
+
+    # Note
+    c.setFillColor(ACCENT)
+    c.setFont('Helvetica-Bold', 8)
+    c.drawString(2*cm, totals_y - 22, 'NOTE')
+    note_lines = [
+        'Thank you for your purchase on Auctora.',
+        'This receipt confirms your payment was',
+        'successfully processed.',
+        'Keep this for your records.',
+    ]
+    c.setFillColor(TEXT_MID)
+    c.setFont('Helvetica', 9)
+    note_y = totals_y - 36
+    for line in note_lines:
+        c.drawString(2*cm, note_y, line)
+        note_y -= 13
+
+    # Footer
+    c.setFillColor(BG_DARKER)
+    c.rect(0, 0, w, 65, fill=1, stroke=0)
+    c.setFillColor(ACCENT)
+    c.rect(0, 65, w, 2, fill=1, stroke=0)
+    c.setFillColor(ACCENT)
+    c.setFillAlpha(0.08)
+    c.circle(30, 10, 50, fill=1, stroke=0)
+    c.setFillAlpha(0.06)
+    c.circle(w - 30, 50, 60, fill=1, stroke=0)
+    c.setFillAlpha(1)
+    c.setFillColor(WHITE)
+    c.setFont('Helvetica-Bold', 12)
+    c.drawCentredString(w/2, 47, 'Auctora International')
+    c.setFillColor(ACCENT_LIGHT)
+    c.setFont('Helvetica', 8.5)
+    c.drawCentredString(w/2, 33, 'support@auctora.com  |  www.auctora.com')
+    c.setFillColor(TEXT_LIGHT)
+    c.setFont('Helvetica', 7.5)
+    c.drawCentredString(w/2, 19, 'This is a computer-generated receipt and does not require a signature.')
+
+    c.save()
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Auctora_Invoice_{pid:06d}.pdf"'
+    return response
+

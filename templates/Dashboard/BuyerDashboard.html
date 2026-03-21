@@ -758,7 +758,67 @@
         <div class="stat-value">{{ watchlist_count }}</div>
     </div>
 </div>
-
+<!-- ─── WON AUCTIONS - PAY NOW ─── -->
+{% if won_unpaid %}
+<div class="panel-card" style="margin-bottom:26px;border:2px solid rgba(16,185,129,0.25);animation:fadeInUp 0.5s 0.35s both;">
+    <div class="panel-header" style="background:linear-gradient(135deg,rgba(16,185,129,0.06),rgba(16,185,129,0.02));border-bottom:1px solid rgba(16,185,129,0.15);padding:16px 22px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <div class="stat-icon-wrap" style="background:rgba(16,185,129,0.12);width:38px;height:38px;font-size:18px;">🏆</div>
+            <div>
+                <div class="panel-title" style="color:var(--green);">Auctions Won — Payment Required</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:2px;">Complete your payment to claim these items</div>
+            </div>
+        </div>
+        <span class="nav-badge purple" style="background:rgba(16,185,129,0.15);color:var(--green);font-size:12px;padding:4px 14px;border-radius:20px;">{{ won_unpaid|length }} pending</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Winning Bid</th>
+                <th>Seller</th>
+                <th>Ended</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid in won_unpaid %}
+            <tr>
+                <td>
+                    <div class="item-cell">
+                        <div class="item-thumb">
+                            {% if bid.auction.item.image %}
+                                <img src="{{ bid.auction.item.image.url }}" style="width:40px;height:40px;object-fit:cover;border-radius:9px;">
+                            {% else %}🏷️{% endif %}
+                        </div>
+                        <div>
+                            <div class="item-name">{{ bid.auction.item.name }}</div>
+                            <div class="item-cat">{{ bid.auction.item.category.name }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="price-cell" style="color:var(--green);">₹{{ bid.amount }}</div>
+                    <div class="my-bid">Winning bid</div>
+                </td>
+                <td>
+                    <div class="item-name">{{ bid.auction.item.seller.user.First_name }} {{ bid.auction.item.seller.user.Last_name }}</div>
+                    <div class="item-cat">Seller</div>
+                </td>
+                <td class="time-cell">{{ bid.auction.end_time|date:"d M Y" }}</td>
+                <td>
+                    <a href="{% url 'make_payment' bid.auction.id %}" class="btn-bid" style="text-decoration:none;background:var(--green);box-shadow:0 3px 10px rgba(16,185,129,0.3);"
+                       onmouseover="this.style.background='#059669'"
+                       onmouseout="this.style.background='var(--green)'">
+                        💳 Pay Now
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
     <!-- Content Grid -->
     <div class="content-grid">
 

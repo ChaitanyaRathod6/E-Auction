@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'images/auctora-favicon-32.png' %}"/>
+    <title>Auctora | Manage Buyers</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+:root{--sidebar-bg:#2d1655;--sidebar-hover:rgba(255,255,255,0.07);--primary:#2d1655;--accent-purple:#7c3aed;--main-bg:#f7f6f8;--card-bg:#ffffff;--text-dark:#1a1035;--text-mid:#6b7280;--text-light:#9ca3af;--border:#e8e5f0;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--topbar-bg:#ffffff;}
+body.dark{--main-bg:#13102b;--card-bg:#1c1640;--topbar-bg:#1a1438;--text-dark:#f1f0f5;--text-mid:#a89dc4;--text-light:#6b5f85;--border:#2d1e50;--sidebar-bg:#0f0c24;background:#13102b !important;}
+body.dark .topbar{background:#1a1438 !important;border-color:#2d1e50 !important;}
+body.dark .brand-name{color:#ffffff !important;}
+body.dark .search-bar{background:#13102b !important;border-color:#2d1e50 !important;color:#a89dc4 !important;}
+body.dark .topbar-icon{background:#13102b !important;border-color:#2d1e50 !important;color:#a89dc4 !important;}
+body.dark .sidebar{background:#0f0c24 !important;}
+body.dark .nav-section{color:rgba(255,255,255,0.2) !important;}
+body.dark .nav-item{color:rgba(255,255,255,0.6) !important;}
+body.dark .nav-item:hover{background:rgba(124,58,237,0.15) !important;color:#fff !important;}
+body.dark .nav-item.active{background:#2d1655 !important;color:#fff !important;}
+body.dark .sidebar-divider{background:rgba(255,255,255,0.06) !important;}
+body.dark .sidebar-profile-card{background:rgba(255,255,255,0.05) !important;border-color:rgba(255,255,255,0.08) !important;}
+body.dark .page-header h1{color:#ffffff !important;}
+body.dark .page-header p{color:#a89dc4 !important;}
+body.dark .stat-mini-card{background:#1c1640 !important;border-color:#2d1e50 !important;}
+body.dark .stat-mini-val{color:#c4b5fd !important;}
+body.dark .stat-mini-lbl{color:#6b5f85 !important;}
+body.dark .panel-card{background:#1c1640 !important;border-color:#2d1e50 !important;}
+body.dark .panel-header{border-color:#2d1e50 !important;}
+body.dark .panel-title{color:#f1f0f5 !important;}
+body.dark .filter-bar{border-color:#2d1e50 !important;}
+body.dark .search-input-wrap{background:#13102b !important;border-color:#2d1e50 !important;}
+body.dark .search-input-wrap input{color:#f1f0f5 !important;}
+body.dark .search-input-wrap input::placeholder{color:#6b5f85 !important;}
+body.dark thead th{background:#160f30 !important;border-color:#2d1e50 !important;color:#6b5f85 !important;}
+body.dark tbody tr{border-color:#2d1e50 !important;}
+body.dark tbody tr:hover{background:rgba(124,58,237,0.06) !important;}
+body.dark tbody td{color:#f1f0f5 !important;}
+body.dark ::-webkit-scrollbar-track{background:#13102b;}
+body.dark ::-webkit-scrollbar-thumb{background:#2d1655;border-radius:3px;}
+::-webkit-scrollbar{width:5px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--main-bg);color:var(--text-dark);min-height:100vh;overflow-x:hidden;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes rowIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0;z-index:200;animation:fadeIn 0.5s both;box-shadow:0 1px 8px rgba(45,22,85,0.06);}
+.topbar-brand{width:260px;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;flex-shrink:0;}
+.brand-name{font-size:18px;font-weight:700;color:var(--primary);letter-spacing:-0.3px;}
+.topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 16px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--main-bg);border:1px solid var(--border);border-radius:20px;padding:7px 16px;font-size:13px;color:var(--text-mid);width:220px;}
+.topbar-icon{width:36px;height:36px;border-radius:50%;background:var(--main-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s,transform 0.2s;color:var(--text-mid);}
+.topbar-icon:hover{background:var(--border);transform:scale(1.08);}
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar-bg);position:fixed;top:0;left:0;bottom:0;z-index:100;padding-top:56px;display:flex;flex-direction:column;animation:slideInLeft 0.55s cubic-bezier(0.22,1,0.36,1) both;box-shadow:2px 0 20px rgba(45,22,85,0.15);overflow-y:auto;}
+.sidebar-nav{padding:8px 10px;flex:1;}
+.nav-section{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);padding:10px 14px 5px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.7);font-size:13.5px;font-weight:500;transition:background 0.25s ease,color 0.2s,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);margin-bottom:2px;text-decoration:none;}
+.nav-item .nav-icon{width:20px;text-align:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff;transform:translateX(3px) scale(1.02);}
+.nav-item.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 4px 16px rgba(45,22,85,0.2);}
+.nav-badge{margin-left:auto;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.badge-red{background:var(--red);}
+.badge-purple{background:var(--accent-purple);}
+.sidebar-divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 14px;}
+.sidebar-bottom{padding:10px 10px 14px;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;}
+.sidebar-profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s,transform 0.2s;}
+.sidebar-profile-card:hover{background:rgba(255,255,255,0.13);transform:scale(1.01);}
+.profile-info{flex:1;min-width:0;}
+.profile-info .name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-info .tier{font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
+.logout-btn{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.4);transition:background 0.2s,color 0.2s,transform 0.25s;}
+.logout-btn:hover{background:rgba(239,68,68,0.18);color:#fca5a5;border-color:rgba(239,68,68,0.3);transform:scale(1.1);}
+.main{margin-left:260px;padding-top:56px;min-height:100vh;animation:fadeIn 0.6s 0.2s both;}
+.page-content{padding:28px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;animation:fadeInUp 0.5s 0.2s both;}
+.page-header h1{font-size:26px;font-weight:800;color:var(--text-dark);letter-spacing:-0.5px;}
+.page-header p{font-size:13.5px;color:var(--text-mid);margin-top:4px;}
+.stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;animation:fadeInUp 0.5s 0.25s both;}
+.stat-mini-card{background:var(--card-bg);border-radius:12px;border:1px solid var(--border);padding:16px 18px;}
+.stat-mini-val{font-size:22px;font-weight:800;color:var(--primary);}
+.stat-mini-lbl{font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-light);margin-top:3px;}
+.panel-card{background:var(--card-bg);border-radius:16px;border:1px solid var(--border);overflow:hidden;animation:fadeInUp 0.5s 0.3s both;}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;}
+.panel-title{font-size:16px;font-weight:700;color:var(--text-dark);}
+.filter-bar{padding:14px 22px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;}
+.search-input-wrap{display:flex;align-items:center;gap:8px;background:var(--main-bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;flex:1;max-width:320px;}
+.search-input-wrap input{border:none;outline:none;background:transparent;font-size:13px;color:var(--text-dark);width:100%;font-family:'Inter',sans-serif;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 18px;font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);text-align:left;background:#faf9fb;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.18s;animation:rowIn 0.4s both;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f9f8fc;}
+tbody td{padding:13px 18px;font-size:13px;color:var(--text-dark);vertical-align:middle;}
+.buyer-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2d1655,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.pill-green{background:rgba(16,185,129,0.1);color:var(--green);}
+.pill-purple{background:rgba(124,58,237,0.1);color:var(--accent-purple);}
+    </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="topbar-brand">
+        <div style="width:32px;height:32px;background:transparent;">
+            <img src="{% static 'images/auctora_logo1.png' %}" alt="Auctora" style="width:32px;height:32px;object-fit:contain;"/>
+        </div>
+        <span class="brand-name">Auctora</span>
+    </div>
+    <div class="topbar-right">
+        <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search...
+        </div>
+        <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+            <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:600;color:var(--text-dark);">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div style="font-size:11px;color:var(--text-light);">{{ request.user.Role }}</div>
+            </div>
+            <div>
+                {% if request.user.Gender == "Male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|first|upper }}</div>{% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <nav class="sidebar-nav">
+        <div class="nav-section">Overview</div>
+        <a href="{% url 'AdminDashboard' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Dashboard</a>
+        <a href="{% url 'home' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+        <div class="sidebar-divider"></div>
+        <div class="nav-section">Management</div>
+        <a href="{% url 'manage_buyers' %}" class="nav-item active"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Buyers</a>
+        <a href="{% url 'manage_auctions' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/></svg></span>Auctions</a>
+        <a href="{% url 'manage_payments' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>Payments</a>
+        <a href="{% url 'manage_disputes' %}" class="nav-item"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>Disputes</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="sidebar-profile-card">
+            <div style="flex-shrink:0;">
+                {% if request.user.Gender == "Male" %}<img src="{% static 'images/male.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% elif request.user.Gender == "Female" %}<img src="{% static 'images/female.png' %}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                {% else %}<div style="width:36px;height:36px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">{{ request.user.First_name|first|upper }}</div>{% endif %}
+            </div>
+            <div class="profile-info">
+                <div class="name">{{ request.user.First_name }} {{ request.user.Last_name }}</div>
+                <div class="tier">{{ request.user.Role }}</div>
+            </div>
+            <div class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+<div class="page-content">
+
+    <div class="page-header">
+        <div>
+            <h1>All Buyers</h1>
+            <p>{{ total_buyers }} registered buyers on the platform</p>
+        </div>
+    </div>
+
+    <div class="stats-mini">
+        <div class="stat-mini-card">
+            <div class="stat-mini-val">{{ total_buyers }}</div>
+            <div class="stat-mini-lbl">Total Buyers</div>
+        </div>
+        <div class="stat-mini-card">
+            <div class="stat-mini-val" style="color:var(--green);">{{ total_won }}</div>
+            <div class="stat-mini-lbl">Auctions Won</div>
+        </div>
+        <div class="stat-mini-card">
+            <div class="stat-mini-val" style="color:var(--accent-purple);">₹{{ total_platform_spent|floatformat:0 }}</div>
+            <div class="stat-mini-lbl">Total Spent</div>
+        </div>
+    </div>
+
+    <div class="panel-card">
+        <div class="panel-header">
+            <span class="panel-title">Buyer List</span>
+        </div>
+        <div class="filter-bar">
+            <div class="search-input-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="Search by name or email..." oninput="filterTable()">
+            </div>
+        </div>
+        <div style="overflow-x:auto;">
+        <table id="buyerTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Buyer</th>
+                    <th>Email</th>
+                    <th>Total Bids</th>
+                    <th>Auctions Won</th>
+                    <th>Total Spent</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for buyer in buyers %}
+            <tr>
+                <td style="color:var(--text-light);font-size:12px;">{{ forloop.counter }}</td>
+                <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div class="buyer-avatar">{{ buyer.user.First_name|first|upper }}</div>
+                        <div>
+                            <div style="font-weight:600;font-size:13px;">{{ buyer.user.First_name }} {{ buyer.user.Last_name }}</div>
+                            <div style="font-size:11px;color:var(--text-light);">{{ buyer.user.Gender|default:"—" }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td style="font-size:13px;color:var(--text-mid);">{{ buyer.user.Email }}</td>
+                <td><span class="pill pill-purple">{{ buyer.total_bids }}</span></td>
+                <td><span class="pill pill-green">{{ buyer.auctions_won }}</span></td>
+                <td style="font-weight:700;color:var(--accent-purple);white-space:nowrap;">
+                    {% if buyer.total_spent %}₹{{ buyer.total_spent|floatformat:0 }}{% else %}—{% endif %}
+                </td>
+                <td style="font-size:12px;color:var(--text-mid);">{{ buyer.user.date_joined|date:"d M Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--text-light);">No buyers found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+</div>
+</main>
+
+<script>
+    if(localStorage.getItem('auctora_dark')==='1') document.body.classList.add('dark');
+    function filterTable() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('#buyerTable tbody tr').forEach(r => {
+            r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+</body>
+</html>
