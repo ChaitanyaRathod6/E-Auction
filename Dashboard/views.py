@@ -6,7 +6,7 @@ from core.models import User
 from django.utils import timezone
 from .decorators import role_required
 from django.shortcuts import get_object_or_404
-from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog,UserSettings
+from .models import Seller, Buyer, AdminProfile, Category, Item, Auction, Bid, Payment, Watchlist, Notification, Review, Dispute, ActivityLog,UserSettings,ContactMessage
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Avg, Q
 from datetime import timedelta
@@ -21,6 +21,15 @@ from Dashboard.emails import (
     send_auction_won_email,
     send_payment_received_email,
     send_auction_ended_seller_email,
+)
+from Dashboard.emails import (
+    send_bid_placed_email,
+    send_outbid_email,
+    send_auction_won_email,
+    send_payment_received_email,
+    send_auction_ended_seller_email,
+    send_refund_request_email,
+    send_refund_approved_email,
 )
 from django.db.models import Q,Sum,Count
 from datetime import timedelta
@@ -350,8 +359,34 @@ def  privacypolicy(request):
 def  termsofservice(request):
     return render(request,"Dashboard/termsofservice.html")
 
-def ContactUs(request): 
-    return render(request,"Dashboard/contactus.html")
+def ContactUs(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        subject = request.POST.get('subject', '').strip()
+        message = request.POST.get('message', '').strip()
+
+        if name and email and message:
+            ContactMessage.objects.create(
+                name=name,
+                email=email,
+                subject=subject,
+                message=message
+            )
+            # Notify all admins
+            for admin in User.objects.filter(Role='Admin'):
+                Notification.objects.create(
+                    user=admin,
+                    message=f"New contact message from {name} ({email}): {subject}",
+                    notification_type='GENERAL',
+                )
+            messages.success(request, 'Your message has been sent successfully!')
+        else:
+            messages.error(request, 'Please fill in all required fields.')
+
+        return redirect('Support')
+
+    return render(request, 'Dashboard/contactus.html')  
 
 def HelpCenter(request):
     return render(request,"Dashboard/helpcenter.html")
@@ -475,7 +510,6 @@ def auction_detail(request, pk):
         if winning_bid:
             winning_bid.status = 'WINNING'
             winning_bid.save()
-
             Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
 
             # Notify winner
@@ -486,35 +520,7 @@ def auction_detail(request, pk):
                     notification_type='AUCTION_ENDED',
                     auction=auction
                 )
-
-
-            if winning_bid:
-                winning_bid.status = 'WINNING'
-                winning_bid.save()
-                Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
-
-                if should_notify(winning_bid.buyer.user, 'AUCTION_ENDED'):
-                    Notification.objects.create(
-                    user=winning_bid.buyer.user,
-                    message=f"Congratulations! You won '{auction.item.name}' with ₹{winning_bid.amount}.",
-                    notification_type='AUCTION_ENDED',
-                    auction=auction
-                    )
-                send_auction_won_email(winning_bid.buyer.user, auction, winning_bid.amount)  # ← add
-
-                if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
-                    Notification.objects.create(
-                    user=auction.item.seller.user,
-                    message=f"Your auction for '{auction.item.name}' has ended.",
-                    notification_type='AUCTION_ENDED',
-                    auction=auction
-                    )
-                send_auction_ended_seller_email(  # ← add
-                    auction.item.seller.user,
-                    auction,
-                    winning_bid.buyer.user,
-                    winning_bid.amount
-                    )
+            send_auction_won_email(winning_bid.buyer.user, auction, winning_bid.amount)
 
             # Notify seller
             if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
@@ -524,6 +530,12 @@ def auction_detail(request, pk):
                     notification_type='AUCTION_ENDED',
                     auction=auction
                 )
+            send_auction_ended_seller_email(
+                auction.item.seller.user,
+                auction,
+                winning_bid.buyer.user,
+                winning_bid.amount
+            )
 
     if request.method == "POST":
         try:
@@ -555,6 +567,7 @@ def auction_detail(request, pk):
             auction.current_price = bid_amount
             auction.save()
             log_activity(request.user, f"Placed bid of ₹{bid_amount} on '{auction.item.name}'")
+
             # Notify seller of new bid
             if should_notify(auction.item.seller.user, 'BID_PLACED'):
                 Notification.objects.create(
@@ -573,6 +586,9 @@ def auction_detail(request, pk):
                     auction=auction
                 )
 
+            # Send bid placed email
+            send_bid_placed_email(buyer.user, auction, bid_amount)
+
             # Notify outbid buyer ONLY if it's a different person
             if outbid_bid and outbid_bid.buyer != buyer:
                 if should_notify(outbid_bid.buyer.user, 'OUTBID'):
@@ -582,11 +598,7 @@ def auction_detail(request, pk):
                         notification_type='OUTBID',
                         auction=auction
                     )
-                    send_outbid_email(outbid_bid.buyer.user, auction, bid_amount)  # ← inside same if block
-            send_bid_placed_email(buyer.user, auction, bid_amount)    
-
-            # After outbid notification
-                    
+                    send_outbid_email(outbid_bid.buyer.user, auction, bid_amount)
 
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
@@ -1442,6 +1454,12 @@ def request_refund(request, payment_id):
     
     payment.status = 'REFUND_REQUESTED'
     payment.save()
+    send_refund_request_email(
+    payment.auction.item.seller.user,
+    request.user,
+    payment.auction,
+    payment.amount
+    )
     log_activity(request.user, f"Requested refund of ₹{payment.amount} for '{payment.auction.item.name}'")
     # Notify seller
     Notification.objects.create(
@@ -1467,7 +1485,12 @@ def request_refund(request, payment_id):
 @login_required
 @role_required(allowed_roles=['Seller', 'Admin'])
 def approve_refund(request, payment_id):
-    payment = get_object_or_404(Payment, id=payment_id, status='REFUND_REQUESTED')
+    payment = get_object_or_404(Payment, id=payment_id)
+
+    # Check status before processing
+    if payment.status != 'REFUND_REQUESTED':
+        messages.error(request, "This payment is not in refund requested status.")
+        return redirect('manage_payments')
 
     # Seller can only refund their own auctions
     if request.user.Role == 'Seller':
@@ -1478,11 +1501,11 @@ def approve_refund(request, payment_id):
     try:
         payment.status = 'REFUNDED'
         payment.save()
-        log_activity(request.user, f"Approved refund of ₹{payment.amount} for '{payment.auction.item.name}'")
+
         # Notify buyer
         Notification.objects.create(
             user=payment.buyer.user,
-            message=f"Your refund of ₹{payment.amount} for '{payment.auction.item.name}' has been approved by the seller.",
+            message=f"Your refund of ₹{payment.amount} for '{payment.auction.item.name}' has been approved.",
             notification_type='PAYMENT',
             auction=payment.auction
         )
@@ -1495,6 +1518,13 @@ def approve_refund(request, payment_id):
                 notification_type='PAYMENT',
                 auction=payment.auction
             )
+
+        # Send email to buyer
+        send_refund_approved_email(
+            payment.buyer.user,
+            payment.auction,
+            payment.amount
+        )
 
         messages.success(request, f"Refund of ₹{payment.amount} approved successfully.")
 
@@ -1840,9 +1870,40 @@ def download_invoice(request, payment_id):
     response['Content-Disposition'] = f'attachment; filename="Auctora_Invoice_{pid:06d}.pdf"'
     return response
 
-def log_activity(user, action, description=''):
+def log_activity(user, action):
     ActivityLog.objects.create(
         user=user,
         action=action,
-        description=description
+        
     )
+  
+
+@login_required
+@role_required(allowed_roles=['Admin'])
+def contact_messages(request):
+    if request.method == 'POST':
+        msg_id = request.POST.get('msg_id')
+        ContactMessage.objects.filter(id=msg_id).update(is_read=True)
+        messages.success(request, 'Message marked as read.')
+        return redirect('contact_messages')
+
+    msgs = ContactMessage.objects.all().order_by('-created_at')
+    today = timezone.now().date()
+
+    return render(request, 'Dashboard/contact_messages.html', {
+        'messages_list': msgs,
+        'unread_count': msgs.filter(is_read=False).count(),
+        'read_count': msgs.filter(is_read=True).count(),
+        'total_messages': msgs.count(),
+        'today_count': msgs.filter(created_at__date=today).count(),
+    })
+
+
+
+@login_required
+def test_email(request):
+    from Dashboard.emails import send_bid_placed_email
+    from Dashboard.models import Auction
+    auction = Auction.objects.first()
+    send_bid_placed_email(request.user, auction, 100)
+    return HttpResponse("Email sent! Check your inbox.")    

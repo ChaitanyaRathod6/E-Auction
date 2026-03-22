@@ -99,3 +99,42 @@ The buyer has been notified to complete payment.
         recipient_list=[seller.Email],
         fail_silently=True,
     )
+
+def send_refund_request_email(seller, buyer, auction, amount):
+    send_mail(
+        subject=f'💰 Refund Requested — {auction.item.name}',
+        message=f'''
+Hi {seller.First_name},
+
+{buyer.First_name} {buyer.Last_name} has requested a refund for "{auction.item.name}".
+
+Refund Amount: ₹{amount}
+
+Please login to Auctora and go to Payments to review and approve or reject this request.
+
+— Auctora Team
+        ''',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[seller.Email],
+        fail_silently=False,
+    )
+
+
+def send_refund_approved_email(buyer, auction, amount):
+    send_mail(
+        subject=f'✅ Refund Approved — {auction.item.name}',
+        message=f'''
+Hi {buyer.First_name},
+
+Great news! Your refund request for "{auction.item.name}" has been approved.
+
+Refund Amount: ₹{amount}
+
+The refund will be processed shortly. Please allow a few business days for the amount to reflect in your account.
+
+— Auctora Team
+        ''',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[buyer.Email],
+        fail_silently=False,
+    )    

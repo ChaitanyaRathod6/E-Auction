@@ -12,12 +12,17 @@ def UserSignUpViews(request):
     if request.method == 'POST':
         form = UserSignupForm(request.POST or None)
         if form.is_valid():
+            user = form.save(commit=False)
+            if user.Role not in ['Buyer', 'Seller']:
+                user.Role = 'Buyer'
+            user.save()
             email = form.cleaned_data['Email']
-            send_mail(subject='Welcome to E-Auction',
-                      message='Thank you for signing up for E-Auction! We are excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.',
-                      from_email=settings.EMAIL_HOST_USER,
-                      recipient_list=[email])
-            form.save()
+            send_mail(
+                subject='Welcome to E-Auction',
+                message='Thank you for signing up for E-Auction! We are excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[email]
+            )
             return redirect("login")
         else:
             return render(request, 'core/signup.html', {'form': form})

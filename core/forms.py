@@ -32,7 +32,9 @@ class UserSignupForm(UserCreationForm):
     )
     
     Role = forms.ChoiceField(
-        choices=[('', 'Select role')] + list(User.Rolechoice),
+        choices=[('', 'Select role'),
+                ('Buyer', 'Buyer'),
+                ('Seller', 'Seller'),] ,
         widget=forms.Select(attrs={
             'class': 'input-style rounded-full px-5'
         })

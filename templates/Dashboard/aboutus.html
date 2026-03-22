@@ -311,12 +311,12 @@ body.dark ::-webkit-scrollbar-thumb { background: #2d1655 !important; }
       <p class="footer-desc">The world's leading premium e-auction platform for rare assets and luxury collectibles.</p>
     </div>
     <div><div class="footer-col-title">Company</div><div class="footer-links"><a href="{% url 'AboutUs' %}">About Us</a><a href="{% url 'HowItWorks' %}">How it Works</a><a href="{% url 'Security' %}">Security</a><a href="{% url 'Careers' %}">Careers</a></div></div>
-    <div><div class="footer-col-title">Marketplace</div><div class="footer-links"><a href="#">Live Auctions</a><a href="#">Categories</a><a href="#">Top Sellers</a><a href="#">Recent Sales</a></div></div>
-    <div><div class="footer-col-title">Account</div><div class="footer-links"><a href="{% url 'login' %}">Login</a><a href="{% url 'signup' %}">Sign Up</a><a href="#">Seller Hub</a><a href="#">Buyer Dashboard</a></div></div>
+    <div><div class="footer-col-title">Marketplace</div><div class="footer-links"><a href="{% url 'auction_list' %}">Live Auctions</a><a href="{% url 'manage_categories' %}">Categories</a><a href="{% url 'manage_sellers' %}">Top Sellers</a></div></div>
+    <div><div class="footer-col-title">Account</div><div class="footer-links"><a href="{% url 'login' %}">Login</a><a href="{% url 'signup' %}">Sign Up</a></div></div>
   </div>
   <div class="footer-bottom">
     <p class="footer-copy">© 2024 Auctora Enterprise. All rights reserved.</p>
-    <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Settings</a></div>
+    <div class="footer-bottom-links"><a href="{% url 'privacypolicy' %}">Privacy Policy</a><a href="{% url 'termsofservice' %}">Terms of Service</a></div>
   </div>
 </footer>
 </body>
