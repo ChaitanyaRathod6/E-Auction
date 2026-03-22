@@ -215,7 +215,8 @@ body.dark .min-bid-hint strong {
         .settings-icon-btn:hover { background: rgba(255,255,255,0.12); color: #fff; transform: translateX(3px) scale(1.02); }
         .settings-icon-btn svg { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
         .settings-icon-btn:hover svg { transform: rotate(65deg); }
-
+        .btn-watchlist-add { background:#f3f0ff; color:#7c3aed; border:1.5px solid #ede9fe; }
+.btn-watchlist-remove { background:#fef2f2; color:#ef4444; border:1.5px solid #fecaca; }
         .sidebar-profile-card {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
@@ -709,7 +710,7 @@ body.dark .min-bid-hint strong {
                             Minimum next bid: <strong>₹{{ auction.current_price|add:auction.bid_increment }}</strong>
                         </div>
                     </div>
-
+                    
                     <div class="auction-meta">
                         <div class="meta-item">
                             <div class="meta-label">Status</div>
@@ -727,12 +728,9 @@ body.dark .min-bid-hint strong {
                         </div>
                     </div>
                     {% if request.user.Role == 'Buyer' %}
-<a href="{% url 'toggle_watchlist' auction.id %}" style="
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    padding:10px 20px; border-radius:50px; font-size:13px; font-weight:600;
-    text-decoration:none; margin-bottom:12px;
-    {% if is_watched %}background:#fef2f2; color:#ef4444; border:1.5px solid #fecaca;
-    {% else %}background:#f3f0ff; color:#7c3aed; border:1.5px solid #ede9fe;{% endif %}">
+<a href="{% url 'toggle_watchlist' auction.id %}" 
+   class="{% if is_watched %}btn-watchlist-remove{% else %}btn-watchlist-add{% endif %}"
+   style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:12px;">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
     </svg>
@@ -878,5 +876,3 @@ body.dark .min-bid-hint strong {
 </body>
 </html>
 
-</body>
-</html>

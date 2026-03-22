@@ -23,6 +23,7 @@ from Dashboard.emails import (
     send_auction_ended_seller_email,
 )
 from django.db.models import Q,Sum,Count
+from datetime import timedelta
 # Create your views here.
 @login_required
 @role_required(allowed_roles=['Admin'])
@@ -33,6 +34,10 @@ def AdminDashboard(request):
     import json
 
     now = timezone.now()
+
+    # Get selected day range from button click
+    days_filter = int(request.GET.get('days', 30))
+    filter_start = now - timedelta(days=days_filter)
 
     # Weekly GMV (last 7 days)
     weekly_gmv = []
@@ -68,34 +73,67 @@ def AdminDashboard(request):
     cat_values = [c['auction_count'] for c in category_data]
     max_cat = max(cat_values) if cat_values else 1
 
-    total_gmv = Payment.objects.filter(status='COMPLETED').aggregate(total=Sum('amount'))['total'] or 0
-    active_auctions = Auction.objects.filter(status='ACTIVE').count()
-    total_users = User.objects.count()
-    open_disputes = Dispute.objects.filter(status='OPEN').count()
-    total_auctions = Auction.objects.count()
-    recent_activity = Notification.objects.select_related('user', 'auction').order_by('-created_at')[:5]
-    recent_auctions = Auction.objects.select_related('item__category', 'item__seller__user').annotate(bid_count=Count('bids')).order_by('-created_at')[:5]
-    pending_disputes = Dispute.objects.filter(status='OPEN').select_related('raised_by', 'auction__item').order_by('-created_at')[:4]
+    # Stats filtered by selected days
+    total_gmv = Payment.objects.filter(
+        status='COMPLETED',
+        payment_date__gte=filter_start
+    ).aggregate(total=Sum('amount'))['total'] or 0
 
-    # Top Buyers
+    active_auctions = Auction.objects.filter(
+    status='ACTIVE',
+    created_at__gte=filter_start
+    ).count()
+    total_users = User.objects.filter(Created_at__gte=filter_start).count()
+    open_disputes = Dispute.objects.filter(status='OPEN', created_at__gte=filter_start).count()
+    total_auctions = Auction.objects.filter(created_at__gte=filter_start).count()
+
+    recent_activity = Notification.objects.select_related('user', 'auction').filter(
+        created_at__gte=filter_start
+    ).order_by('-created_at')[:5]
+
+    recent_auctions = Auction.objects.select_related(
+        'item__category', 'item__seller__user'
+    ).filter(created_at__gte=filter_start).annotate(
+        bid_count=Count('bids')
+    ).order_by('-created_at')[:5]
+
+    pending_disputes = Dispute.objects.filter(
+        status='OPEN', created_at__gte=filter_start
+    ).select_related('raised_by', 'auction__item').order_by('-created_at')[:4]
+
+    # Top Buyers filtered by days
     top_buyers = Buyer.objects.annotate(
-    total_spent=Sum('payments__amount', filter=Q(payments__status='COMPLETED')),
-    total_bids=Count('bids')
+        total_spent=Sum('payments__amount', filter=Q(
+            payments__status='COMPLETED',
+            payments__payment_date__gte=filter_start
+        )),
+        total_bids=Count('bids', filter=Q(bids__bid_time__gte=filter_start))
     ).filter(total_spent__isnull=False).order_by('-total_spent')[:5]
 
-# Top Sellers
+    # Top Sellers filtered by days
     top_sellers = Seller.objects.annotate(
-    total_earned=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED')),
-    total_auctions=Count('items__auction')
+        total_earned=Sum('items__auction__payments__amount', filter=Q(
+            items__auction__payments__status='COMPLETED',
+            items__auction__payments__payment_date__gte=filter_start
+        )),
+        total_auctions=Count('items__auction', filter=Q(
+            items__auction__created_at__gte=filter_start
+        ))
     ).filter(total_earned__isnull=False).order_by('-total_earned')[:5]
 
-# Most Active Categories
+    # Most Active Categories filtered by days
     active_categories = Category.objects.annotate(
-    total_auctions=Count('items__auction'),
-    total_bids=Count('items__auction__bids'),
-    total_revenue=Sum('items__auction__payments__amount', filter=Q(items__auction__payments__status='COMPLETED'))
+        total_auctions=Count('items__auction', filter=Q(
+            items__auction__created_at__gte=filter_start
+        )),
+        total_bids=Count('items__auction__bids', filter=Q(
+            items__auction__bids__bid_time__gte=filter_start
+        )),
+        total_revenue=Sum('items__auction__payments__amount', filter=Q(
+            items__auction__payments__status='COMPLETED',
+            items__auction__payments__payment_date__gte=filter_start
+        ))
     ).order_by('-total_bids')[:5]
-
 
     context = {
         'total_gmv': total_gmv,
@@ -116,6 +154,7 @@ def AdminDashboard(request):
         'top_buyers': top_buyers,
         'top_sellers': top_sellers,
         'active_categories': active_categories,
+        'days_filter': days_filter,
     }
     return render(request, 'Dashboard/AdminDashboard.html', context)
 
@@ -139,6 +178,18 @@ def BuyerDashboard(request):
         buyer=buyer,
         auction__status='ACTIVE'
     ).select_related('auction__item__category').order_by('-bid_time')
+
+    active_bids_count = Bid.objects.filter(
+    buyer=buyer,
+    auction__status='ACTIVE'
+    ).count()
+
+    ending_soon_count = Auction.objects.filter(
+    bids__buyer=buyer,
+    status='ACTIVE',
+    end_time__lte=timezone.now() + timedelta(hours=24),
+    end_time__gt=timezone.now()
+    ).distinct().count()
 
     # Past bids
     past_bids = Bid.objects.filter(
@@ -189,6 +240,8 @@ def BuyerDashboard(request):
         'won_auctions': won_auctions,
         'total_spent': total_spent,
         'watchlist_count': watchlist_count,
+        'active_bids_count': active_bids_count,
+        'ending_soon_count': ending_soon_count,
     })
 
 @login_required
@@ -204,7 +257,7 @@ def SellerDashboard(request):
     ).select_related('item__category').annotate(
         bid_count=Count('bids')
     ).order_by('end_time')
-
+    
     live_auctions = auctions.filter(status='ACTIVE', end_time__gt=timezone.now())[:5]
 
     total_earnings = Payment.objects.filter(
@@ -216,6 +269,18 @@ def SellerDashboard(request):
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     total_earnings = total_earnings - refunded_amount
+
+    seller_active_bids = Bid.objects.filter(
+    auction__item__seller=seller,
+    auction__status='ACTIVE'
+    ).count()
+
+    seller_ending_soon = Auction.objects.filter(
+    item__seller=seller,
+    status='ACTIVE',
+    end_time__lte=timezone.now() + timedelta(hours=24),
+    end_time__gt=timezone.now()
+    ).count()
 
     # ← ADD THIS — ended auctions waiting for buyer payment
     pending_payments = Bid.objects.filter(
@@ -235,6 +300,32 @@ def SellerDashboard(request):
     unread_bids = Bid.objects.filter(auction__item__seller=seller, auction__status='ACTIVE').count()
     unread_reviews = Review.objects.filter(seller=seller, is_read=False).count() if hasattr(Review, 'is_read') else 0
 
+    # Performance comparison — this week vs last week
+    
+    now = timezone.now()
+    this_week_start = now - timedelta(days=7)
+    last_week_start = now - timedelta(days=14)
+
+    this_week_earnings = Payment.objects.filter(
+    auction__item__seller=seller,
+    status='COMPLETED',
+    payment_date__gte=this_week_start
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    last_week_earnings = Payment.objects.filter(
+    auction__item__seller=seller,
+    status='COMPLETED',
+    payment_date__gte=last_week_start,
+    payment_date__lt=this_week_start
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    if last_week_earnings > 0:
+        performance_pct = round(((this_week_earnings - last_week_earnings) / last_week_earnings) * 100, 1)
+    elif this_week_earnings > 0:
+        performance_pct = 100
+    else:
+        performance_pct = 0
+
     context = {
         'seller': seller,
         'live_auctions': live_auctions,
@@ -247,6 +338,9 @@ def SellerDashboard(request):
         'pending_payments_count': pending_payments_count,
         'open_disputes_count': open_disputes_count,
         'unread_bids': unread_bids,
+        'seller_active_bids': seller_active_bids,
+        'seller_ending_soon': seller_ending_soon,
+        'performance_pct': performance_pct,
     }
     return render(request, 'Dashboard/SellerDashboard.html', context)
 
@@ -298,7 +392,7 @@ def create_auction(request):
             auction.seller = request.user.seller
             auction.current_price = auction.starting_price
             auction.save()
-
+            log_activity(request.user, f"Created auction for '{item.name}'")
             return redirect('SellerDashboard')
 
         else:
@@ -366,6 +460,8 @@ def auction_list(request):
 
 def should_notify(user, notification_type):
     return True
+
+
 def auction_detail(request, pk):
     auction = get_object_or_404(Auction, pk=pk)
 
@@ -458,7 +554,7 @@ def auction_detail(request, pk):
             Bid.objects.create(auction=auction, buyer=buyer, amount=bid_amount, status='WINNING')
             auction.current_price = bid_amount
             auction.save()
-
+            log_activity(request.user, f"Placed bid of ₹{bid_amount} on '{auction.item.name}'")
             # Notify seller of new bid
             if should_notify(auction.item.seller.user, 'BID_PLACED'):
                 Notification.objects.create(
@@ -1013,10 +1109,12 @@ def toggle_watchlist(request, auction_id):
     print("existing entry:", watchlist_item)
     if watchlist_item:
         watchlist_item.delete()
+        log_activity(request.user, f"Removed '{auction.item.name}' from watchlist")
         messages.success(request, "Removed from watchlist.")
         print("=== REMOVED ===")
     else:
         Watchlist.objects.create(auction=auction, buyer=buyer)
+        log_activity(request.user, f"Added '{auction.item.name}' to watchlist")
         messages.success(request, "Added to watchlist.")
         print("=== ADDED ===")
     return redirect('auction_detail', pk=auction_id)
@@ -1060,6 +1158,7 @@ def submit_review(request, auction_id):
                 rating=int(rating),
                 comment=comment
             )
+            log_activity(request.user, f"Submitted review for '{auction.item.name}'")
             messages.success(request, "Review submitted successfully!")
             return redirect('manage_reviews')
         else:
@@ -1103,6 +1202,7 @@ def raise_dispute(request, auction_id):
                 reason=reason,
                 status='OPEN'
             )
+            log_activity(request.user, f"Raised dispute for '{auction.item.name}'")
             # Notify all admins
             for admin in User.objects.filter(Role='Admin'):
                 Notification.objects.create(
@@ -1249,7 +1349,7 @@ def payment_success(request, auction_id):
                 payment_method='CARD',
                 status='COMPLETED'
             )
-
+            log_activity(request.user, f"Payment of ₹{winning_bid.amount} completed for '{auction.item.name}'")
             # Notify seller
             Notification.objects.create(
                 user=auction.item.seller.user,
@@ -1320,7 +1420,7 @@ def quick_create_auction(request):
                 end_time=request.POST.get('end_time'),
                 status='ACTIVE',
             )
-
+            log_activity(request.user, f"Quick created auction for '{item.name}'")
             messages.success(request, f"Auction for '{item.name}' launched successfully!")
             return redirect('SellerDashboard')
 
@@ -1342,7 +1442,7 @@ def request_refund(request, payment_id):
     
     payment.status = 'REFUND_REQUESTED'
     payment.save()
-    
+    log_activity(request.user, f"Requested refund of ₹{payment.amount} for '{payment.auction.item.name}'")
     # Notify seller
     Notification.objects.create(
         user=payment.auction.item.seller.user,
@@ -1378,7 +1478,7 @@ def approve_refund(request, payment_id):
     try:
         payment.status = 'REFUNDED'
         payment.save()
-
+        log_activity(request.user, f"Approved refund of ₹{payment.amount} for '{payment.auction.item.name}'")
         # Notify buyer
         Notification.objects.create(
             user=payment.buyer.user,
@@ -1740,3 +1840,9 @@ def download_invoice(request, payment_id):
     response['Content-Disposition'] = f'attachment; filename="Auctora_Invoice_{pid:06d}.pdf"'
     return response
 
+def log_activity(user, action, description=''):
+    ActivityLog.objects.create(
+        user=user,
+        action=action,
+        description=description
+    )

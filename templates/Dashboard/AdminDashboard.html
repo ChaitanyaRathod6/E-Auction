@@ -619,7 +619,7 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
     <a class="nav-item {% if request.resolver_match.url_name == 'manage_auctions' %}active{% endif %}" href="{% url 'manage_auctions' %}">
       <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/></svg></span>
       Auctions
-      <span class="nav-badge badge-purple">{{ total_auctions }}</span>
+      
     </a>
 
     <a class="nav-item {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
@@ -643,7 +643,7 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
     <a class="nav-item {% if request.resolver_match.url_name == 'manage_disputes' %}active{% endif %}" href="{% url 'manage_disputes' %}">
       <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
       Disputes
-      <span class="nav-badge badge-red">{{ open_disputes }}</span>
+      
     </a>
 
     <a class="nav-item {% if request.resolver_match.url_name == 'manage_reviews' %}active{% endif %}" href="{% url 'manage_reviews' %}">
@@ -716,10 +716,17 @@ body.dark .nav-section-label { color: rgba(255,255,255,0.25) !important; }
         <p>Real-time system health and auction performance metrics.</p>
       </div>
       <div class="header-actions">
-        <button class="btn-ghost">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Last 30 Days
-        </button>
+        <div style="display:flex;gap:6px;">
+    <a href="?days=7" class="btn-ghost {% if days_filter == 7 %}btn-ghost-active{% endif %}" style="{% if days_filter == 7 %}background:var(--primary);color:#fff;border-color:var(--primary);{% endif %}text-decoration:none;padding:9px 14px;font-size:12px;">
+        7 Days
+    </a>
+    <a href="?days=30" class="btn-ghost" style="{% if days_filter == 30 %}background:var(--primary);color:#fff;border-color:var(--primary);{% endif %}text-decoration:none;padding:9px 14px;font-size:12px;">
+        30 Days
+    </a>
+    <a href="?days=90" class="btn-ghost" style="{% if days_filter == 90 %}background:var(--primary);color:#fff;border-color:var(--primary);{% endif %}text-decoration:none;padding:9px 14px;font-size:12px;">
+        90 Days
+    </a>
+</div>
         <a href="{% url 'manage_auctions' %}" class="btn-primary" style="text-decoration:none;">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Manage Auctions

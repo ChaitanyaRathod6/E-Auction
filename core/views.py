@@ -3,8 +3,10 @@ from .forms import UserSignupForm,UserLoginForm
 from django.contrib.auth import authenticate, login,logout
 from django.core.mail import send_mail
 from django.conf import settings      
-
+from Dashboard.models import ActivityLog
 # Create your views here.
+def log_activity(user, action):
+    ActivityLog.objects.create(user=user, action=action)
 
 def UserSignUpViews(request):
     if request.method == 'POST':
@@ -33,6 +35,7 @@ def  UserLoginViews(request):
             user = authenticate(request, username=email, password=password)
             if user :
                 login(request, user)
+                log_activity(user, f"Logged in")
                 if user.Role == 'Admin':
                     return redirect('AdminDashboard')  # Replace with your admin dashboard URL name
                 elif user.Role == 'Seller':
