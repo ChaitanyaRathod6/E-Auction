@@ -174,13 +174,13 @@ def BuyerDashboard(request):
 
     # Won auctions that need payment
     won_unpaid = Bid.objects.filter(
-    buyer=buyer,
-    status='WINNING',
-    auction__status='ENDED'
-).exclude(
-    auction__payments__buyer=buyer,
-    auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
-).select_related('auction__item__category', 'auction__item__seller__user')
+        buyer=buyer,
+        status='WINNING',
+        auction__status='ENDED'
+    ).exclude(
+        auction__payments__buyer=buyer,
+        auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
+    ).select_related('auction__item__category', 'auction__item__seller__user')
 
     # Active bids
     active_bids = Bid.objects.filter(
@@ -189,15 +189,15 @@ def BuyerDashboard(request):
     ).select_related('auction__item__category').order_by('-bid_time')
 
     active_bids_count = Bid.objects.filter(
-    buyer=buyer,
-    auction__status='ACTIVE'
+        buyer=buyer,
+        auction__status='ACTIVE'
     ).count()
 
     ending_soon_count = Auction.objects.filter(
-    bids__buyer=buyer,
-    status='ACTIVE',
-    end_time__lte=timezone.now() + timedelta(hours=24),
-    end_time__gt=timezone.now()
+        bids__buyer=buyer,
+        status='ACTIVE',
+        end_time__lte=timezone.now() + timedelta(hours=24),
+        end_time__gt=timezone.now()
     ).distinct().count()
 
     # Past bids
@@ -207,7 +207,6 @@ def BuyerDashboard(request):
     ).select_related('auction__item__category').order_by('-bid_time')[:10]
 
     # Live auctions
-    from django.db.models import Count
     live_auctions = Auction.objects.filter(
         status='ACTIVE',
         end_time__gt=timezone.now()
@@ -237,6 +236,23 @@ def BuyerDashboard(request):
     ).aggregate(total=Sum('amount'))['total'] or 0
     watchlist_count = Watchlist.objects.filter(buyer=buyer).count()
 
+    # ← ADD THESE new counts
+    unread_notifications = Notification.objects.filter(
+        user=request.user,
+        is_read=False
+    ).count()
+
+    open_disputes_count = Dispute.objects.filter(
+        raised_by=request.user,
+        status='OPEN'
+    ).count()
+
+    pending_payments_count = won_unpaid.count()
+
+    reviews_count = Review.objects.filter(
+        reviewer=request.user
+    ).count()
+
     return render(request, 'Dashboard/BuyerDashboard.html', {
         'won_unpaid': won_unpaid,
         'active_bids': active_bids,
@@ -251,8 +267,12 @@ def BuyerDashboard(request):
         'watchlist_count': watchlist_count,
         'active_bids_count': active_bids_count,
         'ending_soon_count': ending_soon_count,
+        # ← ADD THESE to context
+        'unread_notifications': unread_notifications,
+        'open_disputes_count': open_disputes_count,
+        'pending_payments_count': pending_payments_count,
+        'reviews_count': reviews_count,
     })
-
 @login_required
 @role_required(allowed_roles=['Seller'])
 def SellerDashboard(request):
@@ -950,10 +970,15 @@ def manage_notifications(request):
         notifications = Notification.objects.select_related('user').order_by('-created_at')
         all_users = User.objects.all()  # Admin can send to anyone
     else:  # Buyer or Seller sees only their own
-        notifications = Notification.objects.select_related('user').filter(
-            user=request.user
-        ).order_by('-created_at')
-        all_users = None  # Buyer/Seller cannot send notifications
+            notifications = Notification.objects.select_related('user').filter(
+                user=request.user
+             ).order_by('-created_at')
+            all_users = None
+    # Mark all as read when page is visited
+            Notification.objects.filter(
+                user=request.user,
+                is_read=False
+            ).update(is_read=True)  # Buyer/Seller cannot send notifications
 
     context = {
         'notifications': notifications,
