@@ -540,20 +540,7 @@ def auction_detail(request, pk):
     if auction.end_time <= timezone.now() and auction.status == 'ACTIVE':
         auction.status = "ENDED"
         auction.save()
-        channel_layer = get_channel_layer()
-        bid_count = Bid.objects.filter(auction=auction).count()
-        min_next = float(auction.current_price) + float(auction.bid_increment)
-        async_to_sync(channel_layer.group_send)(
-        f'auction_{auction.pk}',
-        {
-            'type': 'auction_bid',
-        '   amount': str(bid_amount),
-            'bidder_name': f'{buyer.user.First_name} {buyer.user.Last_name}',
-            'bidder_initial': buyer.user.First_name[0].upper() if buyer.user.First_name else '?',
-            'bid_count': bid_count,
-            'min_next_bid': str(min_next),
-        }
-    )
+
         winning_bid = Bid.objects.filter(auction=auction).order_by('-amount').first()
 
         if winning_bid:
@@ -561,7 +548,6 @@ def auction_detail(request, pk):
             winning_bid.save()
             Bid.objects.filter(auction=auction).exclude(id=winning_bid.id).update(status='LOST')
 
-            # Notify winner
             if should_notify(winning_bid.buyer.user, 'AUCTION_ENDED'):
                 Notification.objects.create(
                     user=winning_bid.buyer.user,
@@ -571,7 +557,6 @@ def auction_detail(request, pk):
                 )
             send_auction_won_email(winning_bid.buyer.user, auction, winning_bid.amount)
 
-            # Notify seller
             if should_notify(auction.item.seller.user, 'AUCTION_ENDED'):
                 Notification.objects.create(
                     user=auction.item.seller.user,
@@ -606,18 +591,13 @@ def auction_detail(request, pk):
                 messages.error(request, f"Your bid must be at least ₹{min_required}")
                 return redirect("auction_detail", pk=auction.pk)
 
-            # Get outbid buyer BEFORE updating status
             outbid_bid = Bid.objects.filter(auction=auction, status='WINNING').first()
-
-            # Mark previous winning bid as OUTBID
             Bid.objects.filter(auction=auction, status='WINNING').update(status='OUTBID')
-
             Bid.objects.create(auction=auction, buyer=buyer, amount=bid_amount, status='WINNING')
             auction.current_price = bid_amount
             auction.save()
             log_activity(request.user, f"Placed bid of ₹{bid_amount} on '{auction.item.name}'")
 
-            # Notify seller of new bid
             if should_notify(auction.item.seller.user, 'BID_PLACED'):
                 Notification.objects.create(
                     user=auction.item.seller.user,
@@ -626,7 +606,6 @@ def auction_detail(request, pk):
                     auction=auction
                 )
 
-            # Notify current buyer their bid was placed successfully
             if should_notify(buyer.user, 'BID_PLACED'):
                 Notification.objects.create(
                     user=buyer.user,
@@ -635,10 +614,8 @@ def auction_detail(request, pk):
                     auction=auction
                 )
 
-            # Send bid placed email
             send_bid_placed_email(buyer.user, auction, bid_amount)
 
-            # Notify outbid buyer ONLY if it's a different person
             if outbid_bid and outbid_bid.buyer != buyer:
                 if should_notify(outbid_bid.buyer.user, 'OUTBID'):
                     Notification.objects.create(
@@ -648,6 +625,24 @@ def auction_detail(request, pk):
                         auction=auction
                     )
                     send_outbid_email(outbid_bid.buyer.user, auction, bid_amount)
+
+            # ✅ BROADCAST TO ALL WEBSOCKET CLIENTS
+            print(f"=== BROADCASTING TO auction_{auction.pk} ===")
+            channel_layer = get_channel_layer()
+            bid_count = Bid.objects.filter(auction=auction).count()
+            min_next = float(auction.current_price) + float(auction.bid_increment)
+            async_to_sync(channel_layer.group_send)(
+                f'auction_{auction.pk}',
+                {
+                    'type': 'auction_bid',
+                    'amount': str(bid_amount),
+                    'bidder_name': f'{buyer.user.First_name} {buyer.user.Last_name}',
+                    'bidder_initial': buyer.user.First_name[0].upper() if buyer.user.First_name else '?',
+                    'bid_count': bid_count,
+                    'min_next_bid': str(min_next),
+                }
+            )
+            print("=== BROADCAST DONE ===")
 
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
@@ -661,7 +656,6 @@ def auction_detail(request, pk):
         "winner": winner,
         "end_time_ms": int(auction.end_time.timestamp() * 1000),
     })
-
 @login_required
 def seller_profile(request):
     try:

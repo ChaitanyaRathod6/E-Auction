@@ -103,10 +103,8 @@ body.dark .min-bid-hint strong {
             to { opacity: 1; }
         }
 
-        /* Layout */
         .layout { display: flex; min-height: 100vh; }
 
-        /* Topbar */
         .topbar {
             position: fixed; top: 0; left: 0; right: 0; height: 56px;
             background: var(--topbar-bg);
@@ -152,7 +150,6 @@ body.dark .min-bid-hint strong {
         }
         .topbar-icon:hover { background: var(--border); transform: scale(1.08); }
 
-        /* Sidebar */
         .sidebar {
             width: 260px; min-height: 100vh;
             background: var(--sidebar-bg);
@@ -216,7 +213,7 @@ body.dark .min-bid-hint strong {
         .settings-icon-btn svg { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink: 0; }
         .settings-icon-btn:hover svg { transform: rotate(65deg); }
         .btn-watchlist-add { background:#f3f0ff; color:#7c3aed; border:1.5px solid #ede9fe; }
-.btn-watchlist-remove { background:#fef2f2; color:#ef4444; border:1.5px solid #fecaca; }
+        .btn-watchlist-remove { background:#fef2f2; color:#ef4444; border:1.5px solid #fecaca; }
         .sidebar-profile-card {
             background: rgba(255,255,255,0.08);
             border: 1px solid rgba(255,255,255,0.1);
@@ -239,7 +236,6 @@ body.dark .min-bid-hint strong {
         }
         .logout-btn:hover { background: rgba(239,68,68,0.18); color: #fca5a5; border-color: rgba(239,68,68,0.3); transform: scale(1.1); }
 
-        /* Main */
         .main {
             margin-left: 260px; padding-top: 56px;
             flex: 1; background: var(--main-bg); min-height: 100vh;
@@ -247,7 +243,6 @@ body.dark .min-bid-hint strong {
         }
         .page-content { padding: 28px; }
 
-        /* Breadcrumb */
         .breadcrumb {
             display: flex; align-items: center; gap: 8px;
             font-size: 13px; color: var(--text-mid);
@@ -259,7 +254,6 @@ body.dark .min-bid-hint strong {
         .breadcrumb-sep { opacity: 0.4; }
         .breadcrumb-current { color: var(--text-dark); font-weight: 600; }
 
-        /* Detail layout */
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 400px;
@@ -267,10 +261,8 @@ body.dark .min-bid-hint strong {
             animation: fadeInUp 0.5s 0.3s both;
         }
 
-        /* Left column */
         .detail-left { display: flex; flex-direction: column; gap: 20px; }
 
-        /* Image card */
         .image-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -278,12 +270,7 @@ body.dark .min-bid-hint strong {
             overflow: hidden;
             position: relative;
         }
-        .detail-image {
-            width: 100%;
-            height: 420px;
-            object-fit: cover;
-            display: block;
-        }
+        .detail-image { width: 100%; height: 420px; object-fit: cover; display: block; }
         .image-placeholder-lg {
             width: 100%; height: 420px;
             display: flex; align-items: center; justify-content: center;
@@ -303,7 +290,6 @@ body.dark .min-bid-hint strong {
         .status-badge.ended { background: #ef4444; color: white; }
         .status-badge.pending { background: var(--orange); color: white; }
 
-        /* Info card */
         .info-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -318,11 +304,8 @@ body.dark .min-bid-hint strong {
             font-size: 26px; font-weight: 800; color: var(--text-dark);
             letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 12px;
         }
-        .item-description {
-            font-size: 14px; color: var(--text-mid); line-height: 1.7;
-        }
+        .item-description { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
 
-        /* Right column — bid panel */
         .detail-right { display: flex; flex-direction: column; gap: 20px; }
 
         .bid-panel {
@@ -371,13 +354,10 @@ body.dark .min-bid-hint strong {
             font-size: 10px; font-weight: 600; letter-spacing: 1px;
             text-transform: uppercase; color: var(--text-light); margin-bottom: 4px;
         }
-        .meta-value {
-            font-size: 13px; font-weight: 700; color: var(--text-dark);
-        }
+        .meta-value { font-size: 13px; font-weight: 700; color: var(--text-dark); }
         .meta-value.urgent { color: #ef4444; }
         .meta-value.active { color: var(--green); }
 
-        /* Bid form */
         .bid-form { display: flex; flex-direction: column; gap: 12px; }
 
         .bid-input-wrap { position: relative; }
@@ -449,9 +429,7 @@ body.dark .min-bid-hint strong {
             border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
         }
-        .history-title {
-            font-size: 16px; font-weight: 700; color: var(--text-dark);
-        }
+        .history-title { font-size: 16px; font-weight: 700; color: var(--text-dark); }
         .history-count {
             font-size: 12px; font-weight: 600; color: var(--text-mid);
             background: var(--main-bg);
@@ -478,15 +456,15 @@ body.dark .min-bid-hint strong {
             flex-shrink: 0;
         }
         .bidder-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
-        .bidder-rank {
-            font-size: 10px; color: var(--text-light);
-            margin-top: 1px;
-        }
+        .bidder-rank { font-size: 10px; color: var(--text-light); margin-top: 1px; }
+
+        /* ✅ ALL bid amounts are green — including the leading/first one */
         .bid-amount {
-            font-size: 16px; font-weight: 800; color: var(--green);
+            font-size: 16px; font-weight: 800; color: #10b981;
             letter-spacing: -0.3px;
         }
-        .bid-row:first-child .bid-amount { color: var(--primary); font-size: 17px; }
+        .bid-row:first-child .bid-amount { color: #10b981; font-size: 17px; }
+
         .leading-badge {
             display: inline-block;
             font-size: 9px; font-weight: 700;
@@ -502,7 +480,6 @@ body.dark .min-bid-hint strong {
         }
         .no-bids-icon { font-size: 32px; opacity: 0.3; margin-bottom: 8px; }
 
-        /* Responsive */
         @media (max-width: 1100px) {
             .detail-grid { grid-template-columns: 1fr; }
             .bid-panel { position: static; }
@@ -600,8 +577,6 @@ body.dark .min-bid-hint strong {
                 Live Auctions
             </div>
         </a>
-        
-        
         <a href="{% url 'home' %}" style="text-decoration: none;">
             <div class="nav-item">
                 <span class="nav-icon">
@@ -658,17 +633,14 @@ body.dark .min-bid-hint strong {
 <main class="main">
     <div class="page-content">
 
-        <!-- Breadcrumb -->
         <div class="breadcrumb">
             <a href="{% url 'auction_list' %}">Live Auctions</a>
             <span class="breadcrumb-sep">›</span>
             <span class="breadcrumb-current">{{ auction.item.name }}</span>
         </div>
 
-        <!-- Detail Grid -->
         <div class="detail-grid">
 
-            <!-- Left: Image + Description -->
             <div class="detail-left">
                 <div class="image-card">
                     {% if auction.item.image %}
@@ -696,10 +668,8 @@ body.dark .min-bid-hint strong {
                 </div>
             </div>
 
-            <!-- Right: Bid Panel + History -->
             <div class="detail-right">
 
-                <!-- Bid Panel -->
                 <div class="bid-panel">
                     <div class="price-section">
                         <div class="price-label-sm">Current Bid</div>
@@ -710,7 +680,7 @@ body.dark .min-bid-hint strong {
                             Minimum next bid: <strong>₹{{ auction.current_price|add:auction.bid_increment }}</strong>
                         </div>
                     </div>
-                    
+
                     <div class="auction-meta">
                         <div class="meta-item">
                             <div class="meta-label">Status</div>
@@ -723,20 +693,22 @@ body.dark .min-bid-hint strong {
                             <div class="meta-value">{{ bids|length }}</div>
                         </div>
                         <div class="meta-item" style="grid-column: 1 / -1;">
-                                <div class="meta-label">{% if auction.status == 'ACTIVE' %}Ends In{% else %}Ended{% endif %}</div>
-                                <div class="meta-value urgent" id="countdown">{{ auction.end_time }}</div>
+                            <div class="meta-label">{% if auction.status == 'ACTIVE' %}Ends In{% else %}Ended{% endif %}</div>
+                            <div class="meta-value urgent" id="countdown">{{ auction.end_time }}</div>
                         </div>
                     </div>
+
                     {% if request.user.Role == 'Buyer' %}
-<a href="{% url 'toggle_watchlist' auction.id %}" 
-   class="{% if is_watched %}btn-watchlist-remove{% else %}btn-watchlist-add{% endif %}"
-   style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:12px;">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-    </svg>
-    {% if is_watched %}❤️ Remove from Watchlist{% else %}🤍 Add to Watchlist{% endif %}
-</a>
-{% endif %}
+                    <a href="{% url 'toggle_watchlist' auction.id %}"
+                       class="{% if is_watched %}btn-watchlist-remove{% else %}btn-watchlist-add{% endif %}"
+                       style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:12px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        {% if is_watched %}❤️ Remove from Watchlist{% else %}🤍 Add to Watchlist{% endif %}
+                    </a>
+                    {% endif %}
+
                     {% if auction.status == "ACTIVE" %}
                     <form method="POST" class="bid-form">
                         {% csrf_token %}
@@ -756,40 +728,37 @@ body.dark .min-bid-hint strong {
                         </button>
                     </form>
                     {% else %}
-                    {% if winner %}
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px;margin-bottom:12px;">
-    <h3 style="color:#10b981;margin-bottom:12px;font-size:15px;">🏆 Auction Ended</h3>
-    <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:44px;height:44px;border-radius:50%;background:#2d1655;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;">
-            {{ winner.buyer.user.First_name|first|upper }}
-        </div>
-        <div>
-            <div style="font-weight:700;color:#1a1035;">{{ winner.buyer.user.First_name }} {{ winner.buyer.user.Last_name }}</div>
-            <div style="font-size:12px;color:#6b7280;">Winning bid</div>
-        </div>
-        <div style="margin-left:auto;font-size:22px;font-weight:800;color:#2d1655;">₹{{ winner.amount }}</div>
-    </div>
-
-    {% if request.user == winner.buyer.user %}
-    <a href="{% url 'make_payment' auction.id %}"
-       style="display:inline-block;margin-top:14px;background:#2d1655;color:white;padding:10px 24px;border-radius:50px;font-weight:600;text-decoration:none;">
-        💳 Complete Payment
-    </a>
-    {% endif %}
-</div>
-
-{% else %}
-<div class="auction-ended-msg">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;opacity:0.7;">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-    </svg>
-    This auction has ended with no bids.
-</div>
-{% endif %}
-
-{% endif %}
+                        {% if winner %}
+                        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px;margin-bottom:12px;">
+                            <h3 style="color:#10b981;margin-bottom:12px;font-size:15px;">🏆 Auction Ended</h3>
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <div style="width:44px;height:44px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;">
+                                    {{ winner.buyer.user.First_name|first|upper }}
+                                </div>
+                                <div>
+                                    <div style="font-weight:700;color:#1a1035;">{{ winner.buyer.user.First_name }} {{ winner.buyer.user.Last_name }}</div>
+                                    <div style="font-size:12px;color:#6b7280;">Winning bid</div>
+                                </div>
+                                <div style="margin-left:auto;font-size:22px;font-weight:800;color:#2d1655;">₹{{ winner.amount }}</div>
+                            </div>
+                            {% if request.user == winner.buyer.user %}
+                            <a href="{% url 'make_payment' auction.id %}"
+                               style="display:inline-block;margin-top:14px;background:#2d1655;color:white;padding:10px 24px;border-radius:50px;font-weight:600;text-decoration:none;">
+                                💳 Complete Payment
+                            </a>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="auction-ended-msg">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px;display:block;margin-left:auto;margin-right:auto;opacity:0.7;">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            This auction has ended with no bids.
+                        </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
 
                 <!-- Bid History -->
@@ -854,16 +823,12 @@ body.dark .min-bid-hint strong {
         if (distance <= 0) {
             clearInterval(countdownTimer);
             countdownEl.textContent = "Auction Ended";
-
-            // ✅ Instead of reload, disable bidding UI
             const bidBtn = document.querySelector('.bid-button');
             if (bidBtn) bidBtn.disabled = true;
-
         } else {
             const hours   = Math.floor(distance / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
             countdownEl.textContent =
                 (hours > 0 ? hours + "h " : "") + minutes + "m " + seconds + "s";
         }
@@ -877,8 +842,8 @@ body.dark .min-bid-hint strong {
     const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
 
     function connectWebSocket() {
-        const socket = new WebSocket(`${wsScheme}://${window.location.host}/ws/auction/${auctionId}/`);
-
+        const wsHost = window.location.hostname + ':' + (window.location.port || '8000');
+        const socket = new WebSocket(`${wsScheme}://${wsHost}/ws/auction/${auctionId}/`);
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 
@@ -926,7 +891,7 @@ body.dark .min-bid-hint strong {
                             <div class="bidder-rank">Just now</div>
                         </div>
                     </div>
-                    <div class="bid-amount" style="color:var(--primary);font-size:17px;">
+                    <div class="bid-amount" style="color:#10b981 !important; font-size:17px;">
                         ₹${parseFloat(data.amount).toLocaleString('en-IN')}
                     </div>
                 `;
@@ -942,7 +907,6 @@ body.dark .min-bid-hint strong {
             }
         };
 
-        // ✅ FIXED: No page reload, only reconnect
         socket.onclose = function() {
             console.log('WebSocket closed. Reconnecting in 3s...');
             setTimeout(connectWebSocket, 3000);
