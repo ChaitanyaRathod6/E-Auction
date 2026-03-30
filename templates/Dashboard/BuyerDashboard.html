@@ -632,7 +632,7 @@
     <a href="{% url 'manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_bids' %}active{% endif %}">
   <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
   My Bids
-  {% if active_bids_count %}<span class="nav-badge">{{ active_bids_count }}</span>{% endif %}
+  {% if bids_count %}<span class="nav-badge">{{ bids_count }}</span>{% endif %}
 </a>
 
 <a href="{% url 'manage_watchlist' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_watchlist' %}active{% endif %}">

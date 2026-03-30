@@ -296,7 +296,7 @@ tbody td{padding:13px 20px;font-size:13px;color:var(--text-dark);vertical-align:
         <a href="{% url 'seller_manage_bids' %}" class="nav-item {% if request.resolver_match.url_name == 'seller_manage_bids' %}active{% endif %}">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
             Manage Bids
-            <span class="nav-badge">{{ total_bids }}</span>
+            
         </a>
 
         <a href="{% url 'manage_payments' %}" class="nav-item {% if request.resolver_match.url_name == 'manage_payments' %}active{% endif %}">

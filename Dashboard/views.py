@@ -143,7 +143,11 @@ def AdminDashboard(request):
             items__auction__payments__payment_date__gte=filter_start
         ))
     ).order_by('-total_bids')[:5]
-
+    # Admin badge counts
+    # Replace these 3 lines at the bottom of AdminDashboard:
+    admin_open_disputes = Dispute.objects.filter(is_seen=False).count()       # ✅ clears on visit
+    admin_unread_notifications = Notification.objects.filter(is_read=False).count()  # ✅ clears on visit
+    admin_unread_messages = ContactMessage.objects.filter(is_read=False).count()     # ✅ clears on visit
     context = {
         'total_gmv': total_gmv,
         'active_auctions': active_auctions,
@@ -164,6 +168,9 @@ def AdminDashboard(request):
         'top_sellers': top_sellers,
         'active_categories': active_categories,
         'days_filter': days_filter,
+        'admin_open_disputes': admin_open_disputes,
+        'admin_unread_notifications': admin_unread_notifications,
+        'admin_unread_messages': admin_unread_messages,
     }
     return render(request, 'Dashboard/AdminDashboard.html', context)
 
@@ -228,29 +235,25 @@ def BuyerDashboard(request):
         status='COMPLETED'
     ).select_related('auction__item').order_by('-payment_date')[:3]
 
-    # Stats
+    # Stats (actual totals — no is_seen filter)
     total_bids = Bid.objects.filter(buyer=buyer).count()
     won_auctions = Bid.objects.filter(buyer=buyer, status='WINNING').count()
     total_spent = Payment.objects.filter(
         buyer=buyer, status='COMPLETED'
     ).aggregate(total=Sum('amount'))['total'] or 0
-    watchlist_count = Watchlist.objects.filter(buyer=buyer).count()
 
-    # ← ADD THESE new counts
+    # Badge counts (unseen only)
+    watchlist_count = Watchlist.objects.filter(buyer=buyer, is_seen=False).count()
+    bids_count = Bid.objects.filter(buyer=buyer, is_seen=False).count()
+    reviews_count = Review.objects.filter(reviewee=request.user, is_seen=False).count()
     unread_notifications = Notification.objects.filter(
-        user=request.user,
-        is_read=False
+        user=request.user, is_read=False
     ).count()
-
     open_disputes_count = Dispute.objects.filter(
-        raised_by=request.user,
-        status='OPEN'
+        raised_by=request.user, is_seen=False
     ).count()
-
-    pending_payments_count = won_unpaid.count()
-
-    reviews_count = Review.objects.filter(
-        reviewer=request.user
+    pending_payments_count = Payment.objects.filter(
+        buyer=buyer, is_seen=False, status='COMPLETED'
     ).count()
 
     return render(request, 'Dashboard/BuyerDashboard.html', {
@@ -264,14 +267,14 @@ def BuyerDashboard(request):
         'total_bids': total_bids,
         'won_auctions': won_auctions,
         'total_spent': total_spent,
-        'watchlist_count': watchlist_count,
         'active_bids_count': active_bids_count,
         'ending_soon_count': ending_soon_count,
-        # ← ADD THESE to context
+        'watchlist_count': watchlist_count,
+        'bids_count': bids_count,
+        'reviews_count': reviews_count,
         'unread_notifications': unread_notifications,
         'open_disputes_count': open_disputes_count,
         'pending_payments_count': pending_payments_count,
-        'reviews_count': reviews_count,
     })
 @login_required
 @role_required(allowed_roles=['Seller'])
@@ -286,66 +289,59 @@ def SellerDashboard(request):
     ).select_related('item__category').annotate(
         bid_count=Count('bids')
     ).order_by('end_time')
-    
+
     live_auctions = auctions.filter(status='ACTIVE', end_time__gt=timezone.now())[:5]
 
     total_earnings = Payment.objects.filter(
-    auction__item__seller=seller, status='COMPLETED'
+        auction__item__seller=seller, status='COMPLETED'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     refunded_amount = Payment.objects.filter(
-    auction__item__seller=seller, status='REFUNDED'
+        auction__item__seller=seller, status='REFUNDED'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     total_earnings = total_earnings - refunded_amount
 
     seller_active_bids = Bid.objects.filter(
-    auction__item__seller=seller,
-    auction__status='ACTIVE'
+        auction__item__seller=seller,
+        auction__status='ACTIVE'
     ).count()
 
     seller_ending_soon = Auction.objects.filter(
-    item__seller=seller,
-    status='ACTIVE',
-    end_time__lte=timezone.now() + timedelta(hours=24),
-    end_time__gt=timezone.now()
+        item__seller=seller,
+        status='ACTIVE',
+        end_time__lte=timezone.now() + timedelta(hours=24),
+        end_time__gt=timezone.now()
     ).count()
 
-    # ← ADD THIS — ended auctions waiting for buyer payment
+    # Ended auctions waiting for buyer payment
     pending_payments = Bid.objects.filter(
-    auction__item__seller=seller,
-    status='WINNING',
-    auction__status='ENDED'
-).exclude(
-    auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
-).select_related(
-    'auction__item__category',
-    'buyer__user'
-).order_by('-auction__end_time')
-
-    unread_notifications = Notification.objects.filter(user=request.user, is_read=False).count()
-    pending_payments_count = Payment.objects.filter(auction__item__seller=seller, status='PENDING').count()
-    open_disputes_count = Dispute.objects.filter(auction__item__seller=seller, status='OPEN').count()
-    unread_bids = Bid.objects.filter(auction__item__seller=seller, auction__status='ACTIVE').count()
-    unread_reviews = Review.objects.filter(seller=seller, is_read=False).count() if hasattr(Review, 'is_read') else 0
+        auction__item__seller=seller,
+        status='WINNING',
+        auction__status='ENDED'
+    ).exclude(
+        auction__payments__status__in=['COMPLETED', 'REFUNDED', 'REFUND_REQUESTED']
+    ).select_related(
+        'auction__item__category',
+        'buyer__user'
+    ).order_by('-auction__end_time')
 
     # Performance comparison — this week vs last week
-    
     now = timezone.now()
     this_week_start = now - timedelta(days=7)
     last_week_start = now - timedelta(days=14)
 
     this_week_earnings = Payment.objects.filter(
-    auction__item__seller=seller,
-    status='COMPLETED',
-    payment_date__gte=this_week_start
+        auction__item__seller=seller,
+        status='COMPLETED',
+        payment_date__gte=this_week_start
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     last_week_earnings = Payment.objects.filter(
-    auction__item__seller=seller,
-    status='COMPLETED',
-    payment_date__gte=last_week_start,
-    payment_date__lt=this_week_start
+        auction__item__seller=seller,
+        status='COMPLETED',
+        payment_date__gte=last_week_start,
+        payment_date__lt=this_week_start
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     if last_week_earnings > 0:
@@ -355,6 +351,23 @@ def SellerDashboard(request):
     else:
         performance_pct = 0
 
+    # Badge counts (unseen only)
+    seller_reviews_count = Review.objects.filter(
+        reviewee=request.user, is_seen=False
+    ).count()
+    seller_unread_notifications = Notification.objects.filter(
+        user=request.user, is_read=False
+    ).count()
+    seller_open_disputes_count = Dispute.objects.filter(
+        auction__item__seller=seller, is_seen=False  # ← FIXED
+    ).count()
+    seller_pending_payments_count = Payment.objects.filter(
+        auction__item__seller=seller, is_seen=False, status='COMPLETED'
+    ).count()
+    seller_bids_count = Bid.objects.filter(
+        auction__item__seller=seller, is_seen=False
+    ).count()
+
     context = {
         'seller': seller,
         'live_auctions': live_auctions,
@@ -363,16 +376,17 @@ def SellerDashboard(request):
         'items_sold': auctions.filter(status='ENDED').count(),
         'categories': Category.objects.all(),
         'pending_payments': pending_payments,
-        'unread_notifications': unread_notifications,
-        'pending_payments_count': pending_payments_count,
-        'open_disputes_count': open_disputes_count,
-        'unread_bids': unread_bids,
         'seller_active_bids': seller_active_bids,
         'seller_ending_soon': seller_ending_soon,
         'performance_pct': performance_pct,
+        # Badge counts
+        'seller_reviews_count': seller_reviews_count,
+        'seller_unread_notifications': seller_unread_notifications,
+        'seller_open_disputes_count': seller_open_disputes_count,
+        'seller_pending_payments_count': seller_pending_payments_count,
+        'seller_bids_count': seller_bids_count,
     }
     return render(request, 'Dashboard/SellerDashboard.html', context)
-
 def  privacypolicy(request):
     return render(request,"Dashboard/privacypolicy.html")
 
@@ -516,6 +530,8 @@ def auction_list(request):
 def should_notify(user, notification_type):
     return True
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 def auction_detail(request, pk):
     auction = get_object_or_404(Auction, pk=pk)
@@ -524,7 +540,20 @@ def auction_detail(request, pk):
     if auction.end_time <= timezone.now() and auction.status == 'ACTIVE':
         auction.status = "ENDED"
         auction.save()
-
+        channel_layer = get_channel_layer()
+        bid_count = Bid.objects.filter(auction=auction).count()
+        min_next = float(auction.current_price) + float(auction.bid_increment)
+        async_to_sync(channel_layer.group_send)(
+        f'auction_{auction.pk}',
+        {
+            'type': 'auction_bid',
+        '   amount': str(bid_amount),
+            'bidder_name': f'{buyer.user.First_name} {buyer.user.Last_name}',
+            'bidder_initial': buyer.user.First_name[0].upper() if buyer.user.First_name else '?',
+            'bid_count': bid_count,
+            'min_next_bid': str(min_next),
+        }
+    )
         winning_bid = Bid.objects.filter(auction=auction).order_by('-amount').first()
 
         if winning_bid:
@@ -859,12 +888,12 @@ def manage_items(request):
 @role_required(allowed_roles=['Admin', 'Buyer'])
 def manage_bids(request):
     if request.user.Role == 'Admin':
-        # Admin sees ALL bids
         bids = Bid.objects.select_related('buyer__user', 'auction__item').order_by('-bid_time')
     elif request.user.Role == 'Buyer':
-        # Buyer sees ONLY their own bids
+        # Mark unseen as seen when buyer visits
+        Bid.objects.filter(buyer=request.user.buyer, is_seen=False).update(is_seen=True)
         bids = Bid.objects.select_related('buyer__user', 'auction__item').filter(
-            buyer=request.user.buyer  # use your actual related name
+            buyer=request.user.buyer
         ).order_by('-bid_time')
 
     context = {
@@ -879,7 +908,6 @@ def manage_bids(request):
 @login_required
 @role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_payments(request):
-    # ✅ Keep POST handling
     if request.method == "POST":
         p = Payment.objects.get(id=request.POST.get('payment_id'))
         p.status = request.POST.get('new_status')
@@ -887,14 +915,19 @@ def manage_payments(request):
         messages.success(request, 'Payment status updated.')
         return redirect('manage_payments')
 
-    # ✅ Filter by role
     if request.user.Role == 'Admin':
         qs = Payment.objects.select_related('buyer__user', 'auction__item')
     elif request.user.Role == 'Buyer':
+        # Mark as seen before applying any filters
+        Payment.objects.filter(buyer=request.user.buyer, is_seen=False).update(is_seen=True)
         qs = Payment.objects.select_related('buyer__user', 'auction__item').filter(
             buyer=request.user.buyer
         )
-    else:  # Seller sees payments for their auctions
+    else:  # Seller
+        # Mark as seen for payments on seller's auctions
+        Payment.objects.filter(
+            auction__item__seller=request.user.seller, is_seen=False
+        ).update(is_seen=True)
         qs = Payment.objects.select_related('buyer__user', 'auction__item').filter(
             auction__item__seller=request.user.seller
         )
@@ -904,7 +937,7 @@ def manage_payments(request):
 
     context = {
         'payments': qs.order_by('-payment_date'),
-        'total_payments': qs.count(),                               # ✅ filtered counts
+        'total_payments': qs.count(),
         'completed_payments': qs.filter(status='COMPLETED').count(),
         'pending_payments': qs.filter(status='PENDING').count(),
         'failed_payments': qs.filter(status='FAILED').count(),
@@ -915,7 +948,6 @@ def manage_payments(request):
 @login_required
 @role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_disputes(request):
-    # ✅ Keep POST handling
     if request.method == "POST":
         d = Dispute.objects.get(id=request.POST.get('dispute_id'))
         d.status = request.POST.get('new_status')
@@ -923,14 +955,19 @@ def manage_disputes(request):
         messages.success(request, 'Dispute status updated.')
         return redirect('manage_disputes')
 
-    # ✅ Filter by role
     if request.user.Role == 'Admin':
+        # ✅ FIX: Mark all unseen disputes as seen when admin visits
+        Dispute.objects.filter(is_seen=False).update(is_seen=True)
         qs = Dispute.objects.select_related('raised_by', 'auction__item')
     elif request.user.Role == 'Buyer':
+        Dispute.objects.filter(raised_by=request.user, is_seen=False).update(is_seen=True)
         qs = Dispute.objects.select_related('raised_by', 'auction__item').filter(
             raised_by=request.user
         )
-    else:  # Seller sees disputes on their auctions
+    else:  # Seller
+        Dispute.objects.filter(
+            auction__item__seller=request.user.seller, is_seen=False
+        ).update(is_seen=True)
         qs = Dispute.objects.select_related('raised_by', 'auction__item').filter(
             auction__item__seller=request.user.seller
         )
@@ -940,7 +977,7 @@ def manage_disputes(request):
 
     context = {
         'disputes': qs.order_by('-created_at'),
-        'total_disputes': qs.count(),                               # ✅ filtered counts
+        'total_disputes': qs.count(),
         'open_disputes': qs.filter(status='OPEN').count(),
         'resolved_disputes': qs.filter(status='RESOLVED').count(),
         'closed_disputes': qs.filter(status='CLOSED').count(),
@@ -950,7 +987,6 @@ def manage_disputes(request):
 @login_required
 @role_required(allowed_roles=['Admin', 'Seller', 'Buyer'])
 def manage_notifications(request):
-    # ✅ Only Admin can send notifications
     if request.method == "POST" and request.user.Role == 'Admin':
         if request.POST.get('action') == 'send':
             msg = request.POST.get('message')
@@ -963,22 +999,19 @@ def manage_notifications(request):
             else:
                 Notification.objects.create(user=User.objects.get(id=uid), message=msg, notification_type=ntype)
                 messages.success(request, 'Notification sent.')
-            return redirect('manage_notifications')
+        return redirect('manage_notifications')
 
-    # ✅ Filter by role
     if request.user.Role == 'Admin':
+        # ✅ FIX: Mark all unread notifications as read when admin visits
+        Notification.objects.filter(is_read=False).update(is_read=True)
         notifications = Notification.objects.select_related('user').order_by('-created_at')
-        all_users = User.objects.all()  # Admin can send to anyone
-    else:  # Buyer or Seller sees only their own
-            notifications = Notification.objects.select_related('user').filter(
-                user=request.user
-             ).order_by('-created_at')
-            all_users = None
-    # Mark all as read when page is visited
-            Notification.objects.filter(
-                user=request.user,
-                is_read=False
-            ).update(is_read=True)  # Buyer/Seller cannot send notifications
+        all_users = User.objects.all()
+    else:
+        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        notifications = Notification.objects.select_related('user').filter(
+            user=request.user
+        ).order_by('-created_at')
+        all_users = None
 
     context = {
         'notifications': notifications,
@@ -1001,12 +1034,14 @@ def manage_reviews(request):
     if request.user.Role == 'Admin':
         qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item')
     elif request.user.Role == 'Buyer':
+        Review.objects.filter(reviewee=request.user, is_seen=False).update(is_seen=True)
         qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item').filter(
             reviewer=request.user
         )
     else:  # Seller sees reviews about them
         qs = Review.objects.select_related('reviewer', 'reviewee', 'auction__item').filter(
-            reviewee=request.user
+            reviewee=request.user,
+            is_seen=False
         )
 
     if request.GET.get('rating'):
@@ -1025,10 +1060,11 @@ def manage_reviews(request):
 @login_required
 @role_required(allowed_roles=['Admin', 'Buyer'])
 def manage_watchlist(request):
-    # ✅ Filter by role
     if request.user.Role == 'Admin':
         qs = Watchlist.objects.select_related('buyer__user', 'auction__item__category')
-    else:  # Buyer sees only their own watchlist
+    else:
+        # Mark unseen as seen when buyer visits
+        Watchlist.objects.filter(buyer=request.user.buyer, is_seen=False).update(is_seen=True)
         qs = Watchlist.objects.select_related('buyer__user', 'auction__item__category').filter(
             buyer=request.user.buyer
         )
@@ -1037,7 +1073,7 @@ def manage_watchlist(request):
 
     context = {
         'watchlist': qs.order_by('-added_at'),
-        'total_watchlist': qs.count(),                          # ✅ filtered counts
+        'total_watchlist': qs.count(),
         'unique_buyers': qs.values('buyer').distinct().count(),
         'unique_auctions': qs.values('auction').distinct().count(),
         'most_watched': most['auction__item__name'][:15] + '…' if most else '-',
@@ -1065,7 +1101,7 @@ from django.db.models import Count, Max
 @role_required(allowed_roles=['Seller'])
 def seller_manage_bids(request):
     seller = request.user.seller
-
+    Bid.objects.filter(auction__item__seller=seller, is_seen=False).update(is_seen=True)
     # All auctions by this seller, with their bids prefetched
     auctions_with_bids = Auction.objects.filter(
         item__seller=seller
@@ -1912,13 +1948,19 @@ def contact_messages(request):
         messages.success(request, 'Message marked as read.')
         return redirect('contact_messages')
 
+    # ✅ FIX: Capture counts BEFORE marking as read (so stats are meaningful)
     msgs = ContactMessage.objects.all().order_by('-created_at')
     today = timezone.now().date()
+    unread_count = msgs.filter(is_read=False).count()
+    read_count = msgs.filter(is_read=True).count()
+
+    # Now mark all as read
+    ContactMessage.objects.filter(is_read=False).update(is_read=True)
 
     return render(request, 'Dashboard/contact_messages.html', {
         'messages_list': msgs,
-        'unread_count': msgs.filter(is_read=False).count(),
-        'read_count': msgs.filter(is_read=True).count(),
+        'unread_count': unread_count,       # ✅ actual count before clearing
+        'read_count': read_count,
         'total_messages': msgs.count(),
         'today_count': msgs.filter(created_at__date=today).count(),
     })

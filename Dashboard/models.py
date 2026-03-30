@@ -142,7 +142,7 @@ class Bid(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
 
     bid_time = models.DateTimeField(auto_now_add=True)
-
+    is_seen = models.BooleanField(default=False)
     class Meta:
         ordering = ['-bid_time']
 
@@ -179,7 +179,7 @@ class Payment(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
 
     payment_date = models.DateTimeField(auto_now_add=True)
-
+    is_seen = models.BooleanField(default=False) 
     def __str__(self):
         return f"Payment {self.id} - {self.amount}"
 
@@ -193,7 +193,7 @@ class Watchlist(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='watchlists')
 
     added_at = models.DateTimeField(auto_now_add=True)
-
+    is_seen = models.BooleanField(default=False)
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -265,7 +265,7 @@ class Review(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
-
+    is_seen = models.BooleanField(default=False)  
     def __str__(self):
         return f"Review by {self.reviewer.Email}"
 
@@ -282,7 +282,7 @@ class Dispute(models.Model):
     status = models.CharField(max_length=20, default="OPEN")
 
     created_at = models.DateTimeField(auto_now_add=True)
-
+    is_seen = models.BooleanField(default=False)
     def __str__(self):
         return f"Dispute on {self.auction}"
 

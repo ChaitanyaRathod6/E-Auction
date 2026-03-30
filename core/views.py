@@ -16,20 +16,32 @@ def UserSignUpViews(request):
             if user.Role not in ['Buyer', 'Seller']:
                 user.Role = 'Buyer'
             user.save()
-            email = form.cleaned_data['Email']
-            send_mail(
-                subject='Welcome to E-Auction',
-                message='Thank you for signing up for E-Auction! We are excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[email]
-            )
+            
+            # Create profile based on role
+            from Dashboard.models import Buyer, Seller
+            if user.Role == 'Buyer':
+                Buyer.objects.get_or_create(user=user)
+            elif user.Role == 'Seller':
+                Seller.objects.get_or_create(user=user)
+
+            try:
+                email = form.cleaned_data['Email']
+                send_mail(
+                    subject='Welcome to E-Auction',
+                    message='Thank you for signing up for E-Auction!',
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[email]
+                )
+            except Exception as e:
+                print("Email error:", e)  # Don't block signup if email fails
+
             return redirect("login")
         else:
+            print("FORM ERRORS:", form.errors)  # ← check terminal for errors
             return render(request, 'core/signup.html', {'form': form})
     else:
         form = UserSignupForm()
     return render(request, 'core/signup.html', {'form': form})
-   
 
 def  UserLoginViews(request):
     if request.method == 'POST':

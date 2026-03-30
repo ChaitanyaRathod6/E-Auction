@@ -838,10 +838,14 @@ body.dark .min-bid-hint strong {
 </main>
 
 <script>
-    if(localStorage.getItem('auctora_dark')==='1'){document.body.classList.add('dark');}
+    if(localStorage.getItem('auctora_dark')==='1'){
+        document.body.classList.add('dark');
+    }
+
+    // ─── Countdown Timer ───
     {% if auction.status == "ACTIVE" %}
     const countdownEl = document.getElementById('countdown');
-    const endTime = {{ end_time_ms }};  {# ✅ Use Unix timestamp — no timezone issues #}
+    const endTime = {{ end_time_ms }};
 
     const countdownTimer = setInterval(function() {
         const now = new Date().getTime();
@@ -849,20 +853,111 @@ body.dark .min-bid-hint strong {
 
         if (distance <= 0) {
             clearInterval(countdownTimer);
-            countdownEl.textContent = "Ending...";
-            window.location.reload();
+            countdownEl.textContent = "Auction Ended";
+
+            // ✅ Instead of reload, disable bidding UI
+            const bidBtn = document.querySelector('.bid-button');
+            if (bidBtn) bidBtn.disabled = true;
+
         } else {
             const hours   = Math.floor(distance / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
             countdownEl.textContent =
-                (hours > 0 ? hours + "h " : "") +
-                minutes + "m " +
-                seconds + "s";
+                (hours > 0 ? hours + "h " : "") + minutes + "m " + seconds + "s";
         }
     }, 1000);
     {% endif %}
 
+
+    // ─── WebSocket Real-Time Bidding ───
+    {% if auction.status == "ACTIVE" %}
+    const auctionId = {{ auction.pk }};
+    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+
+    function connectWebSocket() {
+        const socket = new WebSocket(`${wsScheme}://${window.location.host}/ws/auction/${auctionId}/`);
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            if (data.type === 'new_bid') {
+                // 1. Update current price
+                document.querySelector('.current-price').innerHTML =
+                    `<span class="currency-symbol">₹</span>${parseFloat(data.amount).toLocaleString('en-IN')}`;
+
+                // 2. Update min bid hint
+                document.querySelector('.min-bid-hint').innerHTML =
+                    `Minimum next bid: <strong>₹${parseFloat(data.min_next_bid).toLocaleString('en-IN')}</strong>`;
+
+                // 3. Update bid input min attribute
+                const bidInput = document.querySelector('.bid-input');
+                if (bidInput) bidInput.min = data.min_next_bid;
+
+                // 4. Update bid count
+                document.querySelector('.history-count').textContent = `${data.bid_count} bids`;
+                document.querySelectorAll('.meta-value').forEach(el => {
+                    if (el.previousElementSibling && el.previousElementSibling.textContent.trim() === 'Total Bids') {
+                        el.textContent = data.bid_count;
+                    }
+                });
+
+                // 5. Inject new bid row at top of history
+                const historyCard = document.querySelector('.history-card');
+                const noBids = historyCard.querySelector('.no-bids');
+                if (noBids) noBids.remove();
+
+                const prevLeading = historyCard.querySelector('.leading-badge');
+                if (prevLeading) prevLeading.remove();
+
+                const newRow = document.createElement('div');
+                newRow.className = 'bid-row';
+                newRow.style.animation = 'fadeInUp 0.4s both';
+                newRow.style.background = 'linear-gradient(90deg, rgba(45,22,85,0.06), transparent)';
+                newRow.innerHTML = `
+                    <div class="bidder-info">
+                        <div class="bidder-avatar">${data.bidder_initial}</div>
+                        <div>
+                            <div class="bidder-name">
+                                ${data.bidder_name}
+                                <span class="leading-badge">Leading</span>
+                            </div>
+                            <div class="bidder-rank">Just now</div>
+                        </div>
+                    </div>
+                    <div class="bid-amount" style="color:var(--primary);font-size:17px;">
+                        ₹${parseFloat(data.amount).toLocaleString('en-IN')}
+                    </div>
+                `;
+
+                const header = historyCard.querySelector('.history-header');
+                header.insertAdjacentElement('afterend', newRow);
+
+                // Flash price
+                const priceEl = document.querySelector('.current-price');
+                priceEl.style.transition = 'color 0.3s';
+                priceEl.style.color = '#10b981';
+                setTimeout(() => { priceEl.style.color = ''; }, 1200);
+            }
+        };
+
+        // ✅ FIXED: No page reload, only reconnect
+        socket.onclose = function() {
+            console.log('WebSocket closed. Reconnecting in 3s...');
+            setTimeout(connectWebSocket, 3000);
+        };
+
+        socket.onerror = function(err) {
+            console.error('WebSocket error:', err);
+        };
+    }
+
+    connectWebSocket();
+    {% endif %}
+
+
+    // ─── Sidebar Active State ───
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
             if (!this.closest('a')) {
