@@ -821,11 +821,43 @@ body.dark .min-bid-hint strong {
         const distance = endTime - now;
 
         if (distance <= 0) {
-            clearInterval(countdownTimer);
-            countdownEl.textContent = "Auction Ended";
-            const bidBtn = document.querySelector('.bid-button');
-            if (bidBtn) bidBtn.disabled = true;
-        } else {
+    clearInterval(countdownTimer);
+    countdownEl.textContent = "Auction Ended";
+    
+    // Auto fetch and update the bid panel
+    fetch(window.location.href)
+        .then(res => res.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const newDoc = parser.parseFromString(html, 'text/html');
+            
+            // Replace the entire bid panel
+            const newPanel = newDoc.querySelector('.bid-panel');
+            const oldPanel = document.querySelector('.bid-panel');
+            if (newPanel && oldPanel) {
+                oldPanel.innerHTML = newPanel.innerHTML;
+            }
+
+            // Replace bid history
+            const newHistory = newDoc.querySelector('.history-card');
+            const oldHistory = document.querySelector('.history-card');
+            if (newHistory && oldHistory) {
+                oldHistory.innerHTML = newHistory.innerHTML;
+            }
+
+            // Update status badge
+            const newBadge = newDoc.querySelector('.status-badge');
+            const oldBadge = document.querySelector('.status-badge');
+            if (newBadge && oldBadge) {
+                oldBadge.className = newBadge.className;
+                oldBadge.textContent = newBadge.textContent;
+            }
+        })
+        .catch(() => {
+            // Fallback — just reload the page
+            window.location.reload();
+        });
+} else {
             const hours   = Math.floor(distance / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);

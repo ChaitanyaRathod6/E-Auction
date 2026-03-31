@@ -50,4 +50,6 @@ urlpatterns = [
     path('invoice/<int:payment_id>/', views.download_invoice, name='download_invoice'),
     path('contact-messages/', views.contact_messages, name='contact_messages'),
     path('test-email/', views.test_email, name='test_email'),
+    path('check-won-auctions/', views.check_won_auctions, name='check_won_auctions'),
+    path('dismiss-won-popup/', views.dismiss_won_popup, name='dismiss_won_popup'),
 ]

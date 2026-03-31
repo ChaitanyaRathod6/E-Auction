@@ -766,7 +766,7 @@ def admin_profile(request):
     return render(request, "Dashboard/admin_profile.html", context)
 
 @login_required
-@role_required(allowed_roles=['Admin'])
+@role_required(allowed_roles=['Admin',"Seller"])
 def manage_categories(request):
     if request.method == "POST":
         action = request.POST.get('action')
@@ -1968,3 +1968,59 @@ def test_email(request):
     auction = Auction.objects.first()
     send_bid_placed_email(request.user, auction, 100)
     return HttpResponse("Email sent! Check your inbox.")    
+
+
+@login_required
+def check_won_auctions(request):
+    from django.urls import reverse
+    try:
+        buyer = request.user.buyer
+        won_bids = Bid.objects.filter(
+            buyer=buyer,
+            auction__status='ENDED',
+        ).order_by('-amount')
+
+        auctions = []
+        seen = set()
+        for bid in won_bids:
+            auction = bid.auction
+            if auction.id in seen:
+                continue
+            seen.add(auction.id)
+
+            # Check if this buyer has the highest bid
+            highest_bid = Bid.objects.filter(auction=auction).order_by('-amount').first()
+            if highest_bid and highest_bid.buyer == buyer:
+                # Check not already paid
+                already_paid = Payment.objects.filter(
+                    auction=auction, buyer=buyer, status='COMPLETED'
+                ).exists()
+                if not already_paid:
+                    # Check not dismissed
+                    session_key = f'dismissed_popup_{auction.id}'
+                    if not request.session.get(session_key):
+                        auctions.append({
+                            'name': auction.item.name,
+                            'amount': str(bid.amount),
+                            'pay_url': reverse('make_payment', args=[auction.id]),
+                        })
+
+        return JsonResponse({'won': len(auctions) > 0, 'auctions': auctions})
+    except Exception as e:
+        print("check_won_auctions error:", e)
+        return JsonResponse({'won': False, 'auctions': []})
+
+
+@login_required
+def dismiss_won_popup(request):
+    if request.method == 'POST':
+        import json
+        try:
+            data = json.loads(request.body)
+            auction_id = data.get('auction_id')
+            if auction_id:
+                request.session[f'dismissed_popup_{auction_id}'] = True
+        except:
+            pass
+        return JsonResponse({'ok': True})
+    return JsonResponse({'ok': False})    

@@ -245,10 +245,18 @@ body.dark .img-preview-wrap { border-color: #2d1e50 !important; background: #130
 
 <aside class="sidebar">
     <nav class="sidebar-nav">
+        <!-- Dashboard button - role based -->
+        {% if request.user.Role == 'Admin' %}
         <a href="{% url 'AdminDashboard' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
             Dashboard
         </a>
+        {% elif request.user.Role == 'Seller' %}
+        <a href="{% url 'SellerDashboard' %}" class="nav-item">
+            <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+            Dashboard
+        </a>
+        {% endif %}
         <a href="{% url 'manage_categories' %}" class="nav-item active">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></span>
             Manage_Categories

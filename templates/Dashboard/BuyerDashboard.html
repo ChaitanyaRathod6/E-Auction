@@ -1140,6 +1140,102 @@ updateCountdowns();
       document.querySelectorAll('[data-count]').forEach(animateCount);
     }, 350);
   });
+
+  let currentAuctionId = null;
+
+function checkWonAuctions() {
+    fetch('/dashboard/check-won-auctions/')
+        .then(res => res.json())
+        .then(data => {
+            if (data.won && data.auctions.length > 0) {
+                const auction = data.auctions[0];
+                currentAuctionId = auction.id;
+                document.getElementById('popupItemName').textContent = auction.name;
+                document.getElementById('popupAmount').textContent = '₹' + auction.amount;
+                document.getElementById('popupPayBtn').href = auction.pay_url;
+                document.getElementById('wonPopup').style.display = 'flex';
+            }
+        })
+        .catch(err => console.log('Check failed:', err));
+}
+
+function closeWonPopup() {
+    document.getElementById('wonPopup').style.display = 'none';
+    fetch('/dashboard/dismiss-won-popup/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({auction_id: currentAuctionId})
+    });
+}
+
+setInterval(checkWonAuctions, 30000);
+window.addEventListener('load', checkWonAuctions);
 </script>
+<!-- ─── AUCTION WON POPUP ─── -->
+<div id="wonPopup" style="
+    display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.7); z-index:9999;
+    align-items:center; justify-content:center;">
+    <div style="
+        background:#1c1640;
+        border:1px solid rgba(16,185,129,0.25);
+        border-radius:20px; padding:36px 40px;
+        max-width:440px; width:90%; text-align:center;
+        box-shadow:0 20px 60px rgba(0,0,0,0.5);
+        animation:fadeInUp 0.4s both;">
+        <div style="
+            width:64px; height:64px; border-radius:16px;
+            background:rgba(16,185,129,0.12);
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 20px; font-size:32px;">🏆</div>
+        <h2 style="font-size:22px; font-weight:800; color:#10b981; margin-bottom:8px;">
+            Auctions Won — Payment Required
+        </h2>
+        <p style="font-size:13px; color:#a89dc4; margin-bottom:20px;">
+            Complete your payment to claim this item
+        </p>
+        <div style="
+            background:#13102b;
+            border:1px solid rgba(16,185,129,0.15);
+            border-radius:14px; padding:16px 20px;
+            display:flex; align-items:center; gap:14px;
+            margin-bottom:24px; text-align:left;">
+            <div style="
+                width:44px; height:44px; border-radius:10px;
+                background:#2d1655;
+                display:flex; align-items:center; justify-content:center;
+                font-size:20px; flex-shrink:0;">🏷️</div>
+            <div style="flex:1;">
+                <div id="popupItemName" style="font-size:14px; font-weight:700; color:#f1f0f5;"></div>
+                <div style="font-size:12px; color:#6b5f85; margin-top:2px;">Winning bid</div>
+            </div>
+            <div id="popupAmount" style="font-size:20px; font-weight:800; color:#10b981;"></div>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeWonPopup()" style="
+                padding:11px 24px; border-radius:50px;
+                border:1px solid #2d1e50; background:transparent;
+                font-size:13px; font-weight:600;
+                color:#a89dc4; cursor:pointer;
+                font-family:'Inter',sans-serif;">
+                Later
+            </button>
+            <a id="popupPayBtn" href="#" style="
+                padding:11px 24px; border-radius:50px;
+                background:#10b981; color:#fff;
+                font-size:13px; font-weight:700;
+                text-decoration:none;
+                display:inline-flex; align-items:center; gap:8px;
+                font-family:'Inter',sans-serif;
+                box-shadow:0 4px 16px rgba(16,185,129,0.3);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                Pay Now
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

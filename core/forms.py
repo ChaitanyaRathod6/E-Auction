@@ -9,83 +9,65 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
 
-class UserSignupForm(UserCreationForm):
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50 text-slate-900 text-sm',
-            'placeholder': 'Create password'
-        })
-    )
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50 text-slate-900 text-sm',
-            'placeholder': 'Confirm password'
-        })
-    )
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import User
 
-      
+class UserSignupForm(UserCreationForm):
+    # Only define fields that need custom widgets
+    # DO NOT redefine password1/password2 here if defined in Meta
+    
     Gender = forms.ChoiceField(
         choices=[('', 'Select gender')] + list(User.choice),
         widget=forms.Select(attrs={
-            'class': 'input-style rounded-full px-5'
+            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50'
         })
     )
     
     Role = forms.ChoiceField(
-        choices=[('', 'Select role'),
-                ('Buyer', 'Buyer'),
-                ('Seller', 'Seller'),] ,
+        choices=[('', 'Select role'), ('Buyer', 'Buyer'), ('Seller', 'Seller')],
         widget=forms.Select(attrs={
-            'class': 'input-style rounded-full px-5'
+            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50'
         })
     )
 
     class Meta:
         model = User
         fields = [
-            'Email',
-            'First_name',
-            'Last_name',
-            'Gender',
-            'Mobile_number',
-            'Role',
-            'password1',
-            'password2'
+            'Email', 'First_name', 'Last_name',
+            'Gender', 'Mobile_number', 'Role',
+            'password1', 'password2'
         ]
-
         widgets = {
             'Email': forms.EmailInput(attrs={
-                'class': 'input-style rounded-full px-5',
+                'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
                 'placeholder': 'Enter your email'
             }),
             'First_name': forms.TextInput(attrs={
-                'class': 'input-style rounded-full px-5',
+                'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
                 'placeholder': 'First name'
             }),
             'Last_name': forms.TextInput(attrs={
-                'class': 'input-style rounded-full px-5',
+                'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
                 'placeholder': 'Last name'
             }),
-            'Gender': forms.Select(attrs={
-                'class': 'input-style rounded-full px-5'
-            }),
             'Mobile_number': forms.TextInput(attrs={
-                'class': 'input-style rounded-full px-5',
+                'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
                 'placeholder': 'Mobile number'
             }),
-            'Role': forms.Select(attrs={
-                'class': 'input-style rounded-full px-5'
-            }),
-            'password1': forms.PasswordInput(attrs={
-                'class': 'w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all',
-                'placeholder': 'Create password'
-            }),
-            'password2': forms.PasswordInput(attrs={
-                'class': 'w-full px-4 py-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all',
-                'placeholder': 'Confirm password'
-            }),
         }
-        
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Fix password fields here — single place, no conflict
+        self.fields['password1'].widget = forms.PasswordInput(attrs={
+            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
+            'placeholder': 'Create password'
+        })
+        self.fields['password2'].widget = forms.PasswordInput(attrs={
+            'class': 'input-style rounded-full px-5 w-full py-3 border border-slate-200 bg-slate-50',
+            'placeholder': 'Confirm password'
+        })
 
 class UserLoginForm(forms.Form):
     Email = forms.EmailField(

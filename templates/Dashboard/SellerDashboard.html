@@ -252,6 +252,12 @@ body.dark .panel-card { background: #1c1640 !important; border-color: #2d1e50 !i
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             My Profile
         </a>
+
+        <a class="nav-item {% if request.resolver_match.url_name == 'manage_categories' %}active{% endif %}" href="{% url 'manage_categories' %}">
+      <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg></span>
+      Categories
+    </a>
+
         <a href="{% url 'seller_manage_bids' %}" class="nav-item">
             <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
             Manage Bids

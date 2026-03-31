@@ -11,13 +11,13 @@ def log_activity(user, action):
 def UserSignUpViews(request):
     if request.method == 'POST':
         form = UserSignupForm(request.POST or None)
+        print("POST DATA:", request.POST)  # ← add this
         if form.is_valid():
             user = form.save(commit=False)
             if user.Role not in ['Buyer', 'Seller']:
                 user.Role = 'Buyer'
             user.save()
             
-            # Create profile based on role
             from Dashboard.models import Buyer, Seller
             if user.Role == 'Buyer':
                 Buyer.objects.get_or_create(user=user)
@@ -28,17 +28,17 @@ def UserSignUpViews(request):
                 email = form.cleaned_data['Email']
                 send_mail(
                     subject='Welcome to E-Auction',
-                    message='Thank you for signing up for E-Auction!',
+                    message='Thank you for signing up!',
                     from_email=settings.EMAIL_HOST_USER,
                     recipient_list=[email]
                 )
             except Exception as e:
-                print("Email error:", e)  # Don't block signup if email fails
+                print("Email error:", e)
 
             return redirect("login")
         else:
-            print("FORM ERRORS:", form.errors)  # ← check terminal for errors
-            return render(request, 'core/signup.html', {'form': form})
+            print("FORM ERRORS:", form.errors)  # ← see exact error
+            print("FORM ERRORS AS JSON:", form.errors.as_json())  # ← more detail
     else:
         form = UserSignupForm()
     return render(request, 'core/signup.html', {'form': form})

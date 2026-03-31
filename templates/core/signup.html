@@ -200,7 +200,7 @@ body.dark label { color: #a89dc4 !important; }
       </div>
 
       <!-- Form -->
-      <form method="post" action="#" class="space-y-4">
+      <form method="post" action="{% url 'signup' %}" class="space-y-4">
         {% csrf_token %}
 
         <!-- First & Last Name -->
