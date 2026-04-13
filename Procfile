@@ -1,1 +1,1 @@
-web: daphne -p $PORT -b 0.0.0.0 E_Auction.asgi:application
+web: gunicorn E_Auction.wsgi:application --bind 0.0.0.0:$PORT
