@@ -300,7 +300,7 @@ def SellerDashboard(request):
         auction__item__seller=seller, status='REFUNDED'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
-    total_earnings = total_earnings - refunded_amount
+    total_earnings = max(0, total_earnings - refunded_amount)
 
     seller_active_bids = Bid.objects.filter(
         auction__item__seller=seller,
@@ -373,7 +373,10 @@ def SellerDashboard(request):
         'live_auctions': live_auctions,
         'total_earnings': total_earnings,
         'active_auctions': auctions.filter(status='ACTIVE').count(),
-        'items_sold': auctions.filter(status='ENDED').count(),
+        'items_sold': Payment.objects.filter(
+            auction__item__seller=seller,
+            status='COMPLETED'
+            ).count(),
         'categories': Category.objects.all(),
         'pending_payments': pending_payments,
         'seller_active_bids': seller_active_bids,
