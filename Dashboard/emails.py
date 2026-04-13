@@ -101,23 +101,26 @@ The buyer has been notified to complete payment.
     )
 
 def send_refund_request_email(seller, buyer, auction, amount):
-    send_mail(
+    try:
+        send_mail(
         subject=f'💰 Refund Requested — {auction.item.name}',
         message=f'''
-Hi {seller.First_name},
+        Hi {seller.First_name},
 
-{buyer.First_name} {buyer.Last_name} has requested a refund for "{auction.item.name}".
+        {buyer.First_name} {buyer.Last_name} has requested a refund for "{auction.item.name}".
 
-Refund Amount: ₹{amount}
+        Refund Amount: ₹{amount}
 
-Please login to Auctora and go to Payments to review and approve or reject this request.
+        Please login to Auctora and go to Payments to review and approve or reject this request.
 
-— Auctora Team
+        — Auctora Team
         ''',
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[seller.Email],
         fail_silently=False,
-    )
+        )
+    except Exception as e:
+        print("Error sending refund request email:", e)
 
 
 def send_refund_approved_email(buyer, auction, amount):

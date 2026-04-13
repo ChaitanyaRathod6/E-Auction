@@ -631,18 +631,21 @@ def auction_detail(request, pk):
             channel_layer = get_channel_layer()
             bid_count = Bid.objects.filter(auction=auction).count()
             min_next = float(auction.current_price) + float(auction.bid_increment)
-            async_to_sync(channel_layer.group_send)(
-                f'auction_{auction.pk}',
-                {
-                    'type': 'auction_bid',
-                    'amount': str(bid_amount),
-                    'bidder_name': f'{buyer.user.First_name} {buyer.user.Last_name}',
-                    'bidder_initial': buyer.user.First_name[0].upper() if buyer.user.First_name else '?',
-                    'bid_count': bid_count,
+            try:
+                async_to_sync(channel_layer.group_send)(
+                    f'auction_{auction.pk}',
+                    {
+                        'type': 'auction_bid',
+                        'amount': str(bid_amount),
+                        'bidder_name': f'{buyer.user.First_name} {buyer.user.Last_name}',
+                        'bidder_initial': buyer.user.First_name[0].upper() if buyer.user.First_name else '?',
+                        'bid_count': bid_count,
                     'min_next_bid': str(min_next),
-                }
-            )
-            print("=== BROADCAST DONE ===")
+                    }
+                )
+                print("=== BROADCAST DONE ===")
+            except Exception as e:
+                print(f"Error occurred while broadcasting: {e}")
 
             messages.success(request, "Bid placed successfully!")
             return redirect("auction_detail", pk=auction.pk)
