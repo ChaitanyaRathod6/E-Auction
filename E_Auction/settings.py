@@ -125,3 +125,5 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 CRONJOBS = [
     ('* * * * *', 'django.core.management.call_command', ['end_auctions']),
 ]
+
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost').split(',')
