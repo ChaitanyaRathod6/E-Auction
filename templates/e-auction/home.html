@@ -387,7 +387,7 @@
         </div>
         <div class="auctions-grid">
     {% for auction in live_auctions %}
-    <a href="{% url 'auction_detail' auction.pk %}" class="auction-card" style="text-decoration:none;display:block;">
+    <a href="{% if request.user.is_authenticated %}{% url 'auction_detail' auction.pk %}{% else %}{% url 'signup' %}{% endif %}" class="auction-card" style="text-decoration:none;display:block;">
         <div class="auction-img" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">
             {% if auction.item.image %}
                 <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
@@ -410,7 +410,11 @@
                 </div>
                 <div style="text-align:right;">
                     <div class="auction-bids">{{ auction.bid_count }} Bids</div>
-                    <span class="btn-bid">Place Bid →</span>
+                    {% if request.user.is_authenticated %}
+    <span class="btn-bid">Place Bid →</span>
+{% else %}
+    <a href="{% url 'signup' %}" class="btn-bid" style="text-decoration:none;">Place Bid →</a>
+{% endif %}
                 </div>
             </div>
         </div>
