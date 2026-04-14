@@ -60,11 +60,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'E_Auction.urls'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('dqst9l3cm'),
-    'API_KEY': os.getenv('724827481122791'),
-    'API_SECRET': os.getenv('VQGqE-SeLDgymWwdI3QOSuVLstw'),
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
