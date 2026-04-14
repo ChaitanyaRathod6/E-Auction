@@ -182,7 +182,7 @@
 
         /* Auction cards */
         .auctions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
-        .auction-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s, background 0.3s; animation: fadeInUp 0.5s both; cursor: pointer; display: flex !important; flex-direction: column !important; text-decoration: none; min-width: 0; }
+        .auction-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s, background 0.3s; animation: fadeInUp 0.5s both; cursor: pointer; display: block; }
         .auction-body { padding: 18px 20px 20px; flex: 1; }
         .auction-card:nth-child(1){animation-delay:0.12s;} .auction-card:nth-child(2){animation-delay:0.20s;} .auction-card:nth-child(3){animation-delay:0.28s;}
         .auction-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(45,22,85,0.14); }
@@ -388,42 +388,40 @@
         </div>
         <div class="auctions-grid">
             {% for auction in live_auctions %}
-            <a href="{% if request.user.is_authenticated %}{% url 'auction_detail' auction.pk %}{% else %}{% url 'signup' %}{% endif %}" class="auction-card">
-                <div class="auction-img" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">
+            <div class="auction-card" onclick="window.location='{% if request.user.is_authenticated %}{% url 'auction_detail' auction.pk %}{% else %}{% url 'signup' %}{% endif %}'">
+                <div class="auction-img">
                     {% if auction.item.image %}
                         <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
                     {% else %}
                         🏷️
                     {% endif %}
+                    <div class="auction-timer">
+                        <span class="timer-dot"></span>
+                        <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--:--</span>
+                    </div>
+                    <div class="auction-wishlist">🤍</div>
                 </div>
-            <div class="auction-timer">
-                <span class="timer-dot"></span>
-                <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--:--</span>
+                <div class="auction-body">
+                    <div class="auction-name">{{ auction.item.name }}</div>
+                    <div class="auction-cat">{{ auction.item.category.name }}</div>
+                    <div class="auction-footer">
+                        <div>
+                            <div class="auction-bid-label">Current Bid</div>
+                            <div class="auction-bid-value">₹{{ auction.current_price }}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="auction-bids">{{ auction.bid_count }} Bids</div>
+                            <span class="btn-bid">Place Bid →</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="auction-wishlist">🤍</div>
+            {% empty %}
+            <p style="color:var(--text-mid);grid-column:1/-1;text-align:center;padding:40px;">No live auctions at the moment.</p>
+            {% endfor %}
         </div>
-        <div class="auction-body">
-            <div class="auction-name">{{ auction.item.name }}</div>
-            <div class="auction-cat">{{ auction.item.category.name }}</div>
-            <div class="auction-footer">
-                <div>
-                    <div class="auction-bid-label">Current Bid</div>
-                    <div class="auction-bid-value">₹{{ auction.current_price }}</div>
-                </div>
-                <div style="text-align:right;">
-                    <div class="auction-bids">{{ auction.bid_count }} Bids</div>
-                    <span class="btn-bid">Place Bid →</span>
-                </div>
-            </div>
-        </div>
-    </a>
-    {% empty %}
-    <p style="color:var(--text-mid);grid-column:1/-1;text-align:center;padding:40px;">No live auctions at the moment.</p>
-    {% endfor %}
-</div>
     </div>
 </section>
-
 <!-- ─── HOW IT WORKS ─── -->
 <section class="section" id="how" style="padding-top:0;">
     <div class="container">
