@@ -411,10 +411,10 @@
                 <div style="text-align:right;">
                     <div class="auction-bids">{{ auction.bid_count }} Bids</div>
                     {% if request.user.is_authenticated %}
-    <span class="btn-bid">Place Bid →</span>
-{% else %}
-    <a href="{% url 'signup' %}" class="btn-bid" style="text-decoration:none;">Place Bid →</a>
-{% endif %}
+                        <span class="btn-bid">Place Bid →</span>
+                    {% else %}
+                        <a href="{% url 'signup' %}" class="btn-bid" style="text-decoration:none;">Place Bid →</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
