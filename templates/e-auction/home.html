@@ -181,8 +181,9 @@
         .cat-count { font-size: 12px; color: var(--text-light); }
 
         /* Auction cards */
-        .auctions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .auction-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s, background 0.3s; animation: fadeInUp 0.5s both; cursor: pointer; display: flex; flex-direction: column; }
+        .auctions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+        .auction-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s, background 0.3s; animation: fadeInUp 0.5s both; cursor: pointer; display: flex !important; flex-direction: column !important; text-decoration: none; min-width: 0; }
+        .auction-body { padding: 18px 20px 20px; flex: 1; }
         .auction-card:nth-child(1){animation-delay:0.12s;} .auction-card:nth-child(2){animation-delay:0.20s;} .auction-card:nth-child(3){animation-delay:0.28s;}
         .auction-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(45,22,85,0.14); }
         .auction-img { height: 200px; position: relative; overflow: hidden; background: linear-gradient(135deg, #2d1655, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 64px; transition: transform 0.5s ease; }
@@ -386,14 +387,15 @@
             <a href="{% url 'auction_list' %}" class="section-link">View All →</a>
         </div>
         <div class="auctions-grid">
-    {% for auction in live_auctions %}
-    <a href="{% if request.user.is_authenticated %}{% url 'auction_detail' auction.pk %}{% else %}{% url 'signup' %}{% endif %}" class="auction-card" style="text-decoration:none;display:block;">
-        <div class="auction-img" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">
-            {% if auction.item.image %}
-                <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
-            {% else %}
-                🏷️
-            {% endif %}
+            {% for auction in live_auctions %}
+            <a href="{% if request.user.is_authenticated %}{% url 'auction_detail' auction.pk %}{% else %}{% url 'signup' %}{% endif %}" class="auction-card">
+                <div class="auction-img" style="background:linear-gradient(135deg,#2d1655,#7c3aed);">
+                    {% if auction.item.image %}
+                        <img src="{{ auction.item.image.url }}" alt="{{ auction.item.name }}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+                    {% else %}
+                        🏷️
+                    {% endif %}
+                </div>
             <div class="auction-timer">
                 <span class="timer-dot"></span>
                 <span class="countdown" data-end="{{ auction.end_time.isoformat }}">--:--:--</span>
@@ -410,11 +412,7 @@
                 </div>
                 <div style="text-align:right;">
                     <div class="auction-bids">{{ auction.bid_count }} Bids</div>
-                    {% if request.user.is_authenticated %}
-                        <span class="btn-bid">Place Bid →</span>
-                    {% else %}
-                        <a href="{% url 'signup' %}" class="btn-bid" style="text-decoration:none;">Place Bid →</a>
-                    {% endif %}
+                    <span class="btn-bid">Place Bid →</span>
                 </div>
             </div>
         </div>
